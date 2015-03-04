@@ -89,5 +89,5 @@ $string['gateway_mollie_select_method'] = 'Please click the method you like to u
 $string['gateway_mollie'] = 'Gateway: Mollie';
 $string['gateway_mollie_desc'] = 'Offer your customers the payment methods Creditcard, SOFORT Banking, iDEAL, Bancontact/Mister Cash, Bank transfer, Bitcoin, PayPal or paysafecard. Mollie is known for reliability, transparency, nice API’s and ready-to-go modules.';
 $string['gateway_mollie_apikey'] = 'API key';
-$string['gateway_mollie_link'] = 'If you don\'t have a account please <a href="https://www.mollie.com/en/">register</a>';
+$string['gateway_mollie_link'] = 'If you don\'t have a account please <a href=" https://www.mollie.com/en/signup/1787751">register</a>';
 $string['gateway_mollie_send_button'] = 'Purchase with mollie';
