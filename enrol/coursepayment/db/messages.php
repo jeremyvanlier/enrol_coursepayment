@@ -32,4 +32,5 @@ defined('MOODLE_INTERNAL') || die();
 
 $messageproviders = array(
     'coursepayment_enrolment' => array(),
+    'expiry_notification' => array(),
 );

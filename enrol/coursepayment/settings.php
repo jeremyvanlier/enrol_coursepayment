@@ -63,6 +63,13 @@ if ($ADMIN->fulltree) {
     }
     $settings->add(new admin_setting_configduration('enrol_coursepayment/enrolperiod', get_string('enrolperiod', 'enrol_coursepayment'), get_string('enrolperiod_desc', 'enrol_coursepayment'), 0));
 
+    $options = array(0 => get_string('no'), 1 => get_string('expirynotifyenroller', 'core_enrol'), 2 => get_string('expirynotifyall', 'core_enrol'));
+    $settings->add(new admin_setting_configselect('enrol_manual/expirynotify',
+        get_string('expirynotify', 'core_enrol'), get_string('expirynotify_help', 'core_enrol'), 0, $options));
+
+    $settings->add(new admin_setting_configduration('enrol_manual/expirythreshold',
+        get_string('expirythreshold', 'core_enrol'), get_string('expirythreshold_help', 'core_enrol'), 86400, 86400));
+
     // add mollie settings to the plugin https://www.mollie.com
     $yesno = array(0 => get_string('no') , 1 => get_string('yes'));
 

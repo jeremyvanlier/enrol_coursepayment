@@ -325,7 +325,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
     public function cron() {
         $trace = new text_progress_trace();
         $this->process_expirations($trace);
-
+        $this->send_expiry_notifications($trace);
         $this->cron_process_orders();
     }
 
