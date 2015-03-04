@@ -29,11 +29,10 @@
 
 YUI().use("node", function(Y){
 
-    var method = '';
-
     // form can't accept if there is no input
     Y.one('#coursepayment_mollie_form').on('submit', function(e) {
 
+        var method =  Y.one('#coursepayment_mollie_form tr.selected').getData('method');;
         if(method == '')
         {
             e.preventDefault();
@@ -53,8 +52,6 @@ YUI().use("node", function(Y){
         // set method value
         Y.one('#input_method').setAttribute('value' , method);
     });
-
-
 
     Y.all('#coursepayment_mollie_form tr').on('click', function(e) {
 
@@ -78,7 +75,6 @@ YUI().use("node", function(Y){
         this.removeClass('selected');
         item.addClass('selected');
 
-        method = item.getData('method');
         console.log(this)
     });
 })

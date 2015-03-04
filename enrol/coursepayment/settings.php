@@ -29,6 +29,8 @@ defined('MOODLE_INTERNAL') || die();
 
 if ($ADMIN->fulltree) {
 
+    $config = get_config('enrol_coursepayment');
+
     //--- settings ------------------------------------------------------------------------------------------
     $settings->add(new admin_setting_heading('enrol_coursepayment_settings', '', get_string('pluginname_desc', 'enrol_coursepayment')));
     $settings->add(new admin_setting_configcheckbox('enrol_coursepayment/mailstudents', get_string('mailstudents', 'enrol_coursepayment'), '', 0));
@@ -50,7 +52,7 @@ if ($ADMIN->fulltree) {
         ENROL_INSTANCE_DISABLED => get_string('no')
     );
     $settings->add(new admin_setting_configselect('enrol_coursepayment/status', get_string('status', 'enrol_coursepayment'), get_string('status_desc', 'enrol_coursepayment'), ENROL_INSTANCE_DISABLED, $optionsyesno));
-    $settings->add(new admin_setting_configtext('enrol_coursepayment/cost', get_string('cost', 'enrol_coursepayment'), '', 0, PARAM_FLOAT, 4));
+    $settings->add(new admin_setting_configtext('enrol_coursepayment/cost', get_string('cost', 'enrol_coursepayment'), '', 10.00, PARAM_FLOAT, 4));
 
     $coursepaymentcurrencies = enrol_get_plugin('coursepayment')->get_currencies();
     $settings->add(new admin_setting_configselect('enrol_coursepayment/currency', get_string('currency', 'enrol_coursepayment'), '', 'EUR', $coursepaymentcurrencies));
@@ -63,15 +65,17 @@ if ($ADMIN->fulltree) {
     }
     $settings->add(new admin_setting_configduration('enrol_coursepayment/enrolperiod', get_string('enrolperiod', 'enrol_coursepayment'), get_string('enrolperiod_desc', 'enrol_coursepayment'), 0));
 
-    $options = array(0 => get_string('no'), 1 => get_string('expirynotifyenroller', 'core_enrol'), 2 => get_string('expirynotifyall', 'core_enrol'));
-    $settings->add(new admin_setting_configselect('enrol_manual/expirynotify',
-        get_string('expirynotify', 'core_enrol'), get_string('expirynotify_help', 'core_enrol'), 0, $options));
+    $options = array(
+        0 => get_string('no'),
+        1 => get_string('expirynotifyenroller', 'core_enrol'),
+        2 => get_string('expirynotifyall', 'core_enrol')
+    );
+    $settings->add(new admin_setting_configselect('enrol_manual/expirynotify', get_string('expirynotify', 'core_enrol'), get_string('expirynotify_help', 'core_enrol'), 0, $options));
 
-    $settings->add(new admin_setting_configduration('enrol_manual/expirythreshold',
-        get_string('expirythreshold', 'core_enrol'), get_string('expirythreshold_help', 'core_enrol'), 86400, 86400));
+    $settings->add(new admin_setting_configduration('enrol_manual/expirythreshold', get_string('expirythreshold', 'core_enrol'), get_string('expirythreshold_help', 'core_enrol'), 86400, 86400));
 
     // add mollie settings to the plugin https://www.mollie.com
-    $yesno = array(0 => get_string('no') , 1 => get_string('yes'));
+    $yesno = array(0 => get_string('no'), 1 => get_string('yes'));
 
     $settings->add(new admin_setting_heading('enrol_coursepayment_gateway_mollie', get_string('gateway_mollie', 'enrol_coursepayment'), get_string('gateway_mollie_desc', 'enrol_coursepayment')));
     $settings->add(new admin_setting_heading('enrol_coursepayment_register', '', '<aside style="border: 1px solid red;padding: 3px">' . get_string('gateway_mollie_link', 'enrol_coursepayment') . '</aside><hr/>'));
@@ -80,9 +84,13 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configselect('enrol_coursepayment/gateway_mollie_debug', get_string('debug', 'enrol_coursepayment'), get_string('debug_desc', 'enrol_coursepayment'), 0, $yesno));
     $settings->add(new admin_setting_configselect('enrol_coursepayment/gateway_mollie_sandbox', get_string('sandbox', 'enrol_coursepayment'), get_string('sandbox_desc', 'enrol_coursepayment'), 0, $yesno));
 
-
-    $gateway = new enrol_coursepayment_mollie();
-    $methods = $gateway->get_enabled_modes();
-    $settings->add(new admin_setting_heading('enrol_coursepayment_methods', '', $methods));
-
+    if(!empty($config->gateway_mollie_apikey)) {
+        try {
+            $gateway = new enrol_coursepayment_mollie();
+            $methods = $gateway->get_enabled_modes();
+            $settings->add(new admin_setting_heading('enrol_coursepayment_methods', '', $methods));
+        } catch (Exception $exc) {
+            $settings->add(new admin_setting_heading('enrol_coursepayment_warning', '', '<div style="color:red">'.$exc->getMessage() . '</div>'));
+        }
+    }
 }

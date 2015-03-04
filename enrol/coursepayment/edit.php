@@ -60,6 +60,8 @@ if ($instanceid) {
     $instance = new stdClass();
     $instance->id = null;
     $instance->courseid = $course->id;
+    $instance->expirynotify    = $plugin->get_config('expirynotify');
+    $instance->expirythreshold = $plugin->get_config('expirythreshold');
 }
 
 $mform = new enrol_coursepayment_edit_form(null, array($instance, $plugin, $context));
@@ -69,6 +71,18 @@ if ($mform->is_cancelled()) {
 
 } else {
     if ($data = $mform->get_data()) {
+
+        if ($data->expirynotify == 2) {
+            $data->expirynotify = 1;
+            $data->notifyall = 1;
+        } else {
+            $data->notifyall = 0;
+        }
+        if (!$data->expirynotify) {
+            // Keep previous/default value of disabled expirythreshold option.
+            $data->expirythreshold = $instance->expirythreshold;
+        }
+
         if ($instance->id) {
             $reset = ($instance->status != $data->status);
 
@@ -80,6 +94,9 @@ if ($mform->is_cancelled()) {
             $instance->enrolperiod = $data->enrolperiod;
             $instance->enrolstartdate = $data->enrolstartdate;
             $instance->enrolenddate = $data->enrolenddate;
+            $instance->expirynotify    = $data->expirynotify;
+            $instance->notifyall       = $data->notifyall;
+            $instance->expirythreshold = $data->expirythreshold;
             $instance->timemodified = time();
             $DB->update_record('enrol', $instance);
 
@@ -96,7 +113,10 @@ if ($mform->is_cancelled()) {
                 'roleid' => $data->roleid,
                 'enrolperiod' => $data->enrolperiod,
                 'enrolstartdate' => $data->enrolstartdate,
-                'enrolenddate' => $data->enrolenddate
+                'enrolenddate' => $data->enrolenddate,
+                'expirynotify'    => $data->expirynotify,
+                'notifyall'       => $data->notifyall,
+                'expirythreshold' => $data->expirythreshold
             );
             $plugin->add_instance($course, $fields);
         }
