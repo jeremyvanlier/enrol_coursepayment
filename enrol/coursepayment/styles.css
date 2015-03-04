@@ -1,0 +1,15 @@
+#coursepayment_mollie_gateways{
+    margin-bottom: 10px;
+}
+#coursepayment_mollie_gateways tr {
+    cursor: pointer;
+}
+#coursepayment_mollie_gateways tr.selected{
+    background: #E6E6E6;
+}
+#coursepayment_mollie_gateways tr td{
+    border-bottom: 1px solid lightgray;
+}
+#issuers_ideal{
+    background: #E6E6E6;
+}
