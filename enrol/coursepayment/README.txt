@@ -4,11 +4,11 @@ Author: Luuk Verhoeven, MoodleFreak.com
 Requires at least: Moodle 2.6+
 License: www.avetica.nl
 
-With this plugin you can purchase courses to your moodle users.
+With this plugin you can sell courses to your moodle users.
 
 == Description ==
 
-This plugin allows you to purchase courses with multipull gateways.
+This plugin allows you to sell courses with multi pull gateways.
 Has support for:
 - Mollie gateway
 - IPN/Callbacks
@@ -30,4 +30,4 @@ Has support for:
 
 == Changelog ==
 
-See github for the complete history major changes in versions we will list below
+See github for the complete history, major changes will be listed below
