@@ -84,6 +84,7 @@ $string['provider'] = 'Provider';
 $string['name'] = 'Name';
 $string['minimum'] = 'Minimum';
 $string['maximum'] = 'Maximum';
+$string['instancedesc'] = 'Description';
 $string['gateway_mollie_issuers'] = 'Select a bank';
 $string['gateway_mollie_select_method'] = 'Please click the method you like to use.';
 $string['gateway_mollie'] = 'Gateway: Mollie';

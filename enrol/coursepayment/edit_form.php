@@ -40,6 +40,9 @@ class enrol_coursepayment_edit_form extends moodleform {
         $mform->addElement('text', 'name', get_string('custominstancename', 'enrol'));
         $mform->setType('name', PARAM_TEXT);
 
+        $mform->addElement('text', 'customtext1', get_string('instancedesc', 'enrol_coursepayment'));
+        $mform->setType('customtext1', PARAM_TEXT);
+
         $options = array(
             ENROL_INSTANCE_ENABLED => get_string('yes'),
             ENROL_INSTANCE_DISABLED => get_string('no')
@@ -62,7 +65,6 @@ class enrol_coursepayment_edit_form extends moodleform {
         }
         $mform->addElement('select', 'roleid', get_string('assignrole', 'enrol_coursepayment'), $roles);
         $mform->setDefault('roleid', $plugin->get_config('roleid'));
-
 
         $mform->addElement('duration', 'enrolperiod', get_string('enrolperiod', 'enrol_coursepayment'), array(
             'optional' => true,

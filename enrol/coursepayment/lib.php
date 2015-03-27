@@ -204,8 +204,11 @@ class enrol_coursepayment_plugin extends enrol_plugin {
         $config->coursename = $course->fullname;
         $config->locale = $USER->lang;
 
+        // you can set a custom text to be shown instead of instance name
+        $name = !empty($instance->customtext1) ? $instance->customtext1: $config->instancename ;
+
         echo '<div align="center">
-                            <h2>' . $config->instancename . '</h2>
+                            <h3 class="coursepayment_instancename">' . $name . '</h3>
                             <p><b>' . get_string("cost") . ': ' . $instance->currency . ' ' . $config->localisedcost . '</b></p>
                           </div>';
 

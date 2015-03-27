@@ -31,7 +31,7 @@
 define('NO_DEBUG_DISPLAY', true);
 
 require("../../../config.php");
-require_once("../lib.php"); 
+require_once("../lib.php");
 
 set_exception_handler('enrol_coursepayment_ipn_exception_handler');
 
