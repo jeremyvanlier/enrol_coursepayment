@@ -77,12 +77,18 @@ if ($ADMIN->fulltree) {
     // add mollie settings to the plugin https://www.mollie.com
     $yesno = array(0 => get_string('no'), 1 => get_string('yes'));
 
+    $obj = new stdClass();
+    $obj->link = $CFG->wwwroot . '/enrol/coursepayment/view/discountcode.php';
+    $settings->add(new admin_setting_heading('enrol_coursepayment_discount', get_string('enrol_coursepayment_discount', 'enrol_coursepayment'), get_string('enrol_coursepayment_discount_desc', 'enrol_coursepayment' , $obj)));
+
+
     $settings->add(new admin_setting_heading('enrol_coursepayment_gateway_mollie', get_string('gateway_mollie', 'enrol_coursepayment'), get_string('gateway_mollie_desc', 'enrol_coursepayment')));
     $settings->add(new admin_setting_heading('enrol_coursepayment_register', '', '<aside style="border: 1px solid red;padding: 3px">' . get_string('gateway_mollie_link', 'enrol_coursepayment') . '</aside><hr/>'));
     $settings->add(new admin_setting_configselect('enrol_coursepayment/gateway_mollie_enabled', get_string('enabled', 'enrol_coursepayment'), get_string('enabled_desc', 'enrol_coursepayment'), 1, $yesno));
     $settings->add(new admin_setting_configtext('enrol_coursepayment/gateway_mollie_apikey', get_string('gateway_mollie_apikey', 'enrol_coursepayment'), '', '', PARAM_ALPHANUMEXT));
     $settings->add(new admin_setting_configselect('enrol_coursepayment/gateway_mollie_debug', get_string('debug', 'enrol_coursepayment'), get_string('debug_desc', 'enrol_coursepayment'), 0, $yesno));
     $settings->add(new admin_setting_configselect('enrol_coursepayment/gateway_mollie_sandbox', get_string('sandbox', 'enrol_coursepayment'), get_string('sandbox_desc', 'enrol_coursepayment'), 0, $yesno));
+
 
     if(!empty($config->gateway_mollie_apikey)) {
         try {
@@ -93,4 +99,5 @@ if ($ADMIN->fulltree) {
             $settings->add(new admin_setting_heading('enrol_coursepayment_warning', '', '<div style="color:red">'.$exc->getMessage() . '</div>'));
         }
     }
+
 }

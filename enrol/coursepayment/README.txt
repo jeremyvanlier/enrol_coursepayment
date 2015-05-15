@@ -30,4 +30,4 @@ Has support for:
 
 == Changelog ==
 
-See github for the complete history, major changes will be listed below
+See Git for the complete history, major changes will be listed below

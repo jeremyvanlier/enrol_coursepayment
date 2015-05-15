@@ -124,9 +124,29 @@ abstract class enrol_coursepayment_gateway {
     /**
      * check if a order is valid
      *
+     * @param string $orderid
+     * @global moodle_database $DB
      * @return array
      */
-    abstract public function validate_order();
+    public function validate_order($orderid = ''){
+        global $DB;
+        $row = $DB->get_record('enrol_coursepayment', array('orderid' => $orderid, 'gateway' => $this->name));
+        
+        if($row){
+            if($row->cost == 0){
+                //
+                $obj = new stdClass();
+                $obj->id = $row->id;
+                $obj->timeupdated = time();
+                $DB->update_record('enrol_coursepayment', $obj);
+
+                // this is 0 cost order
+                $this->enrol($row);
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * add a payment button for this gateway
@@ -135,8 +155,6 @@ abstract class enrol_coursepayment_gateway {
      */
     public function show_payment_button() {
 
-        global $CFG;
-
         if ($this->config->enabled == 0) {
             return '';
         }
@@ -144,7 +162,7 @@ abstract class enrol_coursepayment_gateway {
         return '<div align="center">
                         <form action="" method="post">
                             <input type="hidden" name="gateway" value="' . $this->name . '"/>
-                            <input type="submit" value="' . get_string('gateway_' . $this->name . '_send_button', "enrol_coursepayment") . '" />
+                            <input type="submit" class="form-submit"  value="' . get_string('gateway_' . $this->name . '_send_button', "enrol_coursepayment") . '" />
                         </form>
                 </div><hr/>';
     }
@@ -204,14 +222,35 @@ abstract class enrol_coursepayment_gateway {
     /**
      * create a new order for a user
      *
+     * @param array $data
+     *
      * @return array
      */
-    protected function create_new_order_record() {
+    protected function create_new_order_record($data = array()) {
         global $DB;
+
+        $cost = $this->instanceconfig->cost;
 
         $orderidentifier = uniqid(time());
 
         $obj = new stdClass();
+
+
+        if(!empty($data['discount'])){
+            $discount = $data['discount'];
+            $obj->discountdata = serialize($discount);
+            // we have discount data
+            if($discount->percentage > 0){
+                $cost = round($cost / 100 * (100 - $discount->percentage), 2);
+            }else{
+                $cost = round($cost - $discount->amount);
+            }
+            // make sure not below 0
+            if($cost <= 0){
+                $cost = 0;
+            }
+        }
+
         $obj->orderid = $orderidentifier;
         $obj->gateway_transaction_id = '';
         $obj->gateway = $this->name;
@@ -220,13 +259,14 @@ abstract class enrol_coursepayment_gateway {
         $obj->userid = $this->instanceconfig->userid;
         $obj->courseid = $this->instanceconfig->courseid;;
         $obj->instanceid = $this->instanceconfig->instanceid;
-        $obj->cost = $this->instanceconfig->cost;
+        $obj->cost = $cost;
         $obj->status = self::PAYMENT_STATUS_WAITING;
         $id = $DB->insert_record('enrol_coursepayment', $obj);
 
         return array(
             'orderid' => $orderidentifier,
-            'id' => $id
+            'id' => $id,
+            'cost' => $cost
         );
     }
 
@@ -350,4 +390,31 @@ abstract class enrol_coursepayment_gateway {
         }
         return true;
     }
+
+    /**
+     * add form for when discount code are created
+     *
+     * @param string $discountcode
+     * @param array $status
+     *
+     * @return string
+     * @throws coding_exception
+     */
+    protected function form_discount_code($discountcode = '' , $status = array()){
+        global $DB;
+        $string = '';
+        // check if there is a discount code
+        $row = $DB->get_record('enrol_coursepayment_discount' , array() , 'id' , IGNORE_MULTIPLE);
+        if($row){
+            $string .= '<hr/>';
+            $string .= '<div align="center">
+                            <p>'.get_string('discount_code_desc', 'enrol_coursepayment').'<br/>
+                            '.((!empty($status['error_discount'])? '<b style="color:red">'.get_string('discountcode_invalid' , 'enrol_coursepayment').'</b>': '')).'<br/>
+                            </p>
+                            <input type="text" name="discountcode"  value="'.$discountcode.'" />
+                        </div>';
+        }
+        return $string;
+    }
+
 }

@@ -92,3 +92,30 @@ $string['gateway_mollie_desc'] = 'Offer your customers the payment methods Credi
 $string['gateway_mollie_apikey'] = 'API sleutel';
 $string['gateway_mollie_link'] = 'Als u nog geen account heeft kunt u via <a href=" https://www.mollie.com/en/signup/1787751">Registeren</a> een account aanmaken';
 $string['gateway_mollie_send_button'] = 'Koop deze cursus';
+$string['error:capability_config'] = 'Fout: Je heb de volgende toegang nodig, coursepayment/config';
+$string['enrol_coursepayment_discount'] = 'Kortingscodebeheer';
+$string['enrol_coursepayment_discount_desc'] = 'Korting codes kunnen aangemaakt worden via de onderstaande knop. <br/><br/><a href="{$a->link}" class="btn btn-small btn-primary">Kortingscodebeheer</a>';
+$string['new:discountcode'] = 'Nieuwe kortingscode toevoegen';
+
+$string['th:code'] = 'Kortingscode';
+$string['th:courseid'] = 'Cursus';
+$string['th:start_time'] = 'Geldig vanaf';
+$string['th:end_time'] = 'Geldig to';
+$string['th:amount'] = 'Waarde';
+$string['th:action'] = 'Actie';
+
+$string['form:allcourses'] = 'Volledige website';
+$string['form:code'] = 'Kortignscode<br> (moet uniek zijn)';
+$string['form:discountcode'] = 'Kortingscode';
+$string['form:start_time'] = 'Geldig vanaf';
+$string['form:end_time'] = 'Geldig to';
+$string['form:save'] = 'Bewaar wijzigingen';
+$string['form:amount'] = 'Bedrag van kortingscode';
+$string['form:percentage'] = 'Percentage van kortingscode';
+
+$string['error:number_to_low'] = 'Dit nummer is te laag';
+$string['error:price_wrongformat'] = 'Dit is geen nummer';
+$string['error:code_not_unique'] = 'Kortingscode moet uniek zijn';
+
+$string['discount_code_desc'] = 'Als u een kortingscode heeft kunt u die hieronder invullen';
+$string['discountcode_invalid'] = 'Fout: Deze kortingscode is onjuist, niet geldig meer of hoort niet bij deze cursus!';

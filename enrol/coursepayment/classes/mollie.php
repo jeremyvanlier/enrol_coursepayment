@@ -71,22 +71,49 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      *
      * @param string $method
      * @param string $issuer
+     * @param string $discountcode
      *
-     * @return bool
+     * @return array
      * @throws moodle_exception
      * @global moodle_database $DB
      */
-    public function new_order($method = '', $issuer = '') {
+    public function new_order($method = '', $issuer = '', $discountcode = '') {
 
         global $CFG, $DB;
 
+        // extra order data
+        $data = array();
+
+        if (!empty($discountcode)) {
+            $now = time();
+
+            // we need to validate is valid before we continue
+            $row = $DB->get_record('enrol_coursepayment_discount', array('code' => $discountcode));
+            if (!$row || $row->start_time > $now || $now > $row->end_time) {
+                return array('status' => false, 'error_discount' => true);
+            }
+            //  wrong course
+            if($row->courseid != 0 && $this->instanceconfig->courseid != $row->courseid){
+                return array('status' => false, 'error_discount' => true);
+            }
+
+            // looks okay we need to save this to the order
+            $data['discount'] = $row;
+        }
+
         // add new internal order
-        $order = $this->create_new_order_record();
+        $order = $this->create_new_order_record($data);
         try {
+
+            if ($order['cost'] == 0) {
+                redirect($CFG->wwwroot . '/enrol/coursepayment/return.php?orderid=' . $order['orderid'] . '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid);
+
+                return;
+            }
 
             // https://www.mollie.com/en/docs/payments
             $payment = $this->client->payments->create(array(
-                "amount" => $this->instanceconfig->cost,
+                "amount" => $order['cost'],
                 "method" => $method,
                 "locale" => (in_array($this->instanceconfig->locale, array(
                     'de',
@@ -119,6 +146,8 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         } catch (Mollie_API_Exception $e) {
             $this->log("API call failed: " . htmlspecialchars($e->getMessage()));
         }
+
+        return array('status' => false);
     }
 
     /**
@@ -146,12 +175,17 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
         $method = optional_param('method', false, PARAM_ALPHA);
         $issuer = optional_param('issuer', false, PARAM_ALPHANUMEXT);
+        $discountcode = optional_param('discountcode', false, PARAM_ALPHANUMEXT);
+        $status = array();
 
         // method is selected by the user
         if (!empty($method)) {
-            $this->new_order($method, $issuer);
-
-            return;
+            $status = $this->new_order($method, $issuer, $discountcode);
+            if (isset($status['status']) && $status['status'] == false) {
+                // we showing the same form again
+            } else {
+                return;
+            }
         }
 
         $PAGE->requires->js('/enrol/coursepayment/js/mollie.js');
@@ -189,10 +223,11 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                 $i++;
             }
 
-            $string .= '</table>
-                    <input type="hidden" name="gateway" value="' . $this->name . '" />
+            $string .= '</table>';
+            $string .= $this->form_discount_code($discountcode, $status);
+            $string .= '<input type="hidden" name="gateway" value="' . $this->name . '" />
                     <input type="hidden" id="input_method" name="method" value="" />
-                    <input type="submit" value="' . get_string('purchase', "enrol_coursepayment") . '" />
+                    <input type="submit" class="form-submit" value="' . get_string('purchase', "enrol_coursepayment") . '" />
                 </form>
             </div>';
 
@@ -240,12 +275,19 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
     /**
      * check if order is really paid
+     *
      * @param string $orderid
      *
      * @return array
      */
     public function validate_order($orderid = '') {
         global $DB;
+
+        if (parent::validate_order($orderid)) {
+            // first let it check by main class
+            return array('status' => true);
+        }
+
         $return = array('status' => false, 'message' => '');
 
         // first check if we know of it
@@ -255,9 +297,9 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         if ($row) {
 
             // payment already marked as paid
-            if($row->status == self::PAYMENT_STATUS_SUCCESS)
-            {
+            if ($row->status == self::PAYMENT_STATUS_SUCCESS) {
                 $return['status'] = true;
+
                 return $return;
             }
 
@@ -283,7 +325,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                     // The payment isn't paid and isn't open anymore. We can assume it was aborted.
                     // we can mark this payment as aborted
                     $obj->status = self::PAYMENT_STATUS_ABORT;
-                    $return['message'] = get_string('error:paymentabort' , 'enrol_coursepayment');
+                    $return['message'] = get_string('error:paymentabort', 'enrol_coursepayment');
                 }
 
                 $DB->update_record('enrol_coursepayment', $obj);

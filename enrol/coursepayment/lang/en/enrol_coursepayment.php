@@ -92,3 +92,30 @@ $string['gateway_mollie_desc'] = 'Offer your customers the payment methods Credi
 $string['gateway_mollie_apikey'] = 'API key';
 $string['gateway_mollie_link'] = 'If you don\'t have a account please <a href=" https://www.mollie.com/en/signup/1787751">register</a>';
 $string['gateway_mollie_send_button'] = 'Purchase with mollie';
+$string['error:capability_config'] = 'Error: You need the coursepayment/config capability!';
+$string['enrol_coursepayment_discount'] = 'Discount';
+$string['enrol_coursepayment_discount_desc'] = 'Discount codes to distribute to your customers can be created in the discount manager. <br/><br/><a href="{$a->link}" class="btn btn-small btn-primary">Discount manager</a>';
+
+$string['new:discountcode'] = 'Add a new discount code';
+$string['th:code'] = 'Code';
+$string['th:courseid'] = 'Course';
+$string['th:start_time'] = 'From';
+$string['th:end_time'] = 'End';
+$string['th:amount'] = 'Discount';
+$string['th:action'] = 'Action';
+
+$string['form:allcourses'] = 'Complete website';
+$string['form:code'] = 'Code to get the discount<br> (make sure its unique)';
+$string['form:discountcode'] = 'Discount code';
+$string['form:start_time'] = 'Valid from';
+$string['form:end_time'] = 'Valid to';
+$string['form:save'] = 'Save';
+$string['form:amount'] = 'Amount of discount';
+$string['form:percentage'] = 'Percentage of discount';
+
+$string['error:number_to_low'] = 'This number is to low';
+$string['error:price_wrongformat'] = 'This isn\'t numeric!';
+$string['error:code_not_unique'] = 'Discount code needs to be unique';
+
+$string['discount_code_desc'] = 'If you have a discount code enter it below';
+$string['discountcode_invalid'] = 'Error: This code isn\'t valid anymore or is incorrect for this course!';
