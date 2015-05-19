@@ -93,7 +93,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                 return array('status' => false, 'error_discount' => true);
             }
             //  wrong course
-            if($row->courseid != 0 && $this->instanceconfig->courseid != $row->courseid){
+            if ($row->courseid != 0 && $this->instanceconfig->courseid != $row->courseid) {
                 return array('status' => false, 'error_discount' => true);
             }
 
@@ -285,7 +285,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
         if (parent::validate_order($orderid)) {
             // first let it check by main class
-            return array('status' => true);
+            return array('status' => true, 'message' => 'free_payment');
         }
 
         $return = array('status' => false, 'message' => '');
@@ -296,9 +296,24 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
         if ($row) {
 
+            // missing a transactionid this is not good
+            if (empty($row->gateway_transaction_id)) {
+                $obj = new stdClass();
+                $obj->id = $row->id;
+                $obj->timeupdated = time();
+                $obj->status = self::PAYMENT_STATUS_ERROR;
+                $DB->update_record('enrol_coursepayment', $obj);
+
+                $return['status'] = false;
+                $return['message'] = 'empty_transaction_id';
+
+                return $return;
+            }
+
             // payment already marked as paid
             if ($row->status == self::PAYMENT_STATUS_SUCCESS) {
                 $return['status'] = true;
+                $return['message'] = 'already_marked_as_paid';
 
                 return $return;
             }
@@ -307,7 +322,9 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
                 // get details from gateway
                 $payment = $this->client->payments->get($row->gateway_transaction_id);
-
+                echo '<pre>';
+                print_r($row);
+                echo '</pre>';
                 $obj = new stdClass();
                 $obj->id = $row->id;
                 $obj->timeupdated = time();

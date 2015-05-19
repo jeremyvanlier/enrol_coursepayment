@@ -134,10 +134,12 @@ abstract class enrol_coursepayment_gateway {
         
         if($row){
             if($row->cost == 0){
+
                 //
                 $obj = new stdClass();
                 $obj->id = $row->id;
                 $obj->timeupdated = time();
+                $obj->status = self::PAYMENT_STATUS_SUCCESS;
                 $DB->update_record('enrol_coursepayment', $obj);
 
                 // this is 0 cost order

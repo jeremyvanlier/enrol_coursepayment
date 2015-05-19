@@ -44,6 +44,12 @@ if ($ADMIN->fulltree) {
     );
     $settings->add(new admin_setting_configselect('enrol_coursepayment/expiredaction', get_string('expiredaction', 'enrol_coursepayment'), get_string('expiredaction_help', 'enrol_coursepayment'), ENROL_EXT_REMOVED_SUSPENDNOROLES, $options));
 
+    $options = array();
+    for ($i=0; $i<24; $i++) {
+        $options[$i] = $i;
+    }
+    $settings->add(new admin_setting_configselect('enrol_coursepayment/expirynotifyhour', get_string('expirynotifyhour', 'core_enrol'), '', 6, $options));
+
     // enrol instance defaults
     $settings->add(new admin_setting_heading('enrol_coursepayment_defaults', get_string('enrolinstancedefaults', 'admin'), get_string('enrolinstancedefaults_desc', 'admin')));
 

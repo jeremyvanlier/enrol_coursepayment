@@ -67,4 +67,6 @@ function xmldb_enrol_coursepayment_upgrade($oldversion) {
         // Coursepayment savepoint reached.
         upgrade_plugin_savepoint(true, 2015051500, 'enrol', 'coursepayment');
     }
+
+    return true;
 }
