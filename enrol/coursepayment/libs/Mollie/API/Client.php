@@ -25,16 +25,16 @@
  * DAMAGE.
  *
  * @license     Berkeley Software Distribution License (BSD-License 2) http://www.opensource.org/licenses/bsd-license.php
- * @author      Mollie B.V. <info@mollie.nl>
+ * @author      Mollie B.V. <info@mollie.com>
  * @copyright   Mollie B.V.
- * @link        https://www.mollie.nl
+ * @link        https://www.mollie.com
  */
 class Mollie_API_Client
 {
 	/**
 	 * Version of our client.
 	 */
-	const CLIENT_VERSION = "1.1.6";
+	const CLIENT_VERSION = "1.2.2";
 
 	/**
 	 * Endpoint of the remote API.
@@ -93,8 +93,15 @@ class Mollie_API_Client
 	 */
 	protected $version_strings = array();
 
+
+	/**
+	 * @throws Mollie_API_Exception_IncompatiblePlatform
+	 */
 	public function __construct ()
 	{
+		$this->getCompatibilityChecker()
+			->checkCompatibility();
+
 		$this->payments         = new Mollie_API_Resource_Payments($this);
 		$this->payments_refunds = new Mollie_API_Resource_Payments_Refunds($this);
 		$this->issuers          = new Mollie_API_Resource_Issuers($this);
@@ -171,10 +178,14 @@ class Mollie_API_Client
 			throw new Mollie_API_Exception("You have not set an API key. Please use setApiKey() to set the API key.");
 		}
 
+		/*
+		 * Initialize a cURL handle.
+		 */
+		$ch = curl_init();
+
 		$url = $this->api_endpoint . "/" . self::API_VERSION . "/" . $api_method;
 
-		$ch = curl_init($url);
-
+		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 		curl_setopt($ch, CURLOPT_ENCODING, "");
 		curl_setopt($ch, CURLOPT_TIMEOUT, 10);
@@ -198,22 +209,19 @@ class Mollie_API_Client
 		}
 
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $request_headers);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, TRUE);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+
+		/*
+		 * On some servers, the list of installed certificates is outdated or not present at all (the ca-bundle.crt
+		 * is not installed). So we tell cURL which certificates we trust.
+		 */
+//		curl_setopt($ch, CURLOPT_CAINFO, realpath(dirname(__FILE__) . "/cacert.pem"));
 
 		$body = curl_exec($ch);
 
 		if (curl_errno($ch) == CURLE_SSL_CACERT || curl_errno($ch) == CURLE_SSL_PEER_CERTIFICATE || curl_errno($ch) == 77 /* CURLE_SSL_CACERT_BADFILE (constant not defined in PHP though) */)
 		{
-			/*
-			 * On some servers, the list of installed certificates is outdated or not present at all (the ca-bundle.crt
-			 * is not installed). So we tell cURL which certificates we trust. Then we retry the requests.
-			 */
-			$request_headers[] = "X-Mollie-Debug: used shipped root certificates";
-			curl_setopt($ch, CURLOPT_HTTPHEADER, $request_headers);
-			curl_setopt($ch, CURLOPT_CAINFO, realpath(dirname(__FILE__) . "/cacert.pem"));
-			$body = curl_exec($ch);
-
 			if (strpos(curl_error($ch), "error setting certificate verify locations") !== FALSE)
 			{
 				/*
@@ -243,9 +251,22 @@ class Mollie_API_Client
 
 		if (curl_errno($ch))
 		{
-			throw new Mollie_API_Exception("Unable to communicate with Mollie (".curl_errno($ch)."): " . curl_error($ch) . ".");
+			$message = "Unable to communicate with Mollie (".curl_errno($ch)."): " . curl_error($ch) . ".";
+			curl_close($ch);
+			throw new Mollie_API_Exception($message);
 		}
 
+		curl_close($ch);
+
 		return $body;
+	}
+
+	/**
+	 * @return Mollie_API_CompatibilityChecker
+	 * @codeCoverageIgnore
+	 */
+	protected function getCompatibilityChecker ()
+	{
+		return new Mollie_API_CompatibilityChecker();
 	}
 }
