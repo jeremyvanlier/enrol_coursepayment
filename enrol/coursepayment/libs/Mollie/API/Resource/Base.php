@@ -112,8 +112,7 @@ abstract class Mollie_API_Resource_Base
 	{
 		$options = array_merge(array("offset" => $offset, "count" => $limit), $options);
 
-		$api_path = $rest_resource . "?" . http_build_query($options);
-
+		$api_path = $rest_resource . "?" . http_build_query($options , '', '&');
 		$result = $this->performApiCall(self::REST_LIST, $api_path);
 
 		/** @var Mollie_API_Object_List $collection */
