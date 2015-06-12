@@ -19,15 +19,11 @@
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @file: enrol_coursepayment.php
- * @since 2-3-2015
- * @encoding: UTF8
- *
- * @package: enrol_coursepayment
- *
+ * @package   enrol_coursepayment
  * @copyright 2015 MoodleFreak.com
  * @author    Luuk Verhoeven
- **/
+ */
+
 $string['pluginname'] = 'CoursePayment';
 $string['pluginname_desc'] = 'Deze plugin maakt het mogelijk om een cursus te verkopen met een betaal provider';
 $string['mailadmins'] = 'E-mail admin';
@@ -35,6 +31,8 @@ $string['nocost'] = 'Er zitten geen kosten aan deze cursus';
 $string['currency'] = 'Valuta';
 $string['cost'] = 'Inschrijfkosten';
 $string['assignrole'] = 'Toekennen rol';
+$string['welcomemail'] = 'Welkom cursus e-mail';
+$string['invoicemail'] = 'Facturatie e-mail';
 $string['mailstudents'] = 'E-mail studenten';
 $string['mailteachers'] = 'E-mail leraren';
 $string['expiredaction'] = 'Enrolment verloop actie';
@@ -119,3 +117,49 @@ $string['error:code_not_unique'] = 'Kortingscode moet uniek zijn';
 
 $string['discount_code_desc'] = 'Als u een kortingscode heeft kunt u die hieronder invullen';
 $string['discountcode_invalid'] = 'Fout: Deze kortingscode is onjuist, niet geldig meer of hoort niet bij deze cursus!';
+$string['vatpercentages'] = 'BTW percentage inbegrepen in de kosten';
+
+$string['invoicedetails'] = 'Invoice details';
+$string['invoicedetails_desc'] = 'Deze velden zijn verplicht! Wanneer u dit leeg laat zijn uw facturen onjuist.';
+$string['btw'] = 'BTW nummer';
+$string['kvk'] = 'KvK nummer';
+$string['place'] = 'Vestigingplaats';
+$string['zipcode'] = 'Postcode';
+$string['address'] = 'Adres';
+$string['companyname'] = 'Naam organisatie';
+
+$string['mail:invoice_subject'] = 'Bedankt voor het kopen van: {$a->course} / {$a->fullname}';
+$string['mail:invoice_message'] = '<h2>Factuur</h2>
+<br/>
+<b>{$a->companyname}</b><br/>
+{$a->address}<br/>
+{$a->zipcode} {$a->place}<br/>
+<br/>
+KvK: {$a->kvk}<br/>
+VAT: {$a->btw}<br/>
+<br/>
+Factuur nummer: {$a->invoice_number}<br/>
+Datum: {$a->date}<br/>
+<br/>
+<br/>
+Aan:<br/>
+<b>{$a->fullname}</b><br/>
+{$a->email}<br/>
+<br/>
+<table cellpadding="0" cellspacing="0" style="margin:0;padding:0;width: 100%">
+    <tr>
+        <td colspan="2">Cursusmodule: {$a->fullcourse}</td>
+    </tr>
+    <tr>
+        <td colspan="2">&nbsp;</td>
+    </tr>
+    <tr>
+        <td  style="width: 30%">BTW ({$a->vatpercentage}%)</td>
+        <td>{$a->currency} {$a->costvat}</td>
+    </tr>
+     <tr>
+        <td>Totale kosten</td>
+        <td>{$a->currency} {$a->cost}</td>
+    </tr>
+</table><br/><br/>
+Gekocht op {$a->date} en betaald via <b>{$a->method}</b>';

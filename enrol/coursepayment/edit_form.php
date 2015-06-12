@@ -54,9 +54,17 @@ class enrol_coursepayment_edit_form extends moodleform {
         $mform->setType('cost', PARAM_RAW); // Use unformat_float to get real value.
         $mform->setDefault('cost', format_float($plugin->get_config('cost'), 2, true));
 
+        $mform->addElement('text', 'cost', get_string('cost', 'enrol_coursepayment'), array('size' => 4));
+        $mform->setType('cost', PARAM_RAW); // Use unformat_float to get real value.
+        $mform->setDefault('cost', format_float($plugin->get_config('cost'), 2, true));
+
         $coursepaymentcurrencies = $plugin->get_currencies();
         $mform->addElement('select', 'currency', get_string('currency', 'enrol_coursepayment'), $coursepaymentcurrencies);
         $mform->setDefault('currency', $plugin->get_config('currency'));
+
+        $vatpercentages = $plugin->get_vat_percentages();
+        $mform->addElement('select', 'customint1', get_string('vatpercentages', 'enrol_coursepayment'), $vatpercentages);
+        $mform->setDefault('customint1', $plugin->get_config('vatpercentage'));
 
         if ($instance->id) {
             $roles = get_default_enrol_roles($context, $instance->roleid);

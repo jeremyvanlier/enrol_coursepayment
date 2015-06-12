@@ -19,15 +19,11 @@
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @file      : lib.php
- * @since     2-3-2015
- * @encoding  : UTF8
- *
- * @package   : enrol_coursepayment
- *
+ * @package   enrol_coursepayment
  * @copyright 2015 MoodleFreak.com
  * @author    Luuk Verhoeven
- **/
+ */
+
 class enrol_coursepayment_plugin extends enrol_plugin {
 
     /**
@@ -453,4 +449,11 @@ class enrol_coursepayment_plugin extends enrol_plugin {
         mtrace('-------------');
     }
 
+    /**
+     * return all vat percentage that are possible
+     * @return array
+     */
+    public function get_vat_percentages(){
+       return range(0, 99);
+    }
 }

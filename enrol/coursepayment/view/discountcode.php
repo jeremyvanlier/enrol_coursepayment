@@ -19,15 +19,11 @@
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @file      : lib.php
- * @since     2-3-2015
- * @encoding  : UTF8
- *
- * @package   : enrol_coursepayment
- *
+ * @package   enrol_coursepayment
  * @copyright 2015 MoodleFreak.com
  * @author    Luuk Verhoeven
- **/
+ */
+
 require_once(dirname(__FILE__) . '/../../../config.php');
 require_once($CFG->libdir . '/tablelib.php');
 require_login();

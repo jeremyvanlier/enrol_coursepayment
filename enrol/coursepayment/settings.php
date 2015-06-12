@@ -33,9 +33,6 @@ if ($ADMIN->fulltree) {
 
     //--- settings ------------------------------------------------------------------------------------------
     $settings->add(new admin_setting_heading('enrol_coursepayment_settings', '', get_string('pluginname_desc', 'enrol_coursepayment')));
-    $settings->add(new admin_setting_configcheckbox('enrol_coursepayment/mailstudents', get_string('mailstudents', 'enrol_coursepayment'), '', 0));
-    $settings->add(new admin_setting_configcheckbox('enrol_coursepayment/mailteachers', get_string('mailteachers', 'enrol_coursepayment'), '', 0));
-    $settings->add(new admin_setting_configcheckbox('enrol_coursepayment/mailadmins', get_string('mailadmins', 'enrol_coursepayment'), '', 0));
 
     $options = array(
         ENROL_EXT_REMOVED_KEEP => get_string('extremovedkeep', 'enrol'),
@@ -50,6 +47,24 @@ if ($ADMIN->fulltree) {
     }
     $settings->add(new admin_setting_configselect('enrol_coursepayment/expirynotifyhour', get_string('expirynotifyhour', 'core_enrol'), '', 6, $options));
 
+    $settings->add(new admin_setting_heading('enrol_coursepayment_invoicedetails', get_string('invoicedetails', 'enrol_coursepayment'), get_string('invoicedetails_desc', 'enrol_coursepayment')));
+    $settings->add(new admin_setting_configtext('enrol_coursepayment/companyname', get_string('companyname', 'enrol_coursepayment'), '', '', PARAM_TEXT));
+    $settings->add(new admin_setting_configtext('enrol_coursepayment/address', get_string('address', 'enrol_coursepayment'), '', '', PARAM_TEXT));
+    $settings->add(new admin_setting_configtext('enrol_coursepayment/zipcode', get_string('zipcode', 'enrol_coursepayment'), '', '', PARAM_TEXT));
+    $settings->add(new admin_setting_configtext('enrol_coursepayment/place', get_string('place', 'enrol_coursepayment'), '', '', PARAM_TEXT));
+    $settings->add(new admin_setting_configtext('enrol_coursepayment/kvk', get_string('kvk', 'enrol_coursepayment'), '', '', PARAM_TEXT));
+    $settings->add(new admin_setting_configtext('enrol_coursepayment/btw', get_string('btw', 'enrol_coursepayment'), '', '', PARAM_TEXT));
+
+    $settings->add(new admin_setting_heading('enrol_coursepayment_welcomemail', get_string('welcomemail', 'enrol_coursepayment'), ''));
+    $settings->add(new admin_setting_configcheckbox('enrol_coursepayment/mailstudents', get_string('mailstudents', 'enrol_coursepayment'), get_string('welcometocoursetext', ''), 0));
+    $settings->add(new admin_setting_configcheckbox('enrol_coursepayment/mailteachers', get_string('mailteachers', 'enrol_coursepayment'), get_string('enrolmentnewuser', 'enrol'), 0));
+    $settings->add(new admin_setting_configcheckbox('enrol_coursepayment/mailadmins', get_string('mailadmins', 'enrol_coursepayment'), get_string('enrolmentnewuser', 'enrol'), 0));
+
+    $settings->add(new admin_setting_heading('enrol_coursepayment_invoicemail', get_string('invoicemail', 'enrol_coursepayment'), ''));
+    $settings->add(new admin_setting_configcheckbox('enrol_coursepayment/mailstudents_invoice', get_string('mailstudents', 'enrol_coursepayment'), '', 1));
+    $settings->add(new admin_setting_configcheckbox('enrol_coursepayment/mailteachers_invoice', get_string('mailteachers', 'enrol_coursepayment'), '', 0));
+    $settings->add(new admin_setting_configcheckbox('enrol_coursepayment/mailadmins_invoice', get_string('mailadmins', 'enrol_coursepayment'), '', 1));
+
     // enrol instance defaults
     $settings->add(new admin_setting_heading('enrol_coursepayment_defaults', get_string('enrolinstancedefaults', 'admin'), get_string('enrolinstancedefaults_desc', 'admin')));
 
@@ -62,6 +77,9 @@ if ($ADMIN->fulltree) {
 
     $coursepaymentcurrencies = enrol_get_plugin('coursepayment')->get_currencies();
     $settings->add(new admin_setting_configselect('enrol_coursepayment/currency', get_string('currency', 'enrol_coursepayment'), '', 'EUR', $coursepaymentcurrencies));
+
+    $vatpercentages = enrol_get_plugin('coursepayment')->get_vat_percentages();
+    $settings->add(new admin_setting_configselect('enrol_coursepayment/vatpercentage', get_string('vatpercentages', 'enrol_coursepayment'), '', 21, $vatpercentages));
 
     if (!during_initial_install()) {
         $options = get_default_enrol_roles(context_system::instance());

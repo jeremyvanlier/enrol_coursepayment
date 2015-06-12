@@ -19,15 +19,11 @@
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @file: mollie.php
- * @since 3-3-2015
- * @encoding: UTF8
- *
- * @package: enrol_coursepayment
- *
+ * @package   enrol_coursepayment
  * @copyright 2015 MoodleFreak.com
  * @author    Luuk Verhoeven
- **/
+ */
+
 define('NO_DEBUG_DISPLAY', true);
 
 require("../../../config.php");

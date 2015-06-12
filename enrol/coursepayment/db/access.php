@@ -17,11 +17,12 @@
 /**
  * Capabilities for coursepayment enrolment plugin.
  *
- * @package    enrol_coursepayment
- * @copyright  2010 Petr Skoda {@link http://skodak.org}
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package   enrol_coursepayment
+ * @copyright 2015 MoodleFreak.com
+ * @author    Luuk Verhoeven
  */
-
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(

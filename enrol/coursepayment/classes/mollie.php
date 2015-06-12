@@ -19,15 +19,10 @@
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @file      : mollie.php
- * @since     2-3-2015
- * @encoding  : UTF8
- *
- * @package   : enrol_coursepayment
- *
+ * @package   enrol_coursepayment
  * @copyright 2015 MoodleFreak.com
  * @author    Luuk Verhoeven
- **/
+ */
 defined('MOODLE_INTERNAL') || die();
 
 class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
@@ -322,14 +317,20 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
                 // get details from gateway
                 $payment = $this->client->payments->get($row->gateway_transaction_id);
-                echo '<pre>';
-                print_r($row);
-                echo '</pre>';
                 $obj = new stdClass();
                 $obj->id = $row->id;
                 $obj->timeupdated = time();
 
                 if ($payment->isPaid() == true && $row->status != self::PAYMENT_STATUS_SUCCESS) {
+
+                    // Get a new invoice number
+                    $obj->invoice_number = ($payment->mode != 'test') ? $this->get_new_invoice_number() : 0;
+
+                    // Sending the invoice to customer
+                    // Make sure we save invoice number to prevent incorrect number
+                    $this->send_invoice($row , $obj->invoice_number , $payment->mode);
+                    $DB->update_record('enrol_coursepayment' , $obj);
+
 
                     // At this point you'd probably want to start the process of delivering the product to the customer.
                     if ($this->enrol($row)) {
@@ -357,6 +358,38 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         }
 
         return $return;
+    }
+
+    /**
+     * This function will update invoice numbers
+     * Only needed when upgrading a version lower then 2015061201
+     */
+    public function upgrade_invoice_numbers() {
+
+        global $DB;
+
+        $results = $DB->get_records('enrol_coursepayment', array('gateway' => $this->name, 'invoice_number' => 0));
+
+        foreach ($results as $result) {
+
+            // Making sure its a real payment, no invoice number will be generated for a test order
+            try {
+                $item = $this->client->payments->get($result->gateway_transaction_id);
+                if (!empty($item)) {
+                    if ($item->mode == 'test') {
+                        continue;
+                    }
+                }
+            } catch (Exception $exc) {
+            }
+
+            echo $result->id . ': add invoice number<br/>';
+
+            $obj = new stdClass();
+            $obj->id = $result->id;
+            $obj->invoice_number = $this->get_new_invoice_number();
+            $DB->update_record('enrol_coursepayment', $obj);
+        }
     }
 
 }

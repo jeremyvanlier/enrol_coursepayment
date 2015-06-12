@@ -19,41 +19,35 @@
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @file      : lib.php
- * @since     2-3-2015
- * @encoding  : UTF8
- *
- * @package   : enrol_coursepayment
- *
+ * @package   enrol_coursepayment
  * @copyright 2015 MoodleFreak.com
  * @author    Luuk Verhoeven
- **/
+ */
+
 namespace enrol_coursepayment\form;
 
-if (!defined('MOODLE_INTERNAL'))
-{
+if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden!');
 }
 
 global $CFG;
 require_once($CFG->libdir . '/formslib.php');
 
-class discountcode extends \moodleform
-{
+class discountcode extends \moodleform {
     protected function definition() {
 
         global $DB;
 
         $mform = &$this->_form;
 
-        $mform->addElement('header', 'header1', get_string('form:discountcode' , 'enrol_coursepayment'));
+        $mform->addElement('header', 'header1', get_string('form:discountcode', 'enrol_coursepayment'));
 
-        $mform->addElement('text', 'code', get_string('form:code' , 'enrol_coursepayment'), array('size' => '48',));
+        $mform->addElement('text', 'code', get_string('form:code', 'enrol_coursepayment'), array('size' => '48',));
         $mform->setType('code', PARAM_ALPHANUMEXT);
         $mform->addRule('code', null, 'required', null, 'client');
 
-        $list = array(0=>get_string('form:allcourses', 'enrol_coursepayment'));
-        $qr = $DB->get_recordset('course' , null , 'fullname ASC' , 'id,fullname');
+        $list = array(0 => get_string('form:allcourses', 'enrol_coursepayment'));
+        $qr = $DB->get_recordset('course', null, 'fullname ASC', 'id,fullname');
         foreach ($qr as $row) {
             $list[$row->id] = $row->fullname;
         }
@@ -61,56 +55,51 @@ class discountcode extends \moodleform
         $mform->addElement('select', 'courseid', get_string('course'), $list);
         $mform->addRule('courseid', null, 'required', null, 'client');
 
-        $mform->addElement('date_selector', 'start_time', get_string('form:start_time' , 'enrol_coursepayment'));
+        $mform->addElement('date_selector', 'start_time', get_string('form:start_time', 'enrol_coursepayment'));
         $mform->setDefault('start_time', time());
         $mform->addRule('start_time', null, 'required', null, 'client');
 
-        $mform->addElement('date_selector', 'end_time', get_string('form:end_time' , 'enrol_coursepayment'));
+        $mform->addElement('date_selector', 'end_time', get_string('form:end_time', 'enrol_coursepayment'));
         $mform->setDefault('end_time', strtotime('+6 months'));
         $mform->addRule('end_time', null, 'required', null, 'client');
 
-        $mform->addElement('text', 'amount', get_string('form:amount' ,'enrol_coursepayment' ));
+        $mform->addElement('text', 'amount', get_string('form:amount', 'enrol_coursepayment'));
         $mform->setDefault('amount', 0);
         $mform->setType('amount', PARAM_TEXT);
 
-        $mform->addElement('text', 'percentage', get_string('form:percentage' ,'enrol_coursepayment' ));
+        $mform->addElement('text', 'percentage', get_string('form:percentage', 'enrol_coursepayment'));
         $mform->setDefault('percentage', '0.00000');
         $mform->setType('percentage', PARAM_TEXT);
 
         $mform->disabledIf('percentage', 'amount', 'neq', '0');
         $mform->disabledIf('amount', 'percentage', 'neq', '0.00000');
 
-        $this->add_action_buttons(true, get_string('form:save' , 'enrol_coursepayment'));
+        $this->add_action_buttons(true, get_string('form:save', 'enrol_coursepayment'));
     }
 
 
-    function validation($data, $files)
-    {
+    function validation($data, $files) {
         $errors = parent::validation($data, $files);
-        if (!empty($data['amount']))
-        {
+        if (!empty($data['amount'])) {
             $amount = trim(str_replace(',', '.', $data['amount']));
-            if (!is_numeric($amount))
-            {
+            if (!is_numeric($amount)) {
                 $errors['amount'] = get_string('error:price_wrongformat', 'enrol_coursepayment');
+
                 return $errors;
-            }
-            else if ($amount <= 0)
-            {
+            } else if ($amount <= 0) {
                 $errors['amount'] = get_string('error:number_to_low', 'enrol_coursepayment');
+
                 return $errors;
             }
-        }
-        else
-        {
+        } else {
             $percentage = trim(str_replace(',', '.', $data['percentage']));
-            if ($percentage <= 0)
-            {
+            if ($percentage <= 0) {
                 $errors['percentage'] = get_string('error:number_to_low', 'enrol_coursepayment');
+
                 return $errors;
-            }
-            elseif(!is_numeric($percentage)){
+            } elseif (!is_numeric($percentage)) {
                 $errors['percentage'] = get_string('error:price_wrongformat', 'enrol_coursepayment');
+
                 return $errors;
             }
         }

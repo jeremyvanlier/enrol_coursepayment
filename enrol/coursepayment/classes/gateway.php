@@ -19,25 +19,58 @@
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @file      : gateway.php
- * @since     2-3-2015
- * @encoding  : UTF8
- *
- * @package   : enrol_coursepayment
- *
+ * @package   enrol_coursepayment
  * @copyright 2015 MoodleFreak.com
  * @author    Luuk Verhoeven
- **/
+ */
 
 defined('MOODLE_INTERNAL') || die();
 
 abstract class enrol_coursepayment_gateway {
 
+    /**
+     * Payment is aborted
+     *
+     * @const PAYMENT_STATUS_ABORT
+     */
     const PAYMENT_STATUS_ABORT = 0;
+
+    /**
+     * Payment is done successfully
+     *
+     * @const PAYMENT_STATUS_SUCCESS
+     */
     const PAYMENT_STATUS_SUCCESS = 1;
+
+    /**
+     * Payment was cancelled
+     *
+     * @const PAYMENT_STATUS_CANCEL
+     */
     const PAYMENT_STATUS_CANCEL = 2;
+
+    /**
+     * Payment not finished because of a error/exception
+     *
+     * @const PAYMENT_STATUS_ERROR
+     */
     const PAYMENT_STATUS_ERROR = 3;
+
+    /**
+     * Payment is waiting
+     *
+     * @const PAYMENT_STATUS_WAITING
+     */
     const PAYMENT_STATUS_WAITING = 4;
+
+
+    /**
+     * The prefix that would be prepended to invoice number
+     *
+     * @const INVOICE_PREFIX
+     */
+    const INVOICE_PREFIX = 'CPAY';
+
 
     /**
      * name of the gateway
@@ -59,6 +92,7 @@ abstract class enrol_coursepayment_gateway {
      * @var array
      */
     protected $pluginconfig = array();
+
     /**
      * show more debug messages to the user inline only for testing purposes
      *
@@ -125,15 +159,16 @@ abstract class enrol_coursepayment_gateway {
      * check if a order is valid
      *
      * @param string $orderid
+     *
      * @global moodle_database $DB
      * @return array
      */
-    public function validate_order($orderid = ''){
+    public function validate_order($orderid = '') {
         global $DB;
         $row = $DB->get_record('enrol_coursepayment', array('orderid' => $orderid, 'gateway' => $this->name));
-        
-        if($row){
-            if($row->cost == 0){
+
+        if ($row) {
+            if ($row->cost == 0) {
 
                 //
                 $obj = new stdClass();
@@ -144,9 +179,11 @@ abstract class enrol_coursepayment_gateway {
 
                 // this is 0 cost order
                 $this->enrol($row);
+
                 return true;
             }
         }
+
         return false;
     }
 
@@ -238,17 +275,17 @@ abstract class enrol_coursepayment_gateway {
         $obj = new stdClass();
 
 
-        if(!empty($data['discount'])){
+        if (!empty($data['discount'])) {
             $discount = $data['discount'];
             $obj->discountdata = serialize($discount);
             // we have discount data
-            if($discount->percentage > 0){
+            if ($discount->percentage > 0) {
                 $cost = round($cost / 100 * (100 - $discount->percentage), 2);
-            }else{
+            } else {
                 $cost = round($cost - $discount->amount);
             }
             // make sure not below 0
-            if($cost <= 0){
+            if ($cost <= 0) {
                 $cost = 0;
             }
         }
@@ -262,6 +299,7 @@ abstract class enrol_coursepayment_gateway {
         $obj->courseid = $this->instanceconfig->courseid;;
         $obj->instanceid = $this->instanceconfig->instanceid;
         $obj->cost = $cost;
+        $obj->vatpercentage = is_numeric($this->instanceconfig->customint1) ? $this->instanceconfig->customint1 : $this->pluginconfig->vatpercentage;
         $obj->status = self::PAYMENT_STATUS_WAITING;
         $id = $DB->insert_record('enrol_coursepayment', $obj);
 
@@ -293,13 +331,14 @@ abstract class enrol_coursepayment_gateway {
     public function enrol($record = null) {
         global $DB, $CFG;
 
+        if (empty($record)) {
+            return false;
+        }
+
         require_once($CFG->libdir . '/eventslib.php');
         require_once($CFG->libdir . '/enrollib.php');
         require_once($CFG->libdir . '/filelib.php');
 
-        if (empty($record)) {
-            return false;
-        }
 
         $plugin = enrol_get_plugin('coursepayment');
 
@@ -390,8 +429,131 @@ abstract class enrol_coursepayment_gateway {
                 message_send($eventdata);
             }
         }
+
         return true;
     }
+
+    /**
+     * Send invoice to the customer
+     *
+     * @param null $record
+     * @param int $invoicenumber
+     * @param string $paymentmethod
+     *
+     * @return bool
+     */
+    protected function send_invoice($record = null , $invoicenumber = 0 , $paymentmethod = '') {
+        global $DB, $CFG;
+
+        if (empty($record)) {
+            return false;
+        }
+        require_once($CFG->libdir . '/eventslib.php');
+        require_once($CFG->libdir . '/enrollib.php');
+        require_once($CFG->libdir . '/filelib.php');
+
+
+        $user = $DB->get_record("user", array('id' => $record->userid));
+        $course = $DB->get_record('course', array('id' => $record->courseid));
+        $context = context_course::instance($course->id, IGNORE_MISSING);
+        $plugininstance = $DB->get_record("enrol", array("id" => $record->instanceid, "status" => 0));
+
+        // Mail object
+        $a = new stdClass();
+        $a->course = format_string($course->fullname, true, array('context' => $context));
+        $a->fullname = fullname($user);
+        $a->email = $user->email;
+        $a->date = date('d-m-Y, H:i' , $record->addedon);
+        $a->fullcourse = $course->fullname;
+
+        // Set record invoice number this is not done
+        if($record->invoice_number == 0){
+            $record->invoice_number = $invoicenumber;
+        }
+
+        $a->invoice_number = $this->get_invoice_number_format($record);
+
+        // Company data
+        $a->companyname = $this->pluginconfig->companyname;
+        $a->address = $this->pluginconfig->address;
+        $a->address = $this->pluginconfig->address;
+        $a->place = $this->pluginconfig->place;
+        $a->zipcode = $this->pluginconfig->zipcode;
+        $a->kvk = $this->pluginconfig->kvk;
+        $a->btw = $this->pluginconfig->btw;
+        $a->currency = $this->pluginconfig->currency;
+        $a->method = $paymentmethod;
+
+        // Calculate cost
+        $a->cost = $this->price($record->cost);
+        $a->vatpercentage = is_numeric($plugininstance->customint1) ? $plugininstance->customint1 : $this->pluginconfig->vatpercentage;
+        $a->costvat = $this->price(($a->cost / 100) * $a->vatpercentage);
+
+        if (!empty($this->pluginconfig->mailstudents_invoice)) {
+
+            $eventdata = new stdClass();
+            $eventdata->modulename = 'moodle';
+            $eventdata->component = 'enrol_coursepayment';
+            $eventdata->name = 'coursepayment_invoice';
+            $eventdata->userfrom = empty($teacher) ? get_admin() : $teacher;
+            $eventdata->userto = $user;
+            $eventdata->subject = get_string("mail:invoice_subject", 'enrol_coursepayment', $a);
+            $eventdata->fullmessage = html_to_text(get_string('mail:invoice_message', 'enrol_coursepayment', $a));
+            $eventdata->fullmessageformat = FORMAT_HTML;
+            $eventdata->fullmessagehtml = get_string('mail:invoice_message', 'enrol_coursepayment', $a);
+            $eventdata->smallmessage = '';
+
+            message_send($eventdata);
+        }
+
+        if (!empty($this->pluginconfig->mailteachers_invoice)) {
+
+            // Getting the teachers
+            if ($users = get_users_by_capability($context, 'moodle/course:update', 'u.*', 'u.id ASC', '', '', '', '', false, true)) {
+                $users = sort_by_roleassignment_authority($users, $context);
+                $teacher = array_shift($users);
+            } else {
+                $teacher = false;
+            }
+
+            if (!empty($teacher)) {
+
+                $eventdata = new stdClass();
+                $eventdata->modulename = 'moodle';
+                $eventdata->component = 'enrol_coursepayment';
+                $eventdata->name = 'coursepayment_invoice';
+                $eventdata->userfrom = $user;
+                $eventdata->userto = $teacher;
+                $eventdata->subject = get_string("mail:invoice_subject", 'enrol_coursepayment', $a);
+                $eventdata->fullmessage = html_to_text(get_string('mail:invoice_message', 'enrol_coursepayment', $a));
+                $eventdata->fullmessageformat = FORMAT_HTML;
+                $eventdata->fullmessagehtml = get_string('mail:invoice_message', 'enrol_coursepayment', $a);
+                $eventdata->smallmessage = '';
+                message_send($eventdata);
+            }
+        }
+
+        if (!empty($this->pluginconfig->mailadmins_invoice)) {
+
+            $admins = get_admins();
+            foreach ($admins as $admin) {
+                $eventdata = new stdClass();
+                $eventdata->modulename = 'moodle';
+                $eventdata->component = 'enrol_coursepayment';
+                $eventdata->name = 'coursepayment_invoice';
+                $eventdata->userfrom = $user;
+                $eventdata->userto = $admin;
+                $eventdata->subject = get_string("mail:invoice_subject", 'enrol_coursepayment', $a);
+                $eventdata->fullmessage = html_to_text(get_string('mail:invoice_message', 'enrol_coursepayment', $a));
+                $eventdata->fullmessageformat = FORMAT_HTML;
+                $eventdata->fullmessagehtml = get_string('mail:invoice_message', 'enrol_coursepayment', $a);
+                $eventdata->smallmessage = '';
+                message_send($eventdata);
+            }
+        }
+        return true;
+    }
+
 
     /**
      * add form for when discount code are created
@@ -402,21 +564,64 @@ abstract class enrol_coursepayment_gateway {
      * @return string
      * @throws coding_exception
      */
-    protected function form_discount_code($discountcode = '' , $status = array()){
+    protected function form_discount_code($discountcode = '', $status = array()) {
         global $DB;
         $string = '';
         // check if there is a discount code
-        $row = $DB->get_record('enrol_coursepayment_discount' , array() , 'id' , IGNORE_MULTIPLE);
-        if($row){
+        $row = $DB->get_record('enrol_coursepayment_discount', array(), 'id', IGNORE_MULTIPLE);
+        if ($row) {
             $string .= '<hr/>';
             $string .= '<div align="center">
-                            <p>'.get_string('discount_code_desc', 'enrol_coursepayment').'<br/>
-                            '.((!empty($status['error_discount'])? '<b style="color:red">'.get_string('discountcode_invalid' , 'enrol_coursepayment').'</b>': '')).'<br/>
+                            <p>' . get_string('discount_code_desc', 'enrol_coursepayment') . '<br/>
+                            ' . ((!empty($status['error_discount']) ? '<b style="color:red">' . get_string('discountcode_invalid', 'enrol_coursepayment') . '</b>' : '')) . '<br/>
                             </p>
-                            <input type="text" name="discountcode"  value="'.$discountcode.'" />
+                            <input type="text" name="discountcode"  value="' . $discountcode . '" />
                         </div>';
         }
+
         return $string;
     }
 
+    /**
+     * Get a new invoice_number
+     *
+     * @return int
+     */
+    protected function get_new_invoice_number() {
+        global $DB;
+
+        $row = $DB->get_record_sql('SELECT invoice_number FROM {enrol_coursepayment} ORDER BY invoice_number DESC LIMIT 1');
+        if ($row) {
+            return $row->invoice_number + 1;
+        }
+
+        return 1;
+    }
+
+    /**
+     * Get a nice format invoice number
+     *
+     * @param object $record
+     *
+     * @return string
+     */
+    protected function get_invoice_number_format($record = null) {
+
+        if (!empty($record->invoice_number) && !empty($record->added_on)) {
+            return self::INVOICE_PREFIX . date("Y", $record->added_on) . sprintf('%08d', $record->invoice_number);
+        }
+
+        return 'TEST';
+    }
+
+    /**
+     * get correct number format used for pricing
+     *
+     * @param float|int $number
+     *
+     * @return string
+     */
+    public function price($number = 0.00) {
+        return number_format(round($number ,2), 2, ',', ' ');
+    }
 }

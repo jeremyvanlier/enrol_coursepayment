@@ -19,15 +19,10 @@
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @file: messages.php
- * @since 4-3-2015
- * @encoding: UTF8
- *
- * @package: enrol_coursepayment
- *
+ * @package   enrol_coursepayment
  * @copyright 2015 MoodleFreak.com
  * @author    Luuk Verhoeven
- **/
+ */
 function xmldb_enrol_coursepayment_upgrade($oldversion) {
     global $CFG, $DB;
 
@@ -67,6 +62,40 @@ function xmldb_enrol_coursepayment_upgrade($oldversion) {
         // Coursepayment savepoint reached.
         upgrade_plugin_savepoint(true, 2015051500, 'enrol', 'coursepayment');
     }
+
+    // ADD support for invoice numbers
+    if ($oldversion < 2015061201) {
+
+        // Define field invoice_number to be added to enrol_coursepayment.
+        $table = new xmldb_table('enrol_coursepayment');
+        $field = new xmldb_field('invoice_number', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0', 'cost');
+
+        // Conditionally launch add field invoice_number.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        $molie = new enrol_coursepayment_mollie();
+        $molie->upgrade_invoice_numbers();
+        upgrade_plugin_savepoint(true, 2015061201, 'enrol', 'coursepayment');
+    }
+
+    // ADD vat support
+    if ($oldversion < 2015061203) {
+
+        // Define field invoice_number to be added to enrol_coursepayment.
+        $table = new xmldb_table('enrol_coursepayment');
+        $field = new xmldb_field('vatpercentage', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, '21', 'cost');
+
+        // Conditionally launch add field invoice_number.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Coursepayment savepoint reached.
+        upgrade_plugin_savepoint(true, 2015061203, 'enrol', 'coursepayment');
+    }
+
 
     return true;
 }

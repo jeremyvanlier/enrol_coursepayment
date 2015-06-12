@@ -19,15 +19,11 @@
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @file: enrol_coursepayment.php
- * @since 2-3-2015
- * @encoding: UTF8
- *
- * @package: enrol_coursepayment
- *
+ * @package   enrol_coursepayment
  * @copyright 2015 MoodleFreak.com
  * @author    Luuk Verhoeven
- **/
+ */
+
 $string['pluginname'] = 'CoursePayment';
 $string['pluginname_desc'] = 'This plugin allows you to purchase course with a payment gateway';
 $string['mailadmins'] = 'Notify admin';
@@ -35,6 +31,8 @@ $string['nocost'] = 'There is no cost associated with enrolling in this course!'
 $string['currency'] = 'Currency';
 $string['cost'] = 'Enrol cost';
 $string['assignrole'] = 'Assign role';
+$string['welcomemail'] = 'Welcome mail';
+$string['invoicemail'] = 'Invoice mail';
 $string['mailstudents'] = 'Notify students';
 $string['mailteachers'] = 'Notify teachers';
 $string['expiredaction'] = 'Enrolment expiration action';
@@ -119,3 +117,49 @@ $string['error:code_not_unique'] = 'Discount code needs to be unique';
 
 $string['discount_code_desc'] = 'If you have a discount code enter it below';
 $string['discountcode_invalid'] = 'Error: This code isn\'t valid anymore or is incorrect for this course!';
+$string['vatpercentages'] = 'VAT Percentage included in the cost';
+
+$string['invoicedetails'] = 'Invoice details';
+$string['invoicedetails_desc'] = 'This fields are required! When you leave them blank the generate invoice will be incorrect.';
+$string['btw'] = 'VAT';
+$string['kvk'] = 'kvk';
+$string['place'] = 'Place';
+$string['zipcode'] = 'Zipcode';
+$string['address'] = 'Address';
+$string['companyname'] = 'Companyname';
+
+$string['mail:invoice_subject'] = 'Thank you for ordering: {$a->course} / {$a->fullname}';
+$string['mail:invoice_message'] = '<h2>INVOICE</h2>
+<br/>
+<b>{$a->companyname}</b><br/>
+{$a->address}<br/>
+{$a->zipcode} {$a->place}<br/>
+<br/>
+KvK: {$a->kvk}<br/>
+VAT: {$a->btw}<br/>
+<br/>
+Invoice number: {$a->invoice_number}<br/>
+Date: {$a->date}<br/>
+<br/>
+<br/>
+To:<br/>
+<b>{$a->fullname}</b><br/>
+{$a->email}<br/>
+<br/>
+<table cellpadding="0" cellspacing="0" style="margin:0;padding:0;width: 100%">
+    <tr>
+        <td colspan="2">Course: {$a->fullcourse}</td>
+    </tr>
+    <tr>
+        <td colspan="2">&nbsp;</td>
+    </tr>
+    <tr>
+        <td style="width: 30%">VAT ({$a->vatpercentage}%)</td>
+        <td>{$a->currency} {$a->costvat}</td>
+    </tr>
+     <tr>
+        <td>Total cost</td>
+        <td>{$a->currency} {$a->cost}</td>
+    </tr>
+</table><br/><br/>
+Purchased {$a->date} and paid through <b>{$a->method}</b>';
