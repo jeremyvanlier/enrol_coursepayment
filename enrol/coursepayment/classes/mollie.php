@@ -80,20 +80,22 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         $data = array();
 
         if (!empty($discountcode)) {
-            $now = time();
 
-            // we need to validate is valid before we continue
-            $row = $DB->get_record('enrol_coursepayment_discount', array('code' => $discountcode));
-            if (!$row || $row->start_time > $now || $now > $row->end_time) {
-                return array('status' => false, 'error_discount' => true);
-            }
-            //  wrong course
-            if ($row->courseid != 0 && $this->instanceconfig->courseid != $row->courseid) {
-                return array('status' => false, 'error_discount' => true);
-            }
+            // validate the discountcode we received
+            $discountinstance = new enrol_coursepayment_discountcode($discountcode , $this->instanceconfig->courseid);
+            $row = $discountinstance->getDiscountcode();
 
-            // looks okay we need to save this to the order
-            $data['discount'] = $row;
+            if ($row) {
+                // looks okay we need to save this to the order
+                $data['discount'] = $row;
+            } else {
+
+                return array(
+                    'status' => false,
+                    'error_discount' => true,
+                    'message' => $discountinstance->getLastErrorString()
+                );
+            }
         }
 
         // add new internal order
@@ -102,7 +104,6 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
             if ($order['cost'] == 0) {
                 redirect($CFG->wwwroot . '/enrol/coursepayment/return.php?orderid=' . $order['orderid'] . '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid);
-
                 return;
             }
 
@@ -328,8 +329,8 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
                     // Sending the invoice to customer
                     // Make sure we save invoice number to prevent incorrect number
-                    $this->send_invoice($row , $obj->invoice_number , $payment->mode);
-                    $DB->update_record('enrol_coursepayment' , $obj);
+                    $this->send_invoice($row, $obj->invoice_number, $payment->mode);
+                    $DB->update_record('enrol_coursepayment', $obj);
 
 
                     // At this point you'd probably want to start the process of delivering the product to the customer.

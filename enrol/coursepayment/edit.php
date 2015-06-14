@@ -89,6 +89,7 @@ if ($mform->is_cancelled()) {
             $instance->status = $data->status;
             $instance->name = $data->name;
             $instance->customtext1 = $data->customtext1;
+            $instance->customint1 = $data->customint1;
             $instance->cost = unformat_float($data->cost);
             $instance->currency = $data->currency;
             $instance->roleid = $data->roleid;
@@ -117,6 +118,8 @@ if ($mform->is_cancelled()) {
                 'enrolenddate' => $data->enrolenddate,
                 'expirynotify'    => $data->expirynotify,
                 'notifyall'       => $data->notifyall,
+                'customtext1'       => $data->customtext1,
+                'customint1'       => $data->customint1,
                 'expirythreshold' => $data->expirythreshold
             );
             $plugin->add_instance($course, $fields);

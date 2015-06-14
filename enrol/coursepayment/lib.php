@@ -161,7 +161,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * @return string html text, usually a form in a text box
      */
     function enrol_page_hook(stdClass $instance) {
-        global $USER, $OUTPUT, $DB;
+        global $USER, $OUTPUT, $DB , $COURSE , $PAGE , $CFG;
 
         $gatewaymethod = optional_param('gateway', false, PARAM_ALPHA);
 
@@ -185,9 +185,28 @@ class enrol_coursepayment_plugin extends enrol_plugin {
             return ob_get_clean();
         }
 
+        // Get the course
+        if($COURSE->id == $instance->courseid){
+            // Prevent extra query if possible
+            $course = $COURSE;
+        }else{
+            $course = $DB->get_record('course', array('id'=>$instance->courseid) , '*' , MUST_EXIST);
+        }
 
-        $course = $DB->get_record('course', array('id'=>$instance->courseid));
+        // Set main gateway javascript
+        $jsmodule = array(
+            'name' => 'enrol_coursepayment_gateway',
+            'fullpath' => '/enrol/coursepayment/js/gateway.js',
+            'requires' => array('node' , 'io')
+        );
 
+        $PAGE->requires->js_init_call('M.enrol_coursepayment_gateway.init', array(
+            $CFG->wwwroot . '/enrol/coursepayment/ajax.php',
+            sesskey(),
+            $course->id
+        ), false, $jsmodule);
+
+        // Config to send to the gateways
         $config = new stdClass();
         $config->instanceid = $instance->id;
         $config->courseid = $instance->courseid;
@@ -199,13 +218,14 @@ class enrol_coursepayment_plugin extends enrol_plugin {
         $config->localisedcost = format_float($cost, 2, true);
         $config->coursename = $course->fullname;
         $config->locale = $USER->lang;
+        $config->customint1 = $instance->customint1;
 
         // you can set a custom text to be shown instead of instance name
         $name = !empty($instance->customtext1) ? $instance->customtext1: $config->instancename ;
 
         echo '<div align="center">
                             <h3 class="coursepayment_instancename">' . $name . '</h3>
-                            <p><b>' . get_string("cost") . ': ' . $instance->currency . ' ' . $config->localisedcost . '</b></p>
+                            <p><b>' . get_string("cost") . ': <span id="coursepayment_cost">' . number_format($config->localisedcost, 2, '.', ' ') . '</span> ' . $instance->currency . ' </b></p>
                           </div>';
 
         // payment method is selected

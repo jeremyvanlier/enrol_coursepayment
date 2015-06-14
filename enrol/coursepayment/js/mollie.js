@@ -70,6 +70,6 @@ YUI().use("node", function(Y){
         this.removeClass('selected');
         item.addClass('selected');
 
-        console.log(this)
+        // console.log(this)
     });
 })

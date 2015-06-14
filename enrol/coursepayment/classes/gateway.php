@@ -573,9 +573,10 @@ abstract class enrol_coursepayment_gateway {
             $string .= '<hr/>';
             $string .= '<div align="center">
                             <p>' . get_string('discount_code_desc', 'enrol_coursepayment') . '<br/>
-                            ' . ((!empty($status['error_discount']) ? '<b style="color:red">' . get_string('discountcode_invalid', 'enrol_coursepayment') . '</b>' : '')) . '<br/>
+                            ' . ((!empty($status['error_discount']) ? '<b style="color:red"  id="error_coursepayment">' . $status['message']. '</b>' : '<b style="color:red" id="error_coursepayment"></b>')) . '<br/>
                             </p>
-                            <input type="text" name="discountcode"  value="' . $discountcode . '" />
+                            <input type="text" autocomplete="off" name="discountcode" id="discountcode"  value="' . $discountcode . '" />
+                            <div id="price_holder"></div>
                         </div>';
         }
 

@@ -61,6 +61,9 @@ $string['success_enrolled'] = 'Thanks for your purchase.<br> We have enrolled yo
 $string['error:unknown_order'] = 'Unknown order we don\'t have a record of it!';
 $string['error:gettingorderdetails'] = 'We where unable to query the gateway for order details. We will retry later.';
 $string['error:paymentabort'] = 'The payment is aborted!';
+$string['error:no_record'] = 'Error: Not exists!';
+$string['error:not_within_the_time_period'] = 'Error: Not valid within this time period!';
+$string['error:not_for_this_course'] = 'Error: This discountcode is for another course!';
 $string['gateway_not_exists'] = 'Error! Gateway not exists';
 $string['enabled_desc'] = 'Status of the gateway if this can be used to create a transaction';
 $string['expiredaction'] = 'Enrolment expiration action';
@@ -163,3 +166,4 @@ To:<br/>
     </tr>
 </table><br/><br/>
 Purchased {$a->date} and paid through <b>{$a->method}</b>';
+

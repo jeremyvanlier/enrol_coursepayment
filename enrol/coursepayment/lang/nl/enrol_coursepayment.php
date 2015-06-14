@@ -94,14 +94,14 @@ $string['error:capability_config'] = 'Fout: Je heb de volgende toegang nodig, co
 $string['enrol_coursepayment_discount'] = 'Kortingscodebeheer';
 $string['enrol_coursepayment_discount_desc'] = 'Korting codes kunnen aangemaakt worden via de onderstaande knop. <br/><br/><a href="{$a->link}" class="btn btn-small btn-primary">Kortingscodebeheer</a>';
 $string['new:discountcode'] = 'Nieuwe kortingscode toevoegen';
-
+// TABLE
 $string['th:code'] = 'Kortingscode';
 $string['th:courseid'] = 'Cursus';
 $string['th:start_time'] = 'Geldig vanaf';
 $string['th:end_time'] = 'Geldig to';
 $string['th:amount'] = 'Waarde';
 $string['th:action'] = 'Actie';
-
+// FORM
 $string['form:allcourses'] = 'Volledige website';
 $string['form:code'] = 'Kortignscode<br> (moet uniek zijn)';
 $string['form:discountcode'] = 'Kortingscode';
@@ -110,15 +110,17 @@ $string['form:end_time'] = 'Geldig to';
 $string['form:save'] = 'Bewaar wijzigingen';
 $string['form:amount'] = 'Bedrag van kortingscode';
 $string['form:percentage'] = 'Percentage van kortingscode';
-
+// ERR
 $string['error:number_to_low'] = 'Dit nummer is te laag';
 $string['error:price_wrongformat'] = 'Dit is geen nummer';
 $string['error:code_not_unique'] = 'Kortingscode moet uniek zijn';
-
+$string['error:no_record'] = 'Fout: Komt niet voor in onze database!';
+$string['error:not_within_the_time_period'] = 'Fout: Niet geldig binnen deze tijd periode!';
+$string['error:not_for_this_course'] = 'Fout: Deze kortingscode is bedoelt voor een andere cursus!';
+// SETTING
 $string['discount_code_desc'] = 'Als u een kortingscode heeft kunt u die hieronder invullen';
 $string['discountcode_invalid'] = 'Fout: Deze kortingscode is onjuist, niet geldig meer of hoort niet bij deze cursus!';
 $string['vatpercentages'] = 'BTW percentage inbegrepen in de kosten';
-
 $string['invoicedetails'] = 'Invoice details';
 $string['invoicedetails_desc'] = 'Deze velden zijn verplicht! Wanneer u dit leeg laat zijn uw facturen onjuist.';
 $string['btw'] = 'BTW nummer';
@@ -127,7 +129,7 @@ $string['place'] = 'Vestigingplaats';
 $string['zipcode'] = 'Postcode';
 $string['address'] = 'Adres';
 $string['companyname'] = 'Naam organisatie';
-
+// MAIL
 $string['mail:invoice_subject'] = 'Bedankt voor het kopen van: {$a->course} / {$a->fullname}';
 $string['mail:invoice_message'] = '<h2>Factuur</h2>
 <br/>
