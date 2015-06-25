@@ -225,7 +225,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
 
         echo '<div align="center">
                             <h3 class="coursepayment_instancename">' . $name . '</h3>
-                            <p><b>' . get_string("cost") . ': <span id="coursepayment_cost">' . number_format($config->localisedcost, 2, '.', ' ') . '</span> ' . $instance->currency . ' </b></p>
+                            <p><b>' . get_string("cost") . ': <span id="coursepayment_cost">' . number_format($config->cost, 2, '.', ' ') . '</span> ' . $instance->currency . ' </b></p>
                           </div>';
 
         // payment method is selected

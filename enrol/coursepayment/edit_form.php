@@ -54,10 +54,6 @@ class enrol_coursepayment_edit_form extends moodleform {
         $mform->setType('cost', PARAM_RAW); // Use unformat_float to get real value.
         $mform->setDefault('cost', format_float($plugin->get_config('cost'), 2, true));
 
-        $mform->addElement('text', 'cost', get_string('cost', 'enrol_coursepayment'), array('size' => 4));
-        $mform->setType('cost', PARAM_RAW); // Use unformat_float to get real value.
-        $mform->setDefault('cost', format_float($plugin->get_config('cost'), 2, true));
-
         $coursepaymentcurrencies = $plugin->get_currencies();
         $mform->addElement('select', 'currency', get_string('currency', 'enrol_coursepayment'), $coursepaymentcurrencies);
         $mform->setDefault('currency', $plugin->get_config('currency'));
@@ -120,7 +116,7 @@ class enrol_coursepayment_edit_form extends moodleform {
             $errors['enrolenddate'] = get_string('enrolenddaterror', 'enrol_coursepayment');
         }
 
-        $cost = str_replace(get_string('decsep', 'langconfig'), '.', $data['cost']);
+        $cost = str_replace(',', '.', $data['cost']);
         if (!is_numeric($cost)) {
             $errors['cost'] = get_string('costerror', 'enrol_coursepayment');
         }
