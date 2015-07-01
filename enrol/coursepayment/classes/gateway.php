@@ -292,6 +292,7 @@ abstract class enrol_coursepayment_gateway {
 
         $obj->orderid = $orderidentifier;
         $obj->gateway_transaction_id = '';
+        $obj->invoice_number = 0;
         $obj->gateway = $this->name;
         $obj->addedon = time();
         $obj->timeupdated = 0;
