@@ -165,3 +165,8 @@ Aan:<br/>
     </tr>
 </table><br/><br/>
 Gekocht op {$a->date} en betaald via <b>{$a->method}</b>';
+
+$string['coursepayment:config'] = 'Instellen';
+$string['coursepayment:manage'] = 'Beheren';
+$string['coursepayment:unenrol'] = 'Uitschrijven';
+$string['coursepayment:unenrolself'] = 'Zichzelf uitschrijven';

@@ -167,3 +167,7 @@ To:<br/>
 </table><br/><br/>
 Purchased {$a->date} and paid through <b>{$a->method}</b>';
 
+$string['coursepayment:config'] = 'Configuration';
+$string['coursepayment:manage'] = 'Manage';
+$string['coursepayment:unenrol'] = 'Unenrol';
+$string['coursepayment:unenrolself'] = 'Unenrolself';
