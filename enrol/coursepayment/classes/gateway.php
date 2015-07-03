@@ -609,8 +609,8 @@ abstract class enrol_coursepayment_gateway {
      */
     protected function get_invoice_number_format($record = null) {
 
-        if (!empty($record->invoice_number) && !empty($record->added_on)) {
-            return self::INVOICE_PREFIX . date("Y", $record->added_on) . sprintf('%08d', $record->invoice_number);
+        if (!empty($record->invoice_number) && !empty($record->addedon)) {
+            return self::INVOICE_PREFIX . date("Y", $record->addedon) . sprintf('%08d', $record->invoice_number);
         }
 
         return 'TEST';
