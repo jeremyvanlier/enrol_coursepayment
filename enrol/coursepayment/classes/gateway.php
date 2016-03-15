@@ -496,7 +496,7 @@ abstract class enrol_coursepayment_gateway {
             $eventdata->modulename = 'moodle';
             $eventdata->component = 'enrol_coursepayment';
             $eventdata->name = 'coursepayment_invoice';
-            $eventdata->userfrom = empty($teacher) ? get_admin() : $teacher;
+            $eventdata->userfrom = core_user::get_support_user();
             $eventdata->userto = $user;
             $eventdata->subject = get_string("mail:invoice_subject", 'enrol_coursepayment', $a);
             $eventdata->fullmessage = html_to_text(get_string('mail:invoice_message', 'enrol_coursepayment', $a));
@@ -523,7 +523,7 @@ abstract class enrol_coursepayment_gateway {
                 $eventdata->modulename = 'moodle';
                 $eventdata->component = 'enrol_coursepayment';
                 $eventdata->name = 'coursepayment_invoice';
-                $eventdata->userfrom = $user;
+                $eventdata->userfrom = core_user::get_support_user();
                 $eventdata->userto = $teacher;
                 $eventdata->subject = get_string("mail:invoice_subject", 'enrol_coursepayment', $a);
                 $eventdata->fullmessage = html_to_text(get_string('mail:invoice_message', 'enrol_coursepayment', $a));
@@ -542,7 +542,7 @@ abstract class enrol_coursepayment_gateway {
                 $eventdata->modulename = 'moodle';
                 $eventdata->component = 'enrol_coursepayment';
                 $eventdata->name = 'coursepayment_invoice';
-                $eventdata->userfrom = $user;
+                $eventdata->userfrom = core_user::get_support_user();
                 $eventdata->userto = $admin;
                 $eventdata->subject = get_string("mail:invoice_subject", 'enrol_coursepayment', $a);
                 $eventdata->fullmessage = html_to_text(get_string('mail:invoice_message', 'enrol_coursepayment', $a));
