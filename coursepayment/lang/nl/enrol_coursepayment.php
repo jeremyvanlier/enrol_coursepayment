@@ -138,7 +138,7 @@ $string['mail:invoice_message'] = '<h2>Factuur</h2>
 {$a->zipcode} {$a->place}<br/>
 <br/>
 KvK: {$a->kvk}<br/>
-VAT: {$a->btw}<br/>
+BTW: {$a->btw}<br/>
 <br/>
 Factuur nummer: {$a->invoice_number}<br/>
 Datum: {$a->date}<br/>
