@@ -329,7 +329,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
                     // Sending the invoice to customer
                     // Make sure we save invoice number to prevent incorrect number
-                    $this->send_invoice($row, $obj->invoice_number, $payment->mode);
+                    $this->send_invoice($row, $obj->invoice_number, ucfirst($this->name));
                     $DB->update_record('enrol_coursepayment', $obj);
 
 

@@ -439,11 +439,11 @@ abstract class enrol_coursepayment_gateway {
      *
      * @param null $record
      * @param int $invoicenumber
-     * @param string $paymentmethod
+     * @param string $method
      *
      * @return bool
      */
-    protected function send_invoice($record = null , $invoicenumber = 0 , $paymentmethod = '') {
+    protected function send_invoice($record = null , $invoicenumber = 0 , $method = '') {
         global $DB, $CFG;
 
         if (empty($record)) {
@@ -483,7 +483,7 @@ abstract class enrol_coursepayment_gateway {
         $a->kvk = $this->pluginconfig->kvk;
         $a->btw = $this->pluginconfig->btw;
         $a->currency = $this->pluginconfig->currency;
-        $a->method = $paymentmethod;
+        $a->method = $method;
 
         // Calculate cost
         $a->cost = $this->price($record->cost);
