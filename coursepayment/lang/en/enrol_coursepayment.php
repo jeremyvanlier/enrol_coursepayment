@@ -80,7 +80,7 @@ $string['expirymessageenrolledbody'] = 'Dear {$a->user},
 This is a notification that your enrolment in the course \'{$a->course}\' is due to expire on {$a->timeend}.
 
 If you need help, please contact {$a->enroller}.';
-$string['purchase'] = 'Purchase course';
+$string['purchase'] = 'Purchase';
 $string['provider'] = 'Provider';
 $string['name'] = 'Name';
 $string['minimum'] = 'Minimum';
@@ -171,3 +171,4 @@ $string['coursepayment:config'] = 'Configuration';
 $string['coursepayment:manage'] = 'Manage';
 $string['coursepayment:unenrol'] = 'Unenrol';
 $string['coursepayment:unenrolself'] = 'Unenrolself';
+$string['success_enrolled_activity'] = 'Payment successful, you can now enter the activity.';

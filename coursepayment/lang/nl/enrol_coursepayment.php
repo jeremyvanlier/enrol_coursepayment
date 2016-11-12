@@ -77,7 +77,7 @@ $string['expirymessageenrolledbody'] = 'Beste {$a->user},
 Je aanmelding in cursus \'{$a->course}\' gaat vervallen op {$a->timeend}.
 
 ls je hier een probleem mee hebt, neem dan contact op met {$a->enroller}.';
-$string['purchase'] = 'Koop cursus';
+$string['purchase'] = 'Betalen';
 $string['provider'] = 'Provider';
 $string['name'] = 'Naam';
 $string['minimum'] = 'Minimaal';
@@ -170,3 +170,4 @@ $string['coursepayment:config'] = 'Instellen';
 $string['coursepayment:manage'] = 'Beheren';
 $string['coursepayment:unenrol'] = 'Uitschrijven';
 $string['coursepayment:unenrolself'] = 'Zichzelf uitschrijven';
+$string['success_enrolled_activity'] = 'Betaling gelukt, u kunt nu de activiteit starten.';

@@ -32,5 +32,6 @@ Has support for:
 
 See Git for the complete history, major changes will be listed below
 
+2016111200 - Support for availability_coursepayment, purchase a single activity
 2015061202 - Intergration of customable vat percentage per instance and global
 2015061201 - We added invoice mail support

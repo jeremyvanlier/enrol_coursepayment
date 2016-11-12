@@ -33,10 +33,7 @@ set_exception_handler('enrol_coursepayment_ipn_exception_handler');
 
 $orderid = required_param('orderid', PARAM_ALPHANUMEXT);
 $instanceid = required_param('instanceid', PARAM_INT); // if no instanceid is given
-if (! $plugininstance = $DB->get_record("enrol", array("id"=>$instanceid, "status"=>0))) {
-    throw new Exception(get_string('error:failed_getting_plugin_instance' , 'enrol_coursepayment'));
-}
-$return = enrol_get_plugin('coursepayment')->order_valid($orderid, 'mollie' , $plugininstance);
+$return = enrol_get_plugin('coursepayment')->order_valid($orderid, 'mollie');
 
 if ($return['status'] == true) {
 

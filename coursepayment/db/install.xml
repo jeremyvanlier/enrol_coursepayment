@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="enrol/coursepayment/db" VERSION="20150515" COMMENT="XMLDB file for Moodle enrol/coursepayment"
+<XMLDB PATH="enrol/coursepayment/db" VERSION="20161112" COMMENT="XMLDB file for Moodle enrol/coursepayment"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
         >
@@ -17,9 +17,11 @@
                 <FIELD NAME="cost" TYPE="number" LENGTH="6" NOTNULL="true" DEFAULT="0.00" SEQUENCE="false" DECIMALS="2"/>
                 <FIELD NAME="vatpercentage" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="21" SEQUENCE="false"/>
                 <FIELD NAME="invoice_number" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-                <FIELD NAME="addedon" TYPE="int" LENGTH="9" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="cmid" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+                <FIELD NAME="is_activity" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
                 <FIELD NAME="discountdata" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
                 <FIELD NAME="timeupdated" TYPE="int" LENGTH="9" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="addedon" TYPE="int" LENGTH="9" NOTNULL="true" SEQUENCE="false"/>
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -35,6 +37,7 @@
                 <FIELD NAME="end_time" TYPE="int" LENGTH="9" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="percentage" TYPE="number" LENGTH="8" NOTNULL="true" DEFAULT="0.00000" SEQUENCE="false" DECIMALS="5"/>
                 <FIELD NAME="amount" TYPE="number" LENGTH="10" NOTNULL="true" DEFAULT="0.00" SEQUENCE="false" DECIMALS="2"/>
+                <FIELD NAME="cmid" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
                 <FIELD NAME="created_by" TYPE="int" LENGTH="9" NOTNULL="true" SEQUENCE="false"/>
             </FIELDS>
             <KEYS>

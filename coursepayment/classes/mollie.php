@@ -62,7 +62,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
     }
 
     /**
-     * add new order of a user
+     * add new activity order from a user
      *
      * @param string $method
      * @param string $issuer
@@ -72,7 +72,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * @throws moodle_exception
      * @global moodle_database $DB
      */
-    public function new_order($method = '', $issuer = '', $discountcode = '') {
+    public function new_order_activity($method = '', $issuer = '', $discountcode = '') {
 
         global $CFG, $DB;
 
@@ -99,7 +99,93 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         }
 
         // add new internal order
-        $order = $this->create_new_order_record($data);
+        $order = $this->create_new_activity_order_record($data);
+        try {
+
+            if ($order['cost'] == 0) {
+                redirect($CFG->wwwroot . '/enrol/coursepayment/return.php?orderid=' . $order['orderid'] . '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid);
+                return;
+            }
+
+            // https://www.mollie.com/en/docs/payments
+            $payment = $this->client->payments->create(array(
+                "amount" => $order['cost'],
+                "method" => $method,
+                "locale" => (in_array($this->instanceconfig->locale, array(
+                    'de',
+                    'en',
+                    'fr',
+                    'es',
+                    'nl'
+                )) ? $this->instanceconfig->locale : 'en'),
+                "description" => $this->instanceconfig->coursename,
+                "redirectUrl" => $CFG->wwwroot . '/enrol/coursepayment/return.php?orderid=' . $order['orderid'] . '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid,
+                "webhookUrl" => $CFG->wwwroot . '/enrol/coursepayment/ipn/mollie.php?orderid=' . $order['orderid'] . '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid,
+                "metadata" => array(
+                    "order_id" => $order['orderid'],
+                    "id" => $order['id'],
+                    "userid" => $this->instanceconfig->userid,
+                    "userfullname" => $this->instanceconfig->userfullname,
+                ),
+                "issuer" => !empty($issuer) ? $issuer : null
+            ));
+
+            // update the local order we add the gateway identifier to the order
+            $obj = new stdClass();
+            $obj->id = $order['id'];
+            $obj->gateway_transaction_id = $payment->id;
+            $DB->update_record('enrol_coursepayment', $obj);
+
+            // send the user to the gateway payment page
+            redirect($payment->getPaymentUrl());
+
+        } catch (Mollie_API_Exception $e) {
+            $this->log("API call failed: " . htmlspecialchars($e->getMessage()));
+        }
+
+        return array('status' => false);
+    }
+
+
+    /**
+     * add new order from a user
+     *
+     * @param string $method
+     * @param string $issuer
+     * @param string $discountcode
+     *
+     * @return array
+     * @throws moodle_exception
+     * @global moodle_database $DB
+     */
+    public function new_order_course($method = '', $issuer = '', $discountcode = '') {
+
+        global $CFG, $DB;
+
+        // extra order data
+        $data = array();
+
+        if (!empty($discountcode)) {
+
+            // validate the discountcode we received
+            $discountinstance = new enrol_coursepayment_discountcode($discountcode , $this->instanceconfig->courseid);
+            $row = $discountinstance->getDiscountcode();
+
+            if ($row) {
+                // looks okay we need to save this to the order
+                $data['discount'] = $row;
+            } else {
+
+                return array(
+                    'status' => false,
+                    'error_discount' => true,
+                    'message' => $discountinstance->getLastErrorString()
+                );
+            }
+        }
+
+        // add new internal order
+        $order = $this->create_new_course_order_record($data);
         try {
 
             if ($order['cost'] == 0) {
@@ -170,13 +256,28 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         }
 
         $method = optional_param('method', false, PARAM_ALPHA);
+
+        $itemtype = 'course';
+        if(!empty($this->instanceconfig->is_activity)){
+            $itemtype = 'activity';
+        }
+
         $issuer = optional_param('issuer', false, PARAM_ALPHANUMEXT);
         $discountcode = optional_param('discountcode', false, PARAM_ALPHANUMEXT);
         $status = array();
 
         // method is selected by the user
         if (!empty($method)) {
-            $status = $this->new_order($method, $issuer, $discountcode);
+
+            switch($itemtype){
+                case 'activity':
+                    $status = $this->new_order_activity($method, $issuer, $discountcode);
+                    break;
+
+                default:
+                    $status = $this->new_order_course($method, $issuer, $discountcode);
+            }
+
             if (isset($status['status']) && $status['status'] == false) {
                 // we showing the same form again
             } else {

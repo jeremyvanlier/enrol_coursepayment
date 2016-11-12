@@ -135,11 +135,18 @@ abstract class enrol_coursepayment_gateway {
     abstract public function ip_validation();
 
     /**
-     * add new order of a user
+     * add new course order from a user
      *
      * @return boolean
      */
-    abstract public function new_order();
+    abstract public function new_order_course();
+
+    /**
+     * add new activity order from a user
+     *
+     * @return boolean
+     */
+    abstract public function new_order_activity();
 
     /**
      * handle the return of payment provider
@@ -165,7 +172,8 @@ abstract class enrol_coursepayment_gateway {
      */
     public function validate_order($orderid = '') {
         global $DB;
-        $row = $DB->get_record('enrol_coursepayment', array('orderid' => $orderid, 'gateway' => $this->name));
+        $row = $DB->get_record('enrol_coursepayment', array('orderid' => $orderid,
+                                                            'gateway' => $this->name));
 
         if ($row) {
             if ($row->cost == 0) {
@@ -265,7 +273,7 @@ abstract class enrol_coursepayment_gateway {
      *
      * @return array
      */
-    protected function create_new_order_record($data = array()) {
+    protected function create_new_course_order_record($data = array()) {
         global $DB;
 
         $cost = $this->instanceconfig->cost;
@@ -312,6 +320,60 @@ abstract class enrol_coursepayment_gateway {
     }
 
     /**
+     * create a new order for a user
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    protected function create_new_activity_order_record($data = array()) {
+        global $DB;
+
+        $cost = $this->instanceconfig->cost;
+
+        $orderidentifier = uniqid(time());
+
+        $obj = new stdClass();
+
+        if (!empty($data['discount'])) {
+            $discount = $data['discount'];
+            $obj->discountdata = serialize($discount);
+            // we have discount data
+            if ($discount->percentage > 0) {
+                $cost = round($cost / 100 * (100 - $discount->percentage), 2);
+            } else {
+                $cost = round($cost - $discount->amount);
+            }
+            // make sure not below 0
+            if ($cost <= 0) {
+                $cost = 0;
+            }
+        }
+
+        $obj->orderid = $orderidentifier;
+        $obj->gateway_transaction_id = '';
+        $obj->invoice_number = 0;
+        $obj->gateway = $this->name;
+        $obj->addedon = time();
+        $obj->timeupdated = 0;
+        $obj->userid = $this->instanceconfig->userid;
+        $obj->courseid = $this->instanceconfig->courseid;;
+        $obj->cmid = $this->instanceconfig->cmid;;
+        $obj->instanceid = 0;
+        $obj->is_activity = 1;
+        $obj->cost = $cost;
+        $obj->vatpercentage = is_numeric($this->instanceconfig->customint1) ? $this->instanceconfig->customint1 : $this->pluginconfig->vatpercentage;
+        $obj->status = self::PAYMENT_STATUS_WAITING;
+        $id = $DB->insert_record('enrol_coursepayment', $obj);
+
+        return array(
+            'orderid' => $orderidentifier,
+            'id' => $id,
+            'cost' => $cost
+        );
+    }
+
+    /**
      * set instance config
      *
      * @param object $config
@@ -334,6 +396,11 @@ abstract class enrol_coursepayment_gateway {
 
         if (empty($record)) {
             return false;
+        }
+
+        // Doesn't need a enrolment
+        if($record->is_activity == 1){
+            return true;
         }
 
         require_once($CFG->libdir . '/eventslib.php');

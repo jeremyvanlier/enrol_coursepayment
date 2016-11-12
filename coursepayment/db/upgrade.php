@@ -96,6 +96,36 @@ function xmldb_enrol_coursepayment_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2015061203, 'enrol', 'coursepayment');
     }
 
+    // Add activity condition support.
+    if ($oldversion < 2016111201) {
+        // Define field cmid to be added to enrol_coursepayment.
+        $table = new xmldb_table('enrol_coursepayment');
+        $field = new xmldb_field('cmid', XMLDB_TYPE_INTEGER, '11', null, XMLDB_NOTNULL, null, '0', 'invoice_number');
+
+        // Conditionally launch add field cmid.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        $field = new xmldb_field('is_activity', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'cmid');
+
+        // Conditionally launch add field is_activity.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field cmid to be added to enrol_coursepayment_discount.
+        $table = new xmldb_table('enrol_coursepayment_discount');
+        $field = new xmldb_field('cmid', XMLDB_TYPE_INTEGER, '11', null, XMLDB_NOTNULL, null, '0', 'amount');
+
+        // Conditionally launch add field cmid.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Coursepayment savepoint reached.
+        upgrade_plugin_savepoint(true, 2016111201, 'enrol', 'coursepayment');
+    }
 
     return true;
 }

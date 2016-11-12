@@ -33,12 +33,9 @@ $orderid = required_param('orderid', PARAM_ALPHANUMEXT);
 $gateway = required_param('gateway', PARAM_ALPHANUMEXT);
 $instanceid = required_param('instanceid', PARAM_INT); // if no instanceid is given
 
-if (! $plugininstance = $DB->get_record("enrol", array("id"=>$instanceid, "status"=>0))) {
-    redirect('/');
-}
-
-$course = $DB->get_record('course', array('id' => $plugininstance->courseid), '*', MUST_EXIST);
-$context = context_course::instance($plugininstance->courseid);
+$order = $DB->get_record('enrol_coursepayment' ,['orderid' => $orderid] , '*' , MUST_EXIST);
+$course = $DB->get_record('course', array('id' => $order->courseid), '*', MUST_EXIST);
+$context = context_course::instance($order->courseid);
 
 // not for guests this
 if (isguestuser()) {
@@ -50,14 +47,19 @@ $PAGE->set_url('/enrol/coursepayment/return.php');
 $PAGE->set_heading($SITE->fullname);
 $PAGE->set_title(get_string('title:returnpage', 'enrol_coursepayment'));
 
-$return = enrol_get_plugin('coursepayment')->order_valid($orderid, $gateway , $plugininstance);
-
+$return = enrol_get_plugin('coursepayment')->order_valid($orderid, $gateway);
 
 echo $OUTPUT->header();
 if ($return['status'] == true) {
 
+    if($order->is_activity == 1){
+        echo $OUTPUT->box('<p style="text-align: center">'. get_string('success_enrolled_activity' , 'enrol_coursepayment') . '</p>');
+
+    }else{
+        echo $OUTPUT->box('<p style="text-align: center">'. get_string('success_enrolled' , 'enrol_coursepayment' , $course) . '</p>');
+    }
+
     // this order is paid we should enrol the user and notify
-    echo $OUTPUT->box('<p style="text-align: center">'.get_string('success_enrolled' , 'enrol_coursepayment' , $course) . '</p>');
     // send a success message to the user
     echo $OUTPUT->continue_button(new moodle_url('/course/view.php' , array('id' => $course->id)));
 
