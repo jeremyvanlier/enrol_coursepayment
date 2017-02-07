@@ -101,7 +101,8 @@ abstract class enrol_coursepayment_gateway {
     protected $showdebug = false;
 
     /**
-     * set the gateway on sandbox mode this will be handy for testing purposes !important fake transactions will be enrolled in a course
+     * set the gateway on sandbox mode this will be handy for testing purposes !important fake transactions will be
+     * enrolled in a course
      *
      * @var bool
      */
@@ -172,8 +173,10 @@ abstract class enrol_coursepayment_gateway {
      */
     public function validate_order($orderid = '') {
         global $DB;
-        $row = $DB->get_record('enrol_coursepayment', array('orderid' => $orderid,
-                                                            'gateway' => $this->name));
+        $row = $DB->get_record('enrol_coursepayment', array(
+            'orderid' => $orderid,
+            'gateway' => $this->name
+        ));
 
         if ($row) {
             if ($row->cost == 0) {
@@ -399,7 +402,7 @@ abstract class enrol_coursepayment_gateway {
         }
 
         // Doesn't need a enrolment
-        if($record->is_activity == 1){
+        if ($record->is_activity == 1) {
             return true;
         }
 
@@ -510,7 +513,7 @@ abstract class enrol_coursepayment_gateway {
      *
      * @return bool
      */
-    protected function send_invoice($record = null , $invoicenumber = 0 , $method = '') {
+    protected function send_invoice($record = null, $invoicenumber = 0, $method = '') {
         global $DB, $CFG;
 
         if (empty($record)) {
@@ -531,11 +534,11 @@ abstract class enrol_coursepayment_gateway {
         $a->course = format_string($course->fullname, true, array('context' => $context));
         $a->fullname = fullname($user);
         $a->email = $user->email;
-        $a->date = date('d-m-Y, H:i' , $record->addedon);
+        $a->date = date('d-m-Y, H:i', $record->addedon);
         $a->fullcourse = $course->fullname;
 
         // Set record invoice number this is not done
-        if($record->invoice_number == 0){
+        if ($record->invoice_number == 0) {
             $record->invoice_number = $invoicenumber;
         }
 
@@ -555,7 +558,7 @@ abstract class enrol_coursepayment_gateway {
         // Calculate cost
         $a->cost = $this->price($record->cost);
         $a->vatpercentage = is_numeric($plugininstance->customint1) ? $plugininstance->customint1 : $this->pluginconfig->vatpercentage;
-        $a->costvat = $this->price(($a->cost / 100) * $a->vatpercentage);
+        $a->costvat = $this->price(($a->cost / (100 + $a->vatpercentage)) * $a->vatpercentage);
 
         if (!empty($this->pluginconfig->mailstudents_invoice)) {
 
@@ -619,6 +622,7 @@ abstract class enrol_coursepayment_gateway {
                 message_send($eventdata);
             }
         }
+
         return true;
     }
 
@@ -641,7 +645,7 @@ abstract class enrol_coursepayment_gateway {
             $string .= '<hr/>';
             $string .= '<div align="center">
                             <p>' . get_string('discount_code_desc', 'enrol_coursepayment') . '<br/>
-                            ' . ((!empty($status['error_discount']) ? '<b style="color:red"  id="error_coursepayment">' . $status['message']. '</b>' : '<b style="color:red" id="error_coursepayment"></b>')) . '<br/>
+                            ' . ((!empty($status['error_discount']) ? '<b style="color:red"  id="error_coursepayment">' . $status['message'] . '</b>' : '<b style="color:red" id="error_coursepayment"></b>')) . '<br/>
                             </p>
                             <input type="text" autocomplete="off" name="discountcode" id="discountcode"  value="' . $discountcode . '" />
                             <div id="price_holder"></div>
@@ -691,6 +695,6 @@ abstract class enrol_coursepayment_gateway {
      * @return string
      */
     public function price($number = 0.00) {
-        return number_format(round($number ,2), 2, ',', ' ');
+        return number_format(round($number, 2), 2, ',', ' ');
     }
 }
