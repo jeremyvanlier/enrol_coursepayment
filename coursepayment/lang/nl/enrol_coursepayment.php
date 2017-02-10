@@ -88,7 +88,7 @@ $string['gateway_mollie_select_method'] = 'Klik op een van de betaalmethodes hie
 $string['gateway_mollie'] = 'Provider: Mollie';
 $string['gateway_mollie_desc'] = 'Offer your customers the payment methods Creditcard, SOFORT Banking, iDEAL, Bancontact/Mister Cash, Bank transfer, Bitcoin, PayPal or paysafecard. Mollie is known for reliability, transparency, nice API’s and ready-to-go modules.';
 $string['gateway_mollie_apikey'] = 'API sleutel';
-$string['gateway_mollie_link'] = 'Als u nog geen account heeft kunt u via <a href=" https://www.mollie.com/en/signup/1787751">Registeren</a> een account aanmaken';
+$string['gateway_mollie_link'] = 'Als u nog geen account heeft kunt u via <a href="{$a->link}">Registeren</a> een account aanmaken';
 $string['gateway_mollie_send_button'] = 'Koop deze cursus';
 $string['error:capability_config'] = 'Fout: Je heb de volgende toegang nodig, coursepayment/config';
 $string['enrol_coursepayment_discount'] = 'Kortingscodebeheer';
@@ -171,3 +171,5 @@ $string['coursepayment:manage'] = 'Beheren';
 $string['coursepayment:unenrol'] = 'Uitschrijven';
 $string['coursepayment:unenrolself'] = 'Zichzelf uitschrijven';
 $string['success_enrolled_activity'] = 'Betaling gelukt, u kunt nu de activiteit starten.';
+$string['gateway_mollie_external_connector'] = 'External API connector';
+$string['gateway_mollie_external_connector_desc'] = 'Deze functie moet worden uitgeschakeld! (Alleen in te schakelen als je weet wat je doet)';

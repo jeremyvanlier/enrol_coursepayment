@@ -91,7 +91,7 @@ $string['gateway_mollie_select_method'] = 'Please click the method you like to u
 $string['gateway_mollie'] = 'Gateway: Mollie';
 $string['gateway_mollie_desc'] = 'Offer your customers the payment methods Creditcard, SOFORT Banking, iDEAL, Bancontact/Mister Cash, Bank transfer, Bitcoin, PayPal or paysafecard. Mollie is known for reliability, transparency, nice API’s and ready-to-go modules.';
 $string['gateway_mollie_apikey'] = 'API key';
-$string['gateway_mollie_link'] = 'If you don\'t have a account please <a href=" https://www.mollie.com/en/signup/1787751">register</a>';
+$string['gateway_mollie_link'] = 'If you don\'t have a account please <a href="{$a->link}">register</a>';
 $string['gateway_mollie_send_button'] = 'Purchase with mollie';
 $string['error:capability_config'] = 'Error: You need the coursepayment/config capability!';
 $string['enrol_coursepayment_discount'] = 'Discount';
@@ -172,3 +172,5 @@ $string['coursepayment:manage'] = 'Manage';
 $string['coursepayment:unenrol'] = 'Unenrol';
 $string['coursepayment:unenrolself'] = 'Unenrolself';
 $string['success_enrolled_activity'] = 'Payment successful, you can now enter the activity.';
+$string['gateway_mollie_external_connector'] = 'External API connector';
+$string['gateway_mollie_external_connector_desc'] = 'This feature should be disabled! (only enable if you know what you doing)';
