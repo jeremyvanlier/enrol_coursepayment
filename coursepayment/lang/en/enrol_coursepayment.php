@@ -174,3 +174,14 @@ $string['coursepayment:unenrolself'] = 'Unenrolself';
 $string['success_enrolled_activity'] = 'Payment successful, you can now enter the activity.';
 $string['gateway_mollie_external_connector'] = 'External API connector';
 $string['gateway_mollie_external_connector_desc'] = 'This feature should be disabled! (only enable if you know what you doing)';
+$string['form:newaccount'] = 'Make a new account on Mollie.nl';
+$string['form:username'] = 'Username (should not exists on Mollie)';
+$string['form:name'] = 'Your fullname';
+$string['form:company_name'] = 'Company name';
+$string['form:email'] = 'E-mail';
+$string['form:address'] = 'Street and number';
+$string['form:zipcode'] = 'Zipcode';
+$string['form:city'] = 'City';
+$string['form:register'] = 'Register';
+$string['enrol_coursepayment_newaccount'] = 'New mollie account';
+
