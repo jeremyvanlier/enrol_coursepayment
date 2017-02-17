@@ -82,7 +82,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         if (!empty($discountcode)) {
 
             // validate the discountcode we received
-            $discountinstance = new enrol_coursepayment_discountcode($discountcode , $this->instanceconfig->courseid);
+            $discountinstance = new enrol_coursepayment_discountcode($discountcode, $this->instanceconfig->courseid);
             $row = $discountinstance->getDiscountcode();
 
             if ($row) {
@@ -104,6 +104,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
             if ($order['cost'] == 0) {
                 redirect($CFG->wwwroot . '/enrol/coursepayment/return.php?orderid=' . $order['orderid'] . '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid);
+
                 return;
             }
 
@@ -168,7 +169,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         if (!empty($discountcode)) {
 
             // validate the discountcode we received
-            $discountinstance = new enrol_coursepayment_discountcode($discountcode , $this->instanceconfig->courseid);
+            $discountinstance = new enrol_coursepayment_discountcode($discountcode, $this->instanceconfig->courseid);
             $row = $discountinstance->getDiscountcode();
 
             if ($row) {
@@ -190,6 +191,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
             if ($order['cost'] == 0) {
                 redirect($CFG->wwwroot . '/enrol/coursepayment/return.php?orderid=' . $order['orderid'] . '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid);
+
                 return;
             }
 
@@ -258,7 +260,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         $method = optional_param('method', false, PARAM_ALPHA);
 
         $itemtype = 'course';
-        if(!empty($this->instanceconfig->is_activity)){
+        if (!empty($this->instanceconfig->is_activity)) {
             $itemtype = 'activity';
         }
 
@@ -269,7 +271,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         // method is selected by the user
         if (!empty($method)) {
 
-            switch($itemtype){
+            switch ($itemtype) {
                 case 'activity':
                     $status = $this->new_order_activity($method, $issuer, $discountcode);
                     break;
@@ -492,6 +494,101 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             $obj->invoice_number = $this->get_new_invoice_number();
             $DB->update_record('enrol_coursepayment', $obj);
         }
+    }
+
+    /**
+     * Create a new child account
+     * https://www.mollie.com/nl/support/post/documentatie-reseller-api#ref-account-create
+     *
+     * @param $data
+     *
+     * @return array
+     */
+    public function add_new_account($data) {
+        $return = [
+            'success' => false,
+            'error' => ''
+        ];
+
+        $data = unserialize($data);
+
+        $fields = [
+            'username',
+            'name',
+            'company_name',
+            'email',
+            'address',
+            'city',
+        ];
+
+        // Validate all data exists.
+        foreach ($fields as $field) {
+            if (!array_key_exists($field, $data)) {
+                $return['error'] = 'Missing "' . $field . '" field!';
+
+                return $return;
+            }
+        }
+
+        // Sending request to Mollie..
+
+        // 1. Register Mollie_Autoloader
+        require_once dirname(__FILE__) . "/../libs/Mollie/RESELLER/autoloader.php";
+        Mollie_Autoloader::register();
+
+        // 2. Define Mollie config
+        $partner_id = 1790631;
+        $profile_key = 'F2737D9B';
+        $app_secret = '6950FDCAB27914E77CDFFBFCF8B7F121ECDB8CD2';
+
+        // 3. Instantiate class with Mollie config
+        $mollie = new Mollie_Reseller($partner_id, $profile_key, $app_secret);
+
+        // 4. Call API accountCreate
+        try {
+            $data->country = 'NL';
+            $simplexml = $mollie->accountCreate($data->username, (array)$data);
+        } catch (Mollie_Exception $e) {
+            die('An error occurred when creating an account: ' . $e->getMessage());
+        }
+
+        var_dump($simplexml);
+
+        return $return;
+    }
+
+    /**
+     * Claim a new mollie account
+     * https://www.mollie.com/nl/support/post/documentatie-reseller-api#ref-account-claim
+     *
+     * @param $data
+     *
+     * @return array
+     */
+    public function claim_new_account($data) {
+
+        $return = [
+            'success' => false,
+            'error' => ''
+        ];
+
+        $data = unserialize($data);
+
+        $fields = [
+            'username',
+            'password',
+        ];
+
+        // Validate all data exists.
+        foreach ($fields as $field) {
+            if (!array_key_exists($field, $data)) {
+                $return['error'] = 'Missing "' . $field . '" field!';
+
+                return $return;
+            }
+        }
+
+
     }
 
 }

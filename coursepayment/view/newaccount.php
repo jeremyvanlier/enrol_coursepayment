@@ -65,21 +65,13 @@ if (($data = $form->get_data()) != false) {
         'action' => 'newaccount'
     ]);
 
+    echo '<pre>';print_r($response);echo '</pre>';die(__LINE__.' '.__FILE__);
+    
     $response = json_decode($response);
 
     if(!empty($response->error)){
         throw new Exception($response->error);
     }
-
-    echo '<pre>';
-    print_r($response);
-    print_r($config);
-    echo '</pre>';
-
-    echo '<pre>';
-    echo '</pre>';
-    die(__LINE__ . ' ' . __FILE__);
-
 
     redirect(new \moodle_url('/admin/settings.php?section=enrolsettingscoursepayment&message=added_account'));
 }
