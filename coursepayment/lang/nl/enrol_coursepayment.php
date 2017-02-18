@@ -173,3 +173,4 @@ $string['coursepayment:unenrolself'] = 'Zichzelf uitschrijven';
 $string['success_enrolled_activity'] = 'Betaling gelukt, u kunt nu de activiteit starten.';
 $string['gateway_mollie_external_connector'] = 'External API connector';
 $string['gateway_mollie_external_connector_desc'] = 'Deze functie moet worden uitgeschakeld! (Alleen in te schakelen als je weet wat je doet)';
+$string['message:added_account'] = 'Je account is aangemaakt! Controleer je e-mail voor de details.';

@@ -536,23 +536,23 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         require_once dirname(__FILE__) . "/../libs/Mollie/RESELLER/autoloader.php";
         Mollie_Autoloader::register();
 
-        // 2. Define Mollie config
-        $partner_id = 1790631;
-        $profile_key = 'F2737D9B';
-        $app_secret = '6950FDCAB27914E77CDFFBFCF8B7F121ECDB8CD2';
-
         // 3. Instantiate class with Mollie config
-        $mollie = new Mollie_Reseller($partner_id, $profile_key, $app_secret);
+        $mollie = new Mollie_Reseller($this->config->partner_id, $this->config->profile_key, $this->config->app_secret);
 
         // 4. Call API accountCreate
         try {
             $data->country = 'NL';
-            $simplexml = $mollie->accountCreate($data->username, (array)$data);
-        } catch (Mollie_Exception $e) {
-            die('An error occurred when creating an account: ' . $e->getMessage());
-        }
+           // $data->testmode = true;
+            $obj = (object)$mollie->accountCreate($data->username, (array)$data);
 
-        var_dump($simplexml);
+            $return['success'] = true;
+            $return['password'] = (string)$obj->password;
+            $return['partner_id'] = (string)$obj->partner_id;
+            $return['username'] = (string)$obj->username;
+
+        } catch (Mollie_Exception $e) {
+            $return['error'] = $e->getMessage();
+        }
 
         return $return;
     }

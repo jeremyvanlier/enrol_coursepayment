@@ -18,8 +18,6 @@ define('NO_DEBUG_DISPLAY', true);
 require('../../config.php');
 $PAGE->set_url('/enrol/coursepayment/mollie-connector.php');
 
-//require_once dirname(__FILE__) . "/libs/Mollie/API/Autoloader.php";
-//
 // Get params.
 $action = required_param('action', PARAM_ALPHA);
 $data = required_param('data', PARAM_RAW);
@@ -28,21 +26,22 @@ $data = required_param('data', PARAM_RAW);
 $config = get_config('enrol_coursepayment');
 
 // Check if this feature is turned on.
-if(empty($config->gateway_mollie_external_connector)){
+if (empty($config->gateway_mollie_external_connector)) {
     throw new Exception('No external API calls allowed!');
 }
 
 $mollie = new enrol_coursepayment_mollie();
 
+$return = ['success' => false];
+
 // Get the action we need to process.
-switch($action){
+switch ($action) {
     case 'newaccount':
         $return = $mollie->add_new_account($data);
-        echo '<pre>';print_r($return);echo '</pre>';die(__LINE__.' '.__FILE__);
-        echo json_decode($return);
         break;
     case 'claim':
         $return = $mollie->claim_new_account($data);
         break;
 
 }
+echo json_encode($return);

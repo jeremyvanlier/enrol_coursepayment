@@ -65,8 +65,6 @@ if (($data = $form->get_data()) != false) {
         'action' => 'newaccount'
     ]);
 
-    echo '<pre>';print_r($response);echo '</pre>';die(__LINE__.' '.__FILE__);
-    
     $response = json_decode($response);
 
     if(!empty($response->error)){

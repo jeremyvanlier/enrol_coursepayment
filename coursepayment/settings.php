@@ -28,18 +28,23 @@
 defined('MOODLE_INTERNAL') || die();
 
 if ($ADMIN->fulltree) {
-
+    $message = optional_param('message', false, PARAM_TEXT);
     $config = get_config('enrol_coursepayment');
 
     // Check if we have connect mollie account to avetica.
-    if(empty($config->gateway_mollie_account_claim)){
+    if (empty($config->gateway_mollie_account_claim)) {
         // We should show a login box.
         $PAGE->requires->js('/enrol/coursepayment/js/accountclaim.js');
     }
 
     // Check if we have a parent for the mollie connector (allow to create accounts)
-    if(empty($config->gateway_mollie_parent_api)) {
-       set_config('gateway_mollie_parent_api' , 'http://moodle300.moodlefreak.com/enrol/coursepayment/mollie-connector.php' , 'enrol_coursepayment');
+    if (empty($config->gateway_mollie_parent_api)) {
+        set_config('gateway_mollie_parent_api', 'http://moodle300.moodlefreak.com/enrol/coursepayment/mollie-connector.php', 'enrol_coursepayment');
+    }
+
+    // Check if there is a message.
+    if (!empty($message)) {
+        $settings->add(new admin_setting_heading('enrol_coursepayment_message', '', html_writer::div(get_string('message:' . $message, 'enrol_coursepayment'), 'alert alert-success')));
     }
 
     //--- settings ------------------------------------------------------------------------------------------
@@ -53,7 +58,7 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configselect('enrol_coursepayment/expiredaction', get_string('expiredaction', 'enrol_coursepayment'), get_string('expiredaction_help', 'enrol_coursepayment'), ENROL_EXT_REMOVED_SUSPENDNOROLES, $options));
 
     $options = array();
-    for ($i=0; $i<24; $i++) {
+    for ($i = 0; $i < 24; $i++) {
         $options[$i] = $i;
     }
     $settings->add(new admin_setting_configselect('enrol_coursepayment/expirynotifyhour', get_string('expirynotifyhour', 'core_enrol'), '', 6, $options));
@@ -114,25 +119,32 @@ if ($ADMIN->fulltree) {
 
     $obj = new stdClass();
     $obj->link = $CFG->wwwroot . '/enrol/coursepayment/view/discountcode.php';
-    $settings->add(new admin_setting_heading('enrol_coursepayment_discount', get_string('enrol_coursepayment_discount', 'enrol_coursepayment'), get_string('enrol_coursepayment_discount_desc', 'enrol_coursepayment' , $obj)));
+    $settings->add(new admin_setting_heading('enrol_coursepayment_discount', get_string('enrol_coursepayment_discount', 'enrol_coursepayment'), get_string('enrol_coursepayment_discount_desc', 'enrol_coursepayment', $obj)));
 
     $settings->add(new admin_setting_heading('enrol_coursepayment_gateway_mollie', get_string('gateway_mollie', 'enrol_coursepayment'), get_string('gateway_mollie_desc', 'enrol_coursepayment')));
-    $settings->add(new admin_setting_heading('enrol_coursepayment_register', '', '<aside style="border: 1px solid red;padding: 3px">' . get_string('gateway_mollie_link', 'enrol_coursepayment' , (object) [
-        'link' => $CFG->wwwroot . '/enrol/coursepayment/view/newaccount.php'
+    $settings->add(new admin_setting_heading('enrol_coursepayment_register', '', '<aside style="border: 1px solid red;padding: 3px">' . get_string('gateway_mollie_link', 'enrol_coursepayment', (object)[
+            'link' => $CFG->wwwroot . '/enrol/coursepayment/view/newaccount.php'
         ]) . '</aside><hr/>'));
     $settings->add(new admin_setting_configselect('enrol_coursepayment/gateway_mollie_enabled', get_string('enabled', 'enrol_coursepayment'), get_string('enabled_desc', 'enrol_coursepayment'), 1, $yesno));
     $settings->add(new admin_setting_configtext('enrol_coursepayment/gateway_mollie_apikey', get_string('gateway_mollie_apikey', 'enrol_coursepayment'), '', '', PARAM_ALPHANUMEXT));
     $settings->add(new admin_setting_configselect('enrol_coursepayment/gateway_mollie_debug', get_string('debug', 'enrol_coursepayment'), get_string('debug_desc', 'enrol_coursepayment'), 0, $yesno));
     $settings->add(new admin_setting_configselect('enrol_coursepayment/gateway_mollie_sandbox', get_string('sandbox', 'enrol_coursepayment'), get_string('sandbox_desc', 'enrol_coursepayment'), 0, $yesno));
-    $settings->add(new admin_setting_configselect('enrol_coursepayment/gateway_mollie_external_connector', get_string('gateway_mollie_external_connector','enrol_coursepayment'), get_string('gateway_mollie_external_connector_desc', 'enrol_coursepayment'), 0, $yesno));
+    $settings->add(new admin_setting_configselect('enrol_coursepayment/gateway_mollie_external_connector', get_string('gateway_mollie_external_connector', 'enrol_coursepayment'), get_string('gateway_mollie_external_connector_desc', 'enrol_coursepayment'), 0, $yesno));
 
-    if(!empty($config->gateway_mollie_apikey)) {
+    // Check if gateway_mollie_external_connector is enabled.
+    if ($config->gateway_mollie_external_connector) {
+        $settings->add(new admin_setting_configtext('enrol_coursepayment/gateway_mollie_partner_id', get_string('gateway_mollie_partner_id', 'enrol_coursepayment'), '', '', PARAM_INT));
+        $settings->add(new admin_setting_configtext('enrol_coursepayment/gateway_mollie_profile_key', get_string('gateway_mollie_profile_key', 'enrol_coursepayment'), '', '', PARAM_TEXT));
+        $settings->add(new admin_setting_configtext('enrol_coursepayment/gateway_mollie_app_secret', get_string('gateway_mollie_app_secret', 'enrol_coursepayment'), '', '', PARAM_TEXT));
+    }
+
+    if (!empty($config->gateway_mollie_apikey)) {
         try {
             $gateway = new enrol_coursepayment_mollie();
             $methods = $gateway->get_enabled_modes();
             $settings->add(new admin_setting_heading('enrol_coursepayment_methods', '', $methods));
         } catch (Exception $exc) {
-            $settings->add(new admin_setting_heading('enrol_coursepayment_warning', '', '<div style="color:red">'.$exc->getMessage() . '</div>'));
+            $settings->add(new admin_setting_heading('enrol_coursepayment_warning', '', '<div style="color:red">' . $exc->getMessage() . '</div>'));
         }
     }
 }
