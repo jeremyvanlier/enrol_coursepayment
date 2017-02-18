@@ -39,7 +39,7 @@ if ($ADMIN->fulltree) {
 
     // Check if we have a parent for the mollie connector (allow to create accounts)
     if (empty($config->gateway_mollie_parent_api)) {
-        set_config('gateway_mollie_parent_api', 'http://moodle300.moodlefreak.com/enrol/coursepayment/mollie-connector.php', 'enrol_coursepayment');
+        set_config('gateway_mollie_parent_api', 'https://moodle.avetica.nl/enrol/coursepayment/mollie-connector.php', 'enrol_coursepayment');
     }
 
     // Check if there is a message.
