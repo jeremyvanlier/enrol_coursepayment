@@ -40,32 +40,76 @@ $courseid = required_param('courseid', PARAM_INT);
 $action = required_param('action', PARAM_ALPHA);
 $data = required_param('data', PARAM_RAW);
 
+// Used for account claim action.
+$username = optional_param('username', false, PARAM_RAW);
+$password = optional_param('password', false, PARAM_RAW);
+
 // Get the course
-$course = $DB->get_record('course' , array('id'=>$courseid) , '*' , MUST_EXIST);
+$course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
+
+// Get plugin config.
+$config = get_config('enrol_coursepayment');
 
 // Default return
-$array = array('error' => '', 'status' => false);
+$array = array(
+    'error' => '',
+    'status' => false
+);
 
 if (!confirm_sesskey($sesskey)) {
-    $array['error'] = get_string('failed:sesskey', 'block_mambo');
+    $array['error'] = get_string('failed:sesskey', 'enrol_coursepayment');
 }
-
 if (empty($array['error'])) {
 
-    switch($action){
+    switch ($action) {
+        /**
+         * Sending a request to a reseller to claim this account.
+         */
+        case 'accountclaim':
+            if (empty($config->gateway_mollie_account_claim)) {
+
+                $response = enrol_coursepayment_helper::post_request($config->gateway_mollie_parent_api, [
+                    'data' => urlencode(serialize(['username' => $username, 'password' => $password])),
+                    'action' => 'claim'
+                ]);
+
+                // For debugging.
+                $array['response'] = base64_encode($response);
+
+                $response = json_decode($response);
+
+                // Error.
+                if (!empty($response->error)) {
+                    $array['error'] = $response->error;
+                }
+
+                // Success.
+                if (!empty($response->success)) {
+                    $array['status'] = true;
+                    set_config('gateway_mollie_account_claim', 1, 'enrol_coursepayment');
+                }
+            } else {
+                // Already claimed.
+                $array['status'] = true;
+            }
+
+            break;
+
+        /**
+         * Validate a discount code.
+         */
         case 'discountcode':
-            // Validate a discount code
-            $discountinstance = new enrol_coursepayment_discountcode($data , $courseid);
+            $discountinstance = new enrol_coursepayment_discountcode($data, $courseid);
             $row = $discountinstance->getDiscountcode();
 
-            if($row){
+            if ($row) {
 
                 $array['amount'] = $row->amount;
                 $array['percentage'] = $row->percentage;
                 $array['status'] = true;
 
                 unset($array['error']);
-            }else{
+            } else {
                 $array['error'] = $discountinstance->getLastErrorString();
             }
             break;

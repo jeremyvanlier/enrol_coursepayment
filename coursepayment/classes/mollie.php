@@ -573,7 +573,6 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         ];
 
         $data = unserialize($data);
-
         $fields = [
             'username',
             'password',
@@ -587,7 +586,27 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                 return $return;
             }
         }
+        // Sending request to Mollie..
 
+        // 1. Register Mollie_Autoloader
+        require_once dirname(__FILE__) . "/../libs/Mollie/RESELLER/autoloader.php";
+        Mollie_Autoloader::register();
+
+        // 3. Instantiate class with Mollie config
+        $mollie = new Mollie_Reseller($this->config->partner_id, $this->config->profile_key, $this->config->app_secret);
+
+        // 4. Call API accountCreate
+        try {
+            $obj = (object)$mollie->accountClaim($data['username'], $data['password']);
+            $return['success'] = (string)$obj->success;
+            $return['resultmessage'] = (string)$obj->resultmessage;
+            $return['resultcode'] = (string)$obj->resultcode;
+
+        } catch (Mollie_Exception $e) {
+            $return['error'] = $e->getMessage();
+        }
+
+        return $return;
 
     }
 
