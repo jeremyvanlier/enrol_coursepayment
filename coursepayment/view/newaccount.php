@@ -71,6 +71,9 @@ if (($data = $form->get_data()) != false) {
         throw new Exception($response->error);
     }
 
+    // Should be a success.
+    set_config('gateway_mollie_account_claim', 1, 'enrol_coursepayment');
+
     redirect(new \moodle_url('/admin/settings.php?section=enrolsettingscoursepayment&message=added_account'));
 }
 

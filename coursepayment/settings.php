@@ -32,7 +32,12 @@ if ($ADMIN->fulltree) {
     $config = get_config('enrol_coursepayment');
 
     // Check if we have connect mollie account to avetica.
-    if (empty($config->gateway_mollie_account_claim)) {
+    if (empty($config->gateway_mollie_account_claim) &&
+        // Check if there is already a API key.
+        !empty($config->gateway_mollie_apikey) &&
+        // Make sure its not a reseller.
+        empty($config->gateway_mollie_external_connector)
+    ) {
         // We should show a login box.
         $PAGE->requires->js('/enrol/coursepayment/js/accountclaim.js');
     }

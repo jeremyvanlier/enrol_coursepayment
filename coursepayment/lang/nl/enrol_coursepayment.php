@@ -174,3 +174,17 @@ $string['success_enrolled_activity'] = 'Betaling gelukt, u kunt nu de activiteit
 $string['gateway_mollie_external_connector'] = 'External API connector';
 $string['gateway_mollie_external_connector_desc'] = 'Deze functie moet worden uitgeschakeld! (Alleen in te schakelen als je weet wat je doet)';
 $string['message:added_account'] = 'Je account is aangemaakt! Controleer je e-mail voor de details.';
+
+$string['gateway_mollie_partner_id'] = 'Partner id';
+$string['gateway_mollie_profile_key'] = 'Profile key';
+$string['gateway_mollie_app_secret'] = 'App secret';
+$string['form:newaccount'] = 'Een nieuw account maken op Mollie.nl';
+$string['form:username'] = 'Gebruikersnaam (mag nog niet bestaan op Mollie)';
+$string['form:name'] = 'Volledige naam';
+$string['form:company_name'] = 'Bedrijfsnaam';
+$string['form:email'] = 'E-mail';
+$string['form:address'] = 'Straat en huisnummer';
+$string['form:zipcode'] = 'Postcode';
+$string['form:city'] = 'Stad';
+$string['form:register'] = 'Registreren';
+$string['enrol_coursepayment_newaccount'] = 'Nieuw account aanmaken';
