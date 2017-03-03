@@ -85,6 +85,7 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configcheckbox('enrol_coursepayment/mailstudents_invoice', get_string('mailstudents', 'enrol_coursepayment'), '', 1));
     $settings->add(new admin_setting_configcheckbox('enrol_coursepayment/mailteachers_invoice', get_string('mailteachers', 'enrol_coursepayment'), '', 0));
     $settings->add(new admin_setting_configcheckbox('enrol_coursepayment/mailadmins_invoice', get_string('mailadmins', 'enrol_coursepayment'), '', 1));
+    $settings->add(new admin_setting_configtext('enrol_coursepayment/custom_mails_invoice', get_string('custommails', 'enrol_coursepayment'),  get_string('custommails_desc', 'enrol_coursepayment'), '' , PARAM_TEXT));
 
     // enrol instance defaults
     $settings->add(new admin_setting_heading('enrol_coursepayment_defaults', get_string('enrolinstancedefaults', 'admin'), get_string('enrolinstancedefaults_desc', 'admin')));

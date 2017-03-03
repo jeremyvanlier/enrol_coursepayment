@@ -623,6 +623,46 @@ abstract class enrol_coursepayment_gateway {
             }
         }
 
+        if (!empty($this->pluginconfig->custom_mails_invoice)) {
+            $parts = explode(',', $this->pluginconfig->custom_mails_invoice);
+            foreach ($parts as $part) {
+                $part = trim($part);
+                if(filter_var($part , FILTER_VALIDATE_EMAIL)){
+                    // Get temp user object.
+                    $dummyuser = new stdClass();
+                    $dummyuser->id = 1;
+                    $dummyuser->email = $part;
+                    $dummyuser->firstname = ' ';
+                    $dummyuser->username = ' ';
+                    $dummyuser->lastname = '';
+                    $dummyuser->confirmed = 1;
+                    $dummyuser->suspended = 0;
+                    $dummyuser->deleted = 0;
+                    $dummyuser->picture = 0;
+                    $dummyuser->auth = 'manual';
+                    $dummyuser->firstnamephonetic = '';
+                    $dummyuser->lastnamephonetic = '';
+                    $dummyuser->middlename = '';
+                    $dummyuser->alternatename = '';
+                    $dummyuser->imagealt = '';
+                    $dummyuser->emailstop =0 ;
+
+                    $eventdata = new stdClass();
+                    $eventdata->modulename = 'moodle';
+                    $eventdata->component = 'enrol_coursepayment';
+                    $eventdata->name = 'coursepayment_invoice';
+                    $eventdata->userfrom = core_user::get_support_user();
+                    $eventdata->userto = $dummyuser;
+                    $eventdata->subject = get_string("mail:invoice_subject", 'enrol_coursepayment', $a);
+                    $eventdata->fullmessage = html_to_text(get_string('mail:invoice_message', 'enrol_coursepayment', $a));
+                    $eventdata->fullmessageformat = FORMAT_HTML;
+                    $eventdata->fullmessagehtml = get_string('mail:invoice_message', 'enrol_coursepayment', $a);
+                    $eventdata->smallmessage = '';
+                    message_send($eventdata);
+                }
+            }
+        }
+
         return true;
     }
 

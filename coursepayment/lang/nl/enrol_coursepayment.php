@@ -188,3 +188,5 @@ $string['form:zipcode'] = 'Postcode';
 $string['form:city'] = 'Stad';
 $string['form:register'] = 'Registreren';
 $string['enrol_coursepayment_newaccount'] = 'Nieuw account aanmaken';
+$string['custommails'] = 'Extra email adressen';
+$string['custommails_desc'] = 'Voeg extra adressen toe die de factuur mogen ontvangen. (CSV format)';

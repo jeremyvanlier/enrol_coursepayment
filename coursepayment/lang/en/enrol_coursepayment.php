@@ -188,3 +188,5 @@ $string['form:city'] = 'City';
 $string['form:register'] = 'Register';
 $string['enrol_coursepayment_newaccount'] = 'New mollie account';
 $string['message:added_account'] = 'Your account is added! Check your e-mail for the details.';
+$string['custommails'] = 'Extra email addresses';
+$string['custommails_desc'] = 'Add extra addresses that should receive the invoice. (CSV format)';
