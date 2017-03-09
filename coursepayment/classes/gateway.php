@@ -627,7 +627,7 @@ abstract class enrol_coursepayment_gateway {
             $parts = explode(',', $this->pluginconfig->custom_mails_invoice);
             foreach ($parts as $part) {
                 $part = trim($part);
-                if(filter_var($part , FILTER_VALIDATE_EMAIL)){
+                if (filter_var($part, FILTER_VALIDATE_EMAIL)) {
                     // Get temp user object.
                     $dummyuser = new stdClass();
                     $dummyuser->id = 1;
@@ -645,7 +645,7 @@ abstract class enrol_coursepayment_gateway {
                     $dummyuser->middlename = '';
                     $dummyuser->alternatename = '';
                     $dummyuser->imagealt = '';
-                    $dummyuser->emailstop =0 ;
+                    $dummyuser->emailstop = 0;
 
                     $eventdata = new stdClass();
                     $eventdata->modulename = 'moodle';
@@ -736,5 +736,25 @@ abstract class enrol_coursepayment_gateway {
      */
     public function price($number = 0.00) {
         return number_format(round($number, 2), 2, ',', ' ');
+    }
+
+
+    /**
+     * Add agreement check if needed
+     *
+     * @return string
+     */
+    protected function add_agreement_checkbox() {
+        $string = '';
+
+        $agreement = get_config('enrol_coursepayment', 'link_agreement');
+        if (!empty($agreement)) {
+            $obj = new stdClass();
+            $obj->link = $agreement;
+            $string .= '<hr/>   <input type="checkbox" name="agreement" id="coursepayment_agreement" required><label for="coursepayment_agreement">' .
+                get_string('agreement_label', 'enrol_coursepayment', $obj) . '</label>';
+        }
+
+        return $string;
     }
 }

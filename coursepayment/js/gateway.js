@@ -34,7 +34,25 @@ M.enrol_coursepayment_gateway = {
         if (Y.one('#discountcode')) {
             this.validatediscount();
         }
+        if(Y.one('#coursepayment_agreement')){
+            this.validate_agreement();
+        }
     },
+    /**
+     * Validate agreement checkbox on form submit.
+     */
+    validate_agreement: function () {
+        M.enrol_coursepayment_gateway.log('validate_agreement()');
+        Y.all('.coursepayment_mollie_form').on("submit" , function (e) {
+
+            if(!Y.one('#coursepayment_agreement').get('checked')){
+                e.preventDefault();
+            }
+        });
+    },
+    /**
+     * Validate discount code.
+     */
     validatediscount: function () {
         M.enrol_coursepayment_gateway.log('validatediscount()');
 

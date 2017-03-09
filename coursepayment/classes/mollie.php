@@ -293,7 +293,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         try {
             $string .= '<div align="center">
                             <p>' . get_string('gateway_mollie_select_method', 'enrol_coursepayment') . '</p>
-                    <form id="coursepayment_mollie_form" action="" method="post">
+                    <form id="coursepayment_mollie_form" action="" class="coursepayment_mollie_form" method="post">
                     <table id="coursepayment_mollie_gateways" cellpadding="5">';
             $methods = $this->client->methods->all();
             $i = 0;
@@ -323,6 +323,10 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             }
 
             $string .= '</table>';
+
+            // Add agreement check box if a link is provided in the settings.
+            $string .= $this->add_agreement_checkbox();
+
             $string .= $this->form_discount_code($discountcode, $status);
             $string .= '<input type="hidden" name="gateway" value="' . $this->name . '" />
                     <input type="hidden" id="input_method" name="method" value="" />
@@ -609,5 +613,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         return $return;
 
     }
+
+
 
 }

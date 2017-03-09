@@ -190,3 +190,6 @@ $string['enrol_coursepayment_newaccount'] = 'New mollie account';
 $string['message:added_account'] = 'Your account is added! Check your e-mail for the details.';
 $string['custommails'] = 'Extra email addresses';
 $string['custommails_desc'] = 'Add extra addresses that should receive the invoice. (CSV format)';
+$string['link_agreement'] = 'Terms and Conditions';
+$string['link_agreement_desc'] = 'Users need to approve this link to the terms and conditions.';
+$string['agreement_label'] = 'I agree with the <a class="coursepayment-agreement-link" href="$a->link">terms and conditions</a>';
