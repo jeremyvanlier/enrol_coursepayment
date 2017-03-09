@@ -192,4 +192,4 @@ $string['custommails'] = 'Extra email adressen';
 $string['custommails_desc'] = 'Voeg extra adressen toe die de factuur mogen ontvangen. (CSV format)';
 $string['link_agreement'] = 'Algemene voorwaarden';
 $string['link_agreement_desc'] = 'Link naar de algemene voorwaarde die gebruikers voor de aankoop moeten accorderen. Wanneer u deze leeg laat, zal er geen algemene voorwaarde vertoond worden tijdens het aankoopprocedure.';
-$string['agreement_label'] = 'Ik ga akkoord met de <a class="coursepayment-agreement-link" href="$a->link">Algemene Voorwaarden</a>';
+$string['agreement_label'] = 'Ik ga akkoord met de <a class="coursepayment-agreement-link" href="{$a->link}">Algemene Voorwaarden</a>';
