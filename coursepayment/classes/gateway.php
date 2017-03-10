@@ -367,6 +367,7 @@ abstract class enrol_coursepayment_gateway {
         $obj->cost = $cost;
         $obj->vatpercentage = is_numeric($this->instanceconfig->customint1) ? $this->instanceconfig->customint1 : $this->pluginconfig->vatpercentage;
         $obj->status = self::PAYMENT_STATUS_WAITING;
+        $obj->section = isset($this->instanceconfig->section) ? $this->instanceconfig->section : -10;
         $id = $DB->insert_record('enrol_coursepayment', $obj);
 
         return array(

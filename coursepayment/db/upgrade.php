@@ -127,7 +127,7 @@ function xmldb_enrol_coursepayment_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2016111201, 'enrol', 'coursepayment');
     }
 
-    if ($oldversion < 2017031000) {
+    if ($oldversion < 2017031002) {
 
         // Define field section to be added to enrol_coursepayment.
         $table = new xmldb_table('enrol_coursepayment');
@@ -139,7 +139,7 @@ function xmldb_enrol_coursepayment_upgrade($oldversion) {
         }
 
         // Coursepayment savepoint reached.
-        upgrade_plugin_savepoint(true, 2017031000, 'enrol', 'coursepayment');
+        upgrade_plugin_savepoint(true, 2017031002, 'enrol', 'coursepayment');
     }
 
     return true;
