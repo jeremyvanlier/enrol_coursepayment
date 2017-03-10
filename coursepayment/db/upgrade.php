@@ -127,5 +127,20 @@ function xmldb_enrol_coursepayment_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2016111201, 'enrol', 'coursepayment');
     }
 
+    if ($oldversion < 2017031000) {
+
+        // Define field section to be added to enrol_coursepayment.
+        $table = new xmldb_table('enrol_coursepayment');
+        $field = new xmldb_field('section', XMLDB_TYPE_INTEGER, '3', null, null, null, '-10', 'is_activity');
+
+        // Conditionally launch add field section.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Coursepayment savepoint reached.
+        upgrade_plugin_savepoint(true, 2017031000, 'enrol', 'coursepayment');
+    }
+
     return true;
 }
