@@ -141,7 +141,7 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configselect('enrol_coursepayment/gateway_mollie_external_connector', get_string('gateway_mollie_external_connector', 'enrol_coursepayment'), get_string('gateway_mollie_external_connector_desc', 'enrol_coursepayment'), 0, $yesno));
 
     // Check if gateway_mollie_external_connector is enabled.
-    if ($config->gateway_mollie_external_connector) {
+    if (!empty($config->gateway_mollie_external_connector)) {
         $settings->add(new admin_setting_configtext('enrol_coursepayment/gateway_mollie_partner_id', get_string('gateway_mollie_partner_id', 'enrol_coursepayment'), '', '', PARAM_INT));
         $settings->add(new admin_setting_configtext('enrol_coursepayment/gateway_mollie_profile_key', get_string('gateway_mollie_profile_key', 'enrol_coursepayment'), '', '', PARAM_TEXT));
         $settings->add(new admin_setting_configtext('enrol_coursepayment/gateway_mollie_app_secret', get_string('gateway_mollie_app_secret', 'enrol_coursepayment'), '', '', PARAM_TEXT));
