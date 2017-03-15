@@ -38,7 +38,17 @@ if ($ADMIN->fulltree) {
         // Make sure its not a reseller.
         empty($config->gateway_mollie_external_connector)
     ) {
+
         // We should show a login box.
+        $PAGE->requires->strings_for_js(array(
+            'js:claim_title',
+            'js:claim_desc',
+            'js:username',
+            'js:password',
+            'js:connect',
+            'js:delay',
+        ), 'enrol_coursepayment');
+
         $PAGE->requires->js('/enrol/coursepayment/js/accountclaim.js');
     }
 

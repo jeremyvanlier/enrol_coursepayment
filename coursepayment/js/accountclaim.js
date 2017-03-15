@@ -15,13 +15,13 @@ YUI().use('event-base', 'json', 'node', "panel", "cookie", "io", 'anim', 'io-bas
          */
         var dialog = new Y.Panel({
             contentBox : Y.Node.create('<div id="dialog" />'),
-            bodyContent: '<div class="message"><i class="icon-warn"></i><b>Betaalprovider Mollie koppelen aan Avetica' +
-            '</b><br/><br/>Uw account is nog niet aan Avetica gekoppeld u kunt dit oplossen door' +
-            ' hieronder uw Mollie gebruikersnaam en wachtwoord in te vullen.<br/><br/>' +
-            '<label for="usernameM">Gebruikersnaam</label><input type="text" class="input" name="usernameM"' +
-            ' id="usernameM"/> ' +
-            '<label for="passwordM">Wachtwoord</label><input type="password" class="input" name="passwordM"' +
-            ' id="passwordM"/> ' +
+            bodyContent: '<div class="message"><i class="icon-warn"></i><b>' +
+            M.util.get_string('js:claim_title', 'enrol_coursepayment') +
+            '</b><br><br>' + M.util.get_string('js:claim_desc', 'enrol_coursepayment') + '<br><br>' +
+            '<label for="usernameM">' + M.util.get_string('js:username', 'enrol_coursepayment') + '</label><br>' +
+            '<input type="text" autocomplete="off" class="input" name="usernameM" id="usernameM" value="" required><br>' +
+            '<label for="passwordM">' + M.util.get_string('js:password', 'enrol_coursepayment') + '</label><br>' +
+            '<input type="password" autocomplete="off" class="input" name="passwordM" id="passwordM" value=""  required> ' +
             '</div>',
             width      : 410,
             zIndex     : 9999,
@@ -33,12 +33,12 @@ YUI().use('event-base', 'json', 'node', "panel", "cookie", "io", 'anim', 'io-bas
                 footer: [
                     {
                         name  : 'cancel',
-                        label : 'Uitstellen',
+                        label : M.util.get_string('js:delay', 'enrol_coursepayment') ,
                         action: 'onCancel'
                     },
                     {
                         name  : 'proceed',
-                        label : 'Koppelen',
+                        label : M.util.get_string('js:connect', 'enrol_coursepayment') ,
                         action: 'onOK'
                     }
                 ]
@@ -52,7 +52,9 @@ YUI().use('event-base', 'json', 'node', "panel", "cookie", "io", 'anim', 'io-bas
         dialog.onCancel = function (e) {
             e.preventDefault();
             this.hide();
-            Y.Cookie.set("dialog_accountclaim", true, {expires: new Date().addDays(1)});
+            var date = new Date(date);
+            date.setDate(date.getDate() + 1);
+            Y.Cookie.set("dialog_accountclaim", true, {expires: date , 'path' : '/'});
         };
 
         /**
@@ -98,8 +100,11 @@ YUI().use('event-base', 'json', 'node', "panel", "cookie", "io", 'anim', 'io-bas
                 }
             });
         };
-
-        dialog.show();
+        // Hide the popup if there is a cookie set.
+        var show = Y.Cookie.get("dialog_accountclaim") === null ? true : false;
+        if(show){
+            dialog.show();
+        }
     });
 
 });

@@ -193,3 +193,9 @@ $string['custommails_desc'] = 'Voeg extra adressen toe die de factuur mogen ontv
 $string['link_agreement'] = 'Algemene voorwaarden';
 $string['link_agreement_desc'] = 'Link naar de algemene voorwaarde die gebruikers voor de aankoop moeten accorderen. Wanneer u deze leeg laat, zal er geen algemene voorwaarde vertoond worden tijdens het aankoopprocedure.';
 $string['agreement_label'] = 'Ik ga akkoord met de <a class="coursepayment-agreement-link" href="{$a->link}">Algemene Voorwaarden</a>';
+$string['js:claim_title'] = 'Betaalprovider Mollie koppelen aan Avetica';
+$string['js:claim_desc'] = 'Uw account is nog niet aan Avetica gekoppeld u kunt dit oplossen door hieronder uw Mollie gebruikersnaam en wachtwoord in te vullen.';
+$string['js:username'] = 'Gebruikersnaam';
+$string['js:password'] = 'Wachtwoord';
+$string['js:delay'] = 'Uitstellen';
+$string['js:connect'] = 'Koppelen';
