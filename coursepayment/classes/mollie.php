@@ -246,9 +246,11 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
     /**
      * render the order_form of the gateway to allow order
      *
+     * @param bool $standalone
+     *
      * @return string
      */
-    public function order_form() {
+    public function order_form($standalone = false) {
 
         global $PAGE;
 
@@ -287,52 +289,18 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             }
         }
 
-        $PAGE->requires->js('/enrol/coursepayment/js/mollie.js');
         $string = '';
 
         try {
-            $string .= '<div align="center">
-                            <p>' . get_string('gateway_mollie_select_method', 'enrol_coursepayment') . '</p>
-                    <form id="coursepayment_mollie_form" action="" class="coursepayment_mollie_form" method="post">
-                    <table id="coursepayment_mollie_gateways" cellpadding="5">';
-            $methods = $this->client->methods->all();
-            $i = 0;
-            foreach ($methods as $method) {
 
-                $string .= '<tr data-method="' . $method->id . '" class="' . $method->id . (($i == 0) ? ' selected' : '') . '">';
-                $string .= '<td><b>' . htmlspecialchars($method->description) . '</b></td>';
-                $string .= '<td><img src="' . htmlspecialchars($method->image->normal) . '"></td>';
-                $string .= '</tr>';
+            if ($standalone) {
+                $string = $this->form_standalone($discountcode, $status);
+            } else {
 
-                if ($method->id == Mollie_API_Object_Method::IDEAL) {
-
-                    $issuers = $this->client->issuers->all();
-                    $string .= '<tr id="issuers_ideal" class="skip">
-                                    <td>
-                                    <select name="issuer">
-                                        <option value="">' . get_string('gateway_mollie_issuers', 'enrol_coursepayment') . '</option>';
-
-                    foreach ($issuers as $issuer) {
-                        if ($issuer->method == Mollie_API_Object_Method::IDEAL) {
-                            $string .= '<option value=' . htmlspecialchars($issuer->id) . '>' . htmlspecialchars($issuer->name) . '</option>';
-                        }
-                    }
-                    $string .= '</select></td><td>&nbsp;</td></tr>';
-                }
-                $i++;
+                $PAGE->requires->js('/enrol/coursepayment/js/mollie.js');
+                $string = $this->form_inline($discountcode, $status);
             }
 
-            $string .= '</table>';
-
-            // Add agreement check box if a link is provided in the settings.
-            $string .= $this->add_agreement_checkbox();
-
-            $string .= $this->form_discount_code($discountcode, $status);
-            $string .= '<input type="hidden" name="gateway" value="' . $this->name . '" />
-                    <input type="hidden" id="input_method" name="method" value="" />
-                    <input type="submit" class="form-submit" value="' . get_string('purchase', "enrol_coursepayment") . '" />
-                </form>
-            </div>';
 
         } catch (Mollie_API_Exception $e) {
             $this->log("API call failed: " . htmlspecialchars($e->getMessage()));
@@ -546,7 +514,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         // 4. Call API accountCreate
         try {
             $data->country = 'NL';
-           // $data->testmode = true;
+            // $data->testmode = true;
             $obj = (object)$mollie->accountCreate($data->username, (array)$data);
 
             $return['success'] = true;
@@ -614,6 +582,140 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
     }
 
+    /**
+     * Inline form
+     *
+     * @param string $discountcode
+     * @param string $status
+     *
+     * @return string
+     */
+    private function form_inline($discountcode = '', $status = '') {
 
+        $string = '<div align="center">
+                            <p>' . get_string('gateway_mollie_select_method', 'enrol_coursepayment') . '</p>
+                    <form id="coursepayment_mollie_form" action="" class="coursepayment_mollie_form" method="post">
+                    <table id="coursepayment_mollie_gateways" cellpadding="5">';
+        $methods = $this->client->methods->all();
+        $i = 0;
+        foreach ($methods as $method) {
+
+            $string .= '<tr data-method="' . $method->id . '" class="' . $method->id . (($i == 0) ? ' selected' : '') . '">';
+            $string .= '<td><b>' . htmlspecialchars($method->description) . '</b></td>';
+            $string .= '<td><img src="' . htmlspecialchars($method->image->normal) . '"></td>';
+            $string .= '</tr>';
+
+            if ($method->id == Mollie_API_Object_Method::IDEAL) {
+
+                $issuers = $this->client->issuers->all();
+                $string .= '<tr id="issuers_ideal" class="skip">
+                                    <td>
+                                    <select name="issuer">
+                                        <option value="">' . get_string('gateway_mollie_issuers', 'enrol_coursepayment') . '</option>';
+
+                foreach ($issuers as $issuer) {
+                    if ($issuer->method == Mollie_API_Object_Method::IDEAL) {
+                        $string .= '<option value=' . htmlspecialchars($issuer->id) . '>' . htmlspecialchars($issuer->name) . '</option>';
+                    }
+                }
+                $string .= '</select></td><td>&nbsp;</td></tr>';
+            }
+            $i++;
+        }
+
+        $string .= '</table>';
+
+        // Add agreement check box if a link is provided in the settings.
+        $string .= $this->add_agreement_checkbox();
+
+        $string .= $this->form_discount_code($discountcode, $status);
+        $string .= '<input type="hidden" name="gateway" value="' . $this->name . '" />
+                    <input type="hidden" id="input_method" name="method" value="" />
+                    <input type="submit" class="form-submit" value="' . get_string('purchase', "enrol_coursepayment") . '" />
+                </form>
+            </div>';
+
+        return $string;
+    }
+
+    /**
+     * Standalone form
+     *
+     * @param string $discountcode
+     * @param string $status
+     *
+     * @return string
+     */
+    private function form_standalone($discountcode = '', $status = '') {
+
+        $currency = ($this->instanceconfig->currency === 'EUR') ? '&euro;' : '&dollar;';
+
+        $string = '<div align="center" class="mollie-container">
+                        <div id="header">
+                            <div id="header-info" class="" title="Test">
+                            <strong>' . $this->pluginconfig->companyname . '</strong>
+                            ' . $this->instanceconfig->instancename . '
+                            </div>
+                            <div id="cost" class="hide">' . $this->instanceconfig->cost . '</div>
+                            <div id="header-amount" class="">
+                           ' . $currency . '&nbsp; <span>' . $this->instanceconfig->localisedcost . '</span>
+                            </div>
+                        </div>
+                    <form id="coursepayment_mollie_form" action="" class="coursepayment_mollie_form" method="post">
+                      <h1>' . get_string('gateway_mollie_select_method', 'enrol_coursepayment') . '</h1>';
+        $methods = $this->client->methods->all();
+        $i = 0;
+        $string .= '<ul class="buttons-grid">';
+
+        foreach ($methods as $method) {
+
+            $string .= '<li  data-method="' . $method->id . '" class="' . $method->id . (($i == 0) ? ' selected' : '') . '">
+				<button type="submit" class="grid-button-' . $method->id . '" name="method" value="' . $method->id . '">
+					' . htmlspecialchars($method->description) . '
+				</button>';
+
+            if ($method->id == Mollie_API_Object_Method::IDEAL) {
+
+                $issuers = $this->client->issuers->all();
+                $string .= '<div class="hide">
+                                <h1>IDEAL — KIES UW BANK</h1>
+                                <ul class="buttons-grid">';
+
+                foreach ($issuers as $issuer) {
+                    if ($issuer->method == Mollie_API_Object_Method::IDEAL) {
+                        $string .= '<li>
+                                        <button type="submit" class="grid-button-' . htmlspecialchars($issuer->id) . '" name="issuer" value="ideal_' . htmlspecialchars($issuer->id) . '">
+                                            ' . htmlspecialchars($issuer->name) . '
+                                        </button>
+                                    </li>';
+                    }
+                }
+                $string .= '</ul>
+                            </div>';
+            }
+            $i++;
+
+            $string .= '</li>';
+
+        }
+        $string .= '</ul>';
+
+
+        // Add agreement check box if a link is provided in the settings.
+        $string .= $this->add_agreement_checkbox();
+
+        $string .= $this->form_discount_code($discountcode, $status);
+        $string .= '<input type="hidden" name="gateway" value="' . $this->name . '" />
+                    <input type="hidden" id="input_method" name="method" value="" />
+                    </div>
+                </form>
+            </div>  
+            <p id="provider-notice">
+                 Terug naar <a href="/">Moodle</a> 
+            </p>
+     ';
+
+        return $string;
+    }
 
 }

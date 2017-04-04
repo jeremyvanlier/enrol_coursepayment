@@ -199,3 +199,5 @@ $string['js:username'] = 'Username';
 $string['js:password'] = 'Password';
 $string['js:delay'] = 'Delay';
 $string['js:connect'] = 'Connect';
+$string['standalone_purchase_page'] = 'Standalone payment page';
+$string['standalone_purchase_page_desc'] = 'Use a standalone payment page';

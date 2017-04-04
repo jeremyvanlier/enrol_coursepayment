@@ -65,6 +65,9 @@ if ($ADMIN->fulltree) {
     //--- settings ------------------------------------------------------------------------------------------
     $settings->add(new admin_setting_heading('enrol_coursepayment_settings', '', get_string('pluginname_desc', 'enrol_coursepayment')));
 
+    $settings->add(new admin_setting_configcheckbox('enrol_coursepayment/standalone_purchase_page', get_string('standalone_purchase_page', 'enrol_coursepayment'),
+        get_string('standalone_purchase_page_desc', 'enrol_coursepayment'), 0));
+
     $options = array(
         ENROL_EXT_REMOVED_KEEP => get_string('extremovedkeep', 'enrol'),
         ENROL_EXT_REMOVED_SUSPENDNOROLES => get_string('extremovedsuspendnoroles', 'enrol'),

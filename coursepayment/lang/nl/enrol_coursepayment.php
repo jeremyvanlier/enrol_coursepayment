@@ -199,3 +199,5 @@ $string['js:username'] = 'Gebruikersnaam';
 $string['js:password'] = 'Wachtwoord';
 $string['js:delay'] = 'Uitstellen';
 $string['js:connect'] = 'Koppelen';
+$string['standalone_purchase_page'] = 'Losse betalingspagina';
+$string['standalone_purchase_page_desc'] = 'Keuzescherm op een losse betalingspagina vertonen.';
