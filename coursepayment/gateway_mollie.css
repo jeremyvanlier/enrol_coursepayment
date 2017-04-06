@@ -1,0 +1,558 @@
+/*Clear*/
+html, body, body div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img,
+ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody,
+tfoot, thead, tr, th, td, article, aside, figure, footer, header, menu, nav, section, time, mark, audio, video, details, summary {
+    background: transparent;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+    font-size: 100%;
+    font-weight: normal;
+}
+
+a {
+    background: transparent;
+    font-size: 100%;
+    margin: 0;
+    outline: none;
+    padding: 0;
+    vertical-align: baseline;
+}
+
+abbr[title], dfn[title] {
+    border-bottom: 1px dotted #000;
+    cursor: help;
+}
+
+b, strong {
+    font-weight: bold;
+}
+
+button, input[type="button"], input[type="file"], input[type="submit"], label {
+    outline: none;
+    cursor: pointer;
+}
+
+button, input, select, textarea {
+    margin: 0;
+    outline: none;
+}
+
+button, input[type="button"] {
+    overflow: visible;
+    width: auto;
+}
+
+code, kbd, pre, samp {
+    font-family: monospace, sans-serif;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
+}
+
+input {
+    outline: none;
+    vertical-align: middle;
+}
+
+input[type="radio"] {
+    vertical-align: text-bottom;
+}
+
+input[type="checkbox"] {
+    vertical-align: bottom;
+}
+
+input, select, textarea {
+    font: 99% sans-serif;
+}
+
+textarea {
+    display: block;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+select {
+    vertical-align: middle;
+}
+
+small {
+    font-size: 85%;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-size: inherit;
+}
+
+td {
+    font-weight: normal;
+}
+
+td, td img {
+    vertical-align: top;
+}
+
+th {
+    font-weight: bold;
+    vertical-align: bottom;
+}
+
+article, aside, figure, footer, header, nav, section, details, summary {
+    display: block;
+}
+
+html {
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+/*End clear*/
+
+body {
+    background: #E8E8E8;
+}
+
+form {
+    background: #fff;
+    border-radius: 0 0 6px 6px;
+    color: #2c3643;
+    position: relative;
+}
+
+#header {
+    background: #464646;
+    border-top: 1px solid rgba(158, 158, 158, 0.25);
+    border-radius: 6px 6px 0 0;
+    color: #fff;
+    overflow: hidden;
+    padding: 23px 30px;
+    height: 90px;
+    position: relative;
+}
+
+#header-info {
+    float: left;
+    font-size: 18px;
+    line-height: 22px;
+    max-width: 65%;
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left;
+}
+
+#header-info strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 400;
+    opacity: .6;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#header-amount {
+    float: right;
+    font-size: 32px;
+    font-weight: 400;
+    letter-spacing: -1px;
+    line-height: 38px;
+    max-width: 34%;
+    text-align: right;
+    position: relative;
+    white-space: nowrap;
+}
+
+#header-amount sup {
+    font-size: 15px;
+    position: relative;
+    letter-spacing: 0;
+    top: 0
+}
+
+#provider-notice {
+    color: #71747b;
+    margin: 35px auto 0;
+    line-height: 24px;
+    position: relative;
+    text-align: center;
+}
+
+.mollie-container {
+    border-radius: 6px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    position: relative;
+    width: 380px;
+}
+
+h1 {
+    margin-bottom: 0;
+    margin-top: 0;
+    border-bottom: 1px solid #f2f0ed;
+    font-size: 12px;
+    letter-spacing: 1px;
+    line-height: 20px;
+    margin-bottom: 30px;
+    padding: 20px;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: normal;
+}
+
+.hide {
+    display: none;
+}
+
+/*
+ * === PAYMENT METHOD SELECTION ===
+ */
+.buttons-grid {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: transparent;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+    font-size: 100%;
+    font-weight: normal;
+    box-sizing: inherit;
+    display: block;
+}
+
+.buttons-grid li {
+    border-bottom: 1px solid #f2f0ed;
+    border-right: 1px solid #f2f0ed;
+    float: left;
+    text-align: center;
+    width: 50%;
+}
+
+.buttons-grid li:nth-child(even) {
+    border-right: 0;
+}
+
+.buttons-grid li:nth-last-child(2) {
+    border-bottom-width: 0;
+}
+
+.buttons-grid li:nth-child(even) {
+    border-bottom-width: 1px;
+}
+
+.buttons-grid li:last-child {
+    border-bottom: 0;
+}
+
+.buttons-grid li button {
+    background: #fff;
+    border: none;
+    color: #4e525c;
+    display: block;
+    height: 120px;
+    margin: 5px auto;
+    padding: 0;
+    width: 178px;
+}
+
+.buttons-grid li button:before {
+    content: "";
+    display: block;
+    background: transparent 0 0 no-repeat;
+    height: 37px;
+    margin: 0 auto 10px;
+    width: 55px;
+}
+
+.buttons-grid li button.grid-button-banktransfer:before {
+    width: 55px;
+    height: 37px;
+    background: url("/enrol/coursepayment/pix/mollie-payment-method-icons.png") no-repeat 0px -527px;
+    overflow: hidden;
+    display: block;
+}
+
+.buttons-grid li button.grid-button-belfius:before {
+    width: 55px;
+    height: 37px;
+    background: url("/enrol/coursepayment/pix/mollie-payment-method-icons.png") no-repeat 0px -215px;
+    overflow: hidden;
+    display: block;
+}
+
+.buttons-grid li button.grid-button-bitcoin:before {
+    width: 55px;
+    height: 37px;
+    background: url("/enrol/coursepayment/pix/mollie-payment-method-icons.png") no-repeat 0px -137px;
+    overflow: hidden;
+    display: block;
+}
+
+.buttons-grid li button.grid-button-creditcard:before {
+    width: 55px;
+    height: 37px;
+    background: url("/enrol/coursepayment/pix/mollie-payment-method-icons.png") no-repeat 0px -176px;
+    overflow: hidden;
+    display: block;
+}
+
+.buttons-grid li button.grid-button-directdebit:before {
+    width: 55px;
+    height: 37px;
+    background: url("/enrol/coursepayment/pix/mollie-payment-method-icons.png") no-repeat 0px -488px;
+    overflow: hidden;
+    display: block;
+}
+
+.buttons-grid li button.grid-button-ideal:before {
+    width: 55px;
+    height: 37px;
+    background: url("/enrol/coursepayment/pix/mollie-payment-method-icons.png") no-repeat 0px -254px;
+    overflow: hidden;
+    display: block;
+}
+
+.buttons-grid li button.grid-button-kbc:before {
+    width: 55px;
+    height: 37px;
+    background: url("/enrol/coursepayment/pix/mollie-payment-method-icons.png") no-repeat 0px -293px;
+    overflow: hidden;
+    display: block;
+}
+
+.buttons-grid li button.grid-button-mistercash:before {
+    background-image: url("/enrol/coursepayment/pix/mollie-payment-method-icons.png");
+    background-position: 0px -332px;
+    width: 55px;
+    height: 37px;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    display: block;
+}
+
+.buttons-grid li button.grid-button-paysafecard:before {
+    width: 55px;
+    height: 37px;
+    background: url("/enrol/coursepayment/pix/mollie-payment-method-icons.png") no-repeat 0px -410px;
+    overflow: hidden;
+    display: block;
+}
+
+.buttons-grid li button.grid-button-sofort:before {
+    width: 55px;
+    height: 37px;
+    background: url("/enrol/coursepayment/pix/mollie-payment-method-icons.png") no-repeat 0px -566px;
+    overflow: hidden;
+    display: block;
+}
+
+.buttons-grid li button.grid-button-paypal:before {
+    width: 55px;
+    height: 37px;
+    background: url("/enrol/coursepayment/pix/mollie-payment-method-icons.png") no-repeat 0px -371px;
+    overflow: hidden;
+    display: block;
+}
+
+.buttons-grid li button.grid-button-podiumcadeaukaart:before {
+    width: 55px;
+    height: 37px;
+    background: url("/enrol/coursepayment/pix/mollie-payment-method-icons.png") no-repeat 0px -449px;
+    overflow: hidden;
+    display: block;
+}
+
+.buttons-grid li button:hover, .buttons-grid li button:focus {
+    background: #f6f6f6;
+}
+
+.buttons-grid li button:active, .buttons-grid li button.active {
+    background: #F5F9F4;
+}
+
+.buttons-grid:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+body.body-icon-grid h1, body.body-icon-grid .infobox, body.body-icon-grid .errorbox, body.body-icon-grid .successbox, body.body-icon-grid .warningbox {
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.reload-mollie {
+    margin: 10px 0;
+}
+
+/*
+ * === VERTICAL RESPONSIVENESS ===
+ */
+@media screen and (max-height: 1200px) {
+    .buttons-grid li button {
+        height: 100px;
+    }
+}
+
+@media screen and (max-height: 1000px) {
+    .buttons-grid li button {
+        height: 85px;
+    }
+}
+
+/*
+ * === HORIZONTAL RESPONSIVENESS ===
+ */
+@media screen and (max-width: 460px) {
+    body {
+        padding: 10px 0;
+    }
+
+    p, fieldset {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    table th:first-child, table td:first-child {
+        padding-left: 20px;
+    }
+
+    table th:last-child, table td:last-child {
+        padding-right: 20px;
+    }
+
+    #logo {
+        margin-bottom: 10px;
+    }
+
+    #container {
+        margin-bottom: 0;
+        width: auto;
+    }
+
+    #header {
+        border-radius: 0;
+        padding: 30px 20px;
+    }
+
+    .buttons-grid li button {
+        width: 94%;
+    }
+
+    #footer .button {
+        border-radius: 0 !important;
+    }
+
+    #provider-notice {
+        margin-top: 10px;
+    }
+}
+
+/*
+ * === IDEAL ===
+ */
+.buttons-grid li button.grid-button-ideal_ABNANL2A:before {
+    width: 55px;
+    height: 37px;
+    background: url("/enrol/coursepayment/pix/mollie-ideal-issuer-icons.png") no-repeat 0px -346px;
+    overflow: hidden;
+    display: block;
+}
+
+.buttons-grid li button.grid-button-ideal_ASNBNL21:before {
+    width: 55px;
+    height: 37px;
+    background: url("/enrol/coursepayment/pix/mollie-ideal-issuer-icons.png") no-repeat 0px -190px;
+    overflow: hidden;
+    display: block;
+}
+
+.buttons-grid li button.grid-button-ideal_INGBNL2A:before {
+    width: 55px;
+    height: 37px;
+    background: url("/enrol/coursepayment/pix/mollie-ideal-issuer-icons.png") no-repeat 0px -151px;
+    overflow: hidden;
+    display: block;
+}
+
+.buttons-grid li button.grid-button-ideal_KNABNL2H:before {
+    width: 55px;
+    height: 37px;
+    background: url("/enrol/coursepayment/pix/mollie-ideal-issuer-icons.png") no-repeat 0px -34px;
+    overflow: hidden;
+    display: block;
+}
+
+.buttons-grid li button.grid-button-ideal_RABONL2U:before {
+    width: 55px;
+    height: 37px;
+    background: url("/enrol/coursepayment/pix/mollie-ideal-issuer-icons.png") no-repeat 0px -229px;
+    overflow: hidden;
+    display: block;
+}
+
+.buttons-grid li button.grid-button-ideal_RBRBNL21:before {
+    width: 55px;
+    height: 37px;
+    background: url("/enrol/coursepayment/pix/mollie-ideal-issuer-icons.png") no-repeat 0px -268px;
+    overflow: hidden;
+    display: block;
+}
+
+.buttons-grid li button.grid-button-ideal_SNSBNL2A:before {
+    width: 55px;
+    height: 37px;
+    background: url("/enrol/coursepayment/pix/mollie-ideal-issuer-icons.png") no-repeat 0px -307px;
+    overflow: hidden;
+    display: block;
+}
+
+.buttons-grid li button.grid-button-ideal_TRIONL2U:before {
+    width: 55px;
+    height: 37px;
+    background: url("/enrol/coursepayment/pix/mollie-ideal-issuer-icons.png") no-repeat 0px -385px;
+    overflow: hidden;
+    display: block;
+}
+
+.buttons-grid li button.grid-button-ideal_FVLBNL22:before {
+    width: 55px;
+    height: 37px;
+    background: url("/enrol/coursepayment/pix/mollie-ideal-issuer-icons.png") no-repeat 0px -112px;
+    overflow: hidden;
+    display: block;
+}
+
+.buttons-grid li button.grid-button-ideal_BUNQNL2A:before {
+    width: 55px;
+    height: 37px;
+    background: url("/enrol/coursepayment/pix/mollie-ideal-issuer-icons.png") no-repeat 0px -73px;
+    overflow: hidden;
+    display: block;
+}
+
+.buttons-grid li button.grid-button-ideal_TESTNL99:before {
+    width: 32px;
+    height: 32px;
+    background: url("/enrol/coursepayment/pix/mollie-ideal-issuer-icons.png") no-repeat 0px 0px;
+    overflow: hidden;
+    display: block;
+}

@@ -199,3 +199,7 @@ $string['js:username'] = 'Username';
 $string['js:password'] = 'Password';
 $string['js:delay'] = 'Delay';
 $string['js:connect'] = 'Connect';
+$string['standalone_purchase_page'] = 'Standalone payment page';
+$string['standalone_purchase_page_desc'] = 'Use a standalone payment page';
+$string['gateway_mollie_ideal_heading'] = 'IDEAL — Select your bank';
+$string['gateway_mollie_backlink'] = 'Back to <a href="/">Moodle</a> ';

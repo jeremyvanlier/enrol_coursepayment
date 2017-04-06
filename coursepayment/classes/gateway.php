@@ -159,9 +159,11 @@ abstract class enrol_coursepayment_gateway {
     /**
      * render the order_form of the gateway to allow order
      *
+     * @param bool $standalone
+     *
      * @return string
      */
-    abstract public function order_form();
+    abstract public function order_form($standalone = false);
 
     /**
      * check if a order is valid

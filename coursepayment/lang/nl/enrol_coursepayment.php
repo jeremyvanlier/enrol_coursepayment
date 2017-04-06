@@ -199,3 +199,7 @@ $string['js:username'] = 'Gebruikersnaam';
 $string['js:password'] = 'Wachtwoord';
 $string['js:delay'] = 'Uitstellen';
 $string['js:connect'] = 'Koppelen';
+$string['standalone_purchase_page'] = 'Losse betalingspagina';
+$string['standalone_purchase_page_desc'] = 'Keuzescherm op een losse betalingspagina vertonen.';
+$string['gateway_mollie_ideal_heading'] = 'IDEAL — KIES UW BANK';
+$string['gateway_mollie_backlink'] = 'Terug naar <a href="/">Moodle</a> ';

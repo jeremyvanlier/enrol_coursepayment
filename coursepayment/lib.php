@@ -23,7 +23,6 @@
  * @copyright 2015 MoodleFreak.com
  * @author    Luuk Verhoeven
  */
-
 class enrol_coursepayment_plugin extends enrol_plugin {
 
     /**
@@ -161,7 +160,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * @return string html text, usually a form in a text box
      */
     function enrol_page_hook(stdClass $instance) {
-        global $USER, $OUTPUT, $DB , $COURSE , $PAGE , $CFG;
+        global $USER, $OUTPUT, $DB, $COURSE, $PAGE, $CFG;
 
         $gatewaymethod = optional_param('gateway', false, PARAM_ALPHA);
 
@@ -186,18 +185,18 @@ class enrol_coursepayment_plugin extends enrol_plugin {
         }
 
         // Get the course
-        if($COURSE->id == $instance->courseid){
+        if ($COURSE->id == $instance->courseid) {
             // Prevent extra query if possible
             $course = $COURSE;
-        }else{
-            $course = $DB->get_record('course', array('id'=>$instance->courseid) , '*' , MUST_EXIST);
+        } else {
+            $course = $DB->get_record('course', array('id' => $instance->courseid), '*', MUST_EXIST);
         }
 
         // Set main gateway javascript
         $jsmodule = array(
             'name' => 'enrol_coursepayment_gateway',
             'fullpath' => '/enrol/coursepayment/js/gateway.js',
-            'requires' => array('node' , 'io')
+            'requires' => array('node', 'io')
         );
 
         $PAGE->requires->js_init_call('M.enrol_coursepayment_gateway.init', array(
@@ -221,11 +220,11 @@ class enrol_coursepayment_plugin extends enrol_plugin {
         $config->customint1 = $instance->customint1;
 
         // you can set a custom text to be shown instead of instance name
-        $name = !empty($instance->customtext1) ? $instance->customtext1: $config->instancename ;
+        $name = !empty($instance->customtext1) ? $instance->customtext1 : $config->instancename;
 
         echo '<div align="center">
                             <h3 class="coursepayment_instancename">' . $name . '</h3>
-                            <p><b>' . get_string("cost") . ': <span id="coursepayment_cost">' .  $config->localisedcost . '</span> ' . $instance->currency . ' </b></p>
+                            <p><b>' . get_string("cost") . ': <span id="coursepayment_cost">' . $config->localisedcost . '</span> ' . $instance->currency . ' </b></p>
                           </div>';
 
         // payment method is selected
@@ -234,6 +233,15 @@ class enrol_coursepayment_plugin extends enrol_plugin {
             $gateway = 'enrol_coursepayment_' . $gatewaymethod;
             if (!class_exists($gateway)) {
                 return ob_get_clean();
+            }
+
+            // Redirect to a standalone payment page.
+            if(!empty( $this->get_config('standalone_purchase_page'))){
+                redirect(new moodle_url('/enrol/coursepayment/view/purchase.php', [
+                    'instanceid' => $instance->id,
+                    'gateway' => $gatewaymethod,
+                    'id' => $course->id
+                ]));
             }
 
             /* @var enrol_coursepayment_gateway $gateway */
@@ -419,13 +427,13 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      *
      * @return array
      */
-    public function order_valid($orderid = '' , $gateway = '')
-    {
-        $return = array('status' => false , 'message' => '');
+    public function order_valid($orderid = '', $gateway = '') {
+        $return = array('status' => false, 'message' => '');
 
         $gateway = 'enrol_coursepayment_' . $gateway;
         if (!class_exists($gateway)) {
-            $return['message'] = get_string('gateway_not_exists' , 'enrol_coursepayment');
+            $return['message'] = get_string('gateway_not_exists', 'enrol_coursepayment');
+
             return $return;
         }
 
@@ -438,19 +446,19 @@ class enrol_coursepayment_plugin extends enrol_plugin {
 
 
     /**
-     * process orders with the cron if we missed a ipn call we can query the gateway API to check if something has a new status
+     * process orders with the cron if we missed a ipn call we can query the gateway API to check if something has a
+     * new status
+     *
      * @global moodle_database $DB
      */
     public function cron_process_orders() {
         global $DB;
 
         mtrace(__CLASS__ . ' | ' . __FUNCTION__);
-        $results = $DB->get_records('enrol_coursepayment', array('status' => enrol_coursepayment_gateway::PAYMENT_STATUS_WAITING) , 'id, orderid, gateway');
+        $results = $DB->get_records('enrol_coursepayment', array('status' => enrol_coursepayment_gateway::PAYMENT_STATUS_WAITING), 'id, orderid, gateway');
 
-        if ($results)
-        {
-            foreach($results as $row)
-            {
+        if ($results) {
+            foreach ($results as $row) {
                 $gateway = 'enrol_coursepayment_' . $row->gateway;
                 if (!class_exists($gateway)) {
                     continue;
@@ -459,11 +467,9 @@ class enrol_coursepayment_plugin extends enrol_plugin {
                 /* @var enrol_coursepayment_gateway $gateway */
                 $gateway = new $gateway();
                 $return = $gateway->validate_order($row->orderid);
-                mtrace($row->id . ' | '.  print_r($return , true));
+                mtrace($row->id . ' | ' . print_r($return, true));
             }
-        }
-        else
-        {
+        } else {
             mtrace('No orders are waiting on a status update');
         }
         mtrace('-------------');
@@ -471,9 +477,10 @@ class enrol_coursepayment_plugin extends enrol_plugin {
 
     /**
      * return all vat percentage that are possible
+     *
      * @return array
      */
-    public function get_vat_percentages(){
-       return range(0, 99);
+    public function get_vat_percentages() {
+        return range(0, 99);
     }
 }
