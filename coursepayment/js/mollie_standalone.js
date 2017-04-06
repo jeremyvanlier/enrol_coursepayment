@@ -54,6 +54,9 @@ M.enrol_coursepayment_mollie_standalone = {
         this.config.ajaxurl = ajaxurl;
         this.config.sesskey = sesskey;
 
+        // Fix price format.
+        Y.one('#header-amount span').setHTML(this.pricformat( parseFloat(Y.one('#cost').get("text"))));
+
         M.enrol_coursepayment_mollie_standalone.log(this.config);
         if (Y.one('#discountcode')) {
             this.validatediscount();
@@ -81,7 +84,6 @@ M.enrol_coursepayment_mollie_standalone = {
             Y.one('#methods').append(clone);
             item.remove();
         });
-
     },
     /**
      * Validate agreement checkbox on form submit.
@@ -96,9 +98,9 @@ M.enrol_coursepayment_mollie_standalone = {
             if (!Y.one('#coursepayment_agreement').get('checked')) {
                 e.preventDefault();
             }
-
-            // Debugging.
-            e.preventDefault();
+            //
+            // // Debugging.
+            // e.preventDefault();
         });
     },
 
@@ -106,10 +108,13 @@ M.enrol_coursepayment_mollie_standalone = {
      * Get pricing.
      */
     get_price: function () {
-
-        var costorignal = Y.one('#cost').get("text");
-        M.enrol_coursepayment_mollie_standalone.log(costorignal);
+        var newprice = 0;
+        var costorignal = parseFloat(Y.one('#cost').get("text"));
         var config = M.enrol_coursepayment_mollie_standalone.config;
+
+        // The original price.
+        M.enrol_coursepayment_mollie_standalone.log(costorignal);
+
         Y.io(config.ajaxurl, {
             method : 'GET',
             data   : {
@@ -125,14 +130,14 @@ M.enrol_coursepayment_mollie_standalone = {
                         if (response.error) {
                             Y.one('#discountcode').setStyle('border', '1px solid red');
                             Y.one('#error_coursepayment').setHTML(response.error);
-                            Y.one('#header-amount span').setHTML(costorignal.toFixed(2));
+                            Y.one('#header-amount span').setHTML(M.enrol_coursepayment_mollie_standalone.pricformat(costorignal));
                         }
                         else if (response.status == true) {
                             Y.one('#error_coursepayment').setHTML('');
                             Y.one('#discountcode').setStyle('border', '1px solid green');
                             // Update
 
-                            var newprice = 0;
+
                             if (response.amount > 0) {
                                 newprice = parseFloat(costorignal) - response.amount;
                                 if (newprice < 0) {

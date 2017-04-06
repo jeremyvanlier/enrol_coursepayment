@@ -93,8 +93,6 @@ $config->locale = $USER->lang;
 $config->customint1 = $instance->customint1;
 
 
-echo $OUTPUT->header();
-
 $gateway = 'enrol_coursepayment_' . $gateway;
 if (!class_exists($gateway)) {
     throw new Exception('Gateway not exists');
@@ -102,7 +100,10 @@ if (!class_exists($gateway)) {
 /* @var enrol_coursepayment_gateway $gateway */
 $gateway = new $gateway();
 $gateway->set_instanceconfig($config);
-echo $gateway->order_form(true);
 
+$form =  $gateway->order_form(true);
+
+echo $OUTPUT->header();
+echo $form;
 echo $OUTPUT->footer();
 

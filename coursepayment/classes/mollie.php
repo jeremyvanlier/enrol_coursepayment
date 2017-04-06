@@ -271,7 +271,9 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         $status = array();
 
         // method is selected by the user
-        if (!empty($method)) {
+        if (!empty($method) || !empty($issuer)) {
+            // Allow empty method.
+            $method = !empty($issuer) ? 'ideal' : $method;
 
             switch ($itemtype) {
                 case 'activity':
@@ -679,13 +681,13 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
                 $issuers = $this->client->issuers->all();
                 $string .= '<div id="ideal-issuers" class="hide">
-                                <h1>IDEAL — KIES UW BANK</h1>
+                                <h1>'.get_string('gateway_mollie_ideal_heading' , 'enrol_coursepayment').'</h1>
                                 <ul  class="buttons-grid ">';
 
                 foreach ($issuers as $issuer) {
                     if ($issuer->method == Mollie_API_Object_Method::IDEAL) {
                         $string .= '<li>
-                                        <button type="submit" class="grid-button-' . htmlspecialchars($issuer->id) . '" name="issuer" value="ideal_' . htmlspecialchars($issuer->id) . '">
+                                        <button type="submit" class="grid-button-' . htmlspecialchars($issuer->id) . '" name="issuer" value="' . htmlspecialchars($issuer->id) . '">
                                             ' . htmlspecialchars($issuer->name) . '
                                         </button>
                                     </li>';
@@ -707,12 +709,11 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
         $string .= $this->form_discount_code($discountcode, $status);
         $string .= '<input type="hidden" name="gateway" value="' . $this->name . '" />
-                    <input type="hidden" id="input_method" name="method" value="" />
                     </div>
                 </form>
             </div>  
             <p id="provider-notice">
-                 Terug naar <a href="/">Moodle</a> 
+                 '.get_string('gateway_mollie_backlink' , 'enrol_coursepayment').'
             </p>
      ';
 
