@@ -662,6 +662,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                             </div>
                         </div>
                     <form id="coursepayment_mollie_form" action="" class="coursepayment_mollie_form" method="post">
+                        <div id="methods">
                       <h1>' . get_string('gateway_mollie_select_method', 'enrol_coursepayment') . '</h1>';
         $methods = $this->client->methods->all();
         $i = 0;
@@ -677,9 +678,9 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             if ($method->id == Mollie_API_Object_Method::IDEAL) {
 
                 $issuers = $this->client->issuers->all();
-                $string .= '<div class="hide">
+                $string .= '<div id="ideal-issuers" class="hide">
                                 <h1>IDEAL — KIES UW BANK</h1>
-                                <ul class="buttons-grid">';
+                                <ul  class="buttons-grid ">';
 
                 foreach ($issuers as $issuer) {
                     if ($issuer->method == Mollie_API_Object_Method::IDEAL) {
@@ -698,7 +699,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             $string .= '</li>';
 
         }
-        $string .= '</ul>';
+        $string .= '</ul></div>';
 
 
         // Add agreement check box if a link is provided in the settings.
