@@ -649,7 +649,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * @return string
      */
     private function form_standalone($discountcode = '', $status = '') {
-
+        global $SITE;
         $currency = ($this->instanceconfig->currency === 'EUR') ? '&euro;' : '&dollar;';
 
         $string = '<div align="center" class="mollie-container">
@@ -713,10 +713,9 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                 </form>
             </div>  
             <p id="provider-notice">
-                 '.get_string('gateway_mollie_backlink' , 'enrol_coursepayment').'
+                 '.get_string('gateway_mollie_backlink' , 'enrol_coursepayment' , $SITE).'
             </p>
      ';
-
         return $string;
     }
 

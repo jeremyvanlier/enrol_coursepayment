@@ -754,8 +754,8 @@ abstract class enrol_coursepayment_gateway {
         if (!empty($agreement)) {
             $obj = new stdClass();
             $obj->link = $agreement;
-            $string .= '<hr/>   <input type="checkbox" name="agreement" id="coursepayment_agreement" required><label for="coursepayment_agreement">' .
-                get_string('agreement_label', 'enrol_coursepayment', $obj) . '</label>';
+            $string .= '<hr/>  <div id="coursepayment_agreement_checkbox"> <input type="checkbox" name="agreement" id="coursepayment_agreement" required><label for="coursepayment_agreement">' .
+                get_string('agreement_label', 'enrol_coursepayment', $obj) . '</label></div>';
         }
 
         return $string;
