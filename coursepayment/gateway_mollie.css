@@ -1,4 +1,10 @@
 /*Clear*/
+body{
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif  !important;
+    font-size: 14px  !important;
+}
+
+
 html, body, body div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img,
 ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody,
 tfoot, thead, tr, th, td, article, aside, figure, footer, header, menu, nav, section, time, mark, audio, video, details, summary {
@@ -44,17 +50,13 @@ button, input[type="button"] {
     width: auto;
 }
 
-code, kbd, pre, samp {
-    font-family: monospace, sans-serif;
-}
-
 hr {
-    display: block;
-    height: 1px;
-    border: 0;
-    border-top: 1px solid #ccc;
-    margin: 1em 0;
-    padding: 0;
+    display: block  !important;
+    height: 1px  !important;
+    border: 0  !important;
+    border-top: 1px solid #ccc  !important;
+    margin: 1em 0  !important;
+    padding: 0  !important;
 }
 
 input {
@@ -124,14 +126,14 @@ html {
 /*End clear*/
 
 body {
-    background: #E8E8E8;
+    background: #E8E8E8  !important;
 }
 
 form {
-    background: #fff;
-    border-radius: 0 0 6px 6px;
-    color: #2c3643;
-    position: relative;
+    background: #fff  !important;
+    border-radius: 0 0 6px 6px  !important;
+    color: #2c3643  !important;
+    position: relative !important;
 }
 
 #header {
@@ -203,17 +205,18 @@ form {
 }
 
 h1 {
-    margin-bottom: 0;
-    margin-top: 0;
-    border-bottom: 1px solid #f2f0ed;
-    font-size: 12px;
-    letter-spacing: 1px;
-    line-height: 20px;
-    margin-bottom: 30px;
-    padding: 20px;
-    text-align: center;
-    text-transform: uppercase;
-    font-weight: normal;
+    color: #000 !important;
+    margin-bottom: 0  !important;
+    margin-top: 0  !important;
+    border-bottom: 1px solid #f2f0ed  !important;
+    font-size: 12px  !important;
+    letter-spacing: 1px  !important;
+    line-height: 20px  !important;
+    margin-bottom: 30px  !important;
+    padding: 20px  !important;
+    text-align: center  !important;
+    text-transform: uppercase  !important;
+    font-weight: normal  !important;
 }
 
 .hide {
@@ -224,26 +227,27 @@ h1 {
  * === PAYMENT METHOD SELECTION ===
  */
 .buttons-grid {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+    margin: 0  !important;
+    padding: 0  !important;
+    padding: 0  !important;
+    list-style: none  !important;
     background: transparent;
-    border: 0;
-    margin: 0;
-    padding: 0;
-    vertical-align: baseline;
-    font-size: 100%;
-    font-weight: normal;
-    box-sizing: inherit;
-    display: block;
+    border: 0  !important;
+    margin: 0  !important;
+    padding: 0  !important;
+    vertical-align: baseline  !important;
+    font-size: 100%  !important;
+    font-weight: normal  !important;
+    box-sizing: inherit  !important;
+    display: block !important;
 }
 
 .buttons-grid li {
-    border-bottom: 1px solid #f2f0ed;
-    border-right: 1px solid #f2f0ed;
-    float: left;
-    text-align: center;
-    width: 50%;
+    border-bottom: 1px solid #f2f0ed  !important;
+    border-right: 1px solid #f2f0ed  !important;
+    float: left  !important;
+    text-align: center  !important;
+    width: 50%  !important;
 }
 
 .buttons-grid li:nth-child(even) {
@@ -263,14 +267,15 @@ h1 {
 }
 
 .buttons-grid li button {
-    background: #fff;
-    border: none;
-    color: #4e525c;
-    display: block;
-    height: 120px;
-    margin: 5px auto;
-    padding: 0;
-    width: 178px;
+    background: #fff !important;
+    border: none  !important;
+    color: #4e525c  !important;
+    display: block  !important;
+    height: 120px  !important;
+    margin: 5px auto  !important;
+    padding: 0  !important;
+    width: 178px  !important;
+    text-transform: none !important;
 }
 
 .buttons-grid li button:before {
@@ -381,17 +386,17 @@ h1 {
 }
 
 .buttons-grid li button:hover, .buttons-grid li button:focus {
-    background: #f6f6f6;
+    background: #f6f6f6  !important;
 }
 
 .buttons-grid li button:active, .buttons-grid li button.active {
-    background: #F5F9F4;
+    background: #F5F9F4  !important;
 }
 
 .buttons-grid:after {
-    content: "";
-    display: block;
-    clear: both;
+    content: ""  !important;
+    display: block  !important;
+    clear: both  !important;
 }
 
 body.body-icon-grid h1, body.body-icon-grid .infobox, body.body-icon-grid .errorbox, body.body-icon-grid .successbox, body.body-icon-grid .warningbox {
