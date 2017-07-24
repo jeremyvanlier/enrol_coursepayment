@@ -54,4 +54,52 @@ class enrol_coursepayment_helper {
 
         return $result;
     }
+
+    /**
+     * get_cmid_info
+     *
+     * @param int $cmid
+     * @param int $courseid
+     *
+     * @return bool|\cm_info
+     */
+    public static function get_cmid_info($cmid = 0, $courseid = 0) {
+
+        $modinfo = get_fast_modinfo($courseid);
+        foreach ($modinfo->sections as $sectionnum => $section) {
+            foreach ($section as $coursemoduleid) {
+                if ($coursemoduleid == $cmid) {
+                    return $modinfo->cms[$coursemoduleid];
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * get_cmid_info
+     *
+     * @param int $sectionnumber
+     * @param int $courseid
+     *
+     * @return bool|\cm_info
+     */
+    public static function get_section_info($sectionnumber = 0, $courseid = 0) {
+        global $DB;
+
+        $section = $DB->get_record('course_sections', [
+            'course' => $courseid,
+            'section' => $sectionnumber
+        ], '*', MUST_EXIST);
+
+        $courseformat = course_get_format($courseid);
+        $defaultsectionname = $courseformat->get_default_section_name($section);
+
+        $module = new \stdClass();
+        $module->name = $defaultsectionname;
+
+        return $module;
+    }
+
 }

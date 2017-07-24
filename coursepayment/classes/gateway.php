@@ -538,7 +538,20 @@ abstract class enrol_coursepayment_gateway {
         $a->fullname = fullname($user);
         $a->email = $user->email;
         $a->date = date('d-m-Y, H:i', $record->addedon);
-        $a->fullcourse = $course->fullname;
+
+        // Fix this could also be a activity or section.
+        if($record->cmid > 0 && $record->is_activity == 1) {
+            $module = enrol_coursepayment_helper::get_cmid_info($record->cmid, $course->id);
+            $a->fullcourse = $module->name;
+            $a->content_type = get_string('activity');
+        }elseif($record->section > 0){
+            $module = enrol_coursepayment_helper::get_section_info($record->section, $course->id);
+            $a->fullcourse = $module->name;
+            $a->content_type = get_string('section');
+        }else{
+            $a->fullcourse = $course->fullname;
+            $a->content_type = get_string('course');
+        }
 
         // Set record invoice number this is not done
         if ($record->invoice_number == 0) {
@@ -560,7 +573,7 @@ abstract class enrol_coursepayment_gateway {
 
         // Calculate cost
         $a->cost = $this->price($record->cost);
-        $a->vatpercentage = is_numeric($plugininstance->customint1) ? $plugininstance->customint1 : $this->pluginconfig->vatpercentage;
+        $a->vatpercentage = $record->vatpercentage;
         $a->costvat = $this->price(($a->cost / (100 + $a->vatpercentage)) * $a->vatpercentage);
 
         if (!empty($this->pluginconfig->mailstudents_invoice)) {

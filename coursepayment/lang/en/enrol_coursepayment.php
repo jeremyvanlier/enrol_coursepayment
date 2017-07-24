@@ -131,7 +131,7 @@ $string['zipcode'] = 'Zipcode';
 $string['address'] = 'Address';
 $string['companyname'] = 'Companyname';
 
-$string['mail:invoice_subject'] = 'Thank you for ordering: {$a->course} / {$a->fullname}';
+$string['mail:invoice_subject'] = 'Thank you for ordering: {$a->content_type} - {$a->fullcourse} / {$a->fullname}';
 $string['mail:invoice_message'] = '<h2>INVOICE</h2>
 <br/>
 <b>{$a->companyname}</b><br/>
@@ -151,7 +151,7 @@ To:<br/>
 <br/>
 <table cellpadding="0" cellspacing="0" style="margin:0;padding:0;width: 100%">
     <tr>
-        <td colspan="2">Course: {$a->fullcourse}</td>
+        <td colspan="2">{$a->content_type}: {$a->fullcourse}</td>
     </tr>
     <tr>
         <td colspan="2">&nbsp;</td>

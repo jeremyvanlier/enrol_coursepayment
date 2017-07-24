@@ -130,7 +130,7 @@ $string['zipcode'] = 'Postcode';
 $string['address'] = 'Adres';
 $string['companyname'] = 'Naam organisatie';
 // MAIL
-$string['mail:invoice_subject'] = 'Bedankt voor het kopen van: {$a->course} / {$a->fullname}';
+$string['mail:invoice_subject'] = 'Bedankt voor het kopen van: {$a->content_type} - {$a->fullcourse} / {$a->fullname}';
 $string['mail:invoice_message'] = '<h2>Factuur</h2>
 <br/>
 <b>{$a->companyname}</b><br/>
@@ -150,7 +150,7 @@ Aan:<br/>
 <br/>
 <table cellpadding="0" cellspacing="0" style="margin:0;padding:0;width: 100%">
     <tr>
-        <td colspan="2">Cursusmodule: {$a->fullcourse}</td>
+        <td colspan="2">{$a->content_type}: {$a->fullcourse}</td>
     </tr>
     <tr>
         <td colspan="2">&nbsp;</td>
