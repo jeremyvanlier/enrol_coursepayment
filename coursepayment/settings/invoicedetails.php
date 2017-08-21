@@ -1,0 +1,45 @@
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Invoice details tab
+ *
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package coursepayment
+ * @copyright 2017 MoodleFreak.com
+ * @author    Luuk Verhoeven
+ **/
+defined('MOODLE_INTERNAL') || die();
+($ADMIN->fulltree) || die();
+
+$settings->add(new admin_setting_heading('enrol_coursepayment_settings', '',
+    get_string('pluginname_desc', 'enrol_coursepayment')));
+$settings->add(new admin_setting_heading('enrol_coursepayment_invoicedetails',
+    get_string('invoicedetails', 'enrol_coursepayment'),
+    get_string('invoicedetails_desc', 'enrol_coursepayment')));
+$settings->add(new admin_setting_configtext('enrol_coursepayment/companyname',
+    get_string('companyname', 'enrol_coursepayment'), '', '', PARAM_TEXT));
+$settings->add(new admin_setting_configtext('enrol_coursepayment/address',
+    get_string('address', 'enrol_coursepayment'), '', '', PARAM_TEXT));
+$settings->add(new admin_setting_configtext('enrol_coursepayment/zipcode',
+    get_string('zipcode', 'enrol_coursepayment'), '', '', PARAM_TEXT));
+$settings->add(new admin_setting_configtext('enrol_coursepayment/place',
+    get_string('place', 'enrol_coursepayment'), '', '', PARAM_TEXT));
+$settings->add(new admin_setting_configtext('enrol_coursepayment/kvk',
+    get_string('kvk', 'enrol_coursepayment'), '', '', PARAM_TEXT));
+$settings->add(new admin_setting_configtext('enrol_coursepayment/btw',
+    get_string('btw', 'enrol_coursepayment'), '', '', PARAM_TEXT));
