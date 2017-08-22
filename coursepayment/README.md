@@ -37,6 +37,9 @@ Changelog
 
 See Git for the complete history, major changes will be listed below
 
+2017082101 - Added multi account option, to support multiple Mollie accounts. 
+   The correct payment account is selected based on profile field
+
 2017021701 - Added reseller support and direct account create function
 
 2017021000 - Added latest https://github.com/mollie/mollie-api-php
