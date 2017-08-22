@@ -210,6 +210,11 @@ $string['settings:tab_gateway'] = 'Gateway';
 $string['settings:tab_enrolment'] = 'Enrolment';
 $string['settings:tab_advanced'] = 'Advanced';
 $string['settings:tab_mail'] = 'E-mail';
+$string['settings:tab_multiaccount'] = 'Multi-account';
 $string['multi_account_heading'] = 'Multiple Mollie account support';
 $string['multi_account'] = 'Multiple accounts';
-$string['multi_account_desc'] = 'If this feature is enabled we will support mapping for multiple Mollie accounts based on a profile field.';
+$string['multi_account_desc'] = 'If this feature is enabled we will support mapping for multiple Mollie accounts 
+based on a profile field.';
+$string['setting:disabled_by_multi_account'] = 'This setting tab is disabled by the Multi-account option.
+ See multi-account tab instead for more details.';
+$string['message:error_add_profile_field'] = 'Error: make sure you have some extra profile field we need to match on.';

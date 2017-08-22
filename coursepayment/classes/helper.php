@@ -56,6 +56,27 @@ class enrol_coursepayment_helper {
     }
 
     /**
+     * Get all available profile fields
+     *
+     * @return array
+     */
+    public static function get_profile_fields()  {
+        global $CFG, $DB;
+        require_once($CFG->dirroot . '/user/profile/lib.php');
+        require_once($CFG->dirroot . '/user/profile/definelib.php');
+        $rs = $DB->get_recordset_sql("SELECT f.* FROM {user_info_field} f ORDER BY name ASC");
+        $fields = [];
+        foreach ($rs as $field) {
+            $fields[$field->id] = $field->name;
+        }
+        $rs->close();
+        if (empty($fields)) {
+            return ['' => 'No profilefields available!'];
+        }
+        return $fields;
+    }
+
+    /**
      * get_cmid_info
      *
      * @param int $cmid

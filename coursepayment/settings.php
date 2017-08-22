@@ -36,7 +36,9 @@ if ($ADMIN->fulltree) {
         // Check if there is already a API key.
         !empty($config->gateway_mollie_apikey) &&
         // Make sure its not a reseller.
-        empty($config->gateway_mollie_external_connector)
+        empty($config->gateway_mollie_external_connector) &&
+        // Not showing when using multi-account.
+        empty($config->multi_account)
     ) {
 
         // We should show a login box.
@@ -71,6 +73,9 @@ if ($ADMIN->fulltree) {
     $tabs->addtab('mail', get_string('settings:tab_mail', 'enrol_coursepayment'));
     $tabs->addtab('gateway', get_string('settings:tab_gateway', 'enrol_coursepayment'));
     $tabs->addtab('enrolment', get_string('settings:tab_enrolment', 'enrol_coursepayment'));
+    if (!empty($config->multi_account)) {
+        $tabs->addtab('multiaccount', get_string('settings:tab_multiaccount', 'enrol_coursepayment'));
+    }
     $tabs->addtab('advanced', get_string('settings:tab_advanced', 'enrol_coursepayment'));
     $settings->add($tabs);
 
@@ -98,6 +103,11 @@ if ($ADMIN->fulltree) {
         // E-mail settings.
         include 'settings/mail.php';
 
+    } elseif ($tab === 'multiaccount' || !empty($install)) {
+
+        // E-mail settings.
+        include 'settings/multiaccount.php';
+
     } elseif ($tab === 'gateway' || !empty($install)) {
 
         // Gateway settings.
@@ -106,7 +116,7 @@ if ($ADMIN->fulltree) {
     } elseif ($tab === 'advanced' || !empty($install)) {
 
       // Advanced settings.
-
+        include 'settings/advanced.php';
     }
 
 }
