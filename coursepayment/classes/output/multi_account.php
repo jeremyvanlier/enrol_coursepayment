@@ -15,19 +15,39 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information
+ * 
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @package   enrol_coursepayment
- * @copyright 2015 MoodleFreak.com
+ * @package coursepayment
+ * @copyright 2017 MoodleFreak.com
  * @author    Luuk Verhoeven
  **/
+namespace enrol_coursepayment\output;
+defined('MOODLE_INTERNAL') || die;
 
-defined('MOODLE_INTERNAL') || die();
-$plugin->release   = '1.0.0';
-$plugin->maturity = MATURITY_BETA;
-$plugin->version   = 2017082401;        // The current plugin version (Date: YYYYMMDDXX)
-$plugin->requires  = 2013101800;        // Requires this Moodle version
-$plugin->component = 'enrol_coursepayment'; // Full name of the plugin (used for diagnostics)
-$plugin->cron      = 60;
+use renderable;
+use stdClass;
+use templatable;
+use renderer_base;
+
+class multi_account implements renderable, templatable {
+
+
+    /**
+     * Export this data so it can be used as the context for a mustache template.
+     *
+     * @param renderer_base $output
+     *
+     * @return stdClass
+     */
+    public function export_for_template(renderer_base $output) {
+        global $DB;
+        $multiaccounts = $DB->get_records('coursepayment_multiaccount');
+
+        $object = new stdClass();
+        $object->data = array_values($multiaccounts);
+
+        return $object;
+    }
+ }

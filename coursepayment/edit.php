@@ -50,7 +50,7 @@ if ($instanceid) {
     $instance = $DB->get_record('enrol', array(
         'courseid' => $course->id,
         'enrol' => 'coursepayment',
-        'id' => $instanceid
+        'id' => $instanceid,
     ), '*', MUST_EXIST);
     $instance->cost = format_float($instance->cost, 2, true);
 } else {
@@ -60,7 +60,7 @@ if ($instanceid) {
     $instance = new stdClass();
     $instance->id = null;
     $instance->courseid = $course->id;
-    $instance->expirynotify    = $plugin->get_config('expirynotify');
+    $instance->expirynotify = $plugin->get_config('expirynotify');
     $instance->expirythreshold = $plugin->get_config('expirythreshold');
 }
 
@@ -96,8 +96,8 @@ if ($mform->is_cancelled()) {
             $instance->enrolperiod = $data->enrolperiod;
             $instance->enrolstartdate = $data->enrolstartdate;
             $instance->enrolenddate = $data->enrolenddate;
-            $instance->expirynotify    = $data->expirynotify;
-            $instance->notifyall       = $data->notifyall;
+            $instance->expirynotify = $data->expirynotify;
+            $instance->notifyall = $data->notifyall;
             $instance->expirythreshold = $data->expirythreshold;
             $instance->timemodified = time();
             $DB->update_record('enrol', $instance);
@@ -116,11 +116,11 @@ if ($mform->is_cancelled()) {
                 'enrolperiod' => $data->enrolperiod,
                 'enrolstartdate' => $data->enrolstartdate,
                 'enrolenddate' => $data->enrolenddate,
-                'expirynotify'    => $data->expirynotify,
-                'notifyall'       => $data->notifyall,
-                'customtext1'       => $data->customtext1,
-                'customint1'       => $data->customint1,
-                'expirythreshold' => $data->expirythreshold
+                'expirynotify' => $data->expirynotify,
+                'notifyall' => $data->notifyall,
+                'customtext1' => $data->customtext1,
+                'customint1' => $data->customint1,
+                'expirythreshold' => $data->expirythreshold,
             );
             $plugin->add_instance($course, $fields);
         }

@@ -203,3 +203,37 @@ $string['standalone_purchase_page'] = 'Standalone payment page';
 $string['standalone_purchase_page_desc'] = 'Use a standalone payment page';
 $string['gateway_mollie_ideal_heading'] = 'IDEAL — Select your bank';
 $string['gateway_mollie_backlink'] = 'Back to <a href="/">{$a->fullname}</a> ';
+
+// Settings.
+$string['settings:tab_invoicedetails'] = 'Invoice details';
+$string['settings:tab_gateway'] = 'Gateway';
+$string['settings:tab_enrolment'] = 'Enrolment';
+$string['settings:tab_advanced'] = 'Advanced';
+$string['settings:tab_mail'] = 'E-mail';
+$string['settings:tab_multiaccount'] = 'Multi-account';
+$string['multi_account_heading'] = 'Multiple Mollie account support';
+$string['multi_account'] = 'Multiple accounts';
+$string['multi_account_desc'] = 'If this feature is enabled we will support mapping for multiple Mollie accounts 
+based on a profile field.';
+$string['setting:disabled_by_multi_account'] = 'This setting tab is disabled by the Multi-account option.
+ See multi-account tab instead for more details.';
+$string['message:error_add_profile_field'] = 'Error: make sure you have some extra profile field we need to match on.';
+$string['multi_account_profile_field'] = 'Profile field';
+$string['multi_account_profile_field_desc'] = 'Select a profile field what we should use for mapping.';
+$string['th_name'] = 'Name';
+$string['th_action'] = 'Action';
+$string['th_profile_value'] = 'Profile value';
+$string['btn:new'] = 'Add new';
+$string['no_result'] = 'No results';
+$string['enrol_coursepayment_multi_account'] = 'Multi-account';
+$string['form:name_multiaccount'] = 'Name';
+$string['form:profile_value'] = 'Profile field value matches';
+$string['form:btw'] = 'Vat';
+$string['form:kvk'] = 'KvK';
+$string['form:place'] = 'Place';
+$string['form:mollie'] = 'Mollie account';
+$string['form:company_info'] = 'Company / invoice information';
+$string['gateway_mollie_debug'] = 'Debugging';
+$string['gateway_mollie_sandbox'] = 'Sandbox';
+$string['form:multi_account'] = 'Multi-account settings';
+$string['confirm_delete'] = 'Are you sure you want to delete this item?';

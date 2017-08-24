@@ -98,7 +98,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
         if (has_capability('enrol/coursepayment:config', $context)) {
             $managelink = new moodle_url('/enrol/coursepayment/edit.php', array(
                 'courseid' => $instance->courseid,
-                'id' => $instance->id
+                'id' => $instance->id,
             ));
             $instancesnode->add($this->get_instance_name($instance), $managelink, navigation_node::TYPE_SETTING);
         }
@@ -125,7 +125,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
         if (has_capability('enrol/coursepayment:config', $context)) {
             $editlink = new moodle_url("/enrol/coursepayment/edit.php", array(
                 'courseid' => $instance->courseid,
-                'id' => $instance->id
+                'id' => $instance->id,
             ));
             $icons[] = $OUTPUT->action_icon($editlink, new pix_icon('t/edit', get_string('edit'), 'core', array('class' => 'iconsmall')));
         }
@@ -196,13 +196,13 @@ class enrol_coursepayment_plugin extends enrol_plugin {
         $jsmodule = array(
             'name' => 'enrol_coursepayment_gateway',
             'fullpath' => '/enrol/coursepayment/js/gateway.js',
-            'requires' => array('node', 'io')
+            'requires' => array('node', 'io'),
         );
 
         $PAGE->requires->js_init_call('M.enrol_coursepayment_gateway.init', array(
             $CFG->wwwroot . '/enrol/coursepayment/ajax.php',
             sesskey(),
-            $course->id
+            $course->id,
         ), false, $jsmodule);
 
         // Config to send to the gateways
@@ -236,11 +236,11 @@ class enrol_coursepayment_plugin extends enrol_plugin {
             }
 
             // Redirect to a standalone payment page.
-            if(!empty( $this->get_config('standalone_purchase_page'))){
+            if (!empty($this->get_config('standalone_purchase_page'))) {
                 redirect(new moodle_url('/enrol/coursepayment/view/purchase.php', [
                     'instanceid' => $instance->id,
                     'gateway' => $gatewaymethod,
-                    'id' => $course->id
+                    'id' => $course->id,
                 ]));
             }
 
@@ -273,9 +273,9 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * Restore instance and map settings.
      *
      * @param restore_enrolments_structure_step $step
-     * @param stdClass $data
-     * @param stdClass $course
-     * @param int $oldid
+     * @param stdClass                          $data
+     * @param stdClass                          $course
+     * @param int                               $oldid
      */
     public function restore_instance(restore_enrolments_structure_step $step, stdClass $data, $course, $oldid) {
         global $DB;
@@ -303,10 +303,10 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * Restore user enrolment.
      *
      * @param restore_enrolments_structure_step $step
-     * @param stdClass $data
-     * @param stdClass $instance
-     * @param int $oldinstancestatus
-     * @param int $userid
+     * @param stdClass                          $data
+     * @param stdClass                          $instance
+     * @param int                               $oldinstancestatus
+     * @param int                               $userid
      */
     public function restore_user_enrolment(restore_enrolments_structure_step $step, $data, $instance, $userid, $oldinstancestatus) {
         $this->enrol_user($instance, $userid, null, $data->timestart, $data->timeend, $data->status);
@@ -316,7 +316,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * Gets an array of the user enrolment actions
      *
      * @param course_enrolment_manager $manager
-     * @param stdClass $ue A user enrolment object
+     * @param stdClass                 $ue A user enrolment object
      *
      * @return array An array of user_enrolment_actions
      */
@@ -330,14 +330,14 @@ class enrol_coursepayment_plugin extends enrol_plugin {
             $url = new moodle_url('/enrol/unenroluser.php', $params);
             $actions[] = new user_enrolment_action(new pix_icon('t/delete', ''), get_string('unenrol', 'enrol'), $url, array(
                 'class' => 'unenrollink',
-                'rel' => $ue->id
+                'rel' => $ue->id,
             ));
         }
         if ($this->allow_manage($instance) && has_capability("enrol/coursepayment:manage", $context)) {
             $url = new moodle_url('/enrol/editenrolment.php', $params);
             $actions[] = new user_enrolment_action(new pix_icon('t/edit', ''), get_string('edit'), $url, array(
                 'class' => 'editenrollink',
-                'rel' => $ue->id
+                'rel' => $ue->id,
             ));
         }
 
@@ -444,7 +444,6 @@ class enrol_coursepayment_plugin extends enrol_plugin {
         return $return;
     }
 
-
     /**
      * process orders with the cron if we missed a ipn call we can query the gateway API to check if something has a
      * new status
@@ -455,7 +454,9 @@ class enrol_coursepayment_plugin extends enrol_plugin {
         global $DB;
 
         mtrace(__CLASS__ . ' | ' . __FUNCTION__);
-        $results = $DB->get_records('enrol_coursepayment', array('status' => enrol_coursepayment_gateway::PAYMENT_STATUS_WAITING), 'id, orderid, gateway');
+        $results = $DB->get_records('enrol_coursepayment', array(
+            'status' => enrol_coursepayment_gateway::PAYMENT_STATUS_WAITING,
+        ), 'id, orderid, gateway');
 
         if ($results) {
             foreach ($results as $row) {

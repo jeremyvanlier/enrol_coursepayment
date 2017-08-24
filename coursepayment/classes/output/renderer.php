@@ -15,19 +15,31 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information
+ * Renderer
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @package   enrol_coursepayment
- * @copyright 2015 MoodleFreak.com
+ * @copyright 2017 MoodleFreak.com
  * @author    Luuk Verhoeven
  **/
 
-defined('MOODLE_INTERNAL') || die();
-$plugin->release   = '1.0.0';
-$plugin->maturity = MATURITY_BETA;
-$plugin->version   = 2017082401;        // The current plugin version (Date: YYYYMMDDXX)
-$plugin->requires  = 2013101800;        // Requires this Moodle version
-$plugin->component = 'enrol_coursepayment'; // Full name of the plugin (used for diagnostics)
-$plugin->cron      = 60;
+namespace enrol_coursepayment\output;
+defined('MOODLE_INTERNAL') || die;
+
+use plugin_renderer_base;
+
+class renderer extends plugin_renderer_base {
+
+    /**
+     * render_multi_account
+     *
+     * @param multi_account $renderable
+     *
+     * @return string|boolean
+     */
+    public function render_multi_account(multi_account $renderable) {
+        $data = $renderable->export_for_template($this);
+        return parent::render_from_template('enrol_coursepayment/multi_account_table', $data);
+    }
+}
