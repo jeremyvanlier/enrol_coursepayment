@@ -161,6 +161,7 @@ function xmldb_enrol_coursepayment_upgrade($oldversion) {
         $table->add_field('gateway_mollie_apikey', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
         $table->add_field('gateway_mollie_profile_key', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
         $table->add_field('gateway_mollie_partner_id', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('gateway_mollie_app_secret', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
         $table->add_field('gateway_mollie_debug', XMLDB_TYPE_INTEGER, '9', null, XMLDB_NOTNULL, null, '0');
         $table->add_field('gateway_mollie_sandbox', XMLDB_TYPE_INTEGER, '9', null, XMLDB_NOTNULL, null, '0');
         $table->add_field('added_on', XMLDB_TYPE_INTEGER, '9', null, XMLDB_NOTNULL, null, null);
@@ -173,6 +174,21 @@ function xmldb_enrol_coursepayment_upgrade($oldversion) {
 
         // Coursepayment savepoint reached.
         upgrade_plugin_savepoint(true, 2017082400, 'enrol', 'coursepayment');
+    }
+
+    if ($oldversion < 2017082401) {
+
+        // Define field profile_data to be added to enrol_coursepayment.
+        $table = new xmldb_table('enrol_coursepayment');
+        $field = new xmldb_field('profile_data', XMLDB_TYPE_TEXT, null, null, null, null, null, 'discountdata');
+
+        // Conditionally launch add field profile_data.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Coursepayment savepoint reached.
+        upgrade_plugin_savepoint(true, 2017082401, 'enrol', 'coursepayment');
     }
 
     return true;

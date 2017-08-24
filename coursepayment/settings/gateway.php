@@ -47,9 +47,6 @@ if (!empty($config->multi_account)) {
     $settings->add(new admin_setting_configtext('enrol_coursepayment/gateway_mollie_apikey',
         get_string('gateway_mollie_apikey', 'enrol_coursepayment'), '', '', PARAM_ALPHANUMEXT));
 
-    $settings->add(new admin_setting_configselect('enrol_coursepayment/gateway_mollie_debug',
-        get_string('debug', 'enrol_coursepayment'),
-        get_string('debug_desc', 'enrol_coursepayment'), 0, $yesno));
 
     $settings->add(new admin_setting_configselect('enrol_coursepayment/gateway_mollie_sandbox',
         get_string('sandbox', 'enrol_coursepayment'),

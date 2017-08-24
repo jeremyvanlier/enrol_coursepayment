@@ -45,6 +45,12 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         $this->client->setApiKey($this->config->apikey);
     }
 
+    /**
+     * Reload api key
+     */
+    protected function reload_api_key() {
+        $this->client->setApiKey($this->config->apikey);
+    }
 
     /**
      * validate if a payment provider has a valid ip address
@@ -392,6 +398,11 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             }
 
             try {
+                // This will fix issues when using multi-account in cron.
+                $this->load_multi_account_config($row->userid , $row->profile_data);
+
+                // Reload API key.
+                $this->reload_api_key(); // use new settings if needed.
 
                 // get details from gateway
                 $payment = $this->client->payments->get($row->gateway_transaction_id);

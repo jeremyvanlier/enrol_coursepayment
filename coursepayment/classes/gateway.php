@@ -63,14 +63,12 @@ abstract class enrol_coursepayment_gateway {
      */
     const PAYMENT_STATUS_WAITING = 4;
 
-
     /**
      * The prefix that would be prepended to invoice number
      *
      * @const INVOICE_PREFIX
      */
     const INVOICE_PREFIX = 'CPAY';
-
 
     /**
      * name of the gateway
@@ -116,12 +114,18 @@ abstract class enrol_coursepayment_gateway {
     protected $log = '';
 
     /**
+     * Multi-account data
+     *
+     * @var null
+     */
+    protected $multiaccount = null;
+
+    /**
      * this will contain all values about the course, instance, price
      *
      * @var object
      */
     protected $instanceconfig;
-
 
     public function __construct() {
         //load the config always when class is called we will need the settings/credentials
@@ -168,7 +172,7 @@ abstract class enrol_coursepayment_gateway {
     /**
      * check if a order is valid
      *
-     * @param string $orderid
+     * @param string           $orderid
      *
      * @global moodle_database $DB
      * @return array
@@ -177,7 +181,7 @@ abstract class enrol_coursepayment_gateway {
         global $DB;
         $row = $DB->get_record('enrol_coursepayment', array(
             'orderid' => $orderid,
-            'gateway' => $this->name
+            'gateway' => $this->name,
         ));
 
         if ($row) {
@@ -219,7 +223,6 @@ abstract class enrol_coursepayment_gateway {
                 </div><hr/>';
     }
 
-
     /**
      * load payment provider settings
      */
@@ -239,6 +242,9 @@ abstract class enrol_coursepayment_gateway {
                 $this->config->{$k} = $value;
             }
         }
+
+        // Check if we need to override with multi-account data.
+        $this->load_multi_account_config();
     }
 
     /**
@@ -259,12 +265,11 @@ abstract class enrol_coursepayment_gateway {
         $this->log .= date('d-m-Y H:i:s') . ' | Gateway:' . $this->name . ' = ' . (is_string($var) ? $var : print_r($var, true)) . PHP_EOL;
     }
 
-
     /**
      * render log if is enabled in the plugin settings
      */
     function __destruct() {
-        if ($this->config->debug == 1 && !empty($this->log)) {
+        if ($this->pluginconfig->debug == 1 && !empty($this->log)) {
             echo '<pre>';
             print_r($this->log);
             echo '</pre>';
@@ -286,7 +291,6 @@ abstract class enrol_coursepayment_gateway {
         $orderidentifier = uniqid(time());
 
         $obj = new stdClass();
-
 
         if (!empty($data['discount'])) {
             $discount = $data['discount'];
@@ -310,6 +314,11 @@ abstract class enrol_coursepayment_gateway {
         $obj->addedon = time();
         $obj->timeupdated = 0;
         $obj->userid = $this->instanceconfig->userid;
+
+        if (!empty($this->pluginconfig->multi_account)) {
+            $obj->profile_data = enrol_coursepayment_helper::get_profile_field_data($this->pluginconfig->multi_account_fieldid, $this->instanceconfig->userid);
+        }
+
         $obj->courseid = $this->instanceconfig->courseid;;
         $obj->instanceid = $this->instanceconfig->instanceid;
         $obj->cost = $cost;
@@ -320,7 +329,7 @@ abstract class enrol_coursepayment_gateway {
         return array(
             'orderid' => $orderidentifier,
             'id' => $id,
-            'cost' => $cost
+            'cost' => $cost,
         );
     }
 
@@ -367,6 +376,11 @@ abstract class enrol_coursepayment_gateway {
         $obj->instanceid = 0;
         $obj->is_activity = 1;
         $obj->cost = $cost;
+
+        if (!empty($this->pluginconfig->multi_account)) {
+            $obj->profile_data = enrol_coursepayment_helper::get_profile_field_data($this->pluginconfig->multi_account_fieldid, $this->instanceconfig->userid);
+        }
+
         $obj->vatpercentage = is_numeric($this->instanceconfig->customint1) ? $this->instanceconfig->customint1 : $this->pluginconfig->vatpercentage;
         $obj->status = self::PAYMENT_STATUS_WAITING;
         $obj->section = isset($this->instanceconfig->section) ? $this->instanceconfig->section : -10;
@@ -375,7 +389,7 @@ abstract class enrol_coursepayment_gateway {
         return array(
             'orderid' => $orderidentifier,
             'id' => $id,
-            'cost' => $cost
+            'cost' => $cost,
         );
     }
 
@@ -387,7 +401,6 @@ abstract class enrol_coursepayment_gateway {
     public function set_instanceconfig($config) {
         $this->instanceconfig = (object)$config;
     }
-
 
     /**
      * Enrol a user to the course use enrol_coursepayment record
@@ -412,7 +425,6 @@ abstract class enrol_coursepayment_gateway {
         require_once($CFG->libdir . '/eventslib.php');
         require_once($CFG->libdir . '/enrollib.php');
         require_once($CFG->libdir . '/filelib.php');
-
 
         $plugin = enrol_get_plugin('coursepayment');
 
@@ -510,8 +522,8 @@ abstract class enrol_coursepayment_gateway {
     /**
      * Send invoice to the customer
      *
-     * @param null $record
-     * @param int $invoicenumber
+     * @param null   $record
+     * @param int    $invoicenumber
      * @param string $method
      *
      * @return bool
@@ -526,7 +538,6 @@ abstract class enrol_coursepayment_gateway {
         require_once($CFG->libdir . '/enrollib.php');
         require_once($CFG->libdir . '/filelib.php');
 
-
         $user = $DB->get_record("user", array('id' => $record->userid));
         $course = $DB->get_record('course', array('id' => $record->courseid));
         $context = context_course::instance($course->id, IGNORE_MISSING);
@@ -540,15 +551,15 @@ abstract class enrol_coursepayment_gateway {
         $a->date = date('d-m-Y, H:i', $record->addedon);
 
         // Fix this could also be a activity or section.
-        if($record->cmid > 0 && $record->is_activity == 1) {
+        if ($record->cmid > 0 && $record->is_activity == 1) {
             $module = enrol_coursepayment_helper::get_cmid_info($record->cmid, $course->id);
             $a->fullcourse = $module->name;
             $a->content_type = get_string('activity');
-        }elseif($record->section > 0){
+        } elseif ($record->section > 0) {
             $module = enrol_coursepayment_helper::get_section_info($record->section, $course->id);
             $a->fullcourse = $module->name;
             $a->content_type = get_string('section');
-        }else{
+        } else {
             $a->fullcourse = $course->fullname;
             $a->content_type = get_string('course');
         }
@@ -682,12 +693,11 @@ abstract class enrol_coursepayment_gateway {
         return true;
     }
 
-
     /**
      * add form for when discount code are created
      *
      * @param string $discountcode
-     * @param array $status
+     * @param array  $status
      *
      * @return string
      * @throws coding_exception
@@ -754,7 +764,6 @@ abstract class enrol_coursepayment_gateway {
         return number_format(round($number, 2), 2, ',', ' ');
     }
 
-
     /**
      * Add agreement check if needed
      *
@@ -772,5 +781,67 @@ abstract class enrol_coursepayment_gateway {
         }
 
         return $string;
+    }
+
+    /**
+     * Load multi-account config if needed
+     *
+     * @param int    $userid only needed when running from cron
+     * @param string $profile_value only needed when running from cron
+     */
+    protected function load_multi_account_config($userid = 0 , $profile_value = '') {
+        global $USER, $DB;
+
+        // Normally we can $USER only in cron we need to fix this.
+        if($userid == 0){
+            $userid = $USER->id;
+        }
+
+        if (!empty($this->pluginconfig->multi_account)) {
+
+            // Check if we match profile value of any of the multi-accounts.
+            if(empty($profile_value)) {
+                $profile_value = enrol_coursepayment_helper::get_profile_field_data($this->pluginconfig->multi_account_fieldid, $userid);
+            }
+
+            // Load default multi-account.
+            $this->multiaccount = $DB->get_record('coursepayment_multiaccount', ['is_default' => 1], '*', MUST_EXIST);
+
+            if (!empty($profile_value)) {
+                // Check if we have a multi-account matching your value.
+                $mutiaccount = $DB->get_record('coursepayment_multiaccount', [
+                    'profile_value' => $profile_value,
+                ], '*');
+
+                // Found we should use this.
+                if (!empty($mutiaccount)) {
+                    $this->multiaccount = $mutiaccount;
+                }
+            }
+
+            // Reset some values that can't be used by multi-account;
+            $this->config->enabled = true;
+            $this->config->external_connector = 0;
+
+            // Update invoice details.
+            $this->pluginconfig->companyname = $this->multiaccount->company_name;
+            $this->pluginconfig->address = $this->multiaccount->address;
+            $this->pluginconfig->place = $this->multiaccount->place;
+            $this->pluginconfig->zipcode = $this->multiaccount->zipcode;
+            $this->pluginconfig->kvk = $this->multiaccount->kvk;
+            $this->pluginconfig->btw = $this->multiaccount->btw;
+
+            $stripcount = strlen('gateway_' . $this->name . '_');
+
+            // Override the normal settings.
+            foreach ($this->multiaccount as $key => $value) {
+
+                // adding the correct settings to the gateway
+                if (stristr($key, 'gateway_' . $this->name . '_')) {
+                    $k = substr($key, $stripcount);
+                    $this->config->{$k} = $value;
+                }
+            }
+        }
     }
 }

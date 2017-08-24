@@ -31,13 +31,13 @@ if (!empty($config->multi_account)) {
 
     // Map profile field.
     $fields = enrol_coursepayment_helper::get_profile_fields();
-    if (empty($fields)) {
+    if (count($fields) == 1) {
         // Show error.
         $settings->add(new admin_setting_heading('enrol_coursepayment_message', '',
             html_writer::div(get_string('message:error_add_profile_field', 'enrol_coursepayment'), 'alert alert-danger')));
     } else {
 
-        $settings->add(new admin_setting_configselect('enrol_coursepayment/multi_account_profile_field',
+        $settings->add(new admin_setting_configselect('enrol_coursepayment/multi_account_fieldid',
             get_string('multi_account_profile_field', 'enrol_coursepayment'),
             get_string('multi_account_profile_field_desc', 'enrol_coursepayment'), 0, $fields));
 

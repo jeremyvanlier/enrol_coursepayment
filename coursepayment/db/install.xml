@@ -21,6 +21,7 @@
                 <FIELD NAME="is_activity" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
                 <FIELD NAME="section" TYPE="int" LENGTH="3" NOTNULL="false" DEFAULT="-10" SEQUENCE="false"/>
                 <FIELD NAME="discountdata" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="profile_data" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
                 <FIELD NAME="timeupdated" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="addedon" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="false"/>
             </FIELDS>
@@ -60,6 +61,7 @@
                 <FIELD NAME="gateway_mollie_apikey" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="gateway_mollie_profile_key" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="gateway_mollie_partner_id" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="gateway_mollie_app_secret" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="gateway_mollie_debug" TYPE="int" LENGTH="9" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
                 <FIELD NAME="gateway_mollie_sandbox" TYPE="int" LENGTH="9" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
                 <FIELD NAME="added_on" TYPE="int" LENGTH="9" NOTNULL="true" SEQUENCE="false"/>

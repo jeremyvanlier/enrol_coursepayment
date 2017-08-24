@@ -30,6 +30,10 @@ $settings->add(new admin_setting_configcheckbox('enrol_coursepayment/standalone_
     get_string('standalone_purchase_page', 'enrol_coursepayment'),
     get_string('standalone_purchase_page_desc', 'enrol_coursepayment'), 0));
 
+$settings->add(new admin_setting_configselect('enrol_coursepayment/debug',
+    get_string('debug', 'enrol_coursepayment'),
+    get_string('debug_desc', 'enrol_coursepayment'), 0, $yesno));
+
 // enrol instance defaults
 $settings->add(new admin_setting_heading('enrol_coursepayment_defaults',
     get_string('enrolinstancedefaults', 'admin'),
