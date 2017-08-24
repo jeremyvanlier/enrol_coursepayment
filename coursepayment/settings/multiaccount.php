@@ -19,7 +19,7 @@
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @package coursepayment
+ * @package   enrol_coursepayment
  * @copyright 2017 MoodleFreak.com
  * @author    Luuk Verhoeven
  **/
@@ -29,25 +29,30 @@ defined('MOODLE_INTERNAL') || die();
 if (!empty($config->multi_account)) {
     // Special settings for multi-account support.
 
-    
-    
     // Map profile field.
     $fields = enrol_coursepayment_helper::get_profile_fields();
-
-    if(count($fields) == 1){
+    if (empty($fields)) {
         // Show error.
         $settings->add(new admin_setting_heading('enrol_coursepayment_message', '',
             html_writer::div(get_string('message:error_add_profile_field', 'enrol_coursepayment'), 'alert alert-danger')));
+    } else {
+
+        $settings->add(new admin_setting_configselect('enrol_coursepayment/multi_account_profile_field',
+            get_string('multi_account_profile_field', 'enrol_coursepayment'),
+            get_string('multi_account_profile_field_desc', 'enrol_coursepayment'), 0, $fields));
+
+        $output = $PAGE->get_renderer('enrol_coursepayment');
+        $page = new enrol_coursepayment\output\multi_account();
+
+        $settings->add(new admin_setting_heading('multi_account',
+            '', $output->render($page)));
+
     }
 
     // Add multiple mollie accounts.
 
-
     // Add multiple invoice details.
 
-
     // Set a default if profile data doesn't match.
-
-
 
 }

@@ -45,7 +45,7 @@ class enrol_coursepayment_edit_form extends moodleform {
 
         $options = array(
             ENROL_INSTANCE_ENABLED => get_string('yes'),
-            ENROL_INSTANCE_DISABLED => get_string('no')
+            ENROL_INSTANCE_DISABLED => get_string('no'),
         );
         $mform->addElement('select', 'status', get_string('status', 'enrol_coursepayment'), $options);
         $mform->setDefault('status', $plugin->get_config('status'));
@@ -72,7 +72,7 @@ class enrol_coursepayment_edit_form extends moodleform {
 
         $mform->addElement('duration', 'enrolperiod', get_string('enrolperiod', 'enrol_coursepayment'), array(
             'optional' => true,
-            'defaultunit' => 86400
+            'defaultunit' => 86400,
         ));
         $mform->setDefault('enrolperiod', $plugin->get_config('enrolperiod'));
         $mform->addHelpButton('enrolperiod', 'enrolperiod', 'enrol_coursepayment');
@@ -91,11 +91,18 @@ class enrol_coursepayment_edit_form extends moodleform {
         $mform->addElement('hidden', 'courseid');
         $mform->setType('courseid', PARAM_INT);
 
-        $options = array(0 => get_string('no'), 1 => get_string('expirynotifyenroller', 'core_enrol'), 2 => get_string('expirynotifyall', 'core_enrol'));
+        $options = array(
+            0 => get_string('no'),
+            1 => get_string('expirynotifyenroller', 'core_enrol'),
+            2 => get_string('expirynotifyall', 'core_enrol'),
+        );
         $mform->addElement('select', 'expirynotify', get_string('expirynotify', 'core_enrol'), $options);
         $mform->addHelpButton('expirynotify', 'expirynotify', 'core_enrol');
 
-        $mform->addElement('duration', 'expirythreshold', get_string('expirythreshold', 'core_enrol'), array('optional' => false, 'defaultunit' => 86400));
+        $mform->addElement('duration', 'expirythreshold', get_string('expirythreshold', 'core_enrol'), array(
+            'optional' => false,
+            'defaultunit' => 86400,
+        ));
         $mform->addHelpButton('expirythreshold', 'expirythreshold', 'core_enrol');
         $mform->disabledIf('expirythreshold', 'expirynotify', 'eq', 0);
 

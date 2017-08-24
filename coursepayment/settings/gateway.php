@@ -19,7 +19,7 @@
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @package   coursepayment
+ * @package   enrol_coursepayment
  * @copyright 2017 MoodleFreak.com
  * @author    Luuk Verhoeven
  **/

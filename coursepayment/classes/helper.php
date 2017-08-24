@@ -71,7 +71,7 @@ class enrol_coursepayment_helper {
         }
         $rs->close();
         if (empty($fields)) {
-            return ['' => 'No profilefields available!'];
+            return [];
         }
         return $fields;
     }

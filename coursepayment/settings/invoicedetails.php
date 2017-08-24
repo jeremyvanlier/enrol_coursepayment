@@ -19,7 +19,7 @@
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @package   coursepayment
+ * @package   enrol_coursepayment
  * @copyright 2017 MoodleFreak.com
  * @author    Luuk Verhoeven
  **/
@@ -29,7 +29,7 @@ defined('MOODLE_INTERNAL') || die();
 if (!empty($config->multi_account)) {
 
     $settings->add(new admin_setting_heading('enrol_coursepayment_settings', '',
-        html_writer::div(get_string('setting:disabled_by_multi_account', 'enrol_coursepayment') ,
+        html_writer::div(get_string('setting:disabled_by_multi_account', 'enrol_coursepayment'),
             'alert alert-info')));
 
 } else {

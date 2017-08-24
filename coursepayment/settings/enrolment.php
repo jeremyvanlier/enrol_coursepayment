@@ -15,16 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * 
+ *
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @package coursepayment
+ * @package   coursepayment
  * @copyright 2017 MoodleFreak.com
  * @author    Luuk Verhoeven
  **/
 defined('MOODLE_INTERNAL') || die();
-(!$ADMIN->fulltree) || die();
+($ADMIN->fulltree) || die();
 
 if (!during_initial_install()) {
     $options = get_default_enrol_roles(context_system::instance());

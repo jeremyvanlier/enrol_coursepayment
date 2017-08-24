@@ -15,11 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * 
+ *
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @package coursepayment
+ * @package   enrol_coursepayment
  * @copyright 2017 MoodleFreak.com
  * @author    Luuk Verhoeven
  **/
@@ -66,11 +66,10 @@ $settings->add(new admin_setting_configtext('enrol_coursepayment/link_agreement'
     get_string('link_agreement', 'enrol_coursepayment'),
     get_string('link_agreement_desc', 'enrol_coursepayment'), '', PARAM_URL));
 
-
 $settings->add(new admin_setting_heading('multi_account_heading',
     get_string('multi_account_heading', 'enrol_coursepayment'),
     get_string('multi_account_desc', 'enrol_coursepayment')));
 
 $settings->add(new admin_setting_configcheckbox('enrol_coursepayment/multi_account',
     get_string('multi_account', 'enrol_coursepayment'),
-    '' , 0));
+    '', 0));
