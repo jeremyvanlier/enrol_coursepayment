@@ -24,7 +24,7 @@
  * @author    Luuk Verhoeven
  */
 function xmldb_enrol_coursepayment_upgrade($oldversion) {
-    global $CFG, $DB;
+    global $DB;
 
     $dbman = $DB->get_manager();
 
@@ -140,6 +140,39 @@ function xmldb_enrol_coursepayment_upgrade($oldversion) {
 
         // Coursepayment savepoint reached.
         upgrade_plugin_savepoint(true, 2017031002, 'enrol', 'coursepayment');
+    }
+
+    if ($oldversion < 2017082400) {
+
+        // Define table coursepayment_multiaccount to be created.
+        $table = new xmldb_table('coursepayment_multiaccount');
+
+        // Adding fields to table coursepayment_multiaccount.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '9', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('name', XMLDB_TYPE_CHAR, '50', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('profile_value', XMLDB_TYPE_CHAR, '200', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('is_default', XMLDB_TYPE_INTEGER, '9', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('company_name', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('address', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('place', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('zipcode', XMLDB_TYPE_CHAR, '50', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('kvk', XMLDB_TYPE_CHAR, '50', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('btw', XMLDB_TYPE_CHAR, '50', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('gateway_mollie_apikey', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('gateway_mollie_profile_key', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('gateway_mollie_partner_id', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('gateway_mollie_debug', XMLDB_TYPE_INTEGER, '9', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('gateway_mollie_sandbox', XMLDB_TYPE_INTEGER, '9', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('added_on', XMLDB_TYPE_INTEGER, '9', null, XMLDB_NOTNULL, null, null);
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+        // Conditionally launch create table for coursepayment_multiaccount.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Coursepayment savepoint reached.
+        upgrade_plugin_savepoint(true, 2017082400, 'enrol', 'coursepayment');
     }
 
     return true;
