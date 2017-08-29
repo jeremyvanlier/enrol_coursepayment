@@ -203,3 +203,36 @@ $string['standalone_purchase_page'] = 'Losse betalingspagina';
 $string['standalone_purchase_page_desc'] = 'Keuzescherm op een losse betalingspagina vertonen.';
 $string['gateway_mollie_ideal_heading'] = 'IDEAL — KIES UW BANK';
 $string['gateway_mollie_backlink'] = 'Terug naar <a href="/">{$a->fullname}</a> ';
+
+// Settings.
+$string['settings:tab_invoicedetails'] = 'Factuurgegevens';
+$string['settings:tab_gateway'] = 'Gateway';
+$string['settings:tab_enrolment'] = 'Inschrijving';
+$string['settings:tab_advanced'] = 'Geavanceerd';
+$string['settings:tab_mail'] = 'E-mail';
+$string['settings:tab_multiaccount'] = 'Multi-account';
+$string['multi_account_heading'] = 'Meerdere Mollie accounts ondersteuning';
+$string['multi_account'] = 'Meerdere accounts';
+$string['multi_account_desc'] = 'Als deze functie is ingeschakeld, ondersteunen we meerdere Mollie accounts.
+Dit is gebaseerd op een overeenkomende waarde in het profielveld.';
+$string['setting:disabled_by_multi_account'] = 'Dit tabblad is uitgeschakeld, omdat Multi-account is ingeschakeld.';
+$string['message:error_add_profile_field'] = 'Fout: maak een extra profielveld aan.';
+$string['multi_account_profile_field'] = 'Profielveld';
+$string['multi_account_profile_field_desc'] = 'Selecteer een profielveld dat we kunnen gebruiken.';
+$string['th_name'] = 'Naam';
+$string['th_action'] = 'Actie';
+$string['th_profile_value'] = 'Profielveld waarde';
+$string['btn:new'] = 'Nieuwe toevoegen';
+$string['no_result'] = 'Geen resultaat';
+$string['enrol_coursepayment_multi_account'] = 'Multi-account';
+$string['form:name_multiaccount'] = 'Naam';
+$string['form:profile_value'] = 'Profielveld waarde';
+$string['form:btw'] = 'BTW';
+$string['form:kvk'] = 'KvK';
+$string['form:place'] = 'Plaats';
+$string['form:mollie'] = 'Mollie account';
+$string['form:company_info'] = 'Bedrijfs / factuur informatie';
+$string['gateway_mollie_debug'] = 'Debugging';
+$string['gateway_mollie_sandbox'] = 'Sandbox';
+$string['form:multi_account'] = 'Multi-account instellingen';
+$string['confirm_delete'] = 'Weet u zeker dat u dit item wilt verwijderen?';
