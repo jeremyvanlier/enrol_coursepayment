@@ -6,21 +6,22 @@ Enrol CoursePayment
 * Requires at least: Moodle 2.6+
 * License: [Avetica](http://avetica.nl)
 
-With this plugin you can sell courses to your moodle users.
+With this plugin you can sell courses to your moodle users. There is also a [availability plugin](http://git.dev.avetica.net:8080/luuk/availability_coursepayment) available.
 
 Description
 ====================
 This plugin allows you to sell courses with multi pull gateways.
 
 Has support for:
-* Mollie gateway
-* IPN/Callbacks
-* Query openen transactions every hour with cron
-* Easy to build own extend with other gateway
-* Instance based settings like currency, enrol period
-* global notification settings
-* global sandbox and debug switches
-* after successfull transaction user will be enrolled
+* Mollie gateway.
+* IPN/Callbacks.
+* Query openen transactions every hour with cron.
+* Easy to build own extend with other gateway.
+* Instance based settings like currency, enrol period.
+* Global notification settings.
+* Global sandbox and debug switches.
+* After successfull transaction user will be enrolled.
+* Multiple Mollie accounts support, account selection based on matching profile field value.
 
 Installation
 ====================
