@@ -77,8 +77,6 @@ class multiaccount extends \moodleform {
         $mform->setType('kvk', PARAM_TEXT);
         $mform->addRule('kvk', null, 'required', null, 'client');
 
-
-
         $mform->addElement('header', 'header3', get_string('form:mollie', 'enrol_coursepayment'));
 
         $mform->addElement('text', 'gateway_mollie_apikey', get_string('gateway_mollie_apikey', 'enrol_coursepayment'), array('size' => '48',));
@@ -92,10 +90,6 @@ class multiaccount extends \moodleform {
         $mform->addElement('text', 'gateway_mollie_partner_id', get_string('gateway_mollie_partner_id', 'enrol_coursepayment'), array('size' => '48',));
         $mform->setType('gateway_mollie_partner_id', PARAM_TEXT);
         $mform->addRule('gateway_mollie_partner_id', null, 'required', null, 'client');
-
-        $mform->addElement('text', 'gateway_mollie_app_secret', get_string('gateway_mollie_app_secret', 'enrol_coursepayment'), array('size' => '48',));
-        $mform->setType('gateway_mollie_app_secret', PARAM_TEXT);
-        $mform->addRule('gateway_mollie_app_secret', null, 'required', null, 'client');
 
         $mform->addElement('checkbox', 'gateway_mollie_debug', get_string('gateway_mollie_debug', 'enrol_coursepayment'));
         $mform->addElement('checkbox', 'gateway_mollie_sandbox', get_string('gateway_mollie_sandbox', 'enrol_coursepayment'));
