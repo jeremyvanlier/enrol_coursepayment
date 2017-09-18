@@ -248,6 +248,15 @@ abstract class enrol_coursepayment_gateway {
     }
 
     /**
+     * Check if the purchase page is in standalone mode
+     *
+     * @return bool
+     */
+    public function is_standalone_purchase_page() {
+        return ($this->pluginconfig->standalone_purchase_page == 1);
+    }
+
+    /**
      * show_debug
      *
      * @param bool $boolean
@@ -786,21 +795,21 @@ abstract class enrol_coursepayment_gateway {
     /**
      * Load multi-account config if needed
      *
-     * @param int    $userid only needed when running from cron
+     * @param int    $userid        only needed when running from cron
      * @param string $profile_value only needed when running from cron
      */
-    protected function load_multi_account_config($userid = 0 , $profile_value = '') {
+    protected function load_multi_account_config($userid = 0, $profile_value = '') {
         global $USER, $DB;
 
         // Normally we can $USER only in cron we need to fix this.
-        if($userid == 0){
+        if ($userid == 0) {
             $userid = $USER->id;
         }
 
         if (!empty($this->pluginconfig->multi_account)) {
 
             // Check if we match profile value of any of the multi-accounts.
-            if(empty($profile_value)) {
+            if (empty($profile_value)) {
                 $profile_value = enrol_coursepayment_helper::get_profile_field_data($this->pluginconfig->multi_account_fieldid, $userid);
             }
 

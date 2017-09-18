@@ -61,7 +61,6 @@
                 <FIELD NAME="gateway_mollie_apikey" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="gateway_mollie_profile_key" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="gateway_mollie_partner_id" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
-                <FIELD NAME="gateway_mollie_app_secret" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="gateway_mollie_debug" TYPE="int" LENGTH="9" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
                 <FIELD NAME="gateway_mollie_sandbox" TYPE="int" LENGTH="9" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
                 <FIELD NAME="added_on" TYPE="int" LENGTH="9" NOTNULL="true" SEQUENCE="false"/>
