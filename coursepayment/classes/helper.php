@@ -92,7 +92,15 @@ class enrol_coursepayment_helper {
 
         // Single user mode
         $row = $DB->get_record('user_info_data', ['fieldid' => $field->id, 'userid' => $userid]);
-        return !empty($row) ? $row->data : '';
+        if (isset($row->data)) {
+            return $row->data;
+        }
+
+        if (isset($field->defaultdata)) {
+            return $field->defaultdata;
+        }
+
+        return '';
     }
 
     /**

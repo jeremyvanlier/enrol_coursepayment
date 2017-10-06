@@ -83,10 +83,6 @@ class multiaccount extends \moodleform {
         $mform->setType('gateway_mollie_apikey', PARAM_TEXT);
         $mform->addRule('gateway_mollie_apikey', null, 'required', null, 'client');
 
-        $mform->addElement('text', 'gateway_mollie_profile_key', get_string('gateway_mollie_profile_key', 'enrol_coursepayment'), array('size' => '48',));
-        $mform->setType('gateway_mollie_profile_key', PARAM_TEXT);
-        $mform->addRule('gateway_mollie_profile_key', null, 'required', null, 'client');
-
         $mform->addElement('text', 'gateway_mollie_partner_id', get_string('gateway_mollie_partner_id', 'enrol_coursepayment'), array('size' => '48',));
         $mform->setType('gateway_mollie_partner_id', PARAM_TEXT);
         $mform->addRule('gateway_mollie_partner_id', null, 'required', null, 'client');
