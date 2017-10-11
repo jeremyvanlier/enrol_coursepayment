@@ -25,9 +25,9 @@
  **/
 
 defined('MOODLE_INTERNAL') || die();
-global $install;
 
 if ($ADMIN->fulltree) {
+    $install = $PAGE->url->get_path() === '/admin/upgradesettings.php' ? true : false;
     $message = optional_param('message', false, PARAM_TEXT);
     $config = get_config('enrol_coursepayment');
 
@@ -86,37 +86,40 @@ if ($ADMIN->fulltree) {
         $settings->add(new admin_setting_heading('enrol_coursepayment_message', '',
             html_writer::div(get_string('message:' . $message, 'enrol_coursepayment'), 'alert alert-success')));
     }
-
+    
     // Display the correct tab.
     if (empty($tab) || $tab === 'invoicedetails' || !empty($install)) {
 
         // Invoice settings.
         include 'settings/invoicedetails.php';
 
-    } elseif ($tab === 'enrolment' || !empty($install)) {
+    }
+    if ($tab === 'enrolment' || !empty($install)) {
 
         // Enrolment settings.
         include 'settings/enrolment.php';
 
-    } elseif ($tab === 'mail' || !empty($install)) {
+    }
+    if ($tab === 'mail' || !empty($install)) {
 
         // E-mail settings.
         include 'settings/mail.php';
 
-    } elseif ($tab === 'multiaccount' || !empty($install)) {
+    }
+    if ($tab === 'multiaccount' || !empty($install)) {
 
         // E-mail settings.
         include 'settings/multiaccount.php';
 
-    } elseif ($tab === 'gateway' || !empty($install)) {
+    }
+    if ($tab === 'gateway' || !empty($install)) {
 
         // Gateway settings.
         include 'settings/gateway.php';
 
-    } elseif ($tab === 'advanced' || !empty($install)) {
-
+    }
+    if ($tab === 'advanced' || !empty($install)) {
       // Advanced settings.
         include 'settings/advanced.php';
     }
-
 }
