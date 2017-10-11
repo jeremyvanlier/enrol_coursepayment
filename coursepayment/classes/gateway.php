@@ -278,7 +278,7 @@ abstract class enrol_coursepayment_gateway {
      * render log if is enabled in the plugin settings
      */
     function __destruct() {
-        if ($this->pluginconfig->debug == 1 && !empty($this->log)) {
+        if (!empty($this->pluginconfig->debug)  && !empty($this->log)) {
             echo '<pre>';
             print_r($this->log);
             echo '</pre>';
