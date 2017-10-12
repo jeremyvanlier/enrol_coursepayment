@@ -737,12 +737,11 @@ abstract class enrol_coursepayment_gateway {
      */
     protected function get_new_invoice_number() {
         global $DB;
-
-        $row = $DB->get_record_sql('SELECT invoice_number FROM {enrol_coursepayment} ORDER BY invoice_number DESC LIMIT 1');
-        if ($row) {
+        $rows =  $DB->get_records('enrol_coursepayment' , [] , 'invoice_number desc' , 'invoice_number' , 0 , 1);
+        if ($rows) {
+            $row = reset($rows);
             return $row->invoice_number + 1;
         }
-
         return 1;
     }
 
