@@ -237,3 +237,5 @@ $string['gateway_mollie_debug'] = 'Debugging';
 $string['gateway_mollie_sandbox'] = 'Sandbox';
 $string['form:multi_account'] = 'Multi-account settings';
 $string['confirm_delete'] = 'Are you sure you want to delete this item?';
+$string['transaction_name'] = 'Transaction name';
+$string['transaction_name_desc'] = 'Supports the follow shortcodes: <br>{invoice_number} : Invoice number<br>{course} : Course<br>{site} : Site';

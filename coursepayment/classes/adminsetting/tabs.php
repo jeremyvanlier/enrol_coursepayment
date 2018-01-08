@@ -39,6 +39,8 @@ class tabs extends \admin_setting {
      *                         config, or 'myplugin/mysetting' for ones in config_plugins.
      * @param string $section  Section name
      * @param string $default
+     *
+     * @throws \coding_exception
      */
     public function __construct($name, $section , $default = '') {
         parent::__construct($name, '', '', '');

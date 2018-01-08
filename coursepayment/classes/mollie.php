@@ -126,9 +126,10 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                     'es',
                     'nl',
                 ]) ? $this->instanceconfig->locale : 'en'),
-                "description" => $this->get_invoice_number_format((object)[
+                "description" => $this->get_payment_description((object)[
                     'invoice_number' => $invoice_number,
                     'addedon' => time(),
+                    'courseid' => $this->instanceconfig->courseid
                 ]),
                 "redirectUrl" => $CFG->wwwroot . '/enrol/coursepayment/return.php?orderid=' . $order['orderid'] . '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid,
                 "webhookUrl" => $CFG->wwwroot . '/enrol/coursepayment/ipn/mollie.php?orderid=' . $order['orderid'] . '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid,
@@ -216,9 +217,10 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                     'es',
                     'nl',
                 )) ? $this->instanceconfig->locale : 'en'),
-                "description" => $this->get_invoice_number_format((object)[
+                "description" => $this->get_payment_description((object)[
                     'invoice_number' => $invoice_number,
                     'addedon' => time(),
+                    'courseid' => $this->instanceconfig->courseid
                 ]),
                 "redirectUrl" => $CFG->wwwroot . '/enrol/coursepayment/return.php?orderid=' . $order['orderid'] . '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid,
                 "webhookUrl" => $CFG->wwwroot . '/enrol/coursepayment/ipn/mollie.php?orderid=' . $order['orderid'] . '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid,
@@ -266,6 +268,9 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * @param bool $standalone
      *
      * @return string
+     * @throws coding_exception
+     * @throws dml_exception
+     * @throws moodle_exception
      */
     public function order_form($standalone = false) {
 
@@ -369,6 +374,9 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * @param string $orderid
      *
      * @return array
+     * @throws coding_exception
+     * @throws dml_exception
+     * @throws moodle_exception
      */
     public function validate_order($orderid = '') {
         global $DB;
@@ -409,7 +417,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
             try {
                 // This will fix issues when using multi-account in cron.
-                $this->load_multi_account_config($row->userid, $row->profile_data);
+                $this->load_multi_account_config($row->userid);
 
                 // Reload API key.
                 $this->reload_api_key(); // use new settings if needed.
@@ -607,6 +615,8 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * @param string $status
      *
      * @return string
+     * @throws coding_exception
+     * @throws dml_exception
      */
     private function form_inline($discountcode = '', $status = '') {
 
@@ -663,6 +673,8 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * @param string $status
      *
      * @return string
+     * @throws coding_exception
+     * @throws dml_exception
      */
     private function form_standalone($discountcode = '', $status = '') {
         global $SITE;
