@@ -37,6 +37,7 @@ class renderer extends plugin_renderer_base {
      * @param multi_account $renderable
      *
      * @return string|boolean
+     * @throws \dml_exception
      */
     public function render_multi_account(multi_account $renderable) {
         $data = $renderable->export_for_template($this);

@@ -68,7 +68,9 @@ class enrol_coursepayment_discountcode{
 
     /**
      * get the Discountcode set a error message on error
+     *
      * @return false|object
+     * @throws dml_exception
      */
     public function getDiscountcode(){
         global $DB;
@@ -102,6 +104,7 @@ class enrol_coursepayment_discountcode{
     /**
      * last error message
      * @return lang_string|string
+     * @throws coding_exception
      */
     public function getLastErrorString(){
         return (!empty($this->lasterror)) ? get_string('error:'.$this->lasterror , 'enrol_coursepayment') : '';

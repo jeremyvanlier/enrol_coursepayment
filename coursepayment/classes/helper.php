@@ -59,6 +59,7 @@ class enrol_coursepayment_helper {
      * Get all available profile fields
      *
      * @return array
+     * @throws dml_exception
      */
     public static function get_profile_fields() {
         global $CFG, $DB;
@@ -85,6 +86,7 @@ class enrol_coursepayment_helper {
      * @param $userid
      *
      * @return string
+     * @throws dml_exception
      */
     public static function get_profile_field_data($fieldid, $userid) {
         global $DB;
@@ -110,6 +112,7 @@ class enrol_coursepayment_helper {
      * @param int $courseid
      *
      * @return bool|\cm_info
+     * @throws moodle_exception
      */
     public static function get_cmid_info($cmid = 0, $courseid = 0) {
 
@@ -131,7 +134,8 @@ class enrol_coursepayment_helper {
      * @param int $sectionnumber
      * @param int $courseid
      *
-     * @return bool|\cm_info
+     * @return stdClass
+     * @throws dml_exception
      */
     public static function get_section_info($sectionnumber = 0, $courseid = 0) {
         global $DB;
@@ -148,6 +152,29 @@ class enrol_coursepayment_helper {
         $module->name = $defaultsectionname;
 
         return $module;
+    }
+
+    /**
+     *
+     * parse_text
+     *
+     * @param string   $text
+     * @param stdClass $obj
+     *
+     * @return mixed|string
+     */
+    public static function parse_text($text = '', stdClass $obj) {
+        if (preg_match_all('/\{+\w+\}/', $text, $matches)) {
+            foreach ($matches[0] as $match) {
+                $matchClean = str_replace(['{' , '}'], '', $match);
+
+                if (isset($obj->$matchClean)) {
+                    $text = str_replace($match, $obj->$matchClean, $text);
+                }
+            }
+        }
+
+        return $text;
     }
 
 }

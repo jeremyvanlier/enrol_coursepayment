@@ -37,8 +37,6 @@ class newaccount extends \moodleform {
 
     protected function definition() {
 
-        global $DB;
-
         $mform = &$this->_form;
 
         $mform->addElement('header', 'header1', get_string('form:newaccount', 'enrol_coursepayment'));

@@ -174,8 +174,10 @@ abstract class enrol_coursepayment_gateway {
      *
      * @param string           $orderid
      *
+     * @return bool
+     * @throws coding_exception
+     * @throws dml_exception
      * @global moodle_database $DB
-     * @return array
      */
     public function validate_order($orderid = '') {
         global $DB;
@@ -208,6 +210,7 @@ abstract class enrol_coursepayment_gateway {
      * add a payment button for this gateway
      *
      * @return string
+     * @throws coding_exception
      */
     public function show_payment_button() {
 
@@ -278,7 +281,7 @@ abstract class enrol_coursepayment_gateway {
      * render log if is enabled in the plugin settings
      */
     function __destruct() {
-        if (!empty($this->pluginconfig->debug)  && !empty($this->log)) {
+        if (!empty($this->pluginconfig->debug) && !empty($this->log)) {
             echo '<pre>';
             print_r($this->log);
             echo '</pre>';
@@ -291,6 +294,7 @@ abstract class enrol_coursepayment_gateway {
      * @param array $data
      *
      * @return array
+     * @throws dml_exception
      */
     protected function create_new_course_order_record($data = array()) {
         global $DB;
@@ -348,6 +352,7 @@ abstract class enrol_coursepayment_gateway {
      * @param array $data
      *
      * @return array
+     * @throws dml_exception
      */
     protected function create_new_activity_order_record($data = array()) {
         global $DB;
@@ -380,7 +385,7 @@ abstract class enrol_coursepayment_gateway {
         $obj->addedon = time();
         $obj->timeupdated = 0;
         $obj->userid = $this->instanceconfig->userid;
-        $obj->courseid = $this->instanceconfig->courseid;;
+        $obj->courseid = $this->instanceconfig->courseid;
         $obj->cmid = $this->instanceconfig->cmid;;
         $obj->instanceid = 0;
         $obj->is_activity = 1;
@@ -418,6 +423,7 @@ abstract class enrol_coursepayment_gateway {
      *
      * @return bool
      * @throws coding_exception
+     * @throws dml_exception
      */
     public function enrol($record = null) {
         global $DB, $CFG;
@@ -536,6 +542,9 @@ abstract class enrol_coursepayment_gateway {
      * @param string $method
      *
      * @return bool
+     * @throws coding_exception
+     * @throws dml_exception
+     * @throws moodle_exception
      */
     protected function send_invoice($record = null, $invoicenumber = 0, $method = '') {
         global $DB, $CFG;
@@ -710,6 +719,7 @@ abstract class enrol_coursepayment_gateway {
      *
      * @return string
      * @throws coding_exception
+     * @throws dml_exception
      */
     protected function form_discount_code($discountcode = '', $status = array()) {
         global $DB;
@@ -734,14 +744,17 @@ abstract class enrol_coursepayment_gateway {
      * Get a new invoice_number
      *
      * @return int
+     * @throws dml_exception
      */
     protected function get_new_invoice_number() {
         global $DB;
-        $rows =  $DB->get_records('enrol_coursepayment' , [] , 'invoice_number desc' , 'invoice_number' , 0 , 1);
+        $rows = $DB->get_records('enrol_coursepayment', [], 'invoice_number desc', 'invoice_number', 0, 1);
         if ($rows) {
             $row = reset($rows);
+
             return $row->invoice_number + 1;
         }
+
         return 1;
     }
 
@@ -762,6 +775,25 @@ abstract class enrol_coursepayment_gateway {
     }
 
     /**
+     * get_payment_description
+     *
+     * @param $record
+     *
+     * @return mixed
+     * @throws dml_exception
+     */
+    protected function get_payment_description($record) {
+        global $DB, $SITE;
+
+        $obj = new stdClass();
+        $obj->invoice_number = $this->get_invoice_number_format($record);
+        $obj->site = $SITE->fullname;
+        $obj->course = $DB->get_field('course', 'fullname', ['id' => $record->courseid]);
+
+        return enrol_coursepayment_helper::parse_text($this->pluginconfig->transaction_name, $obj);
+    }
+
+    /**
      * get correct number format used for pricing
      *
      * @param float|int $number
@@ -776,6 +808,8 @@ abstract class enrol_coursepayment_gateway {
      * Add agreement check if needed
      *
      * @return string
+     * @throws coding_exception
+     * @throws dml_exception
      */
     protected function add_agreement_checkbox() {
         $string = '';
@@ -796,6 +830,8 @@ abstract class enrol_coursepayment_gateway {
      *
      * @param int    $userid        only needed when running from cron
      * @param string $profile_value only needed when running from cron
+     *
+     * @throws dml_exception
      */
     protected function load_multi_account_config($userid = 0, $profile_value = '') {
         global $USER, $DB;
@@ -806,7 +842,6 @@ abstract class enrol_coursepayment_gateway {
         }
 
         if (!empty($this->pluginconfig->multi_account)) {
-
             // Check if we match profile value of any of the multi-accounts.
             if (empty($profile_value)) {
                 $profile_value = enrol_coursepayment_helper::get_profile_field_data($this->pluginconfig->multi_account_fieldid, $userid);

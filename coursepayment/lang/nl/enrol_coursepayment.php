@@ -236,3 +236,5 @@ $string['gateway_mollie_debug'] = 'Debugging';
 $string['gateway_mollie_sandbox'] = 'Sandbox';
 $string['form:multi_account'] = 'Multi-account instellingen';
 $string['confirm_delete'] = 'Weet u zeker dat u dit item wilt verwijderen?';
+$string['transaction_name'] = 'Transactie naam';
+$string['transaction_name_desc'] = 'Ondersteund de volgende shortcodes: <br>{invoice_number} : Factuurnummer<br>{course} : Cursus<br>{site} : Site naam';

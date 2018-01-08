@@ -176,20 +176,6 @@ function xmldb_enrol_coursepayment_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2017082400, 'enrol', 'coursepayment');
     }
 
-    if ($oldversion < 2017082401) {
-
-        // Define field profile_data to be added to enrol_coursepayment.
-        $table = new xmldb_table('coursepayment_multiaccount');
-
-        // Conditionally launch add field profile_data.
-        if ($dbman->field_exists($table, $field)) {
-            $dbman->drop_field($table);
-        }
-
-        // Coursepayment savepoint reached.
-        upgrade_plugin_savepoint(true, 2017082401, 'enrol', 'coursepayment');
-    }
-
     if ($oldversion < 2017091800) {
 
         // Define field gateway_mollie_profile_key to be dropped from coursepayment_multiaccount.

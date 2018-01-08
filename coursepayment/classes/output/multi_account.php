@@ -31,8 +31,12 @@ use stdClass;
 use templatable;
 use renderer_base;
 
+/**
+ * Class multi_account
+ *
+ * @package enrol_coursepayment\output
+ */
 class multi_account implements renderable, templatable {
-
 
     /**
      * Export this data so it can be used as the context for a mustache template.
@@ -40,6 +44,7 @@ class multi_account implements renderable, templatable {
      * @param renderer_base $output
      *
      * @return stdClass
+     * @throws \dml_exception
      */
     public function export_for_template(renderer_base $output) {
         global $DB;
