@@ -787,8 +787,14 @@ abstract class enrol_coursepayment_gateway {
 
         $obj = new stdClass();
         $obj->invoice_number = $this->get_invoice_number_format($record);
-        $obj->site = $SITE->fullname;
+
+        // Course.
         $obj->course = $DB->get_field('course', 'fullname', ['id' => $record->courseid]);
+        $obj->course_shortname = $DB->get_field('course', 'shortname', ['id' => $record->courseid]);
+
+        // Site.
+        $obj->site = $SITE->fullname;
+        $obj->site_shortname = $SITE->shortname;
 
         return enrol_coursepayment_helper::parse_text($this->pluginconfig->transaction_name, $obj);
     }
