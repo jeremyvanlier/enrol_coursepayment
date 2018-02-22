@@ -401,7 +401,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * @return array
      */
     public function get_currencies() {
-        $codes = array('EUR', 'USD');
+        $codes = array('EUR');
         $currencies = array();
         foreach ($codes as $c) {
             $currencies[$c] = new lang_string($c, 'core_currencies');
