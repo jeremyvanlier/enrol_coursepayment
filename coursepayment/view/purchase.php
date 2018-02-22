@@ -92,7 +92,6 @@ $config->coursename = $course->fullname;
 $config->locale = $USER->lang;
 $config->customint1 = $instance->customint1;
 
-
 $gateway = 'enrol_coursepayment_' . $gateway;
 if (!class_exists($gateway)) {
     throw new Exception('Gateway not exists');
