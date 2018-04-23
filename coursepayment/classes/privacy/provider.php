@@ -26,6 +26,7 @@
 
 namespace enrol_coursepayment\privacy;
 
+use context_course;
 use core_privacy\local\metadata\collection;
 use core_privacy\local\request\contextlist;
 use core_privacy\local\request\approved_contextlist;
@@ -69,15 +70,13 @@ class provider implements \core_privacy\local\metadata\provider,
      * @return contextlist the list of contexts containing user info for the user.
      */
     public static function get_contexts_for_userid(int $userid) : contextlist {
-
-        $sql = "SELECT c.id
-                  FROM {context} c
-            INNER JOIN {enrol} enrol ON (enrol.id = c.instanceid AND c.contextlevel = :contextlevel)
+        // Enrol has no context ... we work with enrol id instead.
+        $sql = "SELECT enrol.id
+                  FROM {enrol} enrol
             INNER JOIN {enrol_coursepayment} coursepayment ON (coursepayment.instanceid = enrol.id)
                   WHERE coursepayment.userid = :userid";
 
         $params = [
-            'contextlevel' => CONTEXT_MODULE,
             'userid' => $userid,
         ];
         $contextlist = new contextlist();
@@ -105,33 +104,25 @@ class provider implements \core_privacy\local\metadata\provider,
 
         list($contextsql, $contextparams) = $DB->get_in_or_equal($contextlist->get_contextids(), SQL_PARAMS_NAMED);
 
-        $sql = "SELECT c.id AS contextid,coursepayment.*
-            FROM {context} c
-            INNER JOIN {enrol} enrol ON (enrol.id = c.instanceid AND c.contextlevel = :contextlevel)
+        $sql = "SELECT coursepayment.*
+            FROM {enrol} enrol
             INNER JOIN {enrol_coursepayment} coursepayment ON (coursepayment.instanceid = enrol.id)
-            WHERE c.id {$contextsql}  AND coursepayment.userid = :userid
-            ORDER BY c.instanceid";
+            WHERE enrol.id {$contextsql}  AND coursepayment.userid = :userid
+            ORDER BY coursepayment.instanceid";
 
         $params = [
                 'contextlevel' => CONTEXT_MODULE,
                 'userid' => $user->id,
             ] + $contextparams;
 
-        $data = [];
-
-        $context_set = [];
-        foreach ($contextlist->get_contexts() as $context) {
-            $context_set[$context->id] = $context;
-        }
-
         $coursepayments = $DB->get_recordset_sql($sql, $params);
         foreach ($coursepayments as $coursepayment) {
 
             // Get context.
-            $context = $context_set[$coursepayment->contextid];
+            $context = context_course::instance($coursepayment->courseid);
 
             // Return all references.
-            $data[] = [
+            $data = [
                 'orderid' => $coursepayment->orderid,
                 'gateway_transaction_id' => $coursepayment->gateway_transaction_id,
                 'instanceid' => $coursepayment->instanceid,
@@ -139,19 +130,15 @@ class provider implements \core_privacy\local\metadata\provider,
                 'addedon' => \core_privacy\local\request\transform::datetime($coursepayment->addedon),
             ];
 
-            // Write generic module intro.
-            helper::export_context_files($context, $user);
-
             // Fetch the generic module data.
             $contextdata = helper::get_context_data($context, $user);
 
             // Merge data and write it.
             $contextdata = (object)array_merge((array)$contextdata, $data);
             writer::with_context($context)->export_data([], $contextdata);
-
         }
-        $coursepayments->close();
 
+        $coursepayments->close();
     }
 
     /**
@@ -167,12 +154,7 @@ class provider implements \core_privacy\local\metadata\provider,
         if (empty($context)) {
             return;
         }
-
-        if (!$context instanceof \context_module) {
-            return;
-        }
-
-        $DB->delete_records('enrol_coursepayment', ['instanceid' => $context->instanceid]);
+        $DB->delete_records('enrol_coursepayment', ['instanceid' => $context->id]);
     }
 
     /**
@@ -190,13 +172,10 @@ class provider implements \core_privacy\local\metadata\provider,
         }
 
         $userid = $contextlist->get_user()->id;
-        foreach ($contextlist->get_contexts() as $context) {
+        foreach ($contextlist->get_contextids() as $id) {
 
-            if (!$context instanceof \context_module) {
-                return;
-            }
             $DB->delete_records('enrol_coursepayment', [
-                'instanceid' => $context->instanceid,
+                'instanceid' => $id,
                 'userid' => $userid,
             ]);
         }
