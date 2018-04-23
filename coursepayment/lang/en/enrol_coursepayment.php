@@ -244,3 +244,22 @@ $string['transaction_name_desc'] = 'Supports the follow shortcodes: <br>
 {course_shortname} : Course shortname<br>
 {site} : Site name<br>
 {site_shortname} : Site shortname<br>';
+
+//     'userid' => 'privacy:metadata:enrol_coursepayment:userid',
+//                'orderid' => 'privacy:metadata:enrol_coursepayment:orderid',
+//                'gateway_transaction_id' => 'privacy:metadata:enrol_coursepayment:gateway_transaction_id',
+//                'instanceid' => 'privacy:metadata:enrol_coursepayment:instanceid',
+//                'courseid' => 'privacy:metadata:enrol_coursepayment:courseid',
+//                'addedon' => 'privacy:metadata:enrol_coursepayment:timemodified',
+//            ],
+//            'privacy:metadata:enrol_coursepayment'
+
+// Privacy.
+$string['privacy:metadata:enrol_coursepayment'] = 'Stores the user transaction data, this allow to keep track of what a
+ user has purchased.';
+
+$string['privacy:metadata:enrol_coursepayment:userid'] = 'The ID of the user with this transaction.';
+$string['privacy:metadata:enrol_coursepayment:gateway_transaction_id'] = 'The transaction identifier of the user.';
+$string['privacy:metadata:enrol_coursepayment:orderid'] = 'The order identifier of the user.';
+$string['privacy:metadata:enrol_coursepayment:instanceid'] = 'The connected instanceid that refers to the purchase.';
+$string['privacy:metadata:enrol_coursepayment:addedon'] = 'The start time of the transaction.';

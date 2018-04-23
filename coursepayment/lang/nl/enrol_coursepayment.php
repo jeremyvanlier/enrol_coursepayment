@@ -243,3 +243,13 @@ $string['transaction_name_desc'] = 'Ondersteund de volgende shortcodes: <br>
 {course_shortname} : Cursus korte naam<br>
 {site} : Site naam<br>
 {site_shortname} : Site korte naam<br>';
+
+// Privacy.
+$string['privacy:metadata:enrol_coursepayment'] = 'Slaat de gebruikerstransactiegegevens op, dit staat toe om bij te houden wat een
+  gebruiker heeft gekocht.';
+
+$string['privacy:metadata:enrol_coursepayment:userid'] = 'De ID van de gebruiker bij deze transactie.';
+$string['privacy:metadata:enrol_coursepayment:gateway_transaction_id'] = 'De transactie-ID van de gebruiker.';
+$string['privacy:metadata:enrol_coursepayment:orderid'] = 'De order-ID van de gebruiker.';
+$string['privacy:metadata:enrol_coursepayment:instanceid'] = 'De instanceid die verwijst naar de aankoop.';
+$string['privacy:metadata:enrol_coursepayment:addedon'] = 'De starttijd van de transactie.';
