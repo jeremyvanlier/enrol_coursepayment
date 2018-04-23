@@ -20,7 +20,7 @@
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @copyright 2015 MoodleFreak.com
+ * @copyright 2018 MoodleFreak.com
  * @author    Luuk Verhoeven
  **/
 
