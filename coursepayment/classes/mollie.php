@@ -41,7 +41,10 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         require_once dirname(__FILE__) . "/../libs/Mollie/API/Autoloader.php";
 
         $this->client = new Mollie_API_Client();
-        $this->client->setApiKey($this->config->apikey);
+
+        if(!empty($this->config->apikey)) {
+            $this->client->setApiKey($this->config->apikey);
+        }
     }
 
     /**
@@ -510,6 +513,9 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
         $data = unserialize($data);
 
+        // https://help.mollie.com/hc/nl/articles/214016745-Waar-kan-ik-de-API-documentatie-voor-resellers-vinden-#ref-account-create
+       $data->username = $data->email; // Fix username.
+        
         $fields = [
             'username',
             'name',
@@ -523,7 +529,6 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         foreach ($fields as $field) {
             if (!array_key_exists($field, $data)) {
                 $return['error'] = 'Missing "' . $field . '" field!';
-
                 return $return;
             }
         }
@@ -535,12 +540,12 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         Mollie_Autoloader::register();
 
         // 3. Instantiate class with Mollie config
-        $mollie = new Mollie_Reseller($this->config->partner_id, $this->config->profile_key, $this->config->app_secret);
+        $mollie = new Mollie_Reseller($this->config->partner_id, $this->config->profile_key,
+            $this->config->app_secret);
 
         // 4. Call API accountCreate
         try {
             $data->country = 'NL';
-            // $data->testmode = true;
             $obj = (object)$mollie->accountCreate($data->username, (array)$data);
 
             $return['success'] = true;

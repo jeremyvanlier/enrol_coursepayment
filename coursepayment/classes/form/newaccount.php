@@ -41,10 +41,6 @@ class newaccount extends \moodleform {
 
         $mform->addElement('header', 'header1', get_string('form:newaccount', 'enrol_coursepayment'));
 
-        $mform->addElement('text', 'username', get_string('form:username', 'enrol_coursepayment'), array('size' => '48',));
-        $mform->setType('username', PARAM_USERNAME);
-        $mform->addRule('username', null, 'required', null, 'client');
-
         // Fullname customer.
         $mform->addElement('text', 'name', get_string('form:name', 'enrol_coursepayment'), array('size' => '48',));
         $mform->setType('name', PARAM_TEXT);

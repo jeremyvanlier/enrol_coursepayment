@@ -60,17 +60,19 @@ if ($form->is_cancelled()) {
 if (($data = $form->get_data()) != false) {
 
     // Send to your parent.
+    $data->username = $data->email;
     $response = enrol_coursepayment_helper::post_request($config->gateway_mollie_parent_api, [
         'data' => serialize($data),
         'action' => 'newaccount'
     ]);
 
+    echo '<pre>';print_r($response);echo '</pre>';die(__LINE__.' '.__FILE__);
     $response = json_decode($response);
 
     if(!empty($response->error)){
         throw new Exception($response->error);
     }
-
+    
     // Should be a success.
     set_config('gateway_mollie_account_claim', 1, 'enrol_coursepayment');
 
