@@ -28,7 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $settings->add(new admin_setting_configcheckbox('enrol_coursepayment/standalone_purchase_page',
     get_string('standalone_purchase_page', 'enrol_coursepayment'),
-    get_string('standalone_purchase_page_desc', 'enrol_coursepayment'), 0));
+    get_string('standalone_purchase_page_desc', 'enrol_coursepayment'), 1));
 
 $settings->add(new admin_setting_configselect('enrol_coursepayment/debug',
     get_string('debug', 'enrol_coursepayment'),
