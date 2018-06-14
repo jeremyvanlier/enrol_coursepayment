@@ -119,6 +119,7 @@ if ($mform->is_cancelled()) {
                 'expirynotify' => $data->expirynotify,
                 'notifyall' => $data->notifyall,
                 'customtext1' => $data->customtext1,
+                'customtext2' => $data->customtext2,
                 'customint1' => $data->customint1,
                 'expirythreshold' => $data->expirythreshold,
             );

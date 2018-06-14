@@ -263,3 +263,4 @@ $string['privacy:metadata:enrol_coursepayment:gateway_transaction_id'] = 'The tr
 $string['privacy:metadata:enrol_coursepayment:orderid'] = 'The order identifier of the user.';
 $string['privacy:metadata:enrol_coursepayment:instanceid'] = 'The connected instanceid that refers to the purchase.';
 $string['privacy:metadata:enrol_coursepayment:addedon'] = 'The start time of the transaction.';
+$string['customtext2'] = 'Extra identifier';
