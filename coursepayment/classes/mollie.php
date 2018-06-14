@@ -131,6 +131,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                 ]) ? $this->instanceconfig->locale : 'en'),
                 "description" => $this->get_payment_description((object)[
                     'invoice_number' => $invoice_number,
+                    'instanceid' => $this->instanceconfig->instanceid,
                     'addedon' => time(),
                     'courseid' => $this->instanceconfig->courseid
                 ]),
@@ -223,6 +224,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                 "description" => $this->get_payment_description((object)[
                     'invoice_number' => $invoice_number,
                     'addedon' => time(),
+                    'instanceid' => $this->instanceconfig->instanceid,
                     'courseid' => $this->instanceconfig->courseid
                 ]),
                 "redirectUrl" => $CFG->wwwroot . '/enrol/coursepayment/return.php?orderid=' . $order['orderid'] . '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid,
@@ -449,6 +451,13 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                     // we can mark this payment as aborted
                     $obj->status = self::PAYMENT_STATUS_ABORT;
                     $return['message'] = get_string('error:paymentabort', 'enrol_coursepayment');
+
+                } elseif ($payment->isOpen()) {
+
+                    // The payment isn't paid and isn't open anymore. We can assume it was aborted.
+                    // we can mark this payment as aborted
+                    $obj->status = self::PAYMENT_STATUS_WAITING;
+                    $return['message'] = get_string('error:waiting_on_payment', 'enrol_coursepayment');
                 }
 
                 $DB->update_record('enrol_coursepayment', $obj);
@@ -664,7 +673,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         $string .= $this->form_discount_code($discountcode, $status);
         $string .= '<input type="hidden" name="gateway" value="' . $this->name . '" />
                     <input type="hidden" id="input_method" name="method" value="" />
-                    <input type="submit" class="form-submit" value="' . get_string('purchase', "enrol_coursepayment") . '" />
+                    <input type="submit" class="form-submit btn btn-primary coursepayment-btn" value="' . get_string('purchase', "enrol_coursepayment") . '" />
                 </form>
             </div>';
 

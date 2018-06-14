@@ -155,7 +155,6 @@ class enrol_coursepayment_helper {
     }
 
     /**
-     *
      * parse_text
      *
      * @param string   $text
@@ -165,10 +164,12 @@ class enrol_coursepayment_helper {
      */
     public static function parse_text($text = '', stdClass $obj) {
         if (preg_match_all('/\{+\w+\}/', $text, $matches)) {
+
             foreach ($matches[0] as $match) {
+
                 $matchClean = str_replace(['{' , '}'], '', $match);
 
-                if (isset($obj->$matchClean)) {
+                if (property_exists($obj , $matchClean)) {
                     $text = str_replace($match, $obj->$matchClean, $text);
                 }
             }

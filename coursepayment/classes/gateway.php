@@ -599,6 +599,7 @@ abstract class enrol_coursepayment_gateway {
         $a->btw = $this->pluginconfig->btw;
         $a->currency = $this->pluginconfig->currency;
         $a->method = $method;
+        $a->description = $this->get_payment_description($record);
 
         // Calculate cost
         $a->cost = $this->price($record->cost);
@@ -795,6 +796,11 @@ abstract class enrol_coursepayment_gateway {
         // Site.
         $obj->site = $SITE->fullname;
         $obj->site_shortname = $SITE->shortname;
+
+        // Add enrolment instance.
+        $enrol = $DB->get_record('enrol', ['id' => $record->instanceid] , '*' , MUST_EXIST);
+        $obj->customtext1 = $enrol->customtext1;
+        $obj->customtext2 = $enrol->customtext2;
 
         return enrol_coursepayment_helper::parse_text($this->pluginconfig->transaction_name, $obj);
     }

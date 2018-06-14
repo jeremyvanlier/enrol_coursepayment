@@ -64,6 +64,7 @@ $string['error:paymentabort'] = 'The payment is aborted!';
 $string['error:no_record'] = 'Error: Not exists!';
 $string['error:not_within_the_time_period'] = 'Error: Not valid within this time period!';
 $string['error:not_for_this_course'] = 'Error: This discountcode is for another course!';
+$string['error:waiting_on_payment'] = 'Not paid. We will wait on payment.';
 $string['gateway_not_exists'] = 'Error! Gateway not exists';
 $string['enabled_desc'] = 'Status of the gateway if this can be used to create a transaction';
 $string['expiredaction'] = 'Enrolment expiration action';
@@ -143,6 +144,7 @@ VAT: {$a->btw}<br/>
 <br/>
 Invoice number: {$a->invoice_number}<br/>
 Date: {$a->date}<br/>
+Ref.: {$a->description}<br/>
 <br/>
 <br/>
 To:<br/>
@@ -243,7 +245,8 @@ $string['transaction_name_desc'] = 'Supports the follow shortcodes: <br>
 {course} : Course<br>
 {course_shortname} : Course shortname<br>
 {site} : Site name<br>
-{site_shortname} : Site shortname<br>';
+{site_shortname} : Site shortname<br>
+{customtext2} : Extra identifier';
 
 //     'userid' => 'privacy:metadata:enrol_coursepayment:userid',
 //                'orderid' => 'privacy:metadata:enrol_coursepayment:orderid',

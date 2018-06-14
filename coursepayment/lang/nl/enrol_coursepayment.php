@@ -142,6 +142,7 @@ BTW: {$a->btw}<br/>
 <br/>
 Factuur nummer: {$a->invoice_number}<br/>
 Datum: {$a->date}<br/>
+Ref.: {$a->description}<br/>
 <br/>
 <br/>
 Aan:<br/>
@@ -242,7 +243,8 @@ $string['transaction_name_desc'] = 'Ondersteund de volgende shortcodes: <br>
 {course} : Cursus<br>
 {course_shortname} : Cursus korte naam<br>
 {site} : Site naam<br>
-{site_shortname} : Site korte naam<br>';
+{site_shortname} : Site korte naam<br>
+{customtext2} : Extra betaal identifier';
 
 // Privacy.
 $string['privacy:metadata:enrol_coursepayment'] = 'Slaat de gebruikerstransactiegegevens op, dit staat toe om bij te houden wat een
