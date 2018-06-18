@@ -27,6 +27,13 @@ defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
 
+    'enrol/coursepayment:report' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW,
+        )
+    ),
     'enrol/coursepayment:config' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,

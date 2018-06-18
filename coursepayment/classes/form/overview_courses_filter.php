@@ -1,0 +1,63 @@
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ *
+ *
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package   coursepayment
+ * @copyright 2018 MoodleFreak.com
+ * @author    Luuk Verhoeven
+ **/
+
+namespace enrol_coursepayment\form;
+
+use enrol_coursepayment_gateway;
+
+defined('MOODLE_INTERNAL') || die();
+
+global $CFG;
+require_once($CFG->libdir . '/formslib.php');
+
+class overview_courses_filter extends \moodleform {
+
+    function definition() {
+        global $DB;
+
+        // Get all courses.
+        $courses = $DB->get_records_menu('course', [], 'fullname asc', 'id,fullname');
+
+        $mform = &$this->_form;
+        $array = ['' => get_string('form:make_selection', 'enrol_coursepayment')];
+        $mform->addElement('select', 'courseid', get_string('form:course', 'enrol_coursepayment'), $array + $courses);
+        $mform->setType('courseid', PARAM_INT);
+
+        $status = [
+            '' => get_string('form:make_selection', 'enrol_coursepayment'),
+            enrol_coursepayment_gateway::PAYMENT_STATUS_SUCCESS => get_string('status:success', 'enrol_coursepayment'),
+            enrol_coursepayment_gateway::PAYMENT_STATUS_CANCEL => get_string('status:cancel', 'enrol_coursepayment'),
+            enrol_coursepayment_gateway::PAYMENT_STATUS_WAITING => get_string('status:waiting', 'enrol_coursepayment'),
+            enrol_coursepayment_gateway::PAYMENT_STATUS_ABORT => get_string('status:abort', 'enrol_coursepayment'),
+            enrol_coursepayment_gateway::PAYMENT_STATUS_ERROR => get_string('status:error', 'enrol_coursepayment'),
+        ];
+
+        $mform->addElement('select', 'status', get_string('form:payment_status', 'enrol_coursepayment'), $status);
+        $mform->setType('status', PARAM_INT);
+
+        $this->add_action_buttons(false, get_string('btn:filter', 'enrol_coursepayment'));
+    }
+}

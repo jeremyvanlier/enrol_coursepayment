@@ -188,6 +188,11 @@ $string['form:address'] = 'Straat en huisnummer';
 $string['form:zipcode'] = 'Postcode';
 $string['form:city'] = 'Stad';
 $string['form:register'] = 'Registreren';
+
+$string['form:make_selection'] = 'Maak een keuze';
+$string['form:course'] = 'Cursus';
+$string['form:payment_status'] = 'Betaalstatus';
+
 $string['enrol_coursepayment_newaccount'] = 'Nieuw account aanmaken';
 $string['custommails'] = 'Extra email adressen';
 $string['custommails_desc'] = 'Voeg extra adressen toe die de factuur mogen ontvangen. (CSV format)';
@@ -224,6 +229,8 @@ $string['th_name'] = 'Naam';
 $string['th_action'] = 'Actie';
 $string['th_profile_value'] = 'Profielveld waarde';
 $string['btn:new'] = 'Nieuwe toevoegen';
+$string['btn:report'] = 'Rapportage';
+$string['btn:filter'] = 'Resultaten filteren';
 $string['no_result'] = 'Geen resultaat';
 $string['enrol_coursepayment_multi_account'] = 'Multi-account';
 $string['form:name_multiaccount'] = 'Naam';
@@ -256,3 +263,23 @@ $string['privacy:metadata:enrol_coursepayment:orderid'] = 'De order-ID van de ge
 $string['privacy:metadata:enrol_coursepayment:instanceid'] = 'De instanceid die verwijst naar de aankoop.';
 $string['privacy:metadata:enrol_coursepayment:addedon'] = 'De starttijd van de transactie.';
 $string['customtext2'] = 'Extra identifier';
+
+// Headings.
+$string['heading:report'] = 'Report';
+
+// Headings.
+$string['heading:report'] = 'Report';
+$string['heading:table_firstname'] = 'Firstname';
+$string['heading:table_lastname'] = 'Lastname';
+$string['heading:table_course'] = 'Course';
+$string['heading:table_email'] = 'E-mail';
+$string['heading:table_status'] = 'Payment status';
+$string['heading:table_phone1'] = 'Phone';
+$string['heading:table_addedon'] = 'Created at';
+
+// Status.
+$string['status:success'] = 'Success';
+$string['status:waiting'] = 'Waiting';
+$string['status:cancel'] = 'Cancel';
+$string['status:abort'] = 'Abort';
+$string['status:error'] = 'Error';

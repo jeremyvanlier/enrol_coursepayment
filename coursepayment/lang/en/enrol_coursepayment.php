@@ -114,6 +114,9 @@ $string['form:end_time'] = 'Valid to';
 $string['form:save'] = 'Save';
 $string['form:amount'] = 'Amount of discount';
 $string['form:percentage'] = 'Percentage of discount';
+$string['form:make_selection'] = 'Make a selection';
+$string['form:course'] = 'Course';
+$string['form:payment_status'] = 'Payment status';
 
 $string['error:number_to_low'] = 'This number is to low';
 $string['error:price_wrongformat'] = 'This isn\'t numeric!';
@@ -226,6 +229,8 @@ $string['th_name'] = 'Name';
 $string['th_action'] = 'Action';
 $string['th_profile_value'] = 'Profile value';
 $string['btn:new'] = 'Add new';
+$string['btn:report'] = 'Report';
+$string['btn:filter'] = 'Filter results';
 $string['no_result'] = 'No results';
 $string['enrol_coursepayment_multi_account'] = 'Multi-account';
 $string['form:name_multiaccount'] = 'Name';
@@ -267,3 +272,21 @@ $string['privacy:metadata:enrol_coursepayment:orderid'] = 'The order identifier 
 $string['privacy:metadata:enrol_coursepayment:instanceid'] = 'The connected instanceid that refers to the purchase.';
 $string['privacy:metadata:enrol_coursepayment:addedon'] = 'The start time of the transaction.';
 $string['customtext2'] = 'Extra identifier';
+
+// Headings.
+$string['heading:report'] = 'Report';
+$string['heading:table_firstname'] = 'Firstname';
+$string['heading:table_lastname'] = 'Lastname';
+$string['heading:table_course'] = 'Course';
+$string['heading:table_email'] = 'E-mail';
+$string['heading:table_status'] = 'Payment status';
+$string['heading:table_phone1'] = 'Phone';
+$string['heading:table_addedon'] = 'Created at';
+
+// Status.
+$string['status:success'] = 'Success';
+$string['status:waiting'] = 'Waiting';
+$string['status:cancel'] = 'Cancel';
+$string['status:abort'] = 'Abort';
+$string['status:error'] = 'Error';
+

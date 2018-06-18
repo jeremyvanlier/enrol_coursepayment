@@ -1,0 +1,202 @@
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * report_courses
+ *
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package   coursepayment
+ * @copyright 2018 MoodleFreak.com
+ * @author    Luuk Verhoeven
+ **/
+
+namespace enrol_coursepayment\table;
+
+use enrol_coursepayment_gateway;
+
+defined('MOODLE_INTERNAL') || die;
+
+class report_courses extends \flexible_table {
+
+    /**
+     * active_courses constructor.
+     *
+     * @param int $uniqueid
+     */
+    function __construct($uniqueid) {
+        parent::__construct($uniqueid);
+        require_once __DIR__ . '/sort.php';
+        $this->request = [
+            TABLE_VAR_SORT => 'tsort',
+            TABLE_VAR_HIDE => 'thide',
+            TABLE_VAR_SHOW => 'tshow',
+            TABLE_VAR_IFIRST => 'tifirst',
+            TABLE_VAR_ILAST => 'tilast',
+            TABLE_VAR_PAGE => 'page',
+            TABLE_VAR_RESET => 'reset',
+        ];
+    }
+
+    /**
+     * small hack to allow flexible_table php sorting with already parsed data
+     *
+     * @param array      $data
+     * @param bool|array $filterdata
+     */
+    public function data_sort_and_search($data = [], $filterdata = false) {
+
+        // Allow coll sorting.
+        $sort = $this->get_sort_for_table($this->uniqueid);
+
+        if (!empty($sort)) {
+            // We have a sort, we need sort now.
+            $arr = explode(',', $sort);
+            list($column, $direction) = explode(' ', $arr[0]);
+            if (isset($this->columns[$column])) {
+
+                $data = arraysortutil::multisort($data, [
+                    [
+                        "field" => $column,
+                        "order" => ($direction == 'ASC' ? false : true),
+                    ],
+                ]);
+            }
+        }
+
+        // Search for a value.
+        if ($filterdata) {
+            $data = $this->search($filterdata, $data);
+        }
+
+        // Pagination.
+        if ($this->totalrows > $this->pagesize) {
+            $start = $this->pagesize * $this->currpage;
+            $data = array_slice($data, $start, $this->pagesize);
+        }
+
+        // Render the table with new ordering.
+        foreach ($data as $row) {
+
+            if (empty($row)) {
+                continue;
+            }
+
+            // Map keys to decorators.
+            array_walk($row, function (&$value, $key) use ($row) {
+
+                // Real magic :)
+                if (is_callable([$this, 'col_' . $key])) {
+                    $value = $this->{'col_' . $key}($row);
+                }
+            });
+
+            // Add the data to the table.
+            $this->add_data_keyed($row);
+        }
+    }
+
+    /**
+     * Search in array
+     *
+     * @param string $filterdata The string array element to search for
+     * @param array  $stack      The stack to search within for the child
+     *
+     * @return array
+     */
+    protected function search($filterdata, $stack) {
+
+        $needed = count((array)$filterdata) - 1; // total search filters - submit_btn.
+
+        return array_filter($stack, function ($row) use ($filterdata , $needed) {
+            $matches = 0;
+            // Loop throw the filtering.
+            foreach ($filterdata as $key => $value) {
+
+                // No action needed.
+                if(empty($value)){
+                    $matches++;
+                    continue;
+                }
+
+                // Make sure value match.
+                if (isset($row->$key)) {
+                    if ($value == $row->$key) {
+                        $matches++;
+                    }
+                }
+            }
+
+            // Must match all statements.
+            if ($needed == $matches) {
+                return true;
+            }
+        });
+    }
+
+    /**
+     * Payment status
+     *
+     * @param \stdClass $row
+     *
+     * @return string
+     * @throws \coding_exception
+     */
+    public function col_status(\stdClass $row) {
+
+        switch ($row->status) {
+
+            case enrol_coursepayment_gateway::PAYMENT_STATUS_CANCEL:
+                return \html_writer::span(get_string('status:cancel', 'enrol_coursepayment'),
+                    'badge badge-danger');
+                break;
+
+            case enrol_coursepayment_gateway::PAYMENT_STATUS_SUCCESS:
+                return \html_writer::span(get_string('status:success', 'enrol_coursepayment'),
+                    'badge badge-success');
+                break;
+
+            case enrol_coursepayment_gateway::PAYMENT_STATUS_ERROR:
+                return \html_writer::span(get_string('status:error', 'enrol_coursepayment'),
+                    'badge badge-warning');
+                break;
+
+            case enrol_coursepayment_gateway::PAYMENT_STATUS_ABORT:
+                return \html_writer::span(get_string('status:abort', 'enrol_coursepayment'),
+                    'badge badge-danger');
+                break;
+
+            case enrol_coursepayment_gateway::PAYMENT_STATUS_WAITING:
+                return \html_writer::span(get_string('status:waiting', 'enrol_coursepayment'),
+                    'badge badge-info');
+                break;
+        }
+
+        return '';
+    }
+
+    /**
+     * Added on
+     *
+     * @param \stdClass $row
+     *
+     * @return false|string
+     */
+    public function col_addedon(\stdClass $row) {
+        return date('d.m.Y H:i:s', $row->addedon);
+    }
+
+}
