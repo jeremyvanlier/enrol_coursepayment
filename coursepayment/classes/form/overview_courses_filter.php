@@ -42,9 +42,13 @@ class overview_courses_filter extends \moodleform {
         $courses = $DB->get_records_menu('course', [], 'fullname asc', 'id,fullname');
 
         $mform = &$this->_form;
+
+        $mform->addElement('text' , 'search' ,  get_string('form:search', 'enrol_coursepayment'));
+        $mform->setType('search', PARAM_TEXT);
+
         $array = ['' => get_string('form:make_selection', 'enrol_coursepayment')];
         $mform->addElement('select', 'courseid', get_string('form:course', 'enrol_coursepayment'), $array + $courses);
-        $mform->setType('courseid', PARAM_INT);
+        $mform->setType('courseid', PARAM_TEXT);
 
         $status = [
             '' => get_string('form:make_selection', 'enrol_coursepayment'),
@@ -53,10 +57,11 @@ class overview_courses_filter extends \moodleform {
             enrol_coursepayment_gateway::PAYMENT_STATUS_WAITING => get_string('status:waiting', 'enrol_coursepayment'),
             enrol_coursepayment_gateway::PAYMENT_STATUS_ABORT => get_string('status:abort', 'enrol_coursepayment'),
             enrol_coursepayment_gateway::PAYMENT_STATUS_ERROR => get_string('status:error', 'enrol_coursepayment'),
+            -1 => get_string('status:no_payments', 'enrol_coursepayment'),
         ];
 
         $mform->addElement('select', 'status', get_string('form:payment_status', 'enrol_coursepayment'), $status);
-        $mform->setType('status', PARAM_INT);
+        $mform->setType('status', PARAM_TEXT);
 
         $this->add_action_buttons(false, get_string('btn:filter', 'enrol_coursepayment'));
     }

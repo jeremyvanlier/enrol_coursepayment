@@ -42,12 +42,11 @@ require_capability('enrol/coursepayment:report', $coursecontext);
 
 // Page layout.
 $PAGE->set_heading($SITE->fullname);
-$PAGE->set_pagelayout('course');
+$PAGE->set_pagelayout('base');
 $PAGE->set_title(get_string('heading:report', 'enrol_coursepayment'));
 $PAGE->navbar->add(ucfirst($parentcourse->fullname), new moodle_url('/course/view.php', ['id' => $parentcourse->id]));
 $PAGE->navbar->add(get_string('heading:report', 'enrol_coursepayment'));
 $PAGE->requires->css('/enrol/coursepayment/styles.css');
-
 
 // Get current params.
 $params = $PAGE->url->params();

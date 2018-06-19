@@ -79,7 +79,7 @@ class report {
         $table->setup();
 
         // Add the rows and sort if needed.
-        $results = self::get_all_courses_data();
+        $results = self::get_all_courses_data($datafilter);
 
         // Navigation.
         $table->pagesize(100, count($results));
@@ -96,7 +96,7 @@ class report {
      * @return array
      * @throws \dml_exception
      */
-    private static function get_all_courses_data() {
+    private static function get_all_courses_data($datafilter) {
         global $DB;
 
         $sql = 'SELECT cp.* , u.firstname , u.lastname , u.phone1 , u.email, c.fullname as course 
@@ -107,13 +107,23 @@ class report {
 
         $results = $DB->get_records_sql($sql);
 
-        // Build user_id set.
-        $userIds = [];
-        foreach($results as $result){
-            $userIds[$result->userid] = $result->userid;
-        }
+        if (get_config('enrol_coursepayment', 'report_include_none_payment_users') == 1 && empty($datafilter->courseid)) {
 
-        // @TODO Add all users not in $userIds and not deleted or suspended.
+            // Build user_id set.
+            $userIds = [];
+            foreach ($results as $result) {
+                $userIds[$result->userid] = $result->userid;
+            }
+
+            list($insql, $params) = $DB->get_in_or_equal(array_keys($userIds), SQL_PARAMS_QM, 'param', false);
+            $sql = 'SELECT u.id, u.firstname , u.lastname , u.phone1 , u.email , "" as course , "-1" as status , "0" as addedon FROM {user} u  
+                    WHERE u.id > 1 AND u.suspended =0 AND u.deleted = 0 AND id ' . $insql;
+
+            $users = $DB->get_records_sql($sql, $params);
+            foreach ($users as $user) {
+                array_push($results, $user);
+            }
+        }
 
         return $results;
     }

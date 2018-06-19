@@ -188,6 +188,7 @@ $string['form:address'] = 'Straat en huisnummer';
 $string['form:zipcode'] = 'Postcode';
 $string['form:city'] = 'Stad';
 $string['form:register'] = 'Registreren';
+$string['form:search'] = 'Zoeken';
 
 $string['form:make_selection'] = 'Maak een keuze';
 $string['form:course'] = 'Cursus';
@@ -263,6 +264,7 @@ $string['privacy:metadata:enrol_coursepayment:orderid'] = 'De order-ID van de ge
 $string['privacy:metadata:enrol_coursepayment:instanceid'] = 'De instanceid die verwijst naar de aankoop.';
 $string['privacy:metadata:enrol_coursepayment:addedon'] = 'De starttijd van de transactie.';
 $string['customtext2'] = 'Extra identifier';
+$string['report_include_none_payment_users'] = 'Rapportage alle gebruikers inladen';
 
 // Headings.
 $string['heading:report'] = 'Report';
@@ -283,3 +285,4 @@ $string['status:waiting'] = 'Waiting';
 $string['status:cancel'] = 'Cancel';
 $string['status:abort'] = 'Abort';
 $string['status:error'] = 'Error';
+$string['status:no_payments'] = 'Geen betalingen';

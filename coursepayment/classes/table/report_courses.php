@@ -80,6 +80,7 @@ class report_courses extends \flexible_table {
         // Search for a value.
         if ($filterdata) {
             $data = $this->search($filterdata, $data);
+            $this->totalrows = count($data);
         }
 
         // Pagination.
@@ -121,21 +122,31 @@ class report_courses extends \flexible_table {
 
         $needed = count((array)$filterdata) - 1; // total search filters - submit_btn.
 
-        return array_filter($stack, function ($row) use ($filterdata , $needed) {
+        return array_filter($stack, function ($row) use ($filterdata, $needed) {
             $matches = 0;
             // Loop throw the filtering.
             foreach ($filterdata as $key => $value) {
 
                 // No action needed.
-                if(empty($value)){
+                if (empty($value)) {
                     $matches++;
                     continue;
                 }
 
                 // Make sure value match.
                 if (isset($row->$key)) {
-                    if ($value == $row->$key) {
+                    if (stristr($value, $row->$key)) {
                         $matches++;
+                    }
+                }
+
+                // Search in all.
+                if ($key == 'search') {
+                    foreach ($row as $v) {
+                        if (stristr($v, $value)) {
+                            $matches++;
+                            break;
+                        }
                     }
                 }
             }
@@ -183,6 +194,11 @@ class report_courses extends \flexible_table {
                 return \html_writer::span(get_string('status:waiting', 'enrol_coursepayment'),
                     'badge badge-info');
                 break;
+            case '-1':
+                return \html_writer::span(get_string('status:no_payments', 'enrol_coursepayment'),
+                    'badge badge-warning');
+                break;
+
         }
 
         return '';

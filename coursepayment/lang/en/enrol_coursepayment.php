@@ -117,6 +117,7 @@ $string['form:percentage'] = 'Percentage of discount';
 $string['form:make_selection'] = 'Make a selection';
 $string['form:course'] = 'Course';
 $string['form:payment_status'] = 'Payment status';
+$string['form:search'] = 'Search';
 
 $string['error:number_to_low'] = 'This number is to low';
 $string['error:price_wrongformat'] = 'This isn\'t numeric!';
@@ -272,6 +273,7 @@ $string['privacy:metadata:enrol_coursepayment:orderid'] = 'The order identifier 
 $string['privacy:metadata:enrol_coursepayment:instanceid'] = 'The connected instanceid that refers to the purchase.';
 $string['privacy:metadata:enrol_coursepayment:addedon'] = 'The start time of the transaction.';
 $string['customtext2'] = 'Extra identifier';
+$string['report_include_none_payment_users'] = 'Report include all users';
 
 // Headings.
 $string['heading:report'] = 'Report';
@@ -289,4 +291,6 @@ $string['status:waiting'] = 'Waiting';
 $string['status:cancel'] = 'Cancel';
 $string['status:abort'] = 'Abort';
 $string['status:error'] = 'Error';
+$string['status:no_payments'] = 'No payments connected';
+
 

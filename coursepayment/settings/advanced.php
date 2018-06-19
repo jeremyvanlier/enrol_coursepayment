@@ -77,3 +77,7 @@ $settings->add(new admin_setting_heading('multi_account_heading',
 $settings->add(new admin_setting_configcheckbox('enrol_coursepayment/multi_account',
     get_string('multi_account', 'enrol_coursepayment'),
     '', 0));
+
+$settings->add(new admin_setting_configcheckbox('enrol_coursepayment/report_include_none_payment_users',
+    get_string('report_include_none_payment_users', 'enrol_coursepayment'),
+    '', 1));
