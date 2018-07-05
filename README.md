@@ -38,6 +38,8 @@ Changelog
 
 See Git for the complete history, major changes will be listed below
 
+2018070500 - Git folder structure changed.
+
 2018010800 - Added support focustom transaction Mollie description 
 
 2017082101 - Added multi account option, to support multiple Mollie accounts. 
