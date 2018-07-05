@@ -1,0 +1,6 @@
+[submodule "coursepayment/moodle-docker-enrol_coursepayment"]
+	path = coursepayment/moodle-docker-enrol_coursepayment
+	url = https://github.com/moodlehq/moodle-docker.git
+[submodule "coursepayment/dockermd_coursepayment"]
+	path = coursepayment/dockermd_coursepayment
+	url = git@github.com:MoodleFreak/docker-md.git
