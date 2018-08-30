@@ -89,7 +89,7 @@ abstract class enrol_coursepayment_gateway {
      *
      * @var array
      */
-    protected $pluginconfig = array();
+    protected $pluginconfig = [];
 
     /**
      * show more debug messages to the user inline only for testing purposes
@@ -181,10 +181,10 @@ abstract class enrol_coursepayment_gateway {
      */
     public function validate_order($orderid = '') {
         global $DB;
-        $row = $DB->get_record('enrol_coursepayment', array(
+        $row = $DB->get_record('enrol_coursepayment', [
             'orderid' => $orderid,
             'gateway' => $this->name,
-        ));
+        ]);
 
         if ($row) {
             if ($row->cost == 0) {
@@ -296,7 +296,7 @@ abstract class enrol_coursepayment_gateway {
      * @return array
      * @throws dml_exception
      */
-    protected function create_new_course_order_record($data = array()) {
+    protected function create_new_course_order_record($data = []) {
         global $DB;
 
         $cost = $this->instanceconfig->cost;
@@ -339,11 +339,11 @@ abstract class enrol_coursepayment_gateway {
         $obj->status = self::PAYMENT_STATUS_WAITING;
         $id = $DB->insert_record('enrol_coursepayment', $obj);
 
-        return array(
+        return [
             'orderid' => $orderidentifier,
             'id' => $id,
             'cost' => $cost,
-        );
+        ];
     }
 
     /**
@@ -354,7 +354,7 @@ abstract class enrol_coursepayment_gateway {
      * @return array
      * @throws dml_exception
      */
-    protected function create_new_activity_order_record($data = array()) {
+    protected function create_new_activity_order_record($data = []) {
         global $DB;
 
         $cost = $this->instanceconfig->cost;
@@ -400,11 +400,11 @@ abstract class enrol_coursepayment_gateway {
         $obj->section = isset($this->instanceconfig->section) ? $this->instanceconfig->section : -10;
         $id = $DB->insert_record('enrol_coursepayment', $obj);
 
-        return array(
+        return [
             'orderid' => $orderidentifier,
             'id' => $id,
             'cost' => $cost,
-        );
+        ];
     }
 
     /**
@@ -444,9 +444,9 @@ abstract class enrol_coursepayment_gateway {
         $plugin = enrol_get_plugin('coursepayment');
 
         // first we need all the data to enrol
-        $plugininstance = $DB->get_record("enrol", array("id" => $record->instanceid, "status" => 0));
-        $user = $DB->get_record("user", array('id' => $record->userid));
-        $course = $DB->get_record('course', array('id' => $record->courseid));
+        $plugininstance = $DB->get_record("enrol", ["id" => $record->instanceid, "status" => 0]);
+        $user = $DB->get_record("user", ['id' => $record->userid]);
+        $course = $DB->get_record('course', ['id' => $record->courseid]);
         $context = context_course::instance($course->id, IGNORE_MISSING);
 
         if ($plugininstance->enrolperiod) {
@@ -471,11 +471,11 @@ abstract class enrol_coursepayment_gateway {
         $mailstudents = $plugin->get_config('mailstudents');
         $mailteachers = $plugin->get_config('mailteachers');
         $mailadmins = $plugin->get_config('mailadmins');
-        $shortname = format_string($course->shortname, true, array('context' => $context));
+        $shortname = format_string($course->shortname, true, ['context' => $context]);
 
         if (!empty($mailstudents)) {
             $a = new stdClass();
-            $a->coursename = format_string($course->fullname, true, array('context' => $context));
+            $a->coursename = format_string($course->fullname, true, ['context' => $context]);
             $a->profileurl = "$CFG->wwwroot/user/view.php?id=$user->id";
 
             $eventdata = new stdClass();
@@ -494,7 +494,7 @@ abstract class enrol_coursepayment_gateway {
         }
 
         if (!empty($mailteachers) && !empty($teacher)) {
-            $a->course = format_string($course->fullname, true, array('context' => $context));
+            $a->course = format_string($course->fullname, true, ['context' => $context]);
             $a->user = fullname($user);
 
             $eventdata = new stdClass();
@@ -512,7 +512,7 @@ abstract class enrol_coursepayment_gateway {
         }
 
         if (!empty($mailadmins)) {
-            $a->course = format_string($course->fullname, true, array('context' => $context));
+            $a->course = format_string($course->fullname, true, ['context' => $context]);
             $a->user = fullname($user);
             $admins = get_admins();
             foreach ($admins as $admin) {
@@ -556,14 +556,14 @@ abstract class enrol_coursepayment_gateway {
         require_once($CFG->libdir . '/enrollib.php');
         require_once($CFG->libdir . '/filelib.php');
 
-        $user = $DB->get_record("user", array('id' => $record->userid));
-        $course = $DB->get_record('course', array('id' => $record->courseid));
+        $user = $DB->get_record("user", ['id' => $record->userid]);
+        $course = $DB->get_record('course', ['id' => $record->courseid]);
         $context = context_course::instance($course->id, IGNORE_MISSING);
-        $plugininstance = $DB->get_record("enrol", array("id" => $record->instanceid, "status" => 0));
+        $plugininstance = $DB->get_record("enrol", ["id" => $record->instanceid, "status" => 0]);
 
         // Mail object
         $a = new stdClass();
-        $a->course = format_string($course->fullname, true, array('context' => $context));
+        $a->course = format_string($course->fullname, true, ['context' => $context]);
         $a->fullname = fullname($user);
         $a->email = $user->email;
         $a->date = date('d-m-Y, H:i', $record->addedon);
@@ -573,7 +573,7 @@ abstract class enrol_coursepayment_gateway {
             $module = enrol_coursepayment_helper::get_cmid_info($record->cmid, $course->id);
             $a->fullcourse = $module->name;
             $a->content_type = get_string('activity');
-        } elseif ($record->section > 0) {
+        } else if ($record->section > 0) {
             $module = enrol_coursepayment_helper::get_section_info($record->section, $course->id);
             $a->fullcourse = $module->name;
             $a->content_type = get_string('section');
@@ -722,11 +722,11 @@ abstract class enrol_coursepayment_gateway {
      * @throws coding_exception
      * @throws dml_exception
      */
-    protected function form_discount_code($discountcode = '', $status = array()) {
+    protected function form_discount_code($discountcode = '', $status = []) {
         global $DB;
         $string = '';
         // check if there is a discount code
-        $row = $DB->get_record('enrol_coursepayment_discount', array(), 'id', IGNORE_MULTIPLE);
+        $row = $DB->get_record('enrol_coursepayment_discount', [], 'id', IGNORE_MULTIPLE);
         if ($row) {
             $string .= '<hr/>';
             $string .= '<div align="center">
@@ -798,9 +798,14 @@ abstract class enrol_coursepayment_gateway {
         $obj->site_shortname = $SITE->shortname;
 
         // Add enrolment instance.
-        $enrol = $DB->get_record('enrol', ['id' => $record->instanceid] , '*' , MUST_EXIST);
-        $obj->customtext1 = $enrol->customtext1;
-        $obj->customtext2 = $enrol->customtext2;
+        $enrol = $DB->get_record('enrol', ['id' => $record->instanceid], '*');
+        if ($enrol) {
+            $obj->customtext1 = $enrol->customtext1;
+            $obj->customtext2 = $enrol->customtext2;
+        } else {
+            $obj->customtext1 = '';
+            $obj->customtext2 = '';
+        }
 
         return enrol_coursepayment_helper::parse_text($this->pluginconfig->transaction_name, $obj);
     }

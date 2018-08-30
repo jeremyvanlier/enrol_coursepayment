@@ -263,6 +263,8 @@ $string['privacy:metadata:enrol_coursepayment:gateway_transaction_id'] = 'De tra
 $string['privacy:metadata:enrol_coursepayment:orderid'] = 'De order-ID van de gebruiker.';
 $string['privacy:metadata:enrol_coursepayment:instanceid'] = 'De instanceid die verwijst naar de aankoop.';
 $string['privacy:metadata:enrol_coursepayment:addedon'] = 'De starttijd van de transactie.';
+$string['privacy:metadata:enrol_coursepayment:courseid'] = 'De cursus id van de verbonden cursus.';
+
 $string['customtext2'] = 'Extra identifier';
 $string['report_include_none_payment_users'] = 'Rapportage alle gebruikers inladen';
 
