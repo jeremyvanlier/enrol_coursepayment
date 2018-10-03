@@ -99,7 +99,7 @@ class report {
     private static function get_all_courses_data($datafilter) {
         global $DB;
 
-        $sql = 'SELECT cp.* , u.firstname , u.lastname , u.phone1 , u.email, c.fullname as course 
+        $sql = 'SELECT cp.* , u.firstname , u.lastname , u.phone1 , u.phone2 , u.email, c.fullname as course 
                 FROM {enrol_coursepayment} cp 
                 JOIN {course} c ON (c.id = cp.courseid)
                 LEFT JOIN {user} u ON (u.id = cp.userid)

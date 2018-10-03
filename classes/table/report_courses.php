@@ -128,7 +128,7 @@ class report_courses extends \flexible_table {
             foreach ($filterdata as $key => $value) {
 
                 // No action needed.
-                if (empty($value)) {
+                if ($value == '') {
                     $matches++;
                     continue;
                 }
@@ -156,6 +156,17 @@ class report_courses extends \flexible_table {
                 return true;
             }
         });
+    }
+
+    /**
+     * Always try to find a phone
+     *
+     * @param \stdClass $row
+     *
+     * @return mixed
+     */
+    public function col_phone1(\stdClass $row) {
+        return !empty($row->phone1) ? $row->phone1 : $row->phone2;
     }
 
     /**
