@@ -47,7 +47,8 @@ $settings->add(new admin_setting_configselect('enrol_coursepayment/status',
     get_string('status', 'enrol_coursepayment'),
     get_string('status_desc', 'enrol_coursepayment'), ENROL_INSTANCE_DISABLED, $optionsyesno));
 $settings->add(new admin_setting_configtext('enrol_coursepayment/cost',
-    get_string('cost', 'enrol_coursepayment'), '', 10.00, PARAM_FLOAT, 4));
+    get_string('cost', 'enrol_coursepayment'), '', '10,00',
+    PARAM_TEXT, 4));
 
 $coursepaymentcurrencies = enrol_get_plugin('coursepayment')->get_currencies();
 $settings->add(new admin_setting_configselect('enrol_coursepayment/currency',
