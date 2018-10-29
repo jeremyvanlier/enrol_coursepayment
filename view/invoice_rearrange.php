@@ -44,7 +44,7 @@ if ($cm = $template->get_cm()) {
 $template->require_manage();
 
 if ($template->get_context()->contextlevel == CONTEXT_MODULE) {
-    $customcert = $DB->get_record('customcert', ['id' => $cm->instance], '*', MUST_EXIST);
+    $customcert = $DB->get_record('enrol_coursepayment', ['id' => $cm->instance], '*', MUST_EXIST);
     $title = $customcert->name;
     $heading = format_string($title);
 } else {
@@ -58,16 +58,16 @@ $pageurl = new moodle_url('/mod/customcert/rearrange.php', array('pid' => $pid))
 
 // Add more links to the navigation.
 if (!$cm = $template->get_cm()) {
-    $str = get_string('managetemplates', 'customcert');
+    $str = get_string('managetemplates', 'enrol_coursepayment');
     $link = new moodle_url('/mod/customcert/manage_templates.php');
     $PAGE->navbar->add($str, new \action_link($link, $str));
 }
 
-$str = get_string('editcustomcert', 'customcert');
+$str = get_string('editcustomcert', 'enrol_coursepayment');
 $link = new moodle_url('/mod/customcert/edit.php', array('tid' => $template->get_id()));
 $PAGE->navbar->add($str, new \action_link($link, $str));
 
-$PAGE->navbar->add(get_string('rearrangeelements', 'customcert'));
+$PAGE->navbar->add(get_string('rearrangeelements', 'enrol_coursepayment'));
 
 // Include the JS we need.
 $PAGE->requires->yui_module('moodle-mod_customcert-rearrange', 'Y.M.mod_customcert.rearrange.init',
@@ -78,9 +78,9 @@ $PAGE->requires->yui_module('moodle-mod_customcert-rearrange', 'Y.M.mod_customce
 // Create the buttons to save the position of the elements.
 $html = html_writer::start_tag('div', array('class' => 'buttons'));
 $html .= $OUTPUT->single_button(new moodle_url('/mod/customcert/edit.php', array('tid' => $template->get_id())),
-        get_string('saveandclose', 'customcert'), 'get', array('class' => 'savepositionsbtn'));
+        get_string('saveandclose', 'enrol_coursepayment'), 'get', array('class' => 'savepositionsbtn'));
 $html .= $OUTPUT->single_button(new moodle_url('/mod/customcert/rearrange.php', array('pid' => $pid)),
-        get_string('saveandcontinue', 'customcert'), 'get', array('class' => 'applypositionsbtn'));
+        get_string('saveandcontinue', 'enrol_coursepayment'), 'get', array('class' => 'applypositionsbtn'));
 $html .= $OUTPUT->single_button(new moodle_url('/mod/customcert/edit.php', array('tid' => $template->get_id())),
         get_string('cancel'), 'get', array('class' => 'cancelbtn'));
 $html .= html_writer::end_tag('div');
@@ -126,7 +126,7 @@ $html .= html_writer::end_tag('div');
 
 echo $OUTPUT->header();
 echo $OUTPUT->heading($heading);
-echo $OUTPUT->heading(get_string('rearrangeelementsheading', 'customcert'), 4);
+echo $OUTPUT->heading(get_string('rearrangeelementsheading', 'enrol_coursepayment'), 4);
 echo $html;
 $PAGE->requires->js_call_amd('enrol_coursepayment/rearrange-area', 'init', array('#pdf'));
 echo $OUTPUT->footer();

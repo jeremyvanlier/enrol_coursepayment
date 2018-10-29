@@ -24,6 +24,7 @@
 
 namespace enrol_coursepayment\invoice;
 
+use html_writer;
 use renderer_base;
 
 defined('MOODLE_INTERNAL') || die('Direct access to this script is forbidden.');
@@ -37,7 +38,7 @@ require_once($CFG->dirroot . '/lib/form/editor.php');
  * @copyright  2013 Mark Nelson <markn@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class moodlequickform_customcert_colourpicker extends \moodlequickform_editor {
+class colourpicker extends \moodlequickform_editor {
 
     /**
      * Sets the value of the form element
@@ -50,6 +51,8 @@ class moodlequickform_customcert_colourpicker extends \moodlequickform_editor {
 
     /**
      * Gets the value of the form element
+     *
+     * @return void
      */
     public function getvalue() {
         return $this->getAttribute('value');

@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ALL */
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -39,22 +39,29 @@ if (!empty($config->multi_account)) {
     $settings->add(new admin_setting_heading('enrol_coursepayment_invoicedetails',
         get_string('invoicedetails', 'enrol_coursepayment'),
         get_string('invoicedetails_desc', 'enrol_coursepayment') .
-        enrol_coursepayment_helper::get_edit_invoice_pdf_button('default')));
+        enrol_coursepayment_helper::get_edit_invoice_pdf_button(1)));
 
     $settings->add(new admin_setting_configtext('enrol_coursepayment/transaction_name',
         get_string('transaction_name', 'enrol_coursepayment'),
-        get_string('transaction_name_desc', 'enrol_coursepayment'), '{invoice_number}', PARAM_TEXT));
+        get_string('transaction_name_desc', 'enrol_coursepayment'), '{invoice_number}',
+        PARAM_TEXT));
 
     $settings->add(new admin_setting_configtext('enrol_coursepayment/companyname',
-        get_string('companyname', 'enrol_coursepayment'), '', '', PARAM_TEXT));
+        get_string('companyname', 'enrol_coursepayment'), '', '',
+        PARAM_TEXT));
     $settings->add(new admin_setting_configtext('enrol_coursepayment/address',
-        get_string('address', 'enrol_coursepayment'), '', '', PARAM_TEXT));
+        get_string('address', 'enrol_coursepayment'), '', '',
+        PARAM_TEXT));
     $settings->add(new admin_setting_configtext('enrol_coursepayment/zipcode',
-        get_string('zipcode', 'enrol_coursepayment'), '', '', PARAM_TEXT));
+        get_string('zipcode', 'enrol_coursepayment'), '', '',
+        PARAM_TEXT));
     $settings->add(new admin_setting_configtext('enrol_coursepayment/place',
-        get_string('place', 'enrol_coursepayment'), '', '', PARAM_TEXT));
+        get_string('place', 'enrol_coursepayment'), '', '',
+        PARAM_TEXT));
     $settings->add(new admin_setting_configtext('enrol_coursepayment/kvk',
-        get_string('kvk', 'enrol_coursepayment'), '', '', PARAM_TEXT));
+        get_string('kvk', 'enrol_coursepayment'), '', '',
+        PARAM_TEXT));
     $settings->add(new admin_setting_configtext('enrol_coursepayment/btw',
-        get_string('btw', 'enrol_coursepayment'), '', '', PARAM_TEXT));
+        get_string('btw', 'enrol_coursepayment'), '', '',
+        PARAM_TEXT));
 }

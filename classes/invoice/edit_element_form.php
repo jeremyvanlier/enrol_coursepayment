@@ -37,12 +37,12 @@ require_once($CFG->dirroot . '/course/moodleform_mod.php');
 require_once($CFG->dirroot . '/enrol/coursepayment/classes/invoice/colourpicker.php');
 
 \MoodleQuickForm::registerElementType('customcert_colourpicker',
-    $CFG->dirroot . '/enrol/coursepayment/includes/colourpicker.php', 'MoodleQuickForm_customcert_colourpicker');
+    $CFG->dirroot . '/enrol/coursepayment/classes/invoice/colourpicker.php', 'enrol_coursepayment\invoice\colourpicker');
 
 /**
- * The form for handling editing a coursepayment invoice element.
+ *  The form for handling editing a coursepayment invoice element.
  *
- * @package enrol_coursepayment
+ * @package enrol_coursepayment\invoice
  */
 class edit_element_form extends \moodleform {
 
@@ -66,7 +66,7 @@ class edit_element_form extends \moodleform {
         // Add the field for the name of the element, this is required for all elements.
         $mform->addElement('text', 'name', get_string('elementname', 'enrol_coursepayment'), 'maxlength="255"');
         $mform->setType('name', PARAM_TEXT);
-        $mform->setDefault('name', get_string('pluginname', 'coursepaymentelement_' . $element->element));
+        $mform->setDefault('name', get_string('invoice_element_'. $element->element , 'enrol_coursepayment'));
         $mform->addRule('name', get_string('required'), 'required', null, 'client');
         $mform->addHelpButton('name', 'elementname', 'enrol_coursepayment');
 

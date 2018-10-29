@@ -30,7 +30,7 @@ require_once($CFG->dirroot . '/course/moodleform_mod.php');
 require_once($CFG->dirroot . '/enrol/coursepayment/classes/invoice/colourpicker.php');
 
 \MoodleQuickForm::registerElementType('coursepayment_colourpicker',
-    $CFG->dirroot . '/enrol/coursepayment/includes/colourpicker.php', 'MoodleQuickForm_coursepayment_colourpicker');
+    $CFG->dirroot . '/enrol/coursepayment/classes/invoice/colourpicker.php', 'colourpicker');
 
 /**
  * The form for handling the layout of the customcert instance.
@@ -94,8 +94,8 @@ class edit_form extends \moodleform {
                     'sesskey' => sesskey()
                 )
             );
-            $icon = $OUTPUT->pix_icon('t/switch_plus', get_string('addcertpage', 'enrol_coursepayment'));
-            $addpagehtml = \html_writer::link($addpagelink, $icon . get_string('addcertpage', 'enrol_coursepayment'));
+            $icon = $OUTPUT->pix_icon('t/switch_plus', get_string('addpage', 'enrol_coursepayment'));
+            $addpagehtml = \html_writer::link($addpagelink, $icon . get_string('addpage', 'enrol_coursepayment'));
             $mform->addElement('html', \html_writer::tag('div', $addpagehtml, array('class' => 'addpage')));
         }
 
@@ -318,8 +318,8 @@ class edit_form extends \moodleform {
         if ($this->numpages > 1) {
             // Link to delete the page.
             $deletelink = new \moodle_url($editlink, $editlinkparams + array('action' => 'deletepage', 'aid' => $page->id));
-            $icon = $OUTPUT->pix_icon('t/delete', get_string('deletecertpage', 'enrol_coursepayment'));
-            $deletepagehtml = \html_writer::link($deletelink, $icon . get_string('deletecertpage', 'enrol_coursepayment'));
+            $icon = $OUTPUT->pix_icon('t/delete', get_string('deletepage', 'enrol_coursepayment'));
+            $deletepagehtml = \html_writer::link($deletelink, $icon . get_string('deletepage', 'enrol_coursepayment'));
             $mform->addElement('html', \html_writer::tag('div', $deletepagehtml, array('class' => 'deletebutton')));
         }
     }

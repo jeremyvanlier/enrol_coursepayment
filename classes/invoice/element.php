@@ -30,11 +30,11 @@
  */
 
 namespace enrol_coursepayment\invoice;
+defined('MOODLE_INTERNAL') || die();
 
 use edit_element_form;
 use element_helper;
 
-defined('MOODLE_INTERNAL') || die();
 
 /**
  * Class element

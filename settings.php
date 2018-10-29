@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ALL */
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -86,7 +86,7 @@ if ($ADMIN->fulltree) {
         $settings->add(new admin_setting_heading('enrol_coursepayment_message', '',
             html_writer::div(get_string('message:' . $message, 'enrol_coursepayment'), 'alert alert-success')));
     }
-    
+
     // Display the correct tab.
     if (empty($tab) || $tab === 'invoicedetails' || !empty($install)) {
 

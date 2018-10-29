@@ -296,4 +296,35 @@ $string['status:abort'] = 'Abort';
 $string['status:error'] = 'Error';
 $string['status:no_payments'] = 'No payments connected';
 
+// Invoice builder.
+$string['savechangespreview'] = 'Save changes and preview';
+$string['enrol_coursepayment_invoice_edit'] = 'Edit invoice';
+$string['page'] = 'Page';
+$string['width'] = 'Width';
+$string['width_help'] = 'This is the width of the certificate PDF in mm. For reference an A4 piece of paper is 210mm wide and a letter is 216mm wide.';
+$string['elementwidth'] = 'Width';
+$string['elementwidth_help'] = 'Specify the width of the element - \'0\' means that there is no width constraint.';
+
+$string['height'] = 'Height';
+$string['height_help'] = 'This is the height of the certificate PDF in mm. For reference an A4 piece of paper is 297mm high and a letter is 279mm high.';
+$string['leftmargin'] = 'Left margin';
+$string['leftmargin_help'] = 'This is the left margin of the certificate PDF in mm.';
+$string['rightmargin'] = 'Right margin';
+$string['rightmargin_help'] = 'This is the right margin of the certificate PDF in mm.';
+$string['deletepage'] = 'Delete page';
+$string['addelement'] = 'Add element';
+$string['addpage'] = 'Add page';
+
+// Elements.
+$string['invoice_element_bgimage'] = 'Background image';
+$string['invoice_element_image'] = 'Image';
+$string['invoice_element_digitalsignature'] = 'Digital signature';
+$string['invoice_element_border'] = 'Border';
+$string['invoice_element_date'] = 'Date';
+$string['invoice_element_text'] = 'Text';
+$string['invoice_element_categoryname'] = 'Course category';
+$string['invoice_element_userfield'] = 'User profile field';
+$string['invoice_element_coursename'] = 'Coursename';
+$string['invoice_element_studentname'] = 'Studentname';
+
 

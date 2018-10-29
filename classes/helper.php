@@ -181,16 +181,14 @@ class enrol_coursepayment_helper {
     /**
      * edit_invoice_pdf_button
      *
-     * @param string $invoicetype
-     *
      * @return string
      * @throws coding_exception
      * @throws moodle_exception
      */
-    public static function get_edit_invoice_pdf_button($invoicetype = 'default') {
+    public static function get_edit_invoice_pdf_button($tid) {
         return '<br>' . html_writer::link(new \moodle_url('/enrol/coursepayment/view/invoice_edit.php',
                 [
-                    'invoicetype' => $invoicetype,
+                    'tid' => $tid,
                 ]),
                 get_string('btn:pdf_edit', 'enrol_coursepayment'), ['class' => 'btn btn-primary']);
     }
