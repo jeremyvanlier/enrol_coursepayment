@@ -232,6 +232,7 @@ $string['th_profile_value'] = 'Profile value';
 $string['btn:new'] = 'Add new';
 $string['btn:report'] = 'Report';
 $string['btn:filter'] = 'Filter results';
+$string['btn:pdf_edit'] = 'Edit invoice';
 $string['no_result'] = 'No results';
 $string['enrol_coursepayment_multi_account'] = 'Multi-account';
 $string['form:name_multiaccount'] = 'Name';

@@ -23,11 +23,21 @@
  * @copyright 2015 MoodleFreak.com
  * @author    Luuk Verhoeven
  */
+defined('MOODLE_INTERNAL') || die;
+/**
+ * @param $oldversion
+ *
+ * @return bool
+ * @throws ddl_exception
+ * @throws ddl_field_missing_exception
+ * @throws ddl_table_missing_exception
+ * @throws downgrade_exception
+ * @throws upgrade_exception
+ */
 function xmldb_enrol_coursepayment_upgrade($oldversion) {
     global $DB;
 
     $dbman = $DB->get_manager();
-
 
     // add discount code feature
     if ($oldversion < 2015051500) {
@@ -52,7 +62,7 @@ function xmldb_enrol_coursepayment_upgrade($oldversion) {
         $table->add_field('percentage', XMLDB_TYPE_NUMBER, '8, 5', null, XMLDB_NOTNULL, null, '0.00000');
         $table->add_field('amount', XMLDB_TYPE_NUMBER, '10, 2', null, XMLDB_NOTNULL, null, '0.00');
         $table->add_field('created_by', XMLDB_TYPE_INTEGER, '9', null, XMLDB_NOTNULL, null, null);
-        $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
 
         // Conditionally launch create table for enrol_coursepayment_discount.
         if (!$dbman->table_exists($table)) {
@@ -165,7 +175,7 @@ function xmldb_enrol_coursepayment_upgrade($oldversion) {
         $table->add_field('gateway_mollie_debug', XMLDB_TYPE_INTEGER, '9', null, XMLDB_NOTNULL, null, '0');
         $table->add_field('gateway_mollie_sandbox', XMLDB_TYPE_INTEGER, '9', null, XMLDB_NOTNULL, null, '0');
         $table->add_field('added_on', XMLDB_TYPE_INTEGER, '9', null, XMLDB_NOTNULL, null, null);
-        $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
 
         // Conditionally launch create table for coursepayment_multiaccount.
         if (!$dbman->table_exists($table)) {
@@ -189,6 +199,84 @@ function xmldb_enrol_coursepayment_upgrade($oldversion) {
 
         // Coursepayment savepoint reached.
         upgrade_plugin_savepoint(true, 2017091800, 'enrol', 'coursepayment');
+    }
+
+    // Add new tables for customizing invoice.
+    if ($oldversion < 2018102900) {
+
+        // Define table coursepayment_elements to be created.
+        $table = new xmldb_table('coursepayment_elements');
+
+        // Adding fields to table coursepayment_elements.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('pageid', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('element', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null);
+        $table->add_field('data', XMLDB_TYPE_TEXT, null, null, null, null, null);
+        $table->add_field('font', XMLDB_TYPE_CHAR, '255', null, null, null, null);
+        $table->add_field('fontsize', XMLDB_TYPE_INTEGER, '18', null, null, null, null);
+        $table->add_field('colour', XMLDB_TYPE_CHAR, '50', null, null, null, null);
+        $table->add_field('posx', XMLDB_TYPE_INTEGER, '18', null, null, null, null);
+        $table->add_field('posy', XMLDB_TYPE_INTEGER, '18', null, null, null, null);
+        $table->add_field('width', XMLDB_TYPE_INTEGER, '18', null, null, null, null);
+        $table->add_field('refpoint', XMLDB_TYPE_INTEGER, '4', null, null, null, null);
+        $table->add_field('sequence', XMLDB_TYPE_INTEGER, '18', null, null, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, null, '0');
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+
+        // Adding indexes to table coursepayment_elements.
+        $table->add_index('mdl_custelem_pag_ix', XMLDB_INDEX_NOTUNIQUE, ['pageid']);
+
+        // Conditionally launch create table for coursepayment_elements.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Define table coursepayment_templates to be created.
+        $table = new xmldb_table('coursepayment_templates');
+
+        // Adding fields to table coursepayment_templates.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, null, null, null);
+        $table->add_field('contextid', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, null, '0');
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+
+        // Adding indexes to table coursepayment_templates.
+        $table->add_index('mdl_custtemp_con_ix', XMLDB_INDEX_NOTUNIQUE, ['contextid']);
+
+        // Conditionally launch create table for coursepayment_templates.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Define table coursepayment_pages to be created.
+        $table = new xmldb_table('coursepayment_pages');
+
+        // Adding fields to table coursepayment_pages.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('templateid', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('width', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('height', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('leftmargin', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('rightmargin', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('sequence', XMLDB_TYPE_INTEGER, '18', null, null, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, null, '0');
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+
+        // Adding indexes to table coursepayment_pages.
+        $table->add_index('mdl_custpage_tem_ix', XMLDB_INDEX_NOTUNIQUE, ['templateid']);
+
+        // Conditionally launch create table for coursepayment_pages.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Coursepayment savepoint reached.
+        upgrade_plugin_savepoint(true, 2018102900, 'enrol', 'coursepayment');
     }
 
     return true;

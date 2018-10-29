@@ -167,15 +167,32 @@ class enrol_coursepayment_helper {
 
             foreach ($matches[0] as $match) {
 
-                $matchClean = str_replace(['{' , '}'], '', $match);
+                $matchClean = str_replace(['{', '}'], '', $match);
 
-                if (property_exists($obj , $matchClean)) {
+                if (property_exists($obj, $matchClean)) {
                     $text = str_replace($match, $obj->$matchClean, $text);
                 }
             }
         }
 
         return $text;
+    }
+
+    /**
+     * edit_invoice_pdf_button
+     *
+     * @param string $invoicetype
+     *
+     * @return string
+     * @throws coding_exception
+     * @throws moodle_exception
+     */
+    public static function get_edit_invoice_pdf_button($invoicetype = 'default') {
+        return '<br>' . html_writer::link(new \moodle_url('/enrol/coursepayment/view/invoice_edit.php',
+                [
+                    'invoicetype' => $invoicetype,
+                ]),
+                get_string('btn:pdf_edit', 'enrol_coursepayment'), ['class' => 'btn btn-primary']);
     }
 
 }
