@@ -7,6 +7,7 @@
 var Rearrange = function() {
     Rearrange.superclass.constructor.apply(this, [arguments]);
 };
+
 Y.extend(Rearrange, Y.Base, {
 
     /**
@@ -204,7 +205,8 @@ Y.extend(Rearrange, Y.Base, {
         // The parameters to send the AJAX call.
         var params = {
             tid: this.templateid,
-            values: []
+            action : 'update_invoice_element',
+            data: []
         };
 
         // Go through the elements and save their positions.
@@ -229,17 +231,17 @@ Y.extend(Rearrange, Y.Base, {
             }
 
             // Set the parameters to pass to the AJAX request.
-            params.values.push({
+            params.data.push({
                 id: element.id,
                 posx: Math.round(parseFloat(posx / this.pixelsinmm)),
                 posy: Math.round(parseFloat(posy / this.pixelsinmm))
             });
         }
 
-        params.values = JSON.stringify(params.values);
+        params.data = JSON.stringify(params.data);
 
         // Save these positions.
-        Y.io(M.cfg.wwwroot + '/mod/customcert/ajax.php', {
+        Y.io(M.cfg.wwwroot + '/enrol/coursepayment/ajax.php', {
             method: 'POST',
             data: params,
             on: {
@@ -281,5 +283,6 @@ Y.extend(Rearrange, Y.Base, {
 });
 
 Y.namespace('M.enrol_coursepayment.rearrange').init = function(templateid, page, elements) {
+   // console.log('Load M.enrol_coursepayment.rearrange' , templateid, page, elements);
     new Rearrange(templateid, page, elements);
 };

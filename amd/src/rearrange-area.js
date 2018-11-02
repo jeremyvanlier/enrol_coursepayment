@@ -206,6 +206,7 @@ define(['jquery', 'core/yui', 'core/fragment', 'enrol_coursepayment/dialogue', '
 
             return {
                 init: function(selector) {
+                    console.log('Rearrange');
                     new RearrangeArea(selector);
                 }
             };

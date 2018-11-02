@@ -43,9 +43,9 @@ class element extends \enrol_coursepayment\invoice\element {
      * @throws \coding_exception
      */
     public function render_form_elements($mform) {
-        $mform->addElement('textarea', 'text', get_string('text', 'coursepaymentelement_text'));
+        $mform->addElement('textarea', 'text', get_string('text', 'enrol_coursepayment'));
         $mform->setType('text', PARAM_RAW);
-        $mform->addHelpButton('text', 'text', 'coursepaymentelement_text');
+        $mform->addHelpButton('text', 'text', 'enrol_coursepayment');
 
         parent::render_form_elements($mform);
     }

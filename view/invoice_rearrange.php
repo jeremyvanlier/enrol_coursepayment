@@ -42,7 +42,7 @@ $template->require_manage();
 
 // Set the $PAGE settings.
 $pageurl = new moodle_url('/enrol/coursepayment/view/invoice_rearrange.php', ['pid' => $pid]);
-\enrol_coursepayment\invoice\page_helper::page_setup($pageurl, $template->get_context(), $title);
+\enrol_coursepayment\invoice\page_helper::page_setup($pageurl, $template->get_context());
 
 $str = get_string('editinvoice', 'enrol_coursepayment');
 $link = new moodle_url('/enrol/coursepayment/view/invoice_edit.php', ['tid' => $template->get_id()]);

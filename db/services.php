@@ -15,19 +15,33 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information
+ * Web service.
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @package   enrol_coursepayment
- * @copyright 2015 MFreak.nl
+ * @copyright 2018 MFreak.nl
  * @author    Luuk Verhoeven
- **/
+ */
 
 defined('MOODLE_INTERNAL') || die();
-$plugin->release   = '2.0.0';
-$plugin->maturity = MATURITY_STABLE;
-$plugin->version   = 2018110203;        // The current plugin version (Date: YYYYMMDDXX)
-$plugin->requires  = 2013101800;        // Requires this Moodle version
-$plugin->component = 'enrol_coursepayment'; // Full name of the plugin (used for diagnostics)
-$plugin->cron      = 60;
+
+$functions = array(
+
+    'enrol_coursepayment_save_element' => array(
+        'classname'   => 'enrol_coursepayment\external',
+        'methodname'  => 'save_element',
+        'classpath'   => '',
+        'description' => 'Saves data for an element',
+        'type'        => 'write',
+        'ajax'        => true
+    ),
+    'enrol_coursepayment_get_element_html' => array(
+        'classname'   => 'enrol_coursepayment\external',
+        'methodname'  => 'get_element_html',
+        'classpath'   => '',
+        'description' => 'Returns the HTML to display for an element',
+        'type'        => 'read',
+        'ajax'        => true
+    ),
+);

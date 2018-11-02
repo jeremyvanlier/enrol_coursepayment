@@ -44,9 +44,9 @@ class element extends \enrol_coursepayment\invoice\element {
      */
     public function render_form_elements($mform) {
         // We want to define the width of the border.
-        $mform->addElement('text', 'width', get_string('width', 'coursepaymentelement_border'), array('size' => 10));
+        $mform->addElement('text', 'width', get_string('width', 'enrol_coursepayment'), array('size' => 10));
         $mform->setType('width', PARAM_INT);
-        $mform->addHelpButton('width', 'width', 'coursepaymentelement_border');
+        $mform->addHelpButton('width', 'width', 'enrol_coursepayment');
 
         // The only other thing to define is the colour we want the border to be.
         \enrol_coursepayment\invoice\element_helper::render_form_element_colour($mform);
@@ -94,7 +94,7 @@ class element extends \enrol_coursepayment\invoice\element {
 
         // Check if width is not set, or not numeric or less than 0.
         if ((!isset($data['width'])) || (!is_numeric($data['width'])) || ($data['width'] <= 0)) {
-            $errors['width'] = get_string('invalidwidth', 'coursepaymentelement_border');
+            $errors['width'] = get_string('invalidwidth', 'enrol_coursepayment');
         }
 
         // Validate the colour.

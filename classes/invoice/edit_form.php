@@ -215,7 +215,7 @@ class edit_form extends \moodleform {
 
         $editlink = '/enrol/coursepayment/view/invoice_edit.php';
         $editlinkparams = array('tid' => $this->tid, 'sesskey' => sesskey());
-        $editelementlink = '/enrol/coursepayment/edit_element.php';
+        $editelementlink = '/enrol/coursepayment/view/invoice_edit_element.php';
         $editelementlinkparams = array('tid' => $this->tid, 'sesskey' => sesskey());
 
         // Place the ordering arrows.

@@ -31,6 +31,8 @@
 
 namespace enrol_coursepayment\invoice;
 
+use enrol_coursepayment\invoice\helper;
+
 defined('MOODLE_INTERNAL') || die;
 
 require_once($CFG->libdir . '/grade/constants.php');
@@ -140,12 +142,12 @@ class element_helper {
      * @throws \coding_exception
      */
     public static function render_form_element_font($mform) {
-        $mform->addElement('select', 'font', get_string('font', 'enrol_coursepayment'), \enrol_coursepayment\invoice\certificate::get_fonts());
+        $mform->addElement('select', 'font', get_string('font', 'enrol_coursepayment'), helper::get_fonts());
         $mform->setType('font', PARAM_TEXT);
         $mform->setDefault('font', 'times');
         $mform->addHelpButton('font', 'font', 'enrol_coursepayment');
         $mform->addElement('select', 'fontsize', get_string('fontsize', 'enrol_coursepayment'),
-            \enrol_coursepayment\invoice\certificate::get_font_sizes());
+            helper::get_font_sizes());
         $mform->setType('fontsize', PARAM_INT);
         $mform->setDefault('fontsize', 12);
         $mform->addHelpButton('fontsize', 'fontsize', 'enrol_coursepayment');

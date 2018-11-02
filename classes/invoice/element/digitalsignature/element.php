@@ -38,7 +38,7 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
     /**
      * @var array The file manager options for the certificate.
      */
-    protected $signaturefilemanageroptions = array();
+    protected $signaturefilemanageroptions = [];
 
     /**
      * Constructor.
@@ -51,7 +51,7 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
         $this->signaturefilemanageroptions = [
             'maxbytes' => $COURSE->maxbytes,
             'subdirs' => 1,
-            'accepted_types' => ['.crt']
+            'accepted_types' => ['.crt'],
         ];
 
         parent::__construct($element);
@@ -93,12 +93,12 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
         $mform->setType('signaturecontactinfo', PARAM_TEXT);
         $mform->setDefault('signaturecontactinfo', '');
 
-        $mform->addElement('text', 'width', get_string('width', 'coursepaymentelement_image'), array('size' => 10));
+        $mform->addElement('text', 'width', get_string('width', 'coursepaymentelement_image'), ['size' => 10]);
         $mform->setType('width', PARAM_INT);
         $mform->setDefault('width', 0);
         $mform->addHelpButton('width', 'width', 'coursepaymentelement_image');
 
-        $mform->addElement('text', 'height', get_string('height', 'coursepaymentelement_image'), array('size' => 10));
+        $mform->addElement('text', 'height', get_string('height', 'coursepaymentelement_image'), ['size' => 10]);
         $mform->setType('height', PARAM_INT);
         $mform->setDefault('height', 0);
         $mform->addHelpButton('height', 'height', 'coursepaymentelement_image');
@@ -120,6 +120,7 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
      * Can be overridden if more functionality is needed.
      *
      * @param \stdClass $data the form data
+     *
      * @return bool true of success, false otherwise.
      * @throws \dml_exception
      */
@@ -134,10 +135,10 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
         }
 
         // Handle file uploads.
-        \enrol_coursepayment\invoice\certificate::upload_files($data->coursepaymentimage, $context->id);
+        \enrol_coursepayment\invoice\helper::upload_files($data->coursepaymentimage, $context->id);
 
         // Handle file certificate uploads.
-        \enrol_coursepayment\invoice\certificate::upload_files($data->digitalsignature, $context->id, 'signature');
+        \enrol_coursepayment\invoice\helper::upload_files($data->digitalsignature, $context->id, 'signature');
 
         return parent::save_form_elements($data);
     }
@@ -147,6 +148,7 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
      * coursepayment_elements table.
      *
      * @param \stdClass $data the form data
+     *
      * @return string the json encoded array
      */
     public function save_unique_data($data) {
@@ -156,8 +158,8 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
             'signaturelocation' => $data->signaturelocation,
             'signaturereason' => $data->signaturereason,
             'signaturecontactinfo' => $data->signaturecontactinfo,
-            'width' => !empty($data->width) ? (int) $data->width : 0,
-            'height' => !empty($data->height) ? (int) $data->height : 0
+            'width' => !empty($data->width) ? (int)$data->width : 0,
+            'height' => !empty($data->height) ? (int)$data->height : 0,
         ];
 
         // Array of data we will be storing in the database.
@@ -182,7 +184,7 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
                     'signaturefilearea' => $signaturefile->get_filearea(),
                     'signatureitemid' => $signaturefile->get_itemid(),
                     'signaturefilepath' => $signaturefile->get_filepath(),
-                    'signaturefilename' => $signaturefile->get_filename()
+                    'signaturefilename' => $signaturefile->get_filename(),
                 ];
             }
         }
@@ -193,9 +195,9 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
     /**
      * Handles rendering the element on the pdf.
      *
-     * @param \pdf $pdf the pdf object
-     * @param bool $preview true if it is a preview, false otherwise
-     * @param \stdClass $user the user we are rendering this for
+     * @param \pdf      $pdf     the pdf object
+     * @param bool      $preview true if it is a preview, false otherwise
+     * @param \stdClass $user    the user we are rendering this for
      */
     public function render($pdf, $preview, $user) {
         // If there is no element data, we have nothing to display.
@@ -234,7 +236,7 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
                 'Name' => $imageinfo->signaturename,
                 'Location' => $imageinfo->signaturelocation,
                 'Reason' => $imageinfo->signaturereason,
-                'ContactInfo' => $imageinfo->signaturecontactinfo
+                'ContactInfo' => $imageinfo->signaturecontactinfo,
             ];
             $pdf->setSignature('file://' . $location, '', $imageinfo->signaturepassword, '', 2, $info);
             $pdf->setSignatureAppearance($this->get_posx(), $this->get_posy(), $imageinfo->width, $imageinfo->height);
@@ -245,6 +247,7 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
      * Sets the data on the form when editing an element.
      *
      * @param \enrol_coursepayment\invoice\edit_element_form $mform the edit_form instance
+     *
      * @throws \dml_exception
      */
     public function definition_after_data($mform) {
@@ -285,7 +288,7 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
 
         // Editing existing instance - copy existing files into draft area.
         $draftitemid = file_get_submitted_draft_itemid('digitalsignature');
-        file_prepare_draft_area($draftitemid, $context->id, 'mod_customcert', 'signature', 0,
+        file_prepare_draft_area($draftitemid, $context->id, 'enrol_coursepayment', 'signature', 0,
             $this->signaturefilemanageroptions);
         $element = $mform->getElement('digitalsignature');
         $element->setValue($draftitemid);
@@ -307,24 +310,27 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
         $fs = get_file_storage();
 
         // The array used to store the digital signatures.
-        $arrfiles = array();
+        $arrfiles = [];
         // Loop through the files uploaded in the system context.
-        if ($files = $fs->get_area_files(\context_system::instance()->id, 'mod_customcert', 'signature', false,
-                'filename', false)) {
+        if ($files = $fs->get_area_files(\context_system::instance()->id, 'enrol_coursepayment', 'signature', false,
+            'filename', false)) {
             foreach ($files as $hash => $file) {
                 $arrfiles[$file->get_id()] = $file->get_filename();
             }
         }
         // Loop through the files uploaded in the course context.
-        if ($files = $fs->get_area_files(\context_course::instance($COURSE->id)->id, 'mod_customcert', 'signature', false,
-                'filename', false)) {
+        if ($files = $fs->get_area_files(\context_course::instance($COURSE->id)->id, 'enrol_coursepayment',
+            'signature', false,
+            'filename', false)) {
             foreach ($files as $hash => $file) {
                 $arrfiles[$file->get_id()] = $file->get_filename();
             }
         }
 
         \core_collator::asort($arrfiles);
-        $arrfiles = array('0' => get_string('nosignature', 'coursepaymentelement_digitalsignature')) + $arrfiles;
+        $arrfiles = [
+                '0' => get_string('nosignature','coursepaymentelement_digitalsignature'),
+            ] + $arrfiles;
 
         return $arrfiles;
     }
@@ -339,7 +345,7 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
 
         $fs = get_file_storage();
 
-        return $fs->get_file($imageinfo->signaturecontextid, 'mod_customcert', $imageinfo->signaturefilearea,
+        return $fs->get_file($imageinfo->signaturecontextid, 'enrol_coursepayment', $imageinfo->signaturefilearea,
             $imageinfo->signatureitemid, $imageinfo->signaturefilepath, $imageinfo->signaturefilename);
     }
 }

@@ -113,6 +113,36 @@ if (empty($array['error'])) {
                 $array['error'] = $discountinstance->getLastErrorString();
             }
             break;
+
+        case 'update_invoice_element':
+
+            $tid = required_param('tid', PARAM_INT);
+            $data = json_decode($data);
+
+            // Make sure the template exists.
+            $template = $DB->get_record('coursepayment_templates', array('id' => $tid), '*', MUST_EXIST);
+
+            // Set the template.
+            $template = new \enrol_coursepayment\invoice\template($template);
+            // Perform checks.
+            if ($cm = $template->get_cm()) {
+                $courseid = $cm->course;
+                require_login($courseid, false, $cm);
+            } else {
+                require_login();
+            }
+            // Make sure the user has the required capabilities.
+            $template->require_manage();
+
+            // Loop through the data.
+            foreach ($data as $value) {
+                $element = new stdClass();
+                $element->id = $value->id;
+                $element->posx = $value->posx;
+                $element->posy = $value->posy;
+                $DB->update_record('coursepayment_elements', $element);
+            }
+            break;
     }
 }
 
