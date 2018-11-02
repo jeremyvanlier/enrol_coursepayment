@@ -234,6 +234,7 @@ abstract class element {
      *
      * @param edit_element_form $mform the edit_form instance.
      *
+     * @throws \coding_exception
      */
     public function render_form_elements($mform) {
         // Render the common elements.
@@ -280,6 +281,7 @@ abstract class element {
      * @param array $files the submitted files
      *
      * @return array the validation errors
+     * @throws \coding_exception
      */
     public function validate_form_elements($data, $files) {
         // Array to return the errors.

@@ -15,19 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information
+ *
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @package   enrol_coursepayment
- * @copyright 2015 MFreak.nl
+ * @copyright 2-11-2018 MFreak.nl
  * @author    Luuk Verhoeven
  **/
-
-defined('MOODLE_INTERNAL') || die();
-$plugin->release   = '2.0.0';
-$plugin->maturity = MATURITY_STABLE;
-$plugin->version   = 2018110204;        // The current plugin version (Date: YYYYMMDDXX)
-$plugin->requires  = 2013101800;        // Requires this Moodle version
-$plugin->component = 'enrol_coursepayment'; // Full name of the plugin (used for diagnostics)
-$plugin->cron      = 60;
+/**
+ * Webshop plugin files
+ *
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package   moodle-block_webshop_citaverde
+ * @copyright 2018 MoodleFreak.nl
+ * @author    Luuk Verhoeven
+ **/

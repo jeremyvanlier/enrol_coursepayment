@@ -37,6 +37,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * @param array $instances all enrol instances of this type in one course
      *
      * @return array of pix_icon
+     * @throws coding_exception
      */
     public function get_info_icons(array $instances) {
         return [new pix_icon('icon', get_string('pluginname', 'enrol_coursepayment'), 'enrol_coursepayment')];
@@ -135,6 +136,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      *
      * @return array
      * @throws coding_exception
+     * @throws moodle_exception
      */
     public function get_action_icons(stdClass $instance) {
         global $OUTPUT;
@@ -163,6 +165,8 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * @param int $courseid
      *
      * @return moodle_url page url
+     * @throws coding_exception
+     * @throws moodle_exception
      */
     public function get_newinstance_link($courseid) {
         $context = context_course::instance($courseid, MUST_EXIST);
@@ -182,6 +186,9 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * @param stdClass $instance
      *
      * @return string html text, usually a form in a text box
+     * @throws coding_exception
+     * @throws dml_exception
+     * @throws moodle_exception
      */
     function enrol_page_hook(stdClass $instance) {
         global $USER, $OUTPUT, $DB, $COURSE, $PAGE, $CFG;
@@ -300,6 +307,10 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * @param stdClass                          $data
      * @param stdClass                          $course
      * @param int                               $oldid
+     *
+     * @throws coding_exception
+     * @throws dml_exception
+     * @throws restore_step_exception
      */
     public function restore_instance(restore_enrolments_structure_step $step, stdClass $data, $course, $oldid) {
         global $DB;
@@ -345,6 +356,8 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * @param stdClass                 $ue A user enrolment object
      *
      * @return array An array of user_enrolment_actions
+     * @throws coding_exception
+     * @throws moodle_exception
      */
     public function get_user_enrolment_actions(course_enrolment_manager $manager, $ue) {
         $actions = [];
@@ -403,6 +416,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * @param stdClass $instance
      *
      * @return bool
+     * @throws coding_exception
      */
     public function can_delete_instance($instance) {
         $context = context_course::instance($instance->courseid);
@@ -416,6 +430,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * @param stdClass $instance
      *
      * @return bool
+     * @throws coding_exception
      */
     public function can_hide_show_instance($instance) {
         $context = context_course::instance($instance->courseid);
@@ -427,6 +442,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * get all currencies that are supported by this block
      *
      * @return array
+     * @throws coding_exception
      */
     public function get_currencies() {
         $codes = ['EUR'];
@@ -454,6 +470,8 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * @param string $gateway
      *
      * @return array
+     * @throws coding_exception
+     * @throws dml_exception
      */
     public function order_valid($orderid = '', $gateway = '') {
         $return = ['status' => false, 'message' => ''];
@@ -514,4 +532,61 @@ class enrol_coursepayment_plugin extends enrol_plugin {
     public function get_vat_percentages() {
         return range(0, 99);
     }
+}
+
+/**
+ * Needed for serving files.
+ *
+ * @param        $course
+ * @param        $cm
+ * @param        $context
+ * @param string $filearea
+ * @param array  $args
+ * @param bool   $forcedownload
+ * @param        $sendfileoptions
+ *
+ * @return bool may terminate if file not found or donotdie not specified
+ */
+function enrol_coursepayment_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, $sendfileoptions) {
+    global $CFG;
+    require_once("$CFG->libdir/filelib.php");
+
+    // No access control here.
+    $options['cacheability'] = 'public';
+
+    $fs = get_file_storage();
+    $itemid = $args[0];
+    $filename = $args[1];
+
+    // Get the file.
+    $file = $fs->get_file($context->id, 'enrol_coursepayment', $filearea, $itemid, '/', $filename);
+
+    if ($file) {
+
+        \core\session\manager::write_close(); // Unlock session during file serving.
+        send_stored_file($file, null, 0, $forcedownload, $options);
+    } else {
+        send_file_not_found();
+    }
+}
+
+/**
+ * Serve the edit element as a fragment.
+ *
+ * @param array $args List of named arguments for the fragment loader.
+ *
+ * @return string
+ * @throws dml_exception
+ * @throws moodle_exception
+ */
+function enrol_coursepayment_output_fragment_editelement($args) {
+    global $DB;
+
+    // Get the element.
+    $element = $DB->get_record('coursepayment_elements', array('id' => $args['elementid']), '*', MUST_EXIST);
+
+    $pageurl = new moodle_url('/enrol/coursepayment/view/invoice_rearrange.php', array('pid' => $element->pageid));
+    $form = new \enrol_coursepayment\invoice\edit_element_form($pageurl, array('element' => $element));
+
+    return $form->render();
 }
