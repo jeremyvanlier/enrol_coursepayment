@@ -107,7 +107,7 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
             \enrol_coursepayment\invoice\element_helper::render_form_element_position($mform);
         }
 
-        $mform->addElement('filemanager', 'customcertimage', get_string('uploadimage', 'enrol_coursepayment'), '',
+        $mform->addElement('filemanager', 'coursepaymentimage', get_string('uploadimage', 'enrol_coursepayment'), '',
             $this->filemanageroptions);
 
         $mform->addElement('filemanager', 'digitalsignature',
@@ -134,7 +134,7 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
         }
 
         // Handle file uploads.
-        \enrol_coursepayment\invoice\certificate::upload_files($data->customcertimage, $context->id);
+        \enrol_coursepayment\invoice\certificate::upload_files($data->coursepaymentimage, $context->id);
 
         // Handle file certificate uploads.
         \enrol_coursepayment\invoice\certificate::upload_files($data->digitalsignature, $context->id, 'signature');
@@ -144,7 +144,7 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
 
     /**
      * This will handle how form data will be saved into the data column in the
-     * customcert_elements table.
+     * coursepayment_elements table.
      *
      * @param \stdClass $data the form data
      * @return string the json encoded array

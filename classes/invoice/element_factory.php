@@ -25,7 +25,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @package   enrol_coursepayment
- * @copyright 2018 MoodleFreak.com
+ * @copyright 2018 MFreak.nl
  * @author    Luuk Verhoeven
  */
 namespace enrol_coursepayment\invoice;
@@ -53,7 +53,7 @@ class element_factory {
         $data = new \stdClass();
         $data->id = isset($element->id) ? $element->id : null;
         $data->pageid = isset($element->pageid) ? $element->pageid : null;
-        $data->name = isset($element->name) ? $element->name : get_string('pluginname', 'invoice_element_' . $element->element);
+        $data->name = isset($element->name) ? $element->name : get_string('invoice_element_' . $element->element , 'enrol_coursepayment');
         $data->element = $element->element;
         $data->data = isset($element->data) ? $element->data : null;
         $data->font = isset($element->font) ? $element->font : null;

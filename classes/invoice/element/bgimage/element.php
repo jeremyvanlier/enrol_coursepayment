@@ -44,8 +44,8 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
      * @throws \dml_exception
      */
     public function render_form_elements($mform) {
-        $mform->addElement('select', 'fileid', get_string('image', 'coursepaymentelement_image'), self::get_images());
-        $mform->addElement('filemanager', 'customcertimage', get_string('uploadimage', 'enrol_coursepayment'), '',
+        $mform->addElement('select', 'fileid', get_string('image', 'enrol_coursepayment'), self::get_images());
+        $mform->addElement('filemanager', 'coursepaymentimage', get_string('uploadimage', 'enrol_coursepayment'), '',
             $this->filemanageroptions);
     }
 
@@ -120,10 +120,10 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
         }
 
         if ($file = $this->get_file()) {
-            $url = \moodle_url::make_pluginfile_url($file->get_contextid(), 'mod_customcert', 'image', $file->get_itemid(),
+            $url = \moodle_url::make_pluginfile_url($file->get_contextid(), 'enrol_coursepayment', 'image', $file->get_itemid(),
                 $file->get_filepath(), $file->get_filename());
             // Get the page we are rendering this on.
-            $page = $DB->get_record('customcert_pages', array('id' => $this->get_pageid()), '*', MUST_EXIST);
+            $page = $DB->get_record('coursepayment_pages', array('id' => $this->get_pageid()), '*', MUST_EXIST);
 
             // Set the image to the size of the page.
             $style = 'width: ' . $page->width . 'mm; height: ' . $page->height . 'mm';

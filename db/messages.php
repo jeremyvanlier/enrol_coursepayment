@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * 
+ *
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
@@ -25,7 +25,7 @@
  *
  * @package: enrol_coursepayment
  *
- * @copyright 2015 MoodleFreak.com
+ * @copyright 2015 MFreak.nl
  * @author    Luuk Verhoeven
  **/
 defined('MOODLE_INTERNAL') || die();

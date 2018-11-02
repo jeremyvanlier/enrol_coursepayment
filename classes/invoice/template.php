@@ -25,7 +25,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @package   enrol_coursepayment
- * @copyright 2018 MoodleFreak.com
+ * @copyright 2018 MFreak.nl
  * @author    Luuk Verhoeven
  */
 
@@ -289,12 +289,12 @@ class template {
             $pdf = new \pdf();
 
             // If the template belongs to a certificate then we need to check what permissions we set for it.
-            if ($protection = $DB->get_field('enrol_coursepayment', 'protection', array('templateid' => $this->id))) {
-                if (!empty($protection)) {
-                    $protection = explode(', ', $protection);
-                    $pdf->SetProtection($protection);
-                }
-            }
+//            if ($protection = $DB->get_field('enrol_coursepayment', 'protection', array('templateid' => $this->id))) {
+//                if (!empty($protection)) {
+//                    $protection = explode(', ', $protection);
+//                    $pdf->SetProtection($protection);
+//                }
+//            }
 
             $pdf->setPrintHeader(false);
             $pdf->setPrintFooter(false);
@@ -327,7 +327,7 @@ class template {
             if ($return) {
                 return $pdf->Output('', 'S');
             }
-            $pdf->Output($filename, 'D');
+            $pdf->Output($filename, 'I');
         }
     }
 

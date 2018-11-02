@@ -15,44 +15,31 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- *
+ * Helper functions
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @package coursepayment
- * @copyright 2017 MFreak.nl
+ * @package   enrol_coursepayment
+ * @copyright 2018 MFreak.nl
  * @author    Luuk Verhoeven
- **/
-namespace enrol_coursepayment\output;
+ */
+namespace enrol_coursepayment\invoice;
 defined('MOODLE_INTERNAL') || die;
 
-use renderable;
-use stdClass;
-use templatable;
-use renderer_base;
-
-/**
- * Class multi_account
- *
- * @package enrol_coursepayment\output
- */
-class multi_account implements renderable, templatable {
+final class helper {
 
     /**
-     * Export this data so it can be used as the context for a mustache template.
+     * Handles uploading an image for the customcert module.
      *
-     * @param renderer_base $output
-     *
-     * @return stdClass
-     * @throws \dml_exception
+     * @param int $draftitemid the draft area containing the files
+     * @param int $contextid the context we are storing this image in
+     * @param string $filearea indentifies the file area.
      */
-    public function export_for_template(renderer_base $output) {
-        global $DB;
-        $multiaccounts = $DB->get_records('coursepayment_multiaccount');
+    public static function upload_files($draftitemid, $contextid, $filearea = 'image') {
+        global $CFG;
 
-        $object = new stdClass();
-        $object->data = array_values($multiaccounts);
-
-        return $object;
+        // Save the file if it exists that is currently in the draft area.
+        require_once($CFG->dirroot . '/lib/filelib.php');
+        file_save_draft_area_files($draftitemid, $contextid, 'enrol_coursepayment', $filearea, 0);
     }
- }
+}

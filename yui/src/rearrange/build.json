@@ -1,0 +1,10 @@
+{
+  "name": "moodle-enrol_coursepayment-rearrange",
+  "builds": {
+    "moodle-enrol_coursepayment-rearrange": {
+      "jsfiles": [
+        "rearrange.js"
+      ]
+    }
+  }
+}

@@ -66,23 +66,23 @@ class element extends \enrol_coursepayment\invoice\element {
      * @throws \dml_exception
      */
     public function render_form_elements($mform) {
-        $mform->addElement('select', 'fileid', get_string('image', 'coursepaymentelement_image'), self::get_images());
+        $mform->addElement('select', 'fileid', get_string('image', 'enrol_coursepayment'), self::get_images());
 
-        $mform->addElement('text', 'width', get_string('width', 'coursepaymentelement_image'), array('size' => 10));
+        $mform->addElement('text', 'width', get_string('width', 'enrol_coursepayment'), array('size' => 10));
         $mform->setType('width', PARAM_INT);
         $mform->setDefault('width', 0);
-        $mform->addHelpButton('width', 'width', 'coursepaymentelement_image');
+        $mform->addHelpButton('width', 'width', 'enrol_coursepayment');
 
-        $mform->addElement('text', 'height', get_string('height', 'coursepaymentelement_image'), array('size' => 10));
+        $mform->addElement('text', 'height', get_string('height', 'enrol_coursepayment'), array('size' => 10));
         $mform->setType('height', PARAM_INT);
         $mform->setDefault('height', 0);
-        $mform->addHelpButton('height', 'height', 'coursepaymentelement_image');
+        $mform->addHelpButton('height', 'height', 'enrol_coursepayment');
 
         if (get_config('enrol_coursepayment', 'showposxy')) {
             \enrol_coursepayment\invoice\element_helper::render_form_element_position($mform);
         }
 
-        $mform->addElement('filemanager', 'customcertimage', get_string('uploadimage', 'enrol_coursepayment'), '',
+        $mform->addElement('filemanager', 'coursepaymentimage', get_string('uploadimage', 'enrol_coursepayment'), '',
             $this->filemanageroptions);
     }
 
@@ -101,12 +101,12 @@ class element extends \enrol_coursepayment\invoice\element {
 
         // Check if width is not set, or not numeric or less than 0.
         if ((!isset($data['width'])) || (!is_numeric($data['width'])) || ($data['width'] < 0)) {
-            $errors['width'] = get_string('invalidwidth', 'coursepaymentelement_image');
+            $errors['width'] = get_string('invalidwidth', 'enrol_coursepayment');
         }
 
         // Check if height is not set, or not numeric or less than 0.
         if ((!isset($data['height'])) || (!is_numeric($data['height'])) || ($data['height'] < 0)) {
-            $errors['height'] = get_string('invalidheight', 'coursepaymentelement_image');
+            $errors['height'] = get_string('invalidheight', 'enrol_coursepayment');
         }
 
         // Validate the position.
@@ -136,14 +136,14 @@ class element extends \enrol_coursepayment\invoice\element {
         }
 
         // Handle file uploads.
-        \enrol_coursepayment\invoice\certificate::upload_files($data->customcertimage, $context->id);
+        \enrol_coursepayment\invoice\helper::upload_files($data->coursepaymentimage, $context->id);
 
         return parent::save_form_elements($data);
     }
 
     /**
      * This will handle how form data will be saved into the data column in the
-     * customcert_elements table.
+     * coursepayment_elements table.
      *
      * @param \stdClass $data the form data
      * @return string the json encoded array
@@ -227,9 +227,9 @@ class element extends \enrol_coursepayment\invoice\element {
 
         // Get the image.
         $fs = get_file_storage();
-        if ($file = $fs->get_file($imageinfo->contextid, 'mod_customcert', $imageinfo->filearea, $imageinfo->itemid,
+        if ($file = $fs->get_file($imageinfo->contextid, 'enrol_coursepayment', $imageinfo->filearea, $imageinfo->itemid,
                 $imageinfo->filepath, $imageinfo->filename)) {
-            $url = \moodle_url::make_pluginfile_url($file->get_contextid(), 'mod_customcert', 'image', $file->get_itemid(),
+            $url = \moodle_url::make_pluginfile_url($file->get_contextid(), 'enrol_coursepayment', 'image', $file->get_itemid(),
                 $file->get_filepath(), $file->get_filename());
             $fileimageinfo = $file->get_imageinfo();
             $whratio = $fileimageinfo['width'] / $fileimageinfo['height'];
@@ -293,9 +293,9 @@ class element extends \enrol_coursepayment\invoice\element {
         }
 
         // Editing existing instance - copy existing files into draft area.
-        $draftitemid = file_get_submitted_draft_itemid('customcertimage');
-        file_prepare_draft_area($draftitemid, $context->id, 'mod_customcert', 'image', 0, $this->filemanageroptions);
-        $element = $mform->getElement('customcertimage');
+        $draftitemid = file_get_submitted_draft_itemid('coursepaymentimage');
+        file_prepare_draft_area($draftitemid, $context->id, 'enrol_coursepayment', 'image', 0, $this->filemanageroptions);
+        $element = $mform->getElement('coursepaymentimage');
         $element->setValue($draftitemid);
 
         parent::definition_after_data($mform);
@@ -306,7 +306,7 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * We will want to update the file's pathname hash.
      *
-     * @param \restore_customcert_activity_task $restore
+     * @param \restore_coursepayment_activity_task $restore
      * @throws \dml_exception
      */
     public function after_restore($restore) {
@@ -322,7 +322,7 @@ class element extends \enrol_coursepayment\invoice\element {
         $elementinfo = json_encode($elementinfo);
 
         // Perform the update.
-        $DB->set_field('customcert_elements', 'data', $elementinfo, array('id' => $this->get_id()));
+        $DB->set_field('coursepayment_elements', 'data', $elementinfo, array('id' => $this->get_id()));
     }
 
     /**
@@ -335,7 +335,7 @@ class element extends \enrol_coursepayment\invoice\element {
 
         $fs = get_file_storage();
 
-        return $fs->get_file($imageinfo->contextid, 'mod_customcert', $imageinfo->filearea, $imageinfo->itemid,
+        return $fs->get_file($imageinfo->contextid, 'enrol_coursepayment', $imageinfo->filearea, $imageinfo->itemid,
             $imageinfo->filepath, $imageinfo->filename);
     }
 
@@ -355,13 +355,13 @@ class element extends \enrol_coursepayment\invoice\element {
         // The array used to store the images.
         $arrfiles = array();
         // Loop through the files uploaded in the system context.
-        if ($files = $fs->get_area_files(\context_system::instance()->id, 'mod_customcert', 'image', false, 'filename', false)) {
+        if ($files = $fs->get_area_files(\context_system::instance()->id, 'enrol_coursepayment', 'image', false, 'filename', false)) {
             foreach ($files as $hash => $file) {
                 $arrfiles[$file->get_id()] = $file->get_filename();
             }
         }
         // Loop through the files uploaded in the course context.
-        if ($files = $fs->get_area_files(\context_course::instance($COURSE->id)->id, 'mod_customcert', 'image', false,
+        if ($files = $fs->get_area_files(\context_course::instance($COURSE->id)->id, 'enrol_coursepayment', 'image', false,
             'filename', false)) {
             foreach ($files as $hash => $file) {
                 $arrfiles[$file->get_id()] = $file->get_filename();

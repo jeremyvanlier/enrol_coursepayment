@@ -20,7 +20,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @package   enrol_coursepayment
- * @copyright 2015 MoodleFreak.com
+ * @copyright 2015 MFreak.nl
  * @author    Luuk Verhoeven
  */
 class enrol_coursepayment_plugin extends enrol_plugin {
@@ -98,7 +98,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
 
         $context = context_course::instance($instance->courseid);
         if (has_capability('enrol/coursepayment:report', $context)) {
-            $managelink = new moodle_url('/enrol/coursepayment/edit.php', [
+            $managelink = new moodle_url('/enrol/coursepayment/view/invoice_edit.php', [
                 'courseid' => $instance->courseid,
                 'id' => $instance->id,
             ]);
@@ -147,7 +147,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
         $icons = [];
 
         if (has_capability('enrol/coursepayment:config', $context)) {
-            $editlink = new moodle_url("/enrol/coursepayment/edit.php", [
+            $editlink = new moodle_url("/enrol/coursepayment/view/invoice_edit.php", [
                 'courseid' => $instance->courseid,
                 'id' => $instance->id,
             ]);
@@ -172,7 +172,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
         }
 
         // multiple instances supported - different cost for different roles
-        return new moodle_url('/enrol/coursepayment/edit.php', ['courseid' => $courseid]);
+        return new moodle_url('/enrol/coursepayment/view/invoice_edit.php', ['courseid' => $courseid]);
     }
 
     /**

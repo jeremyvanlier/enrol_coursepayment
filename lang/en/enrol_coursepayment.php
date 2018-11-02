@@ -20,7 +20,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @package   enrol_coursepayment
- * @copyright 2015 MoodleFreak.com
+ * @copyright 2015 MFreak.nl
  * @author    Luuk Verhoeven
  */
 
@@ -326,5 +326,23 @@ $string['invoice_element_categoryname'] = 'Course category';
 $string['invoice_element_userfield'] = 'User profile field';
 $string['invoice_element_coursename'] = 'Coursename';
 $string['invoice_element_studentname'] = 'Studentname';
-
-
+$string['elementname'] = 'Element name';
+$string['image'] = 'Image';
+$string['uploadimage'] = 'Upload image';
+$string['elementname_help'] = 'This will be the name used to identify this element when editing a PDF.
+ Note: this will not displayed on the PDF.';
+$string['noimage'] = 'No image';
+$string['editelement'] = 'Edit element';
+$string['editinvoice'] = 'Edit invoice';
+$string['deleteelementconfirm'] = 'Are you sure you want to delete this element?';
+$string['deletecertpage'] = 'Delete page';
+$string['deleteconfirm'] = 'Delete confirmation';
+$string['deleteelement'] = 'Delete element';
+$string['rearrangeelements'] = 'Reposition elements';
+$string['elements'] = 'Elements';
+$string['elements_help'] = 'This is the list of elements that will be displayed on the invoice.';
+$string['type'] = 'Type';
+$string['rearrangeelements'] = 'Reposition elements';
+$string['rearrangeelementsheading'] = 'Drag and drop elements to change where they are positioned on the invoice.';
+$string['saveandclose'] = 'Save and close';
+$string['saveandcontinue'] = 'Save and continue';

@@ -15,75 +15,72 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Edit a customcert element.
+ * Edit invoice element details.
  *
- * @package    mod_customcert
- * @copyright  2013 Mark Nelson <markn@moodle.com>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package   enrol_coursepayment
+ * @copyright 26-10-2018 MFreak.nl
+ * @author    Luuk Verhoeven
+ **/
 require_once(dirname(__FILE__) . '/../../../config.php');
 defined('MOODLE_INTERNAL') || die;
 
 $tid = required_param('tid', PARAM_INT);
 $action = required_param('action', PARAM_ALPHA);
 
-$template = $DB->get_record('coursepayment_templates', array('id' => $tid), '*', MUST_EXIST);
+$template = $DB->get_record('coursepayment_templates', ['id' => $tid], '*', MUST_EXIST);
 
-// Set the template object.
-$template = new \enrol_coursepayment\invoice\template($template);
-
-// Perform checks.
-if ($cm = $template->get_cm()) {
-    require_login($cm->course, false, $cm);
-} else {
-    require_login();
-}
+require_login();
+$context = context_system::instance();
 
 // Make sure the user has the required capabilities.
+// Set the template object.
+$template = new \enrol_coursepayment\invoice\template($template);
 $template->require_manage();
 
 $PAGE->navbar->add(get_string('pluginname', 'enrol_coursepayment'),
-    new moodle_url('/admin/settings.php', array('section' => 'enrolsettingscoursepayment')));
+    new moodle_url('/admin/settings.php', ['section' => 'enrolsettingscoursepayment']));
 $PAGE->navbar->add(get_string('enrol_coursepayment_invoice_edit', 'enrol_coursepayment'));
 $PAGE->set_context($context);
 $PAGE->set_title(get_string('enrol_coursepayment_invoice_edit', 'enrol_coursepayment'));
 
-$PAGE->set_url('/enrol/coursepayment/view/invoice_edit_element.php', array(
+$PAGE->set_url('/enrol/coursepayment/view/invoice_edit_element.php', [
     'tid' => $tid,
     'action' => $action,
-));
+]);
 
 if ($action == 'edit') {
     // The id of the element must be supplied if we are currently editing one.
     $id = required_param('id', PARAM_INT);
-    $element = $DB->get_record('customcert_elements', array('id' => $id), '*', MUST_EXIST);
-    $pageurl = new moodle_url('/enrol/coursepayment/view/invoice_edit_element.php', array('id' => $id, 'tid' => $tid, 'action' => $action));
+    $element = $DB->get_record('coursepayment_elements', ['id' => $id], '*', MUST_EXIST);
+    $pageurl = new moodle_url('/enrol/coursepayment/view/invoice_edit_element.php', [
+        'id' => $id,
+        'tid' => $tid,
+        'action' => $action,
+    ]);
 } else { // Must be adding an element.
     // We need to supply what element we want added to what page.
     $pageid = required_param('pageid', PARAM_INT);
     $element = new stdClass();
     $element->element = required_param('element', PARAM_ALPHA);
-    $pageurl = new moodle_url('/enrol/coursepayment/view/invoice_edit_element.php', array('tid' => $tid, 'element' => $element->element,
-        'pageid' => $pageid, 'action' => $action));
+    $pageurl = new moodle_url('/enrol/coursepayment/view/invoice_edit_element.php', [
+        'tid' => $tid,
+        'element' => $element->element,
+        'pageid' => $pageid,
+        'action' => $action,
+    ]);
 }
 
-
-// Additional page setup.
-if ($template->get_context()->contextlevel == CONTEXT_SYSTEM) {
-    $PAGE->navbar->add(get_string('managetemplates', 'enrol_coursepayment'),
-        new moodle_url('/enrol/coursepayment/manage_templates.php'));
-}
-
-$PAGE->navbar->add(get_string('editinvoice', 'enrol_coursepayment'), new moodle_url('/enrol/coursepayment/edit.php',
-    array('tid' => $tid)));
+$PAGE->navbar->add(get_string('editinvoice', 'enrol_coursepayment'),
+    new moodle_url('/enrol/coursepayment/view/invoice_edit.php',   ['tid' => $tid]));
 $PAGE->navbar->add(get_string('editelement', 'enrol_coursepayment'));
 
-$mform = new \enrol_coursepayment\invoice\edit_element_form($pageurl, array('element' => $element));
+$mform = new \enrol_coursepayment\invoice\edit_element_form($pageurl, ['element' => $element]);
 
 // Check if they cancelled.
 if ($mform->is_cancelled()) {
-    $url = new moodle_url('/enrol/coursepayment/edit.php', array('tid' => $tid));
+    $url = new moodle_url('/enrol/coursepayment/view/invoice_edit.php', ['tid' => $tid]);
     redirect($url);
 }
 
@@ -101,7 +98,7 @@ if ($data = $mform->get_data()) {
         $e->save_form_elements($data);
     }
 
-    $url = new moodle_url('/enrol/coursepayment/edit.php', array('tid' => $tid));
+    $url = new moodle_url('/enrol/coursepayment/view/invoice_edit.php', ['tid' => $tid]);
     redirect($url);
 }
 

@@ -29,27 +29,27 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Date - Course grade date
  */
-define('CUSTOMCERT_DATE_COURSE_GRADE', '0');
+define('COURSEPAYMENT_DATE_COURSE_GRADE', '0');
 
 /**
  * Date - Issue
  */
-define('CUSTOMCERT_DATE_ISSUE', '-1');
+define('COURSEPAYMENT_DATE_ISSUE', '-1');
 
 /**
  * Date - Completion
  */
-define('CUSTOMCERT_DATE_COMPLETION', '-2');
+define('COURSEPAYMENT_DATE_COMPLETION', '-2');
 
 /**
  * Date - Course start
  */
-define('CUSTOMCERT_DATE_COURSE_START', '-3');
+define('COURSEPAYMENT_DATE_COURSE_START', '-3');
 
 /**
  * Date - Course end
  */
-define('CUSTOMCERT_DATE_COURSE_END', '-4');
+define('COURSEPAYMENT_DATE_COURSE_END', '-4');
 
 require_once($CFG->dirroot . '/lib/grade/constants.php');
 
@@ -76,11 +76,11 @@ class element extends \enrol_coursepayment\invoice\element {
 
         // Get the possible date options.
         $dateoptions = array();
-        $dateoptions[CUSTOMCERT_DATE_ISSUE] = get_string('issueddate', 'coursepaymentelement_date');
-        $dateoptions[CUSTOMCERT_DATE_COMPLETION] = get_string('completiondate', 'coursepaymentelement_date');
-        $dateoptions[CUSTOMCERT_DATE_COURSE_START] = get_string('coursestartdate', 'coursepaymentelement_date');
-        $dateoptions[CUSTOMCERT_DATE_COURSE_END] = get_string('courseenddate', 'coursepaymentelement_date');
-        $dateoptions[CUSTOMCERT_DATE_COURSE_GRADE] = get_string('coursegradedate', 'coursepaymentelement_date');
+        $dateoptions[COURSEPAYMENT_DATE_ISSUE] = get_string('issueddate', 'coursepaymentelement_date');
+        $dateoptions[COURSEPAYMENT_DATE_COMPLETION] = get_string('completiondate', 'coursepaymentelement_date');
+        $dateoptions[COURSEPAYMENT_DATE_COURSE_START] = get_string('coursestartdate', 'coursepaymentelement_date');
+        $dateoptions[COURSEPAYMENT_DATE_COURSE_END] = get_string('courseenddate', 'coursepaymentelement_date');
+        $dateoptions[COURSEPAYMENT_DATE_COURSE_GRADE] = get_string('coursegradedate', 'coursepaymentelement_date');
         $dateoptions = $dateoptions + \enrol_coursepayment\invoice\element_helper::get_grade_items($COURSE);
 
         $mform->addElement('select', 'dateitem', get_string('dateitem', 'coursepaymentelement_date'), $dateoptions);
@@ -94,7 +94,7 @@ class element extends \enrol_coursepayment\invoice\element {
 
     /**
      * This will handle how form data will be saved into the data column in the
-     * customcert_elements table.
+     * coursepayment_elements table.
      *
      * @param \stdClass $data the form data
      * @return string the json encoded array
@@ -139,16 +139,16 @@ class element extends \enrol_coursepayment\invoice\element {
             $date = time();
         } else {
             // Get the page.
-            $page = $DB->get_record('customcert_pages', array('id' => $this->get_pageid()), '*', MUST_EXIST);
+            $page = $DB->get_record('coursepayment_pages', array('id' => $this->get_pageid()), '*', MUST_EXIST);
             // Get the customcert this page belongs to.
             $customcert = $DB->get_record('enrol_coursepayment', array('templateid' => $page->templateid), '*', MUST_EXIST);
             // Now we can get the issue for this user.
-            $issue = $DB->get_record('customcert_issues', array('userid' => $user->id, 'customcertid' => $customcert->id),
+            $issue = $DB->get_record('coursepayment_issues', array('userid' => $user->id, 'customcertid' => $customcert->id),
                 '*', MUST_EXIST);
 
-            if ($dateitem == CUSTOMCERT_DATE_ISSUE) {
+            if ($dateitem == COURSEPAYMENT_DATE_ISSUE) {
                 $date = $issue->timecreated;
-            } else if ($dateitem == CUSTOMCERT_DATE_COMPLETION) {
+            } else if ($dateitem == COURSEPAYMENT_DATE_COMPLETION) {
                 // Get the last completion date.
                 $sql = "SELECT MAX(c.timecompleted) as timecompleted
                           FROM {course_completions} c
@@ -159,12 +159,12 @@ class element extends \enrol_coursepayment\invoice\element {
                         $date = $timecompleted->timecompleted;
                     }
                 }
-            } else if ($dateitem == CUSTOMCERT_DATE_COURSE_START) {
+            } else if ($dateitem == COURSEPAYMENT_DATE_COURSE_START) {
                 $date = $DB->get_field('course', 'startdate', array('id' => $courseid));
-            } else if ($dateitem == CUSTOMCERT_DATE_COURSE_END) {
+            } else if ($dateitem == COURSEPAYMENT_DATE_COURSE_END) {
                 $date = $DB->get_field('course', 'enddate', array('id' => $courseid));
             } else {
-                if ($dateitem == CUSTOMCERT_DATE_COURSE_GRADE) {
+                if ($dateitem == COURSEPAYMENT_DATE_COURSE_GRADE) {
                     $grade = \enrol_coursepayment\invoice\element_helper::get_course_grade_info(
                         $courseid,
                         GRADE_DISPLAY_TYPE_DEFAULT,
@@ -245,7 +245,7 @@ class element extends \enrol_coursepayment\invoice\element {
      * We will want to update the course module the date element is pointing to as it will
      * have changed in the course restore.
      *
-     * @param \restore_customcert_activity_task $restore
+     * @param \restore_coursepayment_activity_task $restore
      * @throws \dml_exception
      */
     public function after_restore($restore) {
@@ -254,7 +254,7 @@ class element extends \enrol_coursepayment\invoice\element {
         $dateinfo = json_decode($this->get_data());
         if ($newitem = \restore_dbops::get_backup_ids_record($restore->get_restoreid(), 'course_module', $dateinfo->dateitem)) {
             $dateinfo->dateitem = $newitem->newitemid;
-            $DB->set_field('customcert_elements', 'data', $this->save_unique_data($dateinfo), array('id' => $this->get_id()));
+            $DB->set_field('coursepayment_elements', 'data', $this->save_unique_data($dateinfo), array('id' => $this->get_id()));
         }
     }
 

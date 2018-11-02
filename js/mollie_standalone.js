@@ -18,7 +18,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @package   enrol_coursepayment
- * @copyright 2017 MoodleFreak.com
+ * @copyright 2017 MFreak.nl
  * @author    Luuk Verhoeven
  */
 
@@ -26,7 +26,7 @@
  * Gateway mollie standalone page class
  *
  * @package   enrol_coursepayment
- * @copyright 2015 MoodleFreak.com
+ * @copyright 2015 MFreak.nl
  * @author    Luuk Verhoeven
  */
 M.enrol_coursepayment_mollie_standalone = {

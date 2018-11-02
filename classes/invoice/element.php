@@ -25,16 +25,12 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @package   enrol_coursepayment
- * @copyright 2018 MoodleFreak.com
+ * @copyright 2018 MFreak.nl
  * @author    Luuk Verhoeven
  */
 
 namespace enrol_coursepayment\invoice;
 defined('MOODLE_INTERNAL') || die();
-
-use edit_element_form;
-use element_helper;
-
 
 /**
  * Class element

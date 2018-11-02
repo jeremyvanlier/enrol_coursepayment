@@ -20,7 +20,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @package   enrol_coursepayment
- * @copyright 2015 MoodleFreak.com
+ * @copyright 2015 MFreak.nl
  * @author    Luuk Verhoeven
  **/
 
@@ -36,7 +36,7 @@ $context = context_course::instance($course->id, MUST_EXIST);
 require_login($course);
 require_capability('enrol/coursepayment:config', $context);
 
-$PAGE->set_url('/enrol/coursepayment/edit.php', array('courseid' => $course->id, 'id' => $instanceid));
+$PAGE->set_url('/enrol/coursepayment/view/invoice_edit.php', array('courseid' => $course->id, 'id' => $instanceid));
 $PAGE->set_pagelayout('admin');
 
 $return = new moodle_url('/enrol/instances.php', array('id' => $course->id));

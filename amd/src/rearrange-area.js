@@ -16,12 +16,12 @@
 /**
  * AMD module used when rearranging a custom certificate.
  *
- * @module     mod_customcert/rearrange-area
- * @package    mod_customcert
+ * @module     enrol_coursepayment/rearrange-area
+ * @package    enrol_coursepayment
  * @copyright  2016 Mark Nelson <markn@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-define(['jquery', 'core/yui', 'core/fragment', 'mod_customcert/dialogue', 'core/notification',
+define(['jquery', 'core/yui', 'core/fragment', 'enrol_coursepayment/dialogue', 'core/notification',
         'core/str', 'core/templates', 'core/ajax'],
         function($, Y, fragment, Dialogue, notification, str, template, ajax) {
 
@@ -35,9 +35,9 @@ define(['jquery', 'core/yui', 'core/fragment', 'mod_customcert/dialogue', 'core/
                 this._setEvents();
             };
 
-            RearrangeArea.prototype.CUSTOMCERT_REF_POINT_TOPLEFT = 0;
-            RearrangeArea.prototype.CUSTOMCERT_REF_POINT_TOPCENTER = 1;
-            RearrangeArea.prototype.CUSTOMCERT_REF_POINT_TOPRIGHT = 2;
+            RearrangeArea.prototype.COURSEPAYMENT_REF_POINT_TOPLEFT = 0;
+            RearrangeArea.prototype.COURSEPAYMENT_REF_POINT_TOPCENTER = 1;
+            RearrangeArea.prototype.COURSEPAYMENT_REF_POINT_TOPRIGHT = 2;
             RearrangeArea.prototype.PIXELSINMM = 3.779527559055;
 
             RearrangeArea.prototype._setEvents = function() {
@@ -51,8 +51,8 @@ define(['jquery', 'core/yui', 'core/fragment', 'mod_customcert/dialogue', 'core/
                     'elementid': elementid
                 };
 
-                fragment.loadFragment('mod_customcert', 'editelement', contextid, params).done(function(html, js) {
-                    str.get_string('editelement', 'mod_customcert').done(function(title) {
+                fragment.loadFragment('enrol_coursepayment', 'editelement', contextid, params).done(function(html, js) {
+                    str.get_string('editelement', 'enrol_coursepayment').done(function(title) {
                         Y.use('moodle-core-formchangechecker', function() {
                             new Dialogue(
                                 title,
@@ -86,11 +86,11 @@ define(['jquery', 'core/yui', 'core/fragment', 'mod_customcert/dialogue', 'core/
                             var elementNode = this._node.find('#element-' + elementid);
                             var refpoint = parseInt($('#id_refpoint').val());
                             var refpointClass = '';
-                            if (refpoint == this.CUSTOMCERT_REF_POINT_TOPLEFT) {
+                            if (refpoint == this.COURSEPAYMENT_REF_POINT_TOPLEFT) {
                                 refpointClass = 'refpoint-left';
-                            } else if (refpoint == this.CUSTOMCERT_REF_POINT_TOPCENTER) {
+                            } else if (refpoint == this.COURSEPAYMENT_REF_POINT_TOPCENTER) {
                                 refpointClass = 'refpoint-center';
-                            } else if (refpoint == this.CUSTOMCERT_REF_POINT_TOPRIGHT) {
+                            } else if (refpoint == this.COURSEPAYMENT_REF_POINT_TOPRIGHT) {
                                 refpointClass = 'refpoint-right';
                             }
                             elementNode.empty().append(html);
@@ -128,10 +128,10 @@ define(['jquery', 'core/yui', 'core/fragment', 'mod_customcert/dialogue', 'core/
                 }
 
                 switch (refpoint) {
-                    case this.CUSTOMCERT_REF_POINT_TOPCENTER:
+                    case this.COURSEPAYMENT_REF_POINT_TOPCENTER:
                         posx -= nodewidth / 2;
                         break;
-                    case this.CUSTOMCERT_REF_POINT_TOPRIGHT:
+                    case this.COURSEPAYMENT_REF_POINT_TOPRIGHT:
                         posx = posx - nodewidth + 2;
                         break;
                 }
@@ -152,10 +152,10 @@ define(['jquery', 'core/yui', 'core/fragment', 'mod_customcert/dialogue', 'core/
                     var nodewidth = parseFloat(element.getComputedStyle('width'));
 
                     switch (refpoint) {
-                        case this.CUSTOMCERT_REF_POINT_TOPCENTER:
+                        case this.COURSEPAYMENT_REF_POINT_TOPCENTER:
                             posx += nodewidth / 2;
                             break;
-                        case this.CUSTOMCERT_REF_POINT_TOPRIGHT:
+                        case this.COURSEPAYMENT_REF_POINT_TOPRIGHT:
                             posx += nodewidth;
                             break;
                     }
@@ -174,7 +174,7 @@ define(['jquery', 'core/yui', 'core/fragment', 'mod_customcert/dialogue', 'core/
 
                 // Call the web service to get the updated element.
                 var promises = ajax.call([{
-                    methodname: 'mod_customcert_get_element_html',
+                    methodname: 'enrol_coursepayment_get_element_html',
                     args: {
                         templateid: templateid,
                         elementid: elementid
@@ -192,7 +192,7 @@ define(['jquery', 'core/yui', 'core/fragment', 'mod_customcert/dialogue', 'core/
 
                 // Call the web service to save the element.
                 var promises = ajax.call([{
-                    methodname: 'mod_customcert_save_element',
+                    methodname: 'enrol_coursepayment_save_element',
                     args: {
                         templateid: templateid,
                         elementid: elementid,

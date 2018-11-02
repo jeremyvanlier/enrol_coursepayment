@@ -3,7 +3,7 @@
  * We use the old Javascript moodle way here because we need to support older versions
  *
  * @package   enrol_coursepayment
- * @copyright 2017 MoodleFreak.com
+ * @copyright 2017 MFreak.nl
  * @author    Luuk Verhoeven
  */
 YUI().use('event-base', 'json', 'node', "panel", "cookie", "io", 'anim', 'io-base', function (Y) {

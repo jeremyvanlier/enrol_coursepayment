@@ -25,7 +25,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @package   enrol_coursepayment
- * @copyright 2018 MoodleFreak.com
+ * @copyright 2018 MFreak.nl
  * @author    Luuk Verhoeven
  */
 
@@ -36,7 +36,7 @@ defined('MOODLE_INTERNAL') || die('Direct access to this script is forbidden.');
 require_once($CFG->dirroot . '/course/moodleform_mod.php');
 require_once($CFG->dirroot . '/enrol/coursepayment/classes/invoice/colourpicker.php');
 
-\MoodleQuickForm::registerElementType('customcert_colourpicker',
+\MoodleQuickForm::registerElementType('coursepayment_colourpicker',
     $CFG->dirroot . '/enrol/coursepayment/classes/invoice/colourpicker.php', 'enrol_coursepayment\invoice\colourpicker');
 
 /**

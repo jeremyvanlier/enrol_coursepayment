@@ -2,7 +2,7 @@
  * Helper
  *
  * @package   enrol_coursepayment
- * @copyright 2015 MoodleFreak.com
+ * @copyright 2015 MFreak.nl
  * @author    Luuk Verhoeven
  */
 

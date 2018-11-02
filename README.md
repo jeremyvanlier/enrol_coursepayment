@@ -1,8 +1,8 @@
 Enrol CoursePayment
 ====================
-![MoodleFreak.com](http://moodlefreak.com/logo_small.png)
+![MFreak.nl](http://MFreak.nl/logo_small.png)
 
-* Author: Luuk Verhoeven, [MoodleFreak.com](http://moodlefreak.com)
+* Author: Luuk Verhoeven, [MFreak.nl](http://MFreak.nl)
 * Requires at least: Moodle 2.6+
 * License: [Avetica](http://avetica.nl)
 

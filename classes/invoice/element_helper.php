@@ -25,7 +25,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @package   enrol_coursepayment
- * @copyright 2018 MoodleFreak.com
+ * @copyright 2018 MFreak.nl
  * @author    Luuk Verhoeven
  */
 
@@ -45,17 +45,17 @@ class element_helper {
     /**
      * @var int the top-left of element
      */
-    const CUSTOMCERT_REF_POINT_TOPLEFT = 0;
+    const COURSEPAYMENT_REF_POINT_TOPLEFT = 0;
 
     /**
      * @var int the top-center of element
      */
-    const CUSTOMCERT_REF_POINT_TOPCENTER = 1;
+    const COURSEPAYMENT_REF_POINT_TOPCENTER = 1;
 
     /**
      * @var int the top-left of element
      */
-    const CUSTOMCERT_REF_POINT_TOPRIGHT = 2;
+    const COURSEPAYMENT_REF_POINT_TOPRIGHT = 2;
 
     /**
      * Common behaviour for rendering specified content on the pdf.
@@ -81,7 +81,7 @@ class element_helper {
         }
 
         switch ($refpoint) {
-            case self::CUSTOMCERT_REF_POINT_TOPRIGHT:
+            case self::COURSEPAYMENT_REF_POINT_TOPRIGHT:
                 $x = $element->get_posx() - $actualwidth;
                 if ($x < 0) {
                     $x = 0;
@@ -90,7 +90,7 @@ class element_helper {
                     $w = $actualwidth;
                 }
                 break;
-            case self::CUSTOMCERT_REF_POINT_TOPCENTER:
+            case self::COURSEPAYMENT_REF_POINT_TOPCENTER:
                 $x = $element->get_posx() - $actualwidth / 2;
                 if ($x < 0) {
                     $x = 0;
@@ -159,7 +159,7 @@ class element_helper {
      * @throws \coding_exception
      */
     public static function render_form_element_colour($mform) {
-        $mform->addElement('customcert_colourpicker', 'colour', get_string('fontcolour', 'enrol_coursepayment'));
+        $mform->addElement('coursepayment_colourpicker', 'colour', get_string('fontcolour', 'enrol_coursepayment'));
         $mform->setType('colour', PARAM_RAW); // Need to validate that this is a valid colour.
         $mform->setDefault('colour', '#000000');
         $mform->addHelpButton('colour', 'fontcolour', 'enrol_coursepayment');
@@ -196,12 +196,12 @@ class element_helper {
         $mform->setDefault('width', 0);
         $mform->addHelpButton('width', 'elementwidth', 'enrol_coursepayment');
         $refpointoptions = array();
-        $refpointoptions[self::CUSTOMCERT_REF_POINT_TOPLEFT] = get_string('topleft', 'enrol_coursepayment');
-        $refpointoptions[self::CUSTOMCERT_REF_POINT_TOPCENTER] = get_string('topcenter', 'enrol_coursepayment');
-        $refpointoptions[self::CUSTOMCERT_REF_POINT_TOPRIGHT] = get_string('topright', 'enrol_coursepayment');
+        $refpointoptions[self::COURSEPAYMENT_REF_POINT_TOPLEFT] = get_string('topleft', 'enrol_coursepayment');
+        $refpointoptions[self::COURSEPAYMENT_REF_POINT_TOPCENTER] = get_string('topcenter', 'enrol_coursepayment');
+        $refpointoptions[self::COURSEPAYMENT_REF_POINT_TOPRIGHT] = get_string('topright', 'enrol_coursepayment');
         $mform->addElement('select', 'refpoint', get_string('refpoint', 'enrol_coursepayment'), $refpointoptions);
         $mform->setType('refpoint', PARAM_INT);
-        $mform->setDefault('refpoint', self::CUSTOMCERT_REF_POINT_TOPCENTER);
+        $mform->setDefault('refpoint', self::COURSEPAYMENT_REF_POINT_TOPCENTER);
         $mform->addHelpButton('refpoint', 'refpoint', 'enrol_coursepayment');
     }
 
@@ -365,7 +365,7 @@ class element_helper {
         $sequence = 1;
         // Check if there already elements that exist, if so, overwrite value.
         $sql = "SELECT MAX(sequence) as maxsequence
-                  FROM {customcert_elements}
+                  FROM {coursepayment_elements}
                  WHERE pageid = :id";
         // Get the current max sequence on this page and add 1 to get the new sequence.
         if ($maxseq = $DB->get_record_sql($sql, array('id' => $pageid))) {
@@ -388,9 +388,9 @@ class element_helper {
 
         $sql = "SELECT course
                   FROM {customcert} c
-            INNER JOIN {customcert_pages} cp
+            INNER JOIN {coursepayment_pages} cp
                     ON c.templateid = cp.templateid
-            INNER JOIN {customcert_elements} ce
+            INNER JOIN {coursepayment_elements} ce
                     ON cp.id = ce.pageid
                  WHERE ce.id = :elementid";
 

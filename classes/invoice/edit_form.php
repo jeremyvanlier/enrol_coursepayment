@@ -300,7 +300,7 @@ class edit_form extends \moodleform {
                 $table->data[] = $row;
             }
             // Create link to order the elements.
-            $link = \html_writer::link(new \moodle_url('/enrol/coursepayment/invoice_rearrange.php', array('pid' => $page->id)),
+            $link = \html_writer::link(new \moodle_url('/enrol/coursepayment/view/invoice_rearrange.php', array('pid' => $page->id)),
                 get_string('rearrangeelements', 'enrol_coursepayment'));
             // Add the table to the form.
             $mform->addElement('static', 'elements_' . $page->id, get_string('elements', 'enrol_coursepayment'), \html_writer::table($table)

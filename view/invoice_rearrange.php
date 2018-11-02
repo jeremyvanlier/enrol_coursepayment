@@ -17,7 +17,7 @@
 /**
  * Handles position elements on the PDF via drag and drop.
  *
- * @package    mod_customcert
+ * @package    enrol_coursepayment
  * @copyright  2013 Mark Nelson <markn@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -28,71 +28,55 @@ defined('MOODLE_INTERNAL') || die;
 // The page of the customcert we are editing.
 $pid = required_param('pid', PARAM_INT);
 
-$page = $DB->get_record('customcert_pages', array('id' => $pid), '*', MUST_EXIST);
-$template = $DB->get_record('customcert_templates', array('id' => $page->templateid), '*', MUST_EXIST);
-$elements = $DB->get_records('customcert_elements', array('pageid' => $pid), 'sequence');
+$page = $DB->get_record('coursepayment_pages', ['id' => $pid], '*', MUST_EXIST);
+$template = $DB->get_record('coursepayment_templates', ['id' => $page->templateid], '*', MUST_EXIST);
+$elements = $DB->get_records('coursepayment_elements', ['pageid' => $pid], 'sequence');
 
 // Set the template.
-$template = new \enrol_coursepayment\template($template);
+$template = new \enrol_coursepayment\invoice\template($template);
 // Perform checks.
-if ($cm = $template->get_cm()) {
-    require_login($cm->course, false, $cm);
-} else {
-    require_login();
-}
+require_login();
+
 // Make sure the user has the required capabilities.
 $template->require_manage();
 
-if ($template->get_context()->contextlevel == CONTEXT_MODULE) {
-    $customcert = $DB->get_record('enrol_coursepayment', ['id' => $cm->instance], '*', MUST_EXIST);
-    $title = $customcert->name;
-    $heading = format_string($title);
-} else {
-    $title = $SITE->fullname;
-    $heading = $title;
-}
-
 // Set the $PAGE settings.
-$pageurl = new moodle_url('/mod/customcert/rearrange.php', array('pid' => $pid));
+$pageurl = new moodle_url('/enrol/coursepayment/view/invoice_rearrange.php', ['pid' => $pid]);
 \enrol_coursepayment\invoice\page_helper::page_setup($pageurl, $template->get_context(), $title);
 
-// Add more links to the navigation.
-if (!$cm = $template->get_cm()) {
-    $str = get_string('managetemplates', 'enrol_coursepayment');
-    $link = new moodle_url('/mod/customcert/manage_templates.php');
-    $PAGE->navbar->add($str, new \action_link($link, $str));
-}
-
-$str = get_string('editcustomcert', 'enrol_coursepayment');
-$link = new moodle_url('/mod/customcert/edit.php', array('tid' => $template->get_id()));
+$str = get_string('editinvoice', 'enrol_coursepayment');
+$link = new moodle_url('/enrol/coursepayment/view/invoice_edit.php', ['tid' => $template->get_id()]);
 $PAGE->navbar->add($str, new \action_link($link, $str));
 
 $PAGE->navbar->add(get_string('rearrangeelements', 'enrol_coursepayment'));
 
 // Include the JS we need.
-$PAGE->requires->yui_module('moodle-mod_customcert-rearrange', 'Y.M.mod_customcert.rearrange.init',
-    array($template->get_id(),
-          $page,
-          $elements));
+$PAGE->requires->yui_module('moodle-enrol_coursepayment-rearrange', 'Y.M.enrol_coursepayment.rearrange.init',
+    [
+        $template->get_id(),
+        $page,
+        $elements,
+    ]);
 
 // Create the buttons to save the position of the elements.
-$html = html_writer::start_tag('div', array('class' => 'buttons'));
-$html .= $OUTPUT->single_button(new moodle_url('/mod/customcert/edit.php', array('tid' => $template->get_id())),
-        get_string('saveandclose', 'enrol_coursepayment'), 'get', array('class' => 'savepositionsbtn'));
-$html .= $OUTPUT->single_button(new moodle_url('/mod/customcert/rearrange.php', array('pid' => $pid)),
-        get_string('saveandcontinue', 'enrol_coursepayment'), 'get', array('class' => 'applypositionsbtn'));
-$html .= $OUTPUT->single_button(new moodle_url('/mod/customcert/edit.php', array('tid' => $template->get_id())),
-        get_string('cancel'), 'get', array('class' => 'cancelbtn'));
+$html = html_writer::start_tag('div', ['class' => 'buttons']);
+$html .= $OUTPUT->single_button(new moodle_url('/enrol/coursepayment/view/invoice_edit.php', ['tid' => $template->get_id()]),
+    get_string('saveandclose', 'enrol_coursepayment'), 'get', ['class' => 'savepositionsbtn']);
+$html .= $OUTPUT->single_button(new moodle_url('/enrol/coursepayment/view/invoice_rearrange.php', ['pid' => $pid]),
+    get_string('saveandcontinue', 'enrol_coursepayment'), 'get', ['class' => 'applypositionsbtn']);
+$html .= $OUTPUT->single_button(new moodle_url('/enrol/coursepayment/view/invoice_edit.php', ['tid' => $template->get_id()]),
+    get_string('cancel'), 'get', ['class' => 'cancelbtn']);
 $html .= html_writer::end_tag('div');
 
 // Create the div that represents the PDF.
 $style = 'height: ' . $page->height . 'mm; line-height: normal; width: ' . $page->width . 'mm;';
 $marginstyle = 'height: ' . $page->height . 'mm; width:1px; float:left; position:relative;';
-$html .= html_writer::start_tag('div', array(
-    'data-templateid' => $template->get_id(),
-    'data-contextid' => $template->get_contextid(),
-    'id' => 'pdf',
-    'style' => $style)
+$html .= html_writer::start_tag('div', [
+        'data-templateid' => $template->get_id(),
+        'data-contextid' => $template->get_contextid(),
+        'id' => 'pdf',
+        'style' => $style,
+    ]
 );
 if ($page->leftmargin) {
     $position = 'left:' . $page->leftmargin . 'mm;';
@@ -103,18 +87,21 @@ if ($elements) {
         // Get an instance of the element class.
         if ($e = \enrol_coursepayment\invoice\element_factory::get_element_instance($element)) {
             switch ($element->refpoint) {
-                case \enrol_coursepayment\invoice\element_helper::CUSTOMCERT_REF_POINT_TOPRIGHT:
+                case \enrol_coursepayment\invoice\element_helper::COURSEPAYMENT_REF_POINT_TOPRIGHT:
                     $class = 'element refpoint-right';
                     break;
-                case \enrol_coursepayment\invoice\element_helper::CUSTOMCERT_REF_POINT_TOPCENTER:
+                case \enrol_coursepayment\invoice\element_helper::COURSEPAYMENT_REF_POINT_TOPCENTER:
                     $class = 'element refpoint-center';
                     break;
-                case \enrol_coursepayment\invoice\element_helper::CUSTOMCERT_REF_POINT_TOPLEFT:
+                case \enrol_coursepayment\invoice\element_helper::COURSEPAYMENT_REF_POINT_TOPLEFT:
                 default:
                     $class = 'element refpoint-left';
             }
-            $html .= html_writer::tag('div', $e->render_html(), array('class' => $class,
-                'data-refpoint' => $element->refpoint, 'id' => 'element-' . $element->id));
+            $html .= html_writer::tag('div', $e->render_html(), [
+                'class' => $class,
+                'data-refpoint' => $element->refpoint,
+                'id' => 'element-' . $element->id,
+            ]);
         }
     }
 }
@@ -125,8 +112,7 @@ if ($page->rightmargin) {
 $html .= html_writer::end_tag('div');
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading($heading);
 echo $OUTPUT->heading(get_string('rearrangeelementsheading', 'enrol_coursepayment'), 4);
 echo $html;
-$PAGE->requires->js_call_amd('enrol_coursepayment/rearrange-area', 'init', array('#pdf'));
+$PAGE->requires->js_call_amd('enrol_coursepayment/rearrange-area', 'init', ['#pdf']);
 echo $OUTPUT->footer();

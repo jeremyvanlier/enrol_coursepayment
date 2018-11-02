@@ -20,14 +20,14 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @package   enrol_coursepayment
- * @copyright 2015 MoodleFreak.com
+ * @copyright 2015 MFreak.nl
  * @author    Luuk Verhoeven
  **/
 
 defined('MOODLE_INTERNAL') || die();
-$plugin->release   = '1.0.0';
+$plugin->release   = '2.0.0';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->version   = 2018102904;        // The current plugin version (Date: YYYYMMDDXX)
+$plugin->version   = 2018110202;        // The current plugin version (Date: YYYYMMDDXX)
 $plugin->requires  = 2013101800;        // Requires this Moodle version
 $plugin->component = 'enrol_coursepayment'; // Full name of the plugin (used for diagnostics)
 $plugin->cron      = 60;

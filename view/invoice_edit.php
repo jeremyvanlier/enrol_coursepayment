@@ -20,7 +20,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @package   enrol_coursepayment
- * @copyright 26-10-2018 MoodleFreak.com
+ * @copyright 26-10-2018 MFreak.nl
  * @author    Luuk Verhoeven
  **/
 require_once(dirname(__FILE__) . '/../../../config.php');

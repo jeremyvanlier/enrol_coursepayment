@@ -5,7 +5,7 @@
  *
  * @Version: 1.0.0
  * @Since  10-2-2017
- * @Author : MoodleFreak.com | Ldesign.nl - Luuk Verhoeven
+ * @Author : MFreak.nl | Ldesign.nl - Luuk Verhoeven
  *
  *  This REST API allows to connect other mollie accounts
  **/

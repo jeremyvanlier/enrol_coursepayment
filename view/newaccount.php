@@ -20,7 +20,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @package   enrol_coursepayment
- * @copyright 2017 MoodleFreak.com
+ * @copyright 2017 MFreak.nl
  * @author    Luuk Verhoeven
  */
 
@@ -72,7 +72,7 @@ if (($data = $form->get_data()) != false) {
     if(!empty($response->error)){
         throw new Exception($response->error);
     }
-    
+
     // Should be a success.
     set_config('gateway_mollie_account_claim', 1, 'enrol_coursepayment');
 
