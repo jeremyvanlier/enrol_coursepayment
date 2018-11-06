@@ -315,7 +315,6 @@ $string['deletepage'] = 'Delete page';
 $string['addelement'] = 'Add element';
 $string['addpage'] = 'Add page';
 
-// Elements.
 $string['invoice_element_bgimage'] = 'Background image';
 $string['invoice_element_image'] = 'Image';
 $string['invoice_element_digitalsignature'] = 'Digital signature';
@@ -359,3 +358,12 @@ $string['fontsize'] = 'Size';
 $string['fontsize_help'] = 'The size of the font in points.';
 $string['text'] = 'Text';
 $string['text_help'] = 'This is the text that will display on the PDF.';
+$string['userfield'] = 'Userfield';
+$string['userfield_help'] = 'This is the user field that will be displayed on the PDF.';
+$string['invalidcode'] = 'Invalid code supplied.';
+$string['invalidcolour'] = 'Invalid colour chosen, please enter a valid HTML colour name, or a six-digit, or three-digit hexadecimal colour.';
+$string['invalidelementwidth'] = 'Please enter a positive number.';
+$string['invalidposition'] = 'Please select a positive number for position {$a}.';
+$string['invalidheight'] = 'The height has to be a valid number greater than 0.';
+$string['invalidmargin'] = 'The margin has to be a valid number greater than 0.';
+$string['invalidwidth'] = 'The width has to be a valid number greater than 0.';

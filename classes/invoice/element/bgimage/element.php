@@ -52,21 +52,22 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
     /**
      * Performs validation on the element values.
      *
-     * @param array $data the submitted data
+     * @param array $data  the submitted data
      * @param array $files the submitted files
+     *
      * @return array the validation errors
      */
     public function validate_form_elements($data, $files) {
         // Array to return the errors.
-        return array();
+        return [];
     }
 
     /**
      * Handles rendering the element on the pdf.
      *
-     * @param \pdf $pdf the pdf object
-     * @param bool $preview true if it is a preview, false otherwise
-     * @param \stdClass $user the user we are rendering this for
+     * @param \pdf      $pdf     the pdf object
+     * @param bool      $preview true if it is a preview, false otherwise
+     * @param \stdClass $user    the user we are rendering this for
      */
     public function render($pdf, $preview, $user) {
         // If there is no element data, we have nothing to display.
@@ -123,11 +124,12 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
             $url = \moodle_url::make_pluginfile_url($file->get_contextid(), 'enrol_coursepayment', 'image', $file->get_itemid(),
                 $file->get_filepath(), $file->get_filename());
             // Get the page we are rendering this on.
-            $page = $DB->get_record('coursepayment_pages', array('id' => $this->get_pageid()), '*', MUST_EXIST);
+            $page = $DB->get_record('coursepayment_pages', ['id' => $this->get_pageid()], '*', MUST_EXIST);
 
             // Set the image to the size of the page.
             $style = 'width: ' . $page->width . 'mm; height: ' . $page->height . 'mm';
-            return \html_writer::tag('img', '', array('src' => $url, 'style' => $style));
+
+            return \html_writer::tag('img', '', ['src' => $url, 'style' => $style]);
         }
     }
 }

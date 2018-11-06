@@ -44,7 +44,7 @@ class element extends \enrol_coursepayment\invoice\element {
      */
     public function render_form_elements($mform) {
         // We want to define the width of the border.
-        $mform->addElement('text', 'width', get_string('width', 'enrol_coursepayment'), array('size' => 10));
+        $mform->addElement('text', 'width', get_string('width', 'enrol_coursepayment'), ['size' => 10]);
         $mform->setType('width', PARAM_INT);
         $mform->addHelpButton('width', 'width', 'enrol_coursepayment');
 
@@ -55,13 +55,13 @@ class element extends \enrol_coursepayment\invoice\element {
     /**
      * Handles rendering the element on the pdf.
      *
-     * @param \pdf $pdf the pdf object
-     * @param bool $preview true if it is a preview, false otherwise
-     * @param \stdClass $user the user we are rendering this for
+     * @param \pdf      $pdf     the pdf object
+     * @param bool      $preview true if it is a preview, false otherwise
+     * @param \stdClass $user    the user we are rendering this for
      */
     public function render($pdf, $preview, $user) {
         $colour = \TCPDF_COLORS::convertHTMLColorToDec($this->get_colour(), $colour);
-        $pdf->SetLineStyle(array('width' => $this->get_data(), 'color' => $colour));
+        $pdf->SetLineStyle(['width' => $this->get_data(), 'color' => $colour]);
         $pdf->Line(0, 0, $pdf->getPageWidth(), 0);
         $pdf->Line($pdf->getPageWidth(), 0, $pdf->getPageWidth(), $pdf->getPageHeight());
         $pdf->Line(0, $pdf->getPageHeight(), $pdf->getPageWidth(), $pdf->getPageHeight());
@@ -85,12 +85,13 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @param array $data  the submitted data
      * @param array $files the submitted files
+     *
      * @return array the validation errors
      * @throws \coding_exception
      */
     public function validate_form_elements($data, $files) {
         // Array to return the errors.
-        $errors = array();
+        $errors = [];
 
         // Check if width is not set, or not numeric or less than 0.
         if ((!isset($data['width'])) || (!is_numeric($data['width'])) || ($data['width'] <= 0)) {
@@ -121,6 +122,7 @@ class element extends \enrol_coursepayment\invoice\element {
      * coursepayment_elements table.
      *
      * @param \stdClass $data the form data
+     *
      * @return string the json encoded array
      */
     public function save_unique_data($data) {

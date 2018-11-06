@@ -43,8 +43,9 @@ class element extends \enrol_coursepayment\invoice\element {
      * @throws \coding_exception
      */
     public function render_form_elements($mform) {
+
         // Get the user profile fields.
-        $userfields = array(
+        $userfields = [
             'firstname' => get_user_field_name('firstname'),
             'lastname' => get_user_field_name('lastname'),
             'email' => get_user_field_name('email'),
@@ -61,11 +62,11 @@ class element extends \enrol_coursepayment\invoice\element {
             'department' => get_user_field_name('department'),
             'phone1' => get_user_field_name('phone1'),
             'phone2' => get_user_field_name('phone2'),
-            'address' => get_user_field_name('address')
-        );
+            'address' => get_user_field_name('address'),
+        ];
         // Get the user custom fields.
         $arrcustomfields = \availability_profile\condition::get_custom_profile_fields();
-        $customfields = array();
+        $customfields = [];
         foreach ($arrcustomfields as $key => $customfield) {
             $customfields[$customfield->id] = $key;
         }
@@ -74,9 +75,9 @@ class element extends \enrol_coursepayment\invoice\element {
         \core_collator::asort($fields);
 
         // Create the select box where the user field is selected.
-        $mform->addElement('select', 'userfield', get_string('userfield', 'coursepaymentelement_userfield'), $fields);
+        $mform->addElement('select', 'userfield', get_string('userfield', 'enrol_coursepayment'), $fields);
         $mform->setType('userfield', PARAM_ALPHANUM);
-        $mform->addHelpButton('userfield', 'userfield', 'coursepaymentelement_userfield');
+        $mform->addHelpButton('userfield', 'userfield', 'enrol_coursepayment');
 
         parent::render_form_elements($mform);
     }
@@ -86,6 +87,7 @@ class element extends \enrol_coursepayment\invoice\element {
      * coursepayment_elements table.
      *
      * @param \stdClass $data the form data
+     *
      * @return string the text
      */
     public function save_unique_data($data) {
@@ -98,6 +100,7 @@ class element extends \enrol_coursepayment\invoice\element {
      * @param \pdf      $pdf     the pdf object
      * @param bool      $preview true if it is a preview, false otherwise
      * @param \stdClass $user    the user we are rendering this for
+     *
      * @throws \dml_exception
      */
     public function render($pdf, $preview, $user) {
@@ -108,7 +111,7 @@ class element extends \enrol_coursepayment\invoice\element {
         // The value to display on the PDF.
         $value = '';
         if (is_number($field)) { // Must be a custom user profile field.
-            if ($field = $DB->get_record('user_info_field', array('id' => $field))) {
+            if ($field = $DB->get_record('user_info_field', ['id' => $field])) {
                 $file = $CFG->dirroot . '/user/profile/field/' . $field->datatype . '/field.class.php';
                 if (file_exists($file)) {
                     require_once($CFG->dirroot . '/user/profile/lib.php');
@@ -141,7 +144,7 @@ class element extends \enrol_coursepayment\invoice\element {
         // The value to display - we always want to show a value here so it can be repositioned.
         $value = $field;
         if (is_number($field)) { // Must be a custom user profile field.
-            if ($field = $DB->get_record('user_info_field', array('id' => $field))) {
+            if ($field = $DB->get_record('user_info_field', ['id' => $field])) {
                 // Found the field name, let's update the value to display.
                 $value = $field->name;
                 $file = $CFG->dirroot . '/user/profile/field/' . $field->datatype . '/field.class.php';
@@ -162,6 +165,7 @@ class element extends \enrol_coursepayment\invoice\element {
 
         $courseid = \enrol_coursepayment\invoice\element_helper::get_courseid($this->get_id());
         $value = format_string($value, true, ['context' => \context_course::instance($courseid)]);
+
         return \enrol_coursepayment\invoice\element_helper::render_html_content($this, $value);
     }
 

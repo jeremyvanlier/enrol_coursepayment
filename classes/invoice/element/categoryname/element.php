@@ -60,6 +60,7 @@ class element extends \enrol_coursepayment\invoice\element {
         global $COURSE;
 
         $categoryname = format_string($COURSE->fullname, true, ['context' => \context_course::instance($COURSE->id)]);
+
         return \enrol_coursepayment\invoice\element_helper::render_html_content($this, $categoryname);
     }
 
@@ -79,7 +80,8 @@ class element extends \enrol_coursepayment\invoice\element {
 
         // Check that there is a course category available.
         if (!empty($course->category)) {
-            $categoryname = $DB->get_field('course_categories', 'name', array('id' => $course->category), MUST_EXIST);
+            $categoryname = $DB->get_field('course_categories', 'name', ['id' => $course->category], MUST_EXIST);
+
             return format_string($categoryname, true, ['context' => \context_course::instance($courseid)]);
         } else { // Must be in a site template.
             return format_string($SITE->fullname, true, ['context' => \context_system::instance()]);

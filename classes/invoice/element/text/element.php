@@ -43,7 +43,10 @@ class element extends \enrol_coursepayment\invoice\element {
      * @throws \coding_exception
      */
     public function render_form_elements($mform) {
-        $mform->addElement('textarea', 'text', get_string('text', 'enrol_coursepayment'));
+        $mform->addElement('textarea', 'text', get_string('text', 'enrol_coursepayment'), [
+            'rows' => 10,
+            'cols' => 80,
+        ]);
         $mform->setType('text', PARAM_RAW);
         $mform->addHelpButton('text', 'text', 'enrol_coursepayment');
 
@@ -55,6 +58,7 @@ class element extends \enrol_coursepayment\invoice\element {
      * coursepayment_elements table.
      *
      * @param \stdClass $data the form data
+     *
      * @return string the text
      */
     public function save_unique_data($data) {
@@ -67,6 +71,7 @@ class element extends \enrol_coursepayment\invoice\element {
      * @param \pdf      $pdf     the pdf object
      * @param bool      $preview true if it is a preview, false otherwise
      * @param \stdClass $user    the user we are rendering this for
+     *
      * @throws \dml_exception
      */
     public function render($pdf, $preview, $user) {
@@ -87,6 +92,7 @@ class element extends \enrol_coursepayment\invoice\element {
     public function render_html() {
         $courseid = \enrol_coursepayment\invoice\element_helper::get_courseid($this->get_id());
         $text = format_text($this->get_data(), FORMAT_HTML, ['context' => \context_course::instance($courseid)]);
+
         return \enrol_coursepayment\invoice\element_helper::render_html_content($this, $text);
     }
 

@@ -38,9 +38,9 @@ class element extends \enrol_coursepayment\invoice\element {
     /**
      * Handles rendering the element on the pdf.
      *
-     * @param \pdf $pdf the pdf object
-     * @param bool $preview true if it is a preview, false otherwise
-     * @param \stdClass $user the user we are rendering this for
+     * @param \pdf      $pdf     the pdf object
+     * @param bool      $preview true if it is a preview, false otherwise
+     * @param \stdClass $user    the user we are rendering this for
      */
     public function render($pdf, $preview, $user) {
         \enrol_coursepayment\invoice\element_helper::render_content($pdf, $this, fullname($user));

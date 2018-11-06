@@ -64,6 +64,7 @@ class element extends \enrol_coursepayment\invoice\element {
         global $COURSE;
 
         $coursename = format_string($COURSE->fullname, true, ['context' => \context_course::instance($COURSE->id)]);
+
         return \enrol_coursepayment\invoice\element_helper::render_html_content($this, $coursename);
     }
 }
