@@ -26,28 +26,32 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-class enrol_coursepayment_discountcode{
+class enrol_coursepayment_discountcode {
 
     /**
      * course id
+     *
      * @var int
      */
     protected $courseid = 0;
 
     /**
      * The discountcode
+     *
      * @var string
      */
     protected $discountcode = '';
 
     /**
      * last error container
+     *
      * @var string
      */
     protected $lasterror = '';
 
     /**
      * discountcode record container
+     *
      * @var bool
      */
     protected $record = false;
@@ -56,13 +60,13 @@ class enrol_coursepayment_discountcode{
      * __construct with discountcode and courseid
      *
      * @param string $discount
-     * @param int $courseid
+     * @param int    $courseid
      */
-    public function __construct($discount = '' , $courseid = 0){
+    public function __construct($discount = '', $courseid = 0) {
 
         // Make sure not surrounded by white spaces or tabs if copy pasted
         $this->discountcode = trim($discount);
-        $this->courseid = (int) $courseid;
+        $this->courseid = (int)$courseid;
 
     }
 
@@ -72,42 +76,47 @@ class enrol_coursepayment_discountcode{
      * @return false|object
      * @throws dml_exception
      */
-    public function getDiscountcode(){
+    public function getDiscountcode() {
         global $DB;
 
-        if($this->record){
+        if ($this->record) {
             return $this->record;
         }
 
         $now = time();
-        $row = $DB->get_record('enrol_coursepayment_discount', array('code' => $this->discountcode));
+        $row = $DB->get_record('enrol_coursepayment_discount', ['code' => $this->discountcode]);
 
-        if(!$row){
+        if (!$row) {
             $this->lasterror = 'no_record';
+
             return false;
         }
 
         if (!$row || $row->start_time > $now || $now > $row->end_time) {
             $this->lasterror = 'not_within_the_time_period';
+
             return false;
         }
         //  wrong course
         if ($row->courseid != 0 && $this->courseid != $row->courseid) {
             $this->lasterror = 'not_for_this_course';
+
             return false;
         }
 
         $this->record = $row;
-        return  $this->record;
+
+        return $this->record;
     }
 
     /**
      * last error message
+     *
      * @return lang_string|string
      * @throws coding_exception
      */
-    public function getLastErrorString(){
-        return (!empty($this->lasterror)) ? get_string('error:'.$this->lasterror , 'enrol_coursepayment') : '';
+    public function getLastErrorString() {
+        return (!empty($this->lasterror)) ? get_string('error:' . $this->lasterror, 'enrol_coursepayment') : '';
     }
 
 }

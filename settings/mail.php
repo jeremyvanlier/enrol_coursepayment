@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- *
+ * Mail global setting page.
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
@@ -57,17 +57,17 @@ $settings->add(new admin_setting_configtext('enrol_coursepayment/custom_mails_in
     get_string('custommails', 'enrol_coursepayment'),
     get_string('custommails_desc', 'enrol_coursepayment'), '', PARAM_TEXT));
 
-$options = array();
+$options = [];
 for ($i = 0; $i < 24; $i++) {
     $options[$i] = $i;
 }
 $settings->add(new admin_setting_configselect('enrol_coursepayment/expirynotifyhour',
     get_string('expirynotifyhour', 'core_enrol'), '', 6, $options));
-$options = array(
+$options = [
     0 => get_string('no'),
     1 => get_string('expirynotifyenroller', 'core_enrol'),
     2 => get_string('expirynotifyall', 'core_enrol'),
-);
+];
 $settings->add(new admin_setting_configselect('enrol_coursepayment/expirynotify',
     get_string('expirynotify', 'core_enrol'),
     get_string('expirynotify_help', 'core_enrol'), 0, $options));

@@ -38,6 +38,7 @@ class renderer extends plugin_renderer_base {
      *
      * @return string|boolean
      * @throws \dml_exception
+     * @throws \moodle_exception
      */
     public function render_multi_account(multi_account $renderable) {
         $data = $renderable->export_for_template($this);

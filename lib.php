@@ -23,6 +23,8 @@
  * @copyright 2015 MFreak.nl
  * @author    Luuk Verhoeven
  */
+defined('MOODLE_INTERNAL') || die();
+
 class enrol_coursepayment_plugin extends enrol_plugin {
 
     /**

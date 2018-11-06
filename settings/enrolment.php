@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- *
+ * Enrolment global setting page.
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
@@ -37,11 +37,11 @@ if (!during_initial_install()) {
 $settings->add(new admin_setting_configduration('enrol_coursepayment/enrolperiod',
     get_string('enrolperiod', 'enrol_coursepayment'),
     get_string('enrolperiod_desc', 'enrol_coursepayment'), 0));
-$options = array(
+$options = [
     ENROL_EXT_REMOVED_KEEP => get_string('extremovedkeep', 'enrol'),
     ENROL_EXT_REMOVED_SUSPENDNOROLES => get_string('extremovedsuspendnoroles', 'enrol'),
     ENROL_EXT_REMOVED_UNENROL => get_string('extremovedunenrol', 'enrol'),
-);
+];
 $settings->add(new admin_setting_configselect('enrol_coursepayment/expiredaction',
     get_string('expiredaction', 'enrol_coursepayment'),
     get_string('expiredaction_help', 'enrol_coursepayment'),

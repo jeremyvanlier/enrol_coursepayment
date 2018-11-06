@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Report
+ * Coursepayment report
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
@@ -24,6 +24,8 @@
  * @author    Luuk Verhoeven
  **/
 require_once(dirname(__FILE__) . '/../../../config.php');
+defined('MOODLE_INTERNAL') || die();
+
 $courseid = required_param('id', PARAM_INT); //
 $action = optional_param('action', false, PARAM_ALPHA); //
 

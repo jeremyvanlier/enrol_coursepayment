@@ -95,6 +95,7 @@ class report {
      *
      * @return array
      * @throws \dml_exception
+     * @throws \coding_exception
      */
     private static function get_all_courses_data($datafilter) {
         global $DB;

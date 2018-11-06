@@ -25,6 +25,8 @@
  */
 
 require_once(dirname(__FILE__) . '/../../../config.php');
+defined('MOODLE_INTERNAL') || die();
+
 require_once($CFG->libdir . '/tablelib.php');
 require_login();
 

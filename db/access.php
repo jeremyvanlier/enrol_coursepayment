@@ -25,42 +25,42 @@
  */
 defined('MOODLE_INTERNAL') || die;
 
-$capabilities = array(
+$capabilities = [
 
-    'enrol/coursepayment:report' => array(
+    'enrol/coursepayment:report' => [
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(
+        'archetypes' => [
             'manager' => CAP_ALLOW,
-        )
-    ),
-    'enrol/coursepayment:config' => array(
+        ],
+    ],
+    'enrol/coursepayment:config' => [
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(
+        'archetypes' => [
             'manager' => CAP_ALLOW,
-        )
-    ),
-    'enrol/coursepayment:manage' => array(
+        ],
+    ],
+    'enrol/coursepayment:manage' => [
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(
+        'archetypes' => [
             'manager' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
-        )
-    ),
-    'enrol/coursepayment:unenrol' => array(
+        ],
+    ],
+    'enrol/coursepayment:unenrol' => [
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(
+        'archetypes' => [
             'manager' => CAP_ALLOW,
-        )
-    ),
-    'enrol/coursepayment:unenrolself' => array(
+        ],
+    ],
+    'enrol/coursepayment:unenrolself' => [
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(
-        )
-    ),
-);
+        'archetypes' => [
+        ],
+    ],
+];
 

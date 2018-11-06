@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * upgrade older versions to support new features
+ * Upgrade older versions to support new features.
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
@@ -33,6 +33,7 @@ defined('MOODLE_INTERNAL') || die;
  * @throws ddl_table_missing_exception
  * @throws downgrade_exception
  * @throws upgrade_exception
+ * @throws dml_exception
  */
 function xmldb_enrol_coursepayment_upgrade($oldversion) {
     global $DB;

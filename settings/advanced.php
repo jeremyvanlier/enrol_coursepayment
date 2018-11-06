@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- *
+ * Advanced global setting page.
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
@@ -39,10 +39,10 @@ $settings->add(new admin_setting_heading('enrol_coursepayment_defaults',
     get_string('enrolinstancedefaults', 'admin'),
     get_string('enrolinstancedefaults_desc', 'admin')));
 
-$optionsyesno = array(
+$optionsyesno = [
     ENROL_INSTANCE_ENABLED => get_string('yes'),
     ENROL_INSTANCE_DISABLED => get_string('no'),
-);
+];
 $settings->add(new admin_setting_configselect('enrol_coursepayment/status',
     get_string('status', 'enrol_coursepayment'),
     get_string('status_desc', 'enrol_coursepayment'), ENROL_INSTANCE_DISABLED, $optionsyesno));

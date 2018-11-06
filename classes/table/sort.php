@@ -28,6 +28,11 @@
 namespace enrol_coursepayment\table;
 defined('MOODLE_INTERNAL') || die;
 
+/**
+ * Class arraysortutil
+ *
+ * @package enrol_coursepayment\table
+ */
 class arraysortutil {
     static public function uasort($unsort, $fields) {
         if (!is_array($unsort) || count($unsort) <= 0) {
@@ -48,6 +53,11 @@ class arraysortutil {
     }
 }
 
+/**
+ * Class multisortengine
+ *
+ * @package enrol_coursepayment\table
+ */
 class multisortengine {
     static public function multisort($unsort, $fields) {
         $sorted = $unsort;
@@ -92,12 +102,25 @@ class multisortengine {
     }
 }
 
+/**
+ * Class uasortengine
+ *
+ * @package enrol_coursepayment\table
+ */
 class uasortengine {
     static private $caseensitve = false;
     static private $sortfields = [];
     static private $sortorder = true;
     static private $nature = false;
 
+    /**
+     * uasort_callback
+     *
+     * @param $a
+     * @param $b
+     *
+     * @return int|\lt
+     */
     static private function uasort_callback(&$a, &$b) {
         foreach (self::$sortfields as $sortfield) {
             $field = $sortfield["field"];
@@ -131,6 +154,14 @@ class uasortengine {
         return $compare;
     }
 
+    /**
+     * uasort
+     *
+     * @param $unsort
+     * @param $fields
+     *
+     * @return mixed
+     */
     static public function uasort($unsort, $fields) {
         self::$sortfields = $fields;
         $sorted = $unsort;

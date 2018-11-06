@@ -26,22 +26,21 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$functions = array(
-
-    'enrol_coursepayment_save_element' => array(
-        'classname'   => 'enrol_coursepayment\external',
-        'methodname'  => 'save_element',
-        'classpath'   => '',
+$functions = [
+    'enrol_coursepayment_save_element' => [
+        'classname' => 'enrol_coursepayment\external',
+        'methodname' => 'save_element',
+        'classpath' => '',
         'description' => 'Saves data for an element',
-        'type'        => 'write',
-        'ajax'        => true
-    ),
-    'enrol_coursepayment_get_element_html' => array(
-        'classname'   => 'enrol_coursepayment\external',
-        'methodname'  => 'get_element_html',
-        'classpath'   => '',
+        'type' => 'write',
+        'ajax' => true,
+    ],
+    'enrol_coursepayment_get_element_html' => [
+        'classname' => 'enrol_coursepayment\external',
+        'methodname' => 'get_element_html',
+        'classpath' => '',
         'description' => 'Returns the HTML to display for an element',
-        'type'        => 'read',
-        'ajax'        => true
-    ),
-);
+        'type' => 'read',
+        'ajax' => true,
+    ],
+];

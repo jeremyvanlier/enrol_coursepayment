@@ -42,7 +42,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
         $this->client = new Mollie_API_Client();
 
-        if(!empty($this->config->apikey)) {
+        if (!empty($this->config->apikey)) {
             $this->client->setApiKey($this->config->apikey);
         }
     }
@@ -85,7 +85,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         global $CFG, $DB;
 
         // extra order data
-        $data = array();
+        $data = [];
 
         if (!empty($discountcode)) {
 
@@ -98,11 +98,11 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                 $data['discount'] = $row;
             } else {
 
-                return array(
+                return [
                     'status' => false,
                     'error_discount' => true,
                     'message' => $discountinstance->getLastErrorString(),
-                );
+                ];
             }
         }
 
@@ -133,16 +133,16 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                     'invoice_number' => $invoice_number,
                     'instanceid' => $this->instanceconfig->instanceid,
                     'addedon' => time(),
-                    'courseid' => $this->instanceconfig->courseid
+                    'courseid' => $this->instanceconfig->courseid,
                 ]),
                 "redirectUrl" => $CFG->wwwroot . '/enrol/coursepayment/return.php?orderid=' . $order['orderid'] . '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid,
                 "webhookUrl" => $CFG->wwwroot . '/enrol/coursepayment/ipn/mollie.php?orderid=' . $order['orderid'] . '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid,
-                "metadata" => array(
+                "metadata" => [
                     "order_id" => $order['orderid'],
                     "id" => $order['id'],
                     "userid" => $this->instanceconfig->userid,
                     "userfullname" => $this->instanceconfig->userfullname,
-                ),
+                ],
                 "issuer" => !empty($issuer) ? $issuer : null,
             ];
             $payment = $this->client->payments->create($request);
@@ -161,7 +161,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             $this->log("API call failed: " . htmlspecialchars($e->getMessage()));
         }
 
-        return array('status' => false);
+        return ['status' => false];
     }
 
     /**
@@ -180,7 +180,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         global $CFG, $DB;
 
         // extra order data
-        $data = array();
+        $data = [];
 
         if (!empty($discountcode)) {
 
@@ -193,11 +193,11 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                 $data['discount'] = $row;
             } else {
 
-                return array(
+                return [
                     'status' => false,
                     'error_discount' => true,
                     'message' => $discountinstance->getLastErrorString(),
-                );
+                ];
             }
         }
 
@@ -207,6 +207,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
             if ($order['cost'] == 0) {
                 redirect($CFG->wwwroot . '/enrol/coursepayment/return.php?orderid=' . $order['orderid'] . '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid);
+
                 return;
             }
 
@@ -214,18 +215,18 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             $request = [
                 "amount" => $order['cost'],
                 "method" => $method,
-                "locale" => (in_array($this->instanceconfig->locale, array(
+                "locale" => (in_array($this->instanceconfig->locale, [
                     'de',
                     'en',
                     'fr',
                     'es',
                     'nl',
-                )) ? $this->instanceconfig->locale : 'en'),
+                ]) ? $this->instanceconfig->locale : 'en'),
                 "description" => $this->get_payment_description((object)[
                     'invoice_number' => $invoice_number,
                     'addedon' => time(),
                     'instanceid' => $this->instanceconfig->instanceid,
-                    'courseid' => $this->instanceconfig->courseid
+                    'courseid' => $this->instanceconfig->courseid,
                 ]),
                 "redirectUrl" => $CFG->wwwroot . '/enrol/coursepayment/return.php?orderid=' . $order['orderid'] . '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid,
                 "webhookUrl" => $CFG->wwwroot . '/enrol/coursepayment/ipn/mollie.php?orderid=' . $order['orderid'] . '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid,
@@ -255,7 +256,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             $this->log("API call failed: " . htmlspecialchars($e->getMessage()));
         }
 
-        return array('status' => false);
+        return ['status' => false];
     }
 
     /**
@@ -295,7 +296,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
         $issuer = optional_param('issuer', false, PARAM_ALPHANUMEXT);
         $discountcode = optional_param('discountcode', false, PARAM_ALPHANUMEXT);
-        $status = array();
+        $status = [];
 
         // method is selected by the user
         if (!empty($method) || !empty($issuer)) {
@@ -339,9 +340,12 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
     }
 
-    /*
-	 * Get the all the activated methods for this API key.
-	 */
+    /**
+     * Get the all the activated methods for this API key.
+     *
+     * @return string
+     * @throws coding_exception
+     */
     public function get_enabled_modes() {
 
         $string = '';
@@ -374,7 +378,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
     }
 
     /**
-     * check if order is really paid
+     * Check if order is really paid
      *
      * @param string $orderid
      *
@@ -388,13 +392,13 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
         if (parent::validate_order($orderid)) {
             // first let it check by main class
-            return array('status' => true, 'message' => 'free_payment');
+            return ['status' => true, 'message' => 'free_payment'];
         }
 
-        $return = array('status' => false, 'message' => '');
+        $return = ['status' => false, 'message' => ''];
 
         // first check if we know of it
-        $row = $DB->get_record('enrol_coursepayment', array('orderid' => $orderid, 'gateway' => $this->name));
+        $row = $DB->get_record('enrol_coursepayment', ['orderid' => $orderid, 'gateway' => $this->name]);
 
         if ($row) {
 
@@ -445,14 +449,14 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                         $return['status'] = true;
                     }
 
-                } elseif ($payment->isOpen() == false) {
+                } else if ($payment->isOpen() == false) {
 
                     // The payment isn't paid and isn't open anymore. We can assume it was aborted.
                     // we can mark this payment as aborted
                     $obj->status = self::PAYMENT_STATUS_ABORT;
                     $return['message'] = get_string('error:paymentabort', 'enrol_coursepayment');
 
-                } elseif ($payment->isOpen()) {
+                } else if ($payment->isOpen()) {
 
                     // The payment isn't paid and isn't open anymore. We can assume it was aborted.
                     // we can mark this payment as aborted
@@ -477,12 +481,14 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
     /**
      * This function will update invoice numbers
      * Only needed when upgrading a version lower then 2015061201
+     *
+     * @throws dml_exception
      */
     public function upgrade_invoice_numbers() {
 
         global $DB;
 
-        $results = $DB->get_records('enrol_coursepayment', array('gateway' => $this->name, 'invoice_number' => 0));
+        $results = $DB->get_records('enrol_coursepayment', ['gateway' => $this->name, 'invoice_number' => 0]);
 
         foreach ($results as $result) {
 
@@ -523,7 +529,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         $data = unserialize($data);
 
         // https://help.mollie.com/hc/nl/articles/214016745-Waar-kan-ik-de-API-documentatie-voor-resellers-vinden-#ref-account-create
-       $data->username = $data->email; // Fix username.
+        $data->username = $data->email; // Fix username.
 
         $fields = [
             'username',
@@ -538,6 +544,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         foreach ($fields as $field) {
             if (!array_key_exists($field, $data)) {
                 $return['error'] = 'Missing "' . $field . '" field!';
+
                 return $return;
             }
         }

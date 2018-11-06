@@ -15,11 +15,18 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file contains the customcert element background image's core interaction API.
+ * This file contains the coursepayment element bgimage's core interaction API.
  *
- * @package    coursepaymentelement_bgimage
- * @copyright  2016 Mark Nelson <markn@moodle.com>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * This parts is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
+ * Thanks for allowing us to use it.
+ *
+ * This file is modified not compatible with the original.
+ *
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package   enrol_coursepayment
+ * @copyright 2018 MFreak.nl
+ * @author    Luuk Verhoeven
  */
 
 namespace enrol_coursepayment\invoice\element\bgimage;
@@ -27,10 +34,10 @@ namespace enrol_coursepayment\invoice\element\bgimage;
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * The customcert element background image's core interaction API.
+ * The element background image's core interaction API.
  *
- * @package    coursepaymentelement_bgimage
- * @copyright  2016 Mark Nelson <markn@moodle.com>
+ * @package    enrol_coursepayment
+ * @copyright  2018 MFreak.nl
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class element extends \enrol_coursepayment\invoice\element\image\element {
@@ -131,6 +138,8 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
 
             return \html_writer::tag('img', '', ['src' => $url, 'style' => $style]);
         }
+
+        return '';
     }
 }
 

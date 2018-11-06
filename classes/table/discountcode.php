@@ -35,21 +35,20 @@ defined('MOODLE_INTERNAL') || die();
  */
 class discountcode extends \table_sql {
 
-
     /**
      * list of all courses
      *
      * @var array
      */
-    protected $courses = array();
-
+    protected $courses = [];
 
     /**
      * __constructor
      *
-     * @param string $uniqueid
+     * @param string           $uniqueid
      *
      * @global moodle_database $DB
+     * @throws \dml_exception
      */
     function __construct($uniqueid) {
         parent::__construct($uniqueid);
@@ -64,28 +63,31 @@ class discountcode extends \table_sql {
 
     /**
      * Render output for row action
+     *
      * @param $row
      *
      * @return string
      * @throws \coding_exception
+     * @throws \moodle_exception
      */
     protected function col_action($row) {
 
-        $delete = new \moodle_url('/enrol/coursepayment/view/discountcode.php', array(
+        $delete = new \moodle_url('/enrol/coursepayment/view/discountcode.php', [
             'id' => $row->id,
             'action' => 'delete',
-        ));
+        ]);
 
-        $edit = new \moodle_url('/enrol/coursepayment/view/discountcode.php', array(
+        $edit = new \moodle_url('/enrol/coursepayment/view/discountcode.php', [
             'id' => $row->id,
             'action' => 'edit',
-        ));
+        ]);
 
-        return \html_writer::link($edit, get_string('edit'), array('class' => 'btn btn-small')) . ' &nbsp; ' . \html_writer::link($delete, get_string('delete'), array('class' => 'delete btn btn-small btn-danger'));
+        return \html_writer::link($edit, get_string('edit'), ['class' => 'btn btn-small']) . ' &nbsp; ' . \html_writer::link($delete, get_string('delete'), ['class' => 'delete btn btn-small btn-danger']);
     }
 
     /**
      * Render output for row courseid
+     *
      * @param $row
      *
      * @return string
@@ -97,6 +99,7 @@ class discountcode extends \table_sql {
 
     /**
      * Render output for row start_time
+     *
      * @param $row
      *
      * @return bool|string
