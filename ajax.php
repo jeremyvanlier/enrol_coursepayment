@@ -34,27 +34,27 @@ $PAGE->set_url('/enrol/coursepayment/ajax.php');
 
 require_login(get_site(), true, null, true, true);
 
-// Params
+// Params.
 $sesskey = required_param('sesskey', PARAM_RAW);
 $courseid = required_param('courseid', PARAM_INT);
-$action = required_param('action', PARAM_ALPHA);
+$action = required_param('action', PARAM_TEXT);
 $data = required_param('data', PARAM_RAW);
 
 // Used for account claim action.
 $username = optional_param('username', false, PARAM_RAW);
 $password = optional_param('password', false, PARAM_RAW);
 
-// Get the course
-$course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
+// Get the course.
+$course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
 
 // Get plugin config.
 $config = get_config('enrol_coursepayment');
 
-// Default return
-$array = array(
+// Default return.
+$array = [
     'error' => '',
-    'status' => false
-);
+    'status' => false,
+];
 
 if (!confirm_sesskey($sesskey)) {
     $array['error'] = get_string('failed:sesskey', 'enrol_coursepayment');
@@ -70,7 +70,7 @@ if (empty($array['error'])) {
 
                 $response = enrol_coursepayment_helper::post_request($config->gateway_mollie_parent_api, [
                     'data' => urlencode(serialize(['username' => $username, 'password' => $password])),
-                    'action' => 'claim'
+                    'action' => 'claim',
                 ]);
 
                 // For debugging.
@@ -117,30 +117,30 @@ if (empty($array['error'])) {
         case 'update_invoice_element':
 
             $tid = required_param('tid', PARAM_INT);
-            $data = json_decode($data);
 
             // Make sure the template exists.
-            $template = $DB->get_record('coursepayment_templates', array('id' => $tid), '*', MUST_EXIST);
+            $template = $DB->get_record('coursepayment_templates', ['id' => $tid], '*', MUST_EXIST);
 
             // Set the template.
             $template = new \enrol_coursepayment\invoice\template($template);
+
             // Perform checks.
-            if ($cm = $template->get_cm()) {
-                $courseid = $cm->course;
-                require_login($courseid, false, $cm);
-            } else {
-                require_login();
-            }
+            require_login();
+
             // Make sure the user has the required capabilities.
             $template->require_manage();
 
             // Loop through the data.
-            foreach ($data as $value) {
-                $element = new stdClass();
-                $element->id = $value->id;
-                $element->posx = $value->posx;
-                $element->posy = $value->posy;
-                $DB->update_record('coursepayment_elements', $element);
+            $data = json_decode($data);
+            if (!empty($data)) {
+                foreach ($data as $value) {
+                    $element = new stdClass();
+                    $element->id = $value->id;
+                    $element->posx = $value->posx;
+                    $element->posy = $value->posy;
+                    $DB->update_record('coursepayment_elements', $element);
+                }
+                $array['status'] = true;
             }
             break;
     }

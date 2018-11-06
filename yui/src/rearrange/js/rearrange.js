@@ -206,6 +206,8 @@ Y.extend(Rearrange, Y.Base, {
         var params = {
             tid: this.templateid,
             action : 'update_invoice_element',
+            sesskey : M.cfg.sesskey,
+            courseid : 1,
             data: []
         };
 
@@ -254,10 +256,10 @@ Y.extend(Rearrange, Y.Base, {
                     var pageinput = formnode.one('[name=pid]');
                     if (pageinput) {
                         var pageid = pageinput.get('value');
-                        window.location = baseurl + '?pid=' + pageid;
+                       window.location = baseurl + '?pid=' + pageid;
                     } else {
                         var templateid = formnode.one('[name=tid]').get('value');
-                        window.location = baseurl + '?tid=' + templateid;
+                       window.location = baseurl + '?tid=' + templateid;
                     }
                 }
             },
