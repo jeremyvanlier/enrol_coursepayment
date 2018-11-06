@@ -601,10 +601,10 @@ abstract class enrol_coursepayment_gateway {
         $a->method = $method;
         $a->description = $this->get_payment_description($record);
 
-        // Calculate cost
-        $a->cost = $this->price($record->cost);
+        // Calculate cost.
         $a->vatpercentage = $record->vatpercentage;
-        $a->costvat = $this->price(($a->cost / (100 + $a->vatpercentage)) * $a->vatpercentage);
+        $a->costvat = $this->price(($record->cost / (100 + $a->vatpercentage)) * $a->vatpercentage);
+        $a->cost = $this->price($record->cost);
 
         if (!empty($this->pluginconfig->mailstudents_invoice)) {
 
