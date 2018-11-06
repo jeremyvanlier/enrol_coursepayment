@@ -32,7 +32,21 @@ use plugin_renderer_base;
 class renderer extends plugin_renderer_base {
 
     /**
-     * render_multi_account
+     * Render a template
+     *
+     *
+     * @param string    $string
+     * @param \stdClass $dummydata
+     *
+     * @return bool|string
+     * @throws \moodle_exception
+     */
+    public function render_template(string $string, \stdClass $dummydata) {
+       return $this->render_from_template($string, $dummydata);
+    }
+
+    /**
+     * Render multi account
      *
      * @param multi_account $renderable
      *

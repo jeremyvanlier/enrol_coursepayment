@@ -325,6 +325,8 @@ $string['invoice_element_categoryname'] = 'Course category';
 $string['invoice_element_userfield'] = 'User profile field';
 $string['invoice_element_coursename'] = 'Coursename';
 $string['invoice_element_studentname'] = 'Studentname';
+$string['invoice_element_orderdata'] = 'Orderdata';
+
 $string['elementname'] = 'Element name';
 $string['image'] = 'Image';
 $string['uploadimage'] = 'Upload image';
@@ -367,3 +369,11 @@ $string['invalidposition'] = 'Please select a positive number for position {$a}.
 $string['invalidheight'] = 'The height has to be a valid number greater than 0.';
 $string['invalidmargin'] = 'The margin has to be a valid number greater than 0.';
 $string['invalidwidth'] = 'The width has to be a valid number greater than 0.';
+$string['deletepageconfirm'] = 'Are you sure you want to delete this certificate page?';
+
+$string['orderdata:coursename'] = 'Coursename';
+$string['orderdata:vat'] = 'Vat';
+$string['orderdata:total'] = 'Total';
+$string['orderdata:subtotal'] = 'Subtotal';
+$string['orderdata:total'] = 'Total';
+$string['orderdata:dummy_course'] = 'Dummy coursename';
