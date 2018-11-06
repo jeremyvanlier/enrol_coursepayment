@@ -55,7 +55,9 @@ class enrol_coursepayment_edit_form extends moodleform {
 
         $mform->addElement('text', 'cost', get_string('cost', 'enrol_coursepayment'), array('size' => 4));
         $mform->setType('cost', PARAM_RAW); // Use unformat_float to get real value.
-        $mform->setDefault('cost', format_float($plugin->get_config('cost'), 2, true));
+
+        $mform->setDefault('cost', format_float(str_replace(',', '.', $plugin->get_config('cost')),
+            2, true));
 
         $coursepaymentcurrencies = $plugin->get_currencies();
         $mform->addElement('select', 'currency', get_string('currency', 'enrol_coursepayment'), $coursepaymentcurrencies);
@@ -115,6 +117,8 @@ class enrol_coursepayment_edit_form extends moodleform {
 
         $this->add_action_buttons(true, ($instance->id ? null : get_string('addinstance', 'enrol')));
 
+
+        //echo '<pre>';print_r($instance);echo '</pre>';die(__LINE__.' '.__FILE__);
         $this->set_data($instance);
     }
 

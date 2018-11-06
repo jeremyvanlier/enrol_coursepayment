@@ -151,7 +151,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
         $icons = [];
 
         if (has_capability('enrol/coursepayment:config', $context)) {
-            $editlink = new moodle_url("/enrol/coursepayment/view/invoice_edit.php", [
+            $editlink = new moodle_url("/enrol/coursepayment/edit.php", [
                 'courseid' => $instance->courseid,
                 'id' => $instance->id,
             ]);

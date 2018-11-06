@@ -93,7 +93,7 @@ if ($mform->is_cancelled()) {
             $instance->customtext1 = $data->customtext1;
             $instance->customtext2 = $data->customtext2;
             $instance->customint1 = $data->customint1;
-            $instance->cost = unformat_float($data->cost);
+            $instance->cost = unformat_float(str_replace(',', '.', $data->cost));
             $instance->currency = $data->currency;
             $instance->roleid = $data->roleid;
             $instance->enrolperiod = $data->enrolperiod;

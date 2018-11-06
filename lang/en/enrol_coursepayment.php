@@ -326,6 +326,7 @@ $string['invoice_element_userfield'] = 'User profile field';
 $string['invoice_element_coursename'] = 'Coursename';
 $string['invoice_element_studentname'] = 'Studentname';
 $string['invoice_element_orderdata'] = 'Orderdata';
+$string['invoice_element_invoiceinfo'] = 'Invoice information';
 
 $string['elementname'] = 'Element name';
 $string['image'] = 'Image';
