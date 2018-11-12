@@ -94,14 +94,14 @@ $string['error:capability_config'] = 'Fout: Je heb de volgende toegang nodig, co
 $string['enrol_coursepayment_discount'] = 'Kortingscodebeheer';
 $string['enrol_coursepayment_discount_desc'] = 'Korting codes kunnen aangemaakt worden via de onderstaande knop. <br/><br/><a href="{$a->link}" class="btn btn-small btn-primary">Kortingscodebeheer</a>';
 $string['new:discountcode'] = 'Nieuwe kortingscode toevoegen';
-// TABLE
+// Table.
 $string['th:code'] = 'Kortingscode';
 $string['th:courseid'] = 'Cursus';
 $string['th:start_time'] = 'Geldig vanaf';
 $string['th:end_time'] = 'Geldig to';
 $string['th:amount'] = 'Waarde';
 $string['th:action'] = 'Actie';
-// FORM
+// Form.
 $string['form:allcourses'] = 'Volledige website';
 $string['form:code'] = 'Kortignscode<br> (moet uniek zijn)';
 $string['form:discountcode'] = 'Kortingscode';
@@ -110,14 +110,14 @@ $string['form:end_time'] = 'Geldig to';
 $string['form:save'] = 'Bewaar wijzigingen';
 $string['form:amount'] = 'Bedrag van kortingscode';
 $string['form:percentage'] = 'Percentage van kortingscode';
-// ERR
+// Error.
 $string['error:number_to_low'] = 'Dit nummer is te laag';
 $string['error:price_wrongformat'] = 'Dit is geen nummer';
 $string['error:code_not_unique'] = 'Kortingscode moet uniek zijn';
 $string['error:no_record'] = 'Fout: Komt niet voor in onze database!';
 $string['error:not_within_the_time_period'] = 'Fout: Niet geldig binnen deze tijd periode!';
 $string['error:not_for_this_course'] = 'Fout: Deze kortingscode is bedoelt voor een andere cursus!';
-// SETTING
+// Settings.
 $string['discount_code_desc'] = 'Als u een kortingscode heeft kunt u die hieronder invullen';
 $string['discountcode_invalid'] = 'Fout: Deze kortingscode is onjuist, niet geldig meer of hoort niet bij deze cursus!';
 $string['vatpercentages'] = 'BTW percentage inbegrepen in de kosten';
@@ -129,7 +129,7 @@ $string['place'] = 'Vestigingplaats';
 $string['zipcode'] = 'Postcode';
 $string['address'] = 'Adres';
 $string['companyname'] = 'Naam organisatie';
-// MAIL
+// Mail.
 $string['mail:invoice_subject'] = 'Bedankt voor het kopen van: {$a->content_type} - {$a->fullcourse} / {$a->fullname}';
 $string['mail:invoice_message'] = '<h2>Factuur</h2>
 <br/>
@@ -198,10 +198,13 @@ $string['enrol_coursepayment_newaccount'] = 'Nieuw account aanmaken';
 $string['custommails'] = 'Extra email adressen';
 $string['custommails_desc'] = 'Voeg extra adressen toe die de factuur mogen ontvangen. (CSV format)';
 $string['link_agreement'] = 'Algemene voorwaarden';
-$string['link_agreement_desc'] = 'Link naar de algemene voorwaarde die gebruikers voor de aankoop moeten accorderen. Wanneer u deze leeg laat, zal er geen algemene voorwaarde vertoond worden tijdens het aankoopprocedure.';
-$string['agreement_label'] = 'Ik ga akkoord met de <a class="coursepayment-agreement-link" target="_blank" href="{$a->link}">Algemene Voorwaarden</a>';
+$string['link_agreement_desc'] = 'Link naar de algemene voorwaarde die gebruikers voor de aankoop moeten accorderen. 
+Wanneer u deze leeg laat, zal er geen algemene voorwaarde vertoond worden tijdens het aankoopprocedure.';
+$string['agreement_label'] = 'Ik ga akkoord met de <a class="coursepayment-agreement-link" target="_blank" href="{$a->link}">
+Algemene Voorwaarden</a>';
 $string['js:claim_title'] = 'Betaalprovider Mollie koppelen aan Avetica';
-$string['js:claim_desc'] = 'Uw account is nog niet aan Avetica gekoppeld u kunt dit oplossen door hieronder uw Mollie gebruikersnaam en wachtwoord in te vullen.';
+$string['js:claim_desc'] = 'Uw account is nog niet aan Avetica gekoppeld u kunt dit oplossen door hieronder uw 
+Mollie gebruikersnaam en wachtwoord in te vullen.';
 $string['js:username'] = 'Gebruikersnaam';
 $string['js:password'] = 'Wachtwoord';
 $string['js:delay'] = 'Uitstellen';
@@ -209,7 +212,7 @@ $string['js:connect'] = 'Koppelen';
 $string['standalone_purchase_page'] = 'Losse betalingspagina';
 $string['standalone_purchase_page_desc'] = 'Keuzescherm op een losse betalingspagina vertonen.';
 $string['gateway_mollie_ideal_heading'] = 'IDEAL — KIES UW BANK';
-$string['gateway_mollie_backlink'] = 'Terug naar <a href="/">{$a->fullname}</a> ';
+$string['gateway_mollie_backlink'] = 'Terug naar <a href="/">{$a->fullname}</a>';
 
 // Settings.
 $string['settings:tab_invoicedetails'] = 'Factuurgegevens';
@@ -255,8 +258,8 @@ $string['transaction_name_desc'] = 'Ondersteund de volgende shortcodes: <br>
 {customtext2} : Extra betaal identifier';
 
 // Privacy.
-$string['privacy:metadata:enrol_coursepayment'] = 'Slaat de gebruikerstransactiegegevens op, dit staat toe om bij te houden wat een
-  gebruiker heeft gekocht.';
+$string['privacy:metadata:enrol_coursepayment'] = 'Slaat de gebruikerstransactiegegevens op, dit staat toe om bij te 
+houden wat een gebruiker heeft gekocht.';
 
 $string['privacy:metadata:enrol_coursepayment:userid'] = 'De ID van de gebruiker bij deze transactie.';
 $string['privacy:metadata:enrol_coursepayment:gateway_transaction_id'] = 'De transactie-ID van de gebruiker.';

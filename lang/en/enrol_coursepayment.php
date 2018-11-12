@@ -68,9 +68,11 @@ $string['error:waiting_on_payment'] = 'Not paid. We will wait on payment.';
 $string['gateway_not_exists'] = 'Error! Gateway not exists';
 $string['enabled_desc'] = 'Status of the gateway if this can be used to create a transaction';
 $string['expiredaction'] = 'Enrolment expiration action';
-$string['expiredaction_help'] = 'Select action to carry out when user enrolment expires. Please note that some user data and settings are purged from course during course unenrolment.';
+$string['expiredaction_help'] = 'Select action to carry out when user enrolment expires. Please note that some user data
+and settings are purged from course during course unenrolment.';
 $string['expirymessageenrollersubject'] = 'Enrolment expiry notification';
-$string['expirymessageenrollerbody'] = 'Enrolment in the course \'{$a->course}\' will expire within the next {$a->threshold} for the following users:
+$string['expirymessageenrollerbody'] = 'Enrolment in the course \'{$a->course}\' will expire within the next {$a->threshold} 
+for the following users:
 
 {$a->users}
 
@@ -254,15 +256,6 @@ $string['transaction_name_desc'] = 'Supports the follow shortcodes: <br>
 {site} : Site name<br>
 {site_shortname} : Site shortname<br>
 {customtext2} : Extra identifier';
-
-//     'userid' => 'privacy:metadata:enrol_coursepayment:userid',
-//                'orderid' => 'privacy:metadata:enrol_coursepayment:orderid',
-//                'gateway_transaction_id' => 'privacy:metadata:enrol_coursepayment:gateway_transaction_id',
-//                'instanceid' => 'privacy:metadata:enrol_coursepayment:instanceid',
-//                'courseid' => 'privacy:metadata:enrol_coursepayment:courseid',
-//                'addedon' => 'privacy:metadata:enrol_coursepayment:timemodified',
-//            ],
-//            'privacy:metadata:enrol_coursepayment'
 
 // Privacy.
 $string['privacy:metadata:enrol_coursepayment'] = 'Stores the user transaction data, this allow to keep track of what a

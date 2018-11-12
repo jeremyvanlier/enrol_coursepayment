@@ -35,7 +35,7 @@ require_once($CFG->libdir . '/formslib.php');
 
 class overview_courses_filter extends \moodleform {
 
-    function definition() {
+    public function definition() {
         global $DB;
 
         // Get all courses.

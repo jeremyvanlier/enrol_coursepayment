@@ -37,16 +37,17 @@ if (!empty($config->multi_account)) {
         get_string('gateway_mollie', 'enrol_coursepayment'),
         get_string('gateway_mollie_desc', 'enrol_coursepayment')));
     $settings->add(new admin_setting_heading('enrol_coursepayment_register', '',
-        '<aside style="border: 1px solid red;padding: 3px">' . get_string('gateway_mollie_link', 'enrol_coursepayment',
-            (object)['link' => $CFG->wwwroot . '/enrol/coursepayment/view/newaccount.php',]) . '</aside><hr/>'));
+        '<aside style="border: 1px solid red;padding: 3px">' . get_string('gateway_mollie_link',
+            'enrol_coursepayment',
+            (object)['link' => $CFG->wwwroot . '/enrol/coursepayment/view/newaccount.php']) . '</aside><hr/>'));
 
     $settings->add(new admin_setting_configselect('enrol_coursepayment/gateway_mollie_enabled',
         get_string('enabled', 'enrol_coursepayment'),
         get_string('enabled_desc', 'enrol_coursepayment'), 1, $yesno));
 
     $settings->add(new admin_setting_configtext('enrol_coursepayment/gateway_mollie_apikey',
-        get_string('gateway_mollie_apikey', 'enrol_coursepayment'), '', '', PARAM_ALPHANUMEXT));
-
+        get_string('gateway_mollie_apikey', 'enrol_coursepayment'), '', '',
+        PARAM_ALPHANUMEXT));
 
     $settings->add(new admin_setting_configselect('enrol_coursepayment/gateway_mollie_sandbox',
         get_string('sandbox', 'enrol_coursepayment'),
@@ -59,11 +60,14 @@ if (!empty($config->multi_account)) {
     // Check if gateway_mollie_external_connector is enabled.
     if (!empty($config->gateway_mollie_external_connector)) {
         $settings->add(new admin_setting_configtext('enrol_coursepayment/gateway_mollie_partner_id',
-            get_string('gateway_mollie_partner_id', 'enrol_coursepayment'), '', '', PARAM_INT));
+            get_string('gateway_mollie_partner_id', 'enrol_coursepayment'), '', '',
+            PARAM_INT));
         $settings->add(new admin_setting_configtext('enrol_coursepayment/gateway_mollie_profile_key',
-            get_string('gateway_mollie_profile_key', 'enrol_coursepayment'), '', '', PARAM_TEXT));
+            get_string('gateway_mollie_profile_key', 'enrol_coursepayment'), '', '',
+            PARAM_TEXT));
         $settings->add(new admin_setting_configtext('enrol_coursepayment/gateway_mollie_app_secret',
-            get_string('gateway_mollie_app_secret', 'enrol_coursepayment'), '', '', PARAM_TEXT));
+            get_string('gateway_mollie_app_secret', 'enrol_coursepayment'), '', '',
+            PARAM_TEXT));
     }
 
     if (!empty($config->gateway_mollie_apikey)) {
