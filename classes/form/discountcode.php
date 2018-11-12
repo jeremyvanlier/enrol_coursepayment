@@ -40,7 +40,8 @@ class discountcode extends \moodleform {
 
         $mform->addElement('header', 'header1', get_string('form:discountcode', 'enrol_coursepayment'));
 
-        $mform->addElement('text', 'code', get_string('form:code', 'enrol_coursepayment'), ['size' => '48',]);
+        $mform->addElement('text', 'code', get_string('form:code', 'enrol_coursepayment'),
+            ['size' => '48',]);
         $mform->setType('code', PARAM_ALPHANUMEXT);
         $mform->addRule('code', null, 'required', null, 'client');
 
@@ -53,19 +54,23 @@ class discountcode extends \moodleform {
         $mform->addElement('select', 'courseid', get_string('course'), $list);
         $mform->addRule('courseid', null, 'required', null, 'client');
 
-        $mform->addElement('date_selector', 'start_time', get_string('form:start_time', 'enrol_coursepayment'));
+        $mform->addElement('date_selector', 'start_time', get_string('form:start_time',
+            'enrol_coursepayment'));
         $mform->setDefault('start_time', time());
         $mform->addRule('start_time', null, 'required', null, 'client');
 
-        $mform->addElement('date_selector', 'end_time', get_string('form:end_time', 'enrol_coursepayment'));
+        $mform->addElement('date_selector', 'end_time', get_string('form:end_time',
+            'enrol_coursepayment'));
         $mform->setDefault('end_time', strtotime('+6 months'));
         $mform->addRule('end_time', null, 'required', null, 'client');
 
-        $mform->addElement('text', 'amount', get_string('form:amount', 'enrol_coursepayment'));
+        $mform->addElement('text', 'amount', get_string('form:amount',
+            'enrol_coursepayment'));
         $mform->setDefault('amount', 0);
         $mform->setType('amount', PARAM_TEXT);
 
-        $mform->addElement('text', 'percentage', get_string('form:percentage', 'enrol_coursepayment'));
+        $mform->addElement('text', 'percentage', get_string('form:percentage',
+            'enrol_coursepayment'));
         $mform->setDefault('percentage', '0.00000');
         $mform->setType('percentage', PARAM_TEXT);
 

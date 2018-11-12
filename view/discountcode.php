@@ -117,7 +117,7 @@ switch ($action) {
         $table->set_count_sql("SELECT COUNT(*) FROM {enrol_coursepayment_discount} WHERE $sqlconditions", $sqlparams);
         $table->set_attribute('cellspacing', '0');
         $table->set_attribute('class', 'admintable generaltable');
-        $table->initialbars(true); // always initial bars
+        $table->initialbars(true); // Always initial bars.
         $table->define_columns([
             'code',
             'courseid',

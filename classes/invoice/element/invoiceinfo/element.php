@@ -69,7 +69,7 @@ class element extends \enrol_coursepayment\invoice\element {
         global $PAGE;
 
         $renderer = $PAGE->get_renderer('enrol_coursepayment');
-        $text = $renderer->render_template('enrol_coursepayment/element_invoiceinfo', $this->get_invoiceinfo(false, $data));
+        $text = $renderer->render_template('enrol_coursepayment/element_invoiceinfo', $this->get_invoiceinfo($data));
 
         \enrol_coursepayment\invoice\element_helper::render_content($pdf, $this, $text);
     }
@@ -77,14 +77,12 @@ class element extends \enrol_coursepayment\invoice\element {
     /**
      * get_invoiceinfo
      *
-     * @param bool  $includedummydata
-     *
      * @param array $data
      *
      * @return object
      * @throws \dml_exception
      */
-    public function get_invoiceinfo($includedummydata = false, array $data = []) {
+    public function get_invoiceinfo(array $data = []) {
         $pluginconfig = get_config('enrol_coursepayment');
 
         $invoiceinfo = (object)[
@@ -97,13 +95,8 @@ class element extends \enrol_coursepayment\invoice\element {
             'date' => date('d-m-Y, H:i'),
         ];
 
-        if ($includedummydata) {
-            $invoiceinfo->description = 'TEST';
-            $invoiceinfo->invoice_number = 'CPAY' . date("Y") . sprintf('%08d', 1);
-        } else {
-            $invoiceinfo->invoice_number = $data['a']->invoice_number;
-            $invoiceinfo->description = $data['a']->description;
-        }
+        $invoiceinfo->invoice_number = $data['a']->invoice_number;
+        $invoiceinfo->description = $data['a']->description;
 
         return $invoiceinfo;
     }
@@ -120,8 +113,21 @@ class element extends \enrol_coursepayment\invoice\element {
     public function render_html() {
         global $PAGE;
 
+        $pluginconfig = get_config('enrol_coursepayment');
+        $invoiceinfo = (object)[
+            'companyname' => $pluginconfig->companyname,
+            'address' => $pluginconfig->address,
+            'place' => $pluginconfig->place,
+            'zipcode' => $pluginconfig->zipcode,
+            'kvk' => $pluginconfig->kvk,
+            'currency' => $pluginconfig->currency,
+            'date' => date('d-m-Y, H:i'),
+        ];
+        $invoiceinfo->description = 'TEST';
+        $invoiceinfo->invoice_number = 'CPAY' . date("Y") . sprintf('%08d', 1);
+
         $renderer = $PAGE->get_renderer('enrol_coursepayment');
 
-        return $renderer->render_template('enrol_coursepayment/element_invoiceinfo', $this->get_invoiceinfo(true));
+        return $renderer->render_template('enrol_coursepayment/element_invoiceinfo', $invoiceinfo);
     }
 }

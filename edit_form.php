@@ -59,9 +59,9 @@ class enrol_coursepayment_edit_form extends moodleform {
         $mform->setDefault('cost', format_float(str_replace(',', '.', $plugin->get_config('cost')),
             2, true));
 
-        $coursepaymentcurrencies = $plugin->get_currencies();
+        $currencies = $plugin->get_currencies();
         $mform->addElement('select', 'currency', get_string('currency', 'enrol_coursepayment'),
-            $coursepaymentcurrencies);
+            $currencies);
         $mform->setDefault('currency', $plugin->get_config('currency'));
 
         $vatpercentages = $plugin->get_vat_percentages();

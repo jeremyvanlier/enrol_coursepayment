@@ -1,4 +1,4 @@
-<?php /** @noinspection ALL */
+<?php
 // This file is part of the customcert module for Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -73,7 +73,7 @@ if ($action == 'edit') {
 }
 
 $PAGE->navbar->add(get_string('editinvoice', 'enrol_coursepayment'),
-    new moodle_url('/enrol/coursepayment/view/invoice_edit.php',   ['tid' => $tid]));
+    new moodle_url('/enrol/coursepayment/view/invoice_edit.php', ['tid' => $tid]));
 $PAGE->navbar->add(get_string('editelement', 'enrol_coursepayment'));
 
 $mform = new \enrol_coursepayment\invoice\edit_element_form($pageurl, ['element' => $element]);

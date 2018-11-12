@@ -33,7 +33,7 @@ require_login();
 
 $orderid = required_param('orderid', PARAM_ALPHANUMEXT);
 $gateway = required_param('gateway', PARAM_ALPHANUMEXT);
-$instanceid = required_param('instanceid', PARAM_INT); // if no instanceid is given
+$instanceid = required_param('instanceid', PARAM_INT);
 
 $order = $DB->get_record('enrol_coursepayment', ['orderid' => $orderid], '*', MUST_EXIST);
 $course = $DB->get_record('course', ['id' => $order->courseid], '*', MUST_EXIST);

@@ -97,7 +97,7 @@ if (empty($array['error'])) {
         // Validate a discount code.
         case 'discountcode':
             $discountinstance = new enrol_coursepayment_discountcode($data, $courseid);
-            $row = $discountinstance->getDiscountcode();
+            $row = $discountinstance->get_discountcode();
 
             if ($row) {
 
@@ -107,7 +107,7 @@ if (empty($array['error'])) {
 
                 unset($array['error']);
             } else {
-                $array['error'] = $discountinstance->getLastErrorString();
+                $array['error'] = $discountinstance->get_last_error();
             }
             break;
 

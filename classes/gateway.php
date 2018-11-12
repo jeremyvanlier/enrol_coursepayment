@@ -130,7 +130,7 @@ abstract class enrol_coursepayment_gateway {
     protected $instanceconfig;
 
     public function __construct() {
-        //load the config always when class is called we will need the settings/credentials
+        // Load the config always when class is called we will need the settings/credentials.
         $this->get_config();
     }
 
@@ -191,14 +191,13 @@ abstract class enrol_coursepayment_gateway {
         if ($row) {
             if ($row->cost == 0) {
 
-                //
                 $obj = new stdClass();
                 $obj->id = $row->id;
                 $obj->timeupdated = time();
                 $obj->status = self::PAYMENT_STATUS_SUCCESS;
                 $DB->update_record('enrol_coursepayment', $obj);
 
-                // this is 0 cost order
+                // This is 0 cost order.
                 $this->enrol($row);
 
                 return true;
@@ -231,17 +230,17 @@ abstract class enrol_coursepayment_gateway {
     /**
      * load payment provider settings
      */
-    public function get_config() {
+    protected function get_config() {
 
         $this->pluginconfig = get_config("enrol_coursepayment");
 
-        // used for removing gateway prefix in the plugin
+        // Used for removing gateway prefix in the plugin.
         $stripcount = strlen('gateway_' . $this->name . '_');
         $this->config = new stdClass();
 
         foreach ($this->pluginconfig as $key => $value) {
 
-            // adding the correct settings to the gateway
+            // Adding the correct settings to the gateway.
             if (stristr($key, 'gateway_' . $this->name . '_')) {
                 $k = substr($key, $stripcount);
                 $this->config->{$k} = $value;
@@ -253,30 +252,14 @@ abstract class enrol_coursepayment_gateway {
     }
 
     /**
-     * Check if the purchase page is in standalone mode
-     *
-     * @return bool
-     */
-    public function is_standalone_purchase_page() {
-        return ($this->pluginconfig->standalone_purchase_page == 1);
-    }
-
-    /**
-     * show_debug
-     *
-     * @param bool $boolean
-     */
-    public function show_debug($boolean = false) {
-        $this->showdebug = !empty($boolean) ? true : false;
-    }
-
-    /**
      * add message to the log
      *
      * @param $var
      */
     protected function log($var) {
-        $this->log .= date('d-m-Y H:i:s') . ' | Gateway:' . $this->name . ' = ' . (is_string($var) ? $var : print_r($var, true)) . PHP_EOL;
+
+        $this->log .= date('d-m-Y H:i:s') . ' | Gateway:' . $this->name . ' = ' .
+            (is_string($var) ? $var : '(object)') . PHP_EOL;
     }
 
     /**
@@ -285,7 +268,7 @@ abstract class enrol_coursepayment_gateway {
     function __destruct() {
         if (!empty($this->pluginconfig->debug) && !empty($this->log)) {
             echo '<pre>';
-            print_r($this->log);
+            echo($this->log);
             echo '</pre>';
         }
     }
@@ -349,7 +332,7 @@ abstract class enrol_coursepayment_gateway {
     }
 
     /**
-     * create a new order for a user
+     * Create a new order for a user
      *
      * @param array $data
      *
@@ -368,13 +351,13 @@ abstract class enrol_coursepayment_gateway {
         if (!empty($data['discount'])) {
             $discount = $data['discount'];
             $obj->discountdata = serialize($discount);
-            // we have discount data
+            // We have discount data.
             if ($discount->percentage > 0) {
                 $cost = round($cost / 100 * (100 - $discount->percentage), 2);
             } else {
                 $cost = round($cost - $discount->amount);
             }
-            // make sure not below 0
+            // Make sure not below 0.
             if ($cost <= 0) {
                 $cost = 0;
             }
@@ -410,7 +393,7 @@ abstract class enrol_coursepayment_gateway {
     }
 
     /**
-     * set instance config
+     * Set instance config
      *
      * @param object $config
      */
@@ -427,7 +410,7 @@ abstract class enrol_coursepayment_gateway {
      * @throws coding_exception
      * @throws dml_exception
      */
-    public function enrol($record = null) {
+    protected function enrol($record = null) {
         global $DB, $CFG;
 
         if (empty($record)) {
@@ -445,7 +428,7 @@ abstract class enrol_coursepayment_gateway {
 
         $plugin = enrol_get_plugin('coursepayment');
 
-        // first we need all the data to enrol
+        // First we need all the data to enrol.
         $plugininstance = $DB->get_record("enrol", ["id" => $record->instanceid, "status" => 0]);
         $user = $DB->get_record("user", ['id' => $record->userid]);
         $course = $DB->get_record('course', ['id' => $record->courseid]);
@@ -459,11 +442,30 @@ abstract class enrol_coursepayment_gateway {
             $timeend = 0;
         }
 
-        // Enrol user
+        // Enrol user.
         $plugin->enrol_user($plugininstance, $user->id, $plugininstance->roleid, $timestart, $timeend);
 
-        // Pass $view=true to filter hidden caps if the user cannot see them
-        if ($users = get_users_by_capability($context, 'moodle/course:update', 'u.*', 'u.id ASC', '', '', '', '', false, true)) {
+        // Send messages about the enrolment.
+        $this->enrol_mail($plugin , $course , $context , $user);
+
+        return true;
+    }
+
+    /**
+     * @param $plugin
+     * @param $course
+     * @param $context
+     *
+     * @param $user
+     *
+     * @throws coding_exception
+     */
+    protected function enrol_mail($plugin , $course , $context , $user){
+        global $CFG;
+
+        // Pass $view=true to filter hidden caps if the user cannot see them.
+        if ($users = get_users_by_capability($context, 'moodle/course:update',
+            'u.*', 'u.id ASC', '', '', '', '', false, true)) {
             $users = sort_by_roleassignment_authority($users, $context);
             $teacher = array_shift($users);
         } else {
@@ -473,6 +475,7 @@ abstract class enrol_coursepayment_gateway {
         $mailstudents = $plugin->get_config('mailstudents');
         $mailteachers = $plugin->get_config('mailteachers');
         $mailadmins = $plugin->get_config('mailadmins');
+
         $shortname = format_string($course->shortname, true, ['context' => $context]);
 
         if (!empty($mailstudents)) {
@@ -492,7 +495,6 @@ abstract class enrol_coursepayment_gateway {
             $eventdata->fullmessagehtml = '';
             $eventdata->smallmessage = '';
             message_send($eventdata);
-
         }
 
         if (!empty($mailteachers) && !empty($teacher)) {
@@ -532,8 +534,6 @@ abstract class enrol_coursepayment_gateway {
                 message_send($eventdata);
             }
         }
-
-        return true;
     }
 
     /**
@@ -562,10 +562,10 @@ abstract class enrol_coursepayment_gateway {
         $course = $DB->get_record('course', ['id' => $coursepayment->courseid]);
         $context = context_course::instance($course->id, IGNORE_MISSING);
 
-        $a = $this->get_invoice_strings($user, $course,$coursepayment , $method);
+        $a = $this->get_invoice_strings($user, $course, $coursepayment, $method);
 
         // Generate PDF invoice.
-        $file = template::render($coursepayment ,$user ,$this->pluginconfig,  $a);
+        $file = template::render($coursepayment, $user, $this->pluginconfig, $a);
 
         if (!empty($this->pluginconfig->mailstudents_invoice)) {
 
@@ -581,7 +581,7 @@ abstract class enrol_coursepayment_gateway {
             $eventdata->fullmessagehtml = get_string('mail:invoice_message', 'enrol_coursepayment', $a);
             $eventdata->smallmessage = '';
             $eventdata->attachment = $file;
-            $eventdata->attachname =  $a->invoice_number . '.pdf';
+            $eventdata->attachname = $a->invoice_number . '.pdf';
 
             message_send($eventdata);
         }
@@ -589,7 +589,8 @@ abstract class enrol_coursepayment_gateway {
         if (!empty($this->pluginconfig->mailteachers_invoice)) {
 
             // Getting the teachers
-            if ($users = get_users_by_capability($context, 'moodle/course:update', 'u.*', 'u.id ASC', '', '', '', '', false, true)) {
+            if ($users = get_users_by_capability($context, 'moodle/course:update', 'u.*', 'u.id ASC',
+                '', '', '', '', false, true)) {
                 $users = sort_by_roleassignment_authority($users, $context);
                 $teacher = array_shift($users);
             } else {
@@ -610,7 +611,7 @@ abstract class enrol_coursepayment_gateway {
                 $eventdata->fullmessagehtml = get_string('mail:invoice_message', 'enrol_coursepayment', $a);
                 $eventdata->smallmessage = '';
                 $eventdata->attachment = $file;
-                $eventdata->attachname =  $a->invoice_number . '.pdf';
+                $eventdata->attachname = $a->invoice_number . '.pdf';
                 message_send($eventdata);
             }
         }
@@ -631,7 +632,7 @@ abstract class enrol_coursepayment_gateway {
                 $eventdata->fullmessagehtml = get_string('mail:invoice_message', 'enrol_coursepayment', $a);
                 $eventdata->smallmessage = '';
                 $eventdata->attachment = $file;
-                $eventdata->attachname =  $a->invoice_number . '.pdf';
+                $eventdata->attachname = $a->invoice_number . '.pdf';
                 message_send($eventdata);
             }
         }
@@ -667,12 +668,13 @@ abstract class enrol_coursepayment_gateway {
                     $eventdata->userfrom = core_user::get_support_user();
                     $eventdata->userto = $dummyuser;
                     $eventdata->subject = get_string("mail:invoice_subject", 'enrol_coursepayment', $a);
-                    $eventdata->fullmessage = html_to_text(get_string('mail:invoice_message', 'enrol_coursepayment', $a));
+                    $eventdata->fullmessage = html_to_text(get_string('mail:invoice_message',
+                        'enrol_coursepayment', $a));
                     $eventdata->fullmessageformat = FORMAT_HTML;
                     $eventdata->fullmessagehtml = get_string('mail:invoice_message', 'enrol_coursepayment', $a);
                     $eventdata->smallmessage = '';
                     $eventdata->attachment = $file;
-                    $eventdata->attachname =  $a->invoice_number . '.pdf';
+                    $eventdata->attachname = $a->invoice_number . '.pdf';
                     message_send($eventdata);
                 }
             }
@@ -700,9 +702,12 @@ abstract class enrol_coursepayment_gateway {
             $string .= '<hr/>';
             $string .= '<div align="center">
                             <p>' . get_string('discount_code_desc', 'enrol_coursepayment') . '<br/>
-                            ' . ((!empty($status['error_discount']) ? '<b style="color:red"  id="error_coursepayment">' . $status['message'] . '</b>' : '<b style="color:red" id="error_coursepayment"></b>')) . '<br/>
+                            ' . ((!empty($status['error_discount']) ?
+                    '<b style="color:red"  id="error_coursepayment">' . $status['message'] . '</b>' :
+                    '<b style="color:red" id="error_coursepayment"></b>')) . '<br/>
                             </p>
-                            <input type="text" autocomplete="off" name="discountcode" id="discountcode"  value="' . $discountcode . '" />
+                            <input type="text" autocomplete="off" name="discountcode" id="discountcode"  
+                                value="' . $discountcode . '" />
                             <div id="price_holder"></div>
                         </div>';
         }
@@ -738,7 +743,8 @@ abstract class enrol_coursepayment_gateway {
     protected function get_invoice_number_format($record = null) {
 
         if (!empty($record->invoice_number) && !empty($record->addedon)) {
-            return self::INVOICE_PREFIX . date("Y", $record->addedon) . sprintf('%08d', $record->invoice_number);
+            return self::INVOICE_PREFIX . date("Y", $record->addedon) . sprintf('%08d',
+                    $record->invoice_number);
         }
 
         return 'TEST';
@@ -804,8 +810,11 @@ abstract class enrol_coursepayment_gateway {
         if (!empty($agreement)) {
             $obj = new stdClass();
             $obj->link = $agreement;
-            $string .= '<hr/>  <div id="coursepayment_agreement_checkbox"> <input type="checkbox" name="agreement" id="coursepayment_agreement" required><label for="coursepayment_agreement">' .
-                get_string('agreement_label', 'enrol_coursepayment', $obj) . '</label></div>';
+            $string .= '<hr/>  <div id="coursepayment_agreement_checkbox">
+                <input type="checkbox" name="agreement" id="coursepayment_agreement" required>
+                <label for="coursepayment_agreement">' .
+                get_string('agreement_label', 'enrol_coursepayment', $obj) .
+                '</label></div>';
         }
 
         return $string;
@@ -814,12 +823,12 @@ abstract class enrol_coursepayment_gateway {
     /**
      * Load multi-account config if needed
      *
-     * @param int    $userid        only needed when running from cron
-     * @param string $profile_value only needed when running from cron
+     * @param int    $userid       only needed when running from cron
+     * @param string $profilevalue only needed when running from cron
      *
      * @throws dml_exception
      */
-    protected function load_multi_account_config($userid = 0, $profile_value = '') {
+    protected function load_multi_account_config($userid = 0, $profilevalue = '') {
         global $USER, $DB;
 
         // Normally we can $USER only in cron we need to fix this.
@@ -829,17 +838,19 @@ abstract class enrol_coursepayment_gateway {
 
         if (!empty($this->pluginconfig->multi_account)) {
             // Check if we match profile value of any of the multi-accounts.
-            if (empty($profile_value)) {
-                $profile_value = enrol_coursepayment_helper::get_profile_field_data($this->pluginconfig->multi_account_fieldid, $userid);
+            if (empty($profilevalue)) {
+                $profilevalue = enrol_coursepayment_helper::get_profile_field_data($this->pluginconfig->multi_account_fieldid,
+                    $userid);
             }
 
             // Load default multi-account.
-            $this->multiaccount = $DB->get_record('coursepayment_multiaccount', ['is_default' => 1], '*', MUST_EXIST);
+            $this->multiaccount = $DB->get_record('coursepayment_multiaccount', ['is_default' => 1],
+                '*', MUST_EXIST);
 
-            if (!empty($profile_value)) {
+            if (!empty($profilevalue)) {
                 // Check if we have a multi-account matching your value.
                 $mutiaccount = $DB->get_record('coursepayment_multiaccount', [
-                    'profile_value' => $profile_value,
+                    'profile_value' => $profilevalue,
                 ], '*');
 
                 // Found we should use this.
@@ -888,7 +899,7 @@ abstract class enrol_coursepayment_gateway {
      * @throws dml_exception
      * @throws moodle_exception
      */
-    private function get_invoice_strings($user , $course , $coursepayment , $method) {
+    private function get_invoice_strings($user, $course, $coursepayment, $method) {
 
         $context = context_course::instance($course->id, IGNORE_MISSING);
         $invoicenumber = $coursepayment->invoice_number;

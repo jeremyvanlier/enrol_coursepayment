@@ -25,6 +25,7 @@
  */
 
 namespace enrol_coursepayment\adminsetting;
+defined('MOODLE_INTERNAL') || die();
 
 class tabs extends \admin_setting {
 
@@ -95,6 +96,8 @@ class tabs extends \admin_setting {
      *
      * @param int    $id   The tab id
      * @param string $name The tab name
+     *
+     * @throws \moodle_exception
      */
     public function addtab($id, $name) {
 

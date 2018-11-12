@@ -40,32 +40,38 @@ class newaccount extends \moodleform {
         $mform->addElement('header', 'header1', get_string('form:newaccount', 'enrol_coursepayment'));
 
         // Fullname customer.
-        $mform->addElement('text', 'name', get_string('form:name', 'enrol_coursepayment'), ['size' => '48',]);
+        $mform->addElement('text', 'name', get_string('form:name', 'enrol_coursepayment'),
+            ['size' => '48',]);
         $mform->setType('name', PARAM_TEXT);
         $mform->addRule('name', null, 'required', null, 'client');
 
         // Company customer.
-        $mform->addElement('text', 'company_name', get_string('form:company_name', 'enrol_coursepayment'), ['size' => '48',]);
+        $mform->addElement('text', 'company_name', get_string('form:company_name', 'enrol_coursepayment'),
+            ['size' => '48',]);
         $mform->setType('company_name', PARAM_TEXT);
         $mform->addRule('company_name', null, 'required', null, 'client');
 
         // Email customer.
-        $mform->addElement('text', 'email', get_string('form:email', 'enrol_coursepayment'), ['size' => '48',]);
+        $mform->addElement('text', 'email', get_string('form:email', 'enrol_coursepayment'),
+            ['size' => '48',]);
         $mform->setType('email', PARAM_EMAIL);
         $mform->addRule('email', null, 'required', null, 'client');
 
         // Address (street and number) customer.
-        $mform->addElement('text', 'address', get_string('form:address', 'enrol_coursepayment'), ['size' => '48',]);
+        $mform->addElement('text', 'address', get_string('form:address', 'enrol_coursepayment'),
+            ['size' => '48',]);
         $mform->setType('address', PARAM_TEXT);
         $mform->addRule('address', null, 'required', null, 'client');
 
         // Zipcode customer.
-        $mform->addElement('text', 'zipcode', get_string('form:zipcode', 'enrol_coursepayment'), ['size' => '48',]);
+        $mform->addElement('text', 'zipcode', get_string('form:zipcode', 'enrol_coursepayment'),
+            ['size' => '48',]);
         $mform->setType('zipcode', PARAM_TEXT);
         $mform->addRule('zipcode', null, 'required', null, 'client');
 
         // City customer.
-        $mform->addElement('text', 'city', get_string('form:city', 'enrol_coursepayment'), ['size' => '48',]);
+        $mform->addElement('text', 'city', get_string('form:city', 'enrol_coursepayment'),
+            ['size' => '48',]);
         $mform->setType('city', PARAM_TEXT);
         $mform->addRule('city', null, 'required', null, 'client');
 

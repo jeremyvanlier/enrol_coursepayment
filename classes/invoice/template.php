@@ -126,11 +126,11 @@ class template {
      */
     public static function get_template_name(\stdClass $pluginconfig, \stdClass $user) {
         global $DB;
-        $profile_value = '';
+        $profilevalue = '';
 
         // Get correct invoice details check if the plugin uses multi-account.
         if (!empty($pluginconfig->multi_account_fieldid)) {
-            $profile_value = enrol_coursepayment_helper::get_profile_field_data($pluginconfig->multi_account_fieldid, $user->id);
+            $profilevalue = enrol_coursepayment_helper::get_profile_field_data($pluginconfig->multi_account_fieldid, $user->id);
         }
 
         // Load default multi-account.
@@ -138,16 +138,16 @@ class template {
             'is_default' => 1,
         ], '*');
 
-        if (!empty($profile_value)) {
+        if (!empty($profilevalue)) {
 
             // Check if we have a multi-account matching your value.
-            $mutiaccountStudent = $DB->get_record('coursepayment_multiaccount', [
-                'profile_value' => $profile_value,
+            $mutiaccountstudent = $DB->get_record('coursepayment_multiaccount', [
+                'profile_value' => $profilevalue,
             ], '*');
 
             // Found we should use this.
-            if (!empty($mutiaccountStudent)) {
-                return $mutiaccountStudent->id;
+            if (!empty($mutiaccountstudent)) {
+                return $mutiaccountstudent->id;
             }
         }
 

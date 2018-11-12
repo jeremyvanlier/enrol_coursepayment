@@ -91,7 +91,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
             // validate the discountcode we received
             $discountinstance = new enrol_coursepayment_discountcode($discountcode, $this->instanceconfig->courseid);
-            $row = $discountinstance->getDiscountcode();
+            $row = $discountinstance->get_discountcode();
 
             if ($row) {
                 // looks okay we need to save this to the order
@@ -101,7 +101,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                 return [
                     'status' => false,
                     'error_discount' => true,
-                    'message' => $discountinstance->getLastErrorString(),
+                    'message' => $discountinstance->get_last_error(),
                 ];
             }
         }
@@ -186,7 +186,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
             // validate the discountcode we received
             $discountinstance = new enrol_coursepayment_discountcode($discountcode, $this->instanceconfig->courseid);
-            $row = $discountinstance->getDiscountcode();
+            $row = $discountinstance->get_discountcode();
 
             if ($row) {
                 // looks okay we need to save this to the order
@@ -196,7 +196,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                 return [
                     'status' => false,
                     'error_discount' => true,
-                    'message' => $discountinstance->getLastErrorString(),
+                    'message' => $discountinstance->get_last_error(),
                 ];
             }
         }
