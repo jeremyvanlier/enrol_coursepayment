@@ -41,7 +41,7 @@ class discountcode extends \moodleform {
         $mform->addElement('header', 'header1', get_string('form:discountcode', 'enrol_coursepayment'));
 
         $mform->addElement('text', 'code', get_string('form:code', 'enrol_coursepayment'),
-            ['size' => '48',]);
+            ['size' => '48']);
         $mform->setType('code', PARAM_ALPHANUMEXT);
         $mform->addRule('code', null, 'required', null, 'client');
 
