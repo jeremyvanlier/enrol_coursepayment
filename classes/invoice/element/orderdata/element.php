@@ -71,23 +71,35 @@ class element extends \enrol_coursepayment\invoice\element {
      * @param \pdf      $pdf     the pdf object
      * @param bool      $preview true if it is a preview, false otherwise
      * @param \stdClass $user    the user we are rendering this for
+     * @param array     $data
      *
-     * @throws \dml_exception
      * @throws \coding_exception
      */
-    public function render($pdf, $preview, $user) {
+    public function render($pdf, $preview, $user,array $data = []) {
         global $PAGE;
-        $dummydata = (object) [
-            'width' => '400',
-            'vat' => 21,
-            'subtotal' => number_format(100 , 2, ',' , ''),
-            'total' => number_format(121 , 2, ',' , ''),
-            'vat_price' => number_format(21 , 2, ',' , ''),
-            'coursename' => get_string('orderdata:dummy_course' , 'enrol_coursepayment'),
-        ];
+
+        if($preview){
+            $obj = (object) [
+                'width' => '480',
+                'vat' => 21,
+                'subtotal' => number_format(100 , 2, ',' , ''),
+                'total' => number_format(121 , 2, ',' , ''),
+                'vat_price' => number_format(21 , 2, ',' , ''),
+                'coursename' => get_string('orderdata:dummy_course' , 'enrol_coursepayment'),
+            ];
+        }else{
+            $obj = (object) [
+                'width' => '480',
+                'vat' =>  $data['a']->vatpercentage,
+                'subtotal' => $data['a']->cost,
+                'total' => $data['a']->cost,
+                'vat_price' => $data['a']->costvat,
+                'coursename' => $data['a']->fullcourse,
+            ];
+        }
 
         $renderer = $PAGE->get_renderer('enrol_coursepayment');
-        $text = $renderer->render_template('enrol_coursepayment/element_orderdata' , $dummydata);
+        $text = $renderer->render_template('enrol_coursepayment/element_orderdata' , $obj);
 
         \enrol_coursepayment\invoice\element_helper::render_content($pdf, $this, $text);
     }

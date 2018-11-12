@@ -21,11 +21,11 @@
 
     @template enrol_coursepayment/orderdata
 }}
-<table style="width:{{width}}px;color:{{color}}">
+<table style="width:{{width}}px;color:{{color}};" cellpadding="5" cellspacing="2">
     <tr>
-        <th>{{# str}} orderdata:coursename, enrol_coursepayment {{/ str}}</th>
-        <th>{{# str}} orderdata:vat, enrol_coursepayment {{/ str}}</th>
-        <th style="text-align: right">{{# str}} orderdata:total, enrol_coursepayment {{/ str}}</th>
+        <th style="font-weight: bold">{{# str}} orderdata:coursename, enrol_coursepayment {{/ str}}</th>
+        <th style="font-weight: bold">{{# str}} orderdata:vat, enrol_coursepayment {{/ str}}</th>
+        <th style="text-align: right;font-weight: bold">{{# str}} orderdata:total, enrol_coursepayment {{/ str}}</th>
     </tr>
     <tr>
         <td>{{coursename}}</td>

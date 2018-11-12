@@ -49,10 +49,12 @@ class element extends \enrol_coursepayment\invoice\element {
      * @param bool      $preview true if it is a preview, false otherwise
      * @param \stdClass $user    the user we are rendering this for
      *
+     * @param array     $data
+     *
      * @throws \dml_exception
      */
-    public function render($pdf, $preview, $user) {
-        \enrol_coursepayment\invoice\element_helper::render_content($pdf, $this, self::get_category_name($this->get_id()));
+    public function render($pdf, $preview, $user,array $data = []) {
+        \enrol_coursepayment\invoice\element_helper::render_content($pdf, $this, self::get_category_name($data));
     }
 
     /**
@@ -74,22 +76,20 @@ class element extends \enrol_coursepayment\invoice\element {
     /**
      * Helper function that returns the category name.
      *
-     * @param int $elementid
+     * @param array $data
      *
      * @return string
      * @throws \dml_exception
      */
-    protected static function get_category_name($elementid) {
+    protected static function get_category_name(array $data) {
         global $DB, $SITE;
 
-        $courseid = \enrol_coursepayment\invoice\element_helper::get_courseid($elementid);
-        $course = get_course($courseid);
+        $course = get_course($data['coursepayment']->courseid);
 
         // Check that there is a course category available.
         if (!empty($course->category)) {
             $categoryname = $DB->get_field('course_categories', 'name', ['id' => $course->category], MUST_EXIST);
-
-            return format_string($categoryname, true, ['context' => \context_course::instance($courseid)]);
+            return format_string($categoryname, true, ['context' => \context_course::instance($course->id)]);
         } else { // Must be in a site template.
             return format_string($SITE->fullname, true, ['context' => \context_system::instance()]);
         }

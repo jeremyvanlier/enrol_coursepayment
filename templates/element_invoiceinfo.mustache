@@ -25,8 +25,12 @@
 {{address}}<br/>
 {{zipcode}} {{place}}<br/>
 <br/>
-{{# str}} invoiceinfo:kvk, enrol_coursepayment {{/ str}}: {{kvk}}<br/>
-{{# str}} invoiceinfo:vat, enrol_coursepayment {{/ str}}: {{btw}}<br/>
+{{#kvk}}
+    {{# str}} invoiceinfo:kvk, enrol_coursepayment {{/ str}}: {{kvk}}<br/>
+{{/kvk}}
+{{#btw}}
+    {{# str}} invoiceinfo:vat, enrol_coursepayment {{/ str}}: {{btw}}<br/>
+{{/btw}}
 <br/>
 {{# str}} invoiceinfo:invoice_number, enrol_coursepayment {{/ str}}: {{invoice_number}}<br/>
 {{# str}} invoiceinfo:date, enrol_coursepayment {{/ str}}: {{date}}<br/>

@@ -159,10 +159,6 @@ class edit_form extends \moodleform {
     public function validation($data, $files) {
         $errors = parent::validation($data, $files);
 
-        if (\core_text::strlen($data['name']) > 255) {
-            $errors['name'] = get_string('nametoolong', 'enrol_coursepayment');
-        }
-
         // Go through the data and check any width, height or margin  values.
         foreach ($data as $key => $value) {
             if (strpos($key, 'pagewidth_') !== false) {

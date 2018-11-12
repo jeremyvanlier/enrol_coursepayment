@@ -372,8 +372,9 @@ abstract class element {
      * @param \pdf      $pdf     the pdf object
      * @param bool      $preview true if it is a preview, false otherwise
      * @param \stdClass $user    the user we are rendering this for
+     * @param array     $data extra data provided by coursepayment
      */
-    public abstract function render($pdf, $preview, $user);
+    public abstract function render($pdf, $preview, $user , array $data = []);
 
     /**
      * Render the element in html.

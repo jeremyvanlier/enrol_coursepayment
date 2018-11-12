@@ -203,7 +203,7 @@ class element_helper {
         $refpointoptions[self::COURSEPAYMENT_REF_POINT_TOPRIGHT] = get_string('topright', 'enrol_coursepayment');
         $mform->addElement('select', 'refpoint', get_string('refpoint', 'enrol_coursepayment'), $refpointoptions);
         $mform->setType('refpoint', PARAM_INT);
-        $mform->setDefault('refpoint', self::COURSEPAYMENT_REF_POINT_TOPCENTER);
+        $mform->setDefault('refpoint', self::COURSEPAYMENT_REF_POINT_TOPLEFT);
         $mform->addHelpButton('refpoint', 'refpoint', 'enrol_coursepayment');
     }
 
@@ -375,33 +375,6 @@ class element_helper {
         }
 
         return $sequence;
-    }
-
-    /**
-     * Helper function that returns the course id for this element.
-     *
-     * @param int $elementid The element id
-     *
-     * @return int The course id
-     * @throws \dml_exception
-     */
-    public static function get_courseid($elementid) {
-        global $DB, $SITE;
-
-        $sql = "SELECT course
-                  FROM {customcert} c
-            INNER JOIN {coursepayment_pages} cp
-                    ON c.templateid = cp.templateid
-            INNER JOIN {coursepayment_elements} ce
-                    ON cp.id = ce.pageid
-                 WHERE ce.id = :elementid";
-
-        // Check if there is a course associated with this element.
-        if ($course = $DB->get_record_sql($sql, array('elementid' => $elementid))) {
-            return $course->course;
-        } else { // Must be in a site template.
-            return $SITE->id;
-        }
     }
 
     /**

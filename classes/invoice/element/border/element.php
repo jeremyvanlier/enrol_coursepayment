@@ -65,8 +65,9 @@ class element extends \enrol_coursepayment\invoice\element {
      * @param \pdf      $pdf     the pdf object
      * @param bool      $preview true if it is a preview, false otherwise
      * @param \stdClass $user    the user we are rendering this for
+     * @param array     $data
      */
-    public function render($pdf, $preview, $user) {
+    public function render($pdf, $preview, $user,array $data = []) {
         $colour = \TCPDF_COLORS::convertHTMLColorToDec($this->get_colour(), $colour);
         $pdf->SetLineStyle(['width' => $this->get_data(), 'color' => $colour]);
         $pdf->Line(0, 0, $pdf->getPageWidth(), 0);

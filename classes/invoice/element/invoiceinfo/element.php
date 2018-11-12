@@ -72,14 +72,15 @@ class element extends \enrol_coursepayment\invoice\element {
      * @param bool      $preview true if it is a preview, false otherwise
      * @param \stdClass $user    the user we are rendering this for
      *
+     * @param array     $data
+     *
      * @throws \dml_exception
-     * @throws \coding_exception
      */
-    public function render($pdf, $preview, $user) {
+    public function render($pdf, $preview, $user,array $data = []) {
         global $PAGE;
 
         $renderer = $PAGE->get_renderer('enrol_coursepayment');
-        $text = $renderer->render_template('enrol_coursepayment/element_invoiceinfo' , $this->get_invoiceinfo());
+        $text = $renderer->render_template('enrol_coursepayment/element_invoiceinfo' , $this->get_invoiceinfo(false , $data));
 
         \enrol_coursepayment\invoice\element_helper::render_content($pdf, $this, $text);
     }
@@ -87,15 +88,17 @@ class element extends \enrol_coursepayment\invoice\element {
     /**
      * get_invoiceinfo
      *
-     * @param bool $includedummydata
+     * @param bool  $includedummydata
+     *
+     * @param array $data
      *
      * @return object
      * @throws \dml_exception
      */
-    public function get_invoiceinfo($includedummydata = false) {
+    public function get_invoiceinfo($includedummydata = false, array $data = []) {
         $pluginconfig = get_config('enrol_coursepayment');
 
-        $data = (object) [
+        $invoiceinfo = (object) [
             'companyname' => $pluginconfig->companyname,
             'address' => $pluginconfig->address,
             'place' => $pluginconfig->place,
@@ -103,14 +106,17 @@ class element extends \enrol_coursepayment\invoice\element {
             'kvk' => $pluginconfig->kvk,
             'currency' => $pluginconfig->currency,
             'date' => date('d-m-Y, H:i'),
-            'description' => 'TEST'
         ];
 
         if($includedummydata){
-            $data->invoice_number =  'CPAY' . date("Y") . sprintf('%08d', 1);
+            $invoiceinfo->description = 'TEST';
+            $invoiceinfo->invoice_number =  'CPAY' . date("Y") . sprintf('%08d', 1);
+        }else{
+            $invoiceinfo->invoice_number = $data['a']->invoice_number;
+            $invoiceinfo->description = $data['a']->description;
         }
 
-        return $data;
+        return $invoiceinfo;
     }
 
     /**

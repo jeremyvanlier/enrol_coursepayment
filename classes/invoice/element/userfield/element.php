@@ -110,7 +110,7 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @throws \dml_exception
      */
-    public function render($pdf, $preview, $user) {
+    public function render($pdf, $preview, $user,array $data = []) {
         global $CFG, $DB;
 
         // The user field to display.
@@ -132,8 +132,7 @@ class element extends \enrol_coursepayment\invoice\element {
             $value = $user->$field;
         }
 
-        $courseid = \enrol_coursepayment\invoice\element_helper::get_courseid($this->get_id());
-        $value = format_string($value, true, ['context' => \context_course::instance($courseid)]);
+        $value = format_string($value, true, ['context' => \context_course::instance(1)]);
         \enrol_coursepayment\invoice\element_helper::render_content($pdf, $this, $value);
     }
 
@@ -170,9 +169,7 @@ class element extends \enrol_coursepayment\invoice\element {
             $value = $USER->$field;
         }
 
-        $courseid = \enrol_coursepayment\invoice\element_helper::get_courseid($this->get_id());
-        $value = format_string($value, true, ['context' => \context_course::instance($courseid)]);
-
+        $value = format_string($value, true, ['context' => \context_course::instance(1)]);
         return \enrol_coursepayment\invoice\element_helper::render_html_content($this, $value);
     }
 

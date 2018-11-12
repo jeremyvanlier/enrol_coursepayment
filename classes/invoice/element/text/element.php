@@ -79,10 +79,15 @@ class element extends \enrol_coursepayment\invoice\element {
      * @param bool      $preview true if it is a preview, false otherwise
      * @param \stdClass $user    the user we are rendering this for
      *
-     * @throws \dml_exception
+     * @param array     $data
      */
-    public function render($pdf, $preview, $user) {
-        $courseid = \enrol_coursepayment\invoice\element_helper::get_courseid($this->get_id());
+    public function render($pdf, $preview, $user,array $data = []) {
+        $courseid = 1;
+
+        if(!$preview){
+
+        }
+
         $text = format_text($this->get_data(), FORMAT_HTML, ['context' => \context_course::instance($courseid)]);
         \enrol_coursepayment\invoice\element_helper::render_content($pdf, $this, $text);
     }
@@ -94,12 +99,9 @@ class element extends \enrol_coursepayment\invoice\element {
      * drag and drop interface to position it.
      *
      * @return string the html
-     * @throws \dml_exception
      */
     public function render_html() {
-        $courseid = \enrol_coursepayment\invoice\element_helper::get_courseid($this->get_id());
-        $text = format_text($this->get_data(), FORMAT_HTML, ['context' => \context_course::instance($courseid)]);
-
+        $text = format_text($this->get_data(), FORMAT_HTML, ['context' => \context_course::instance(1)]);
         return \enrol_coursepayment\invoice\element_helper::render_html_content($this, $text);
     }
 

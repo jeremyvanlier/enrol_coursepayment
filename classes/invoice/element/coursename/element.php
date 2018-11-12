@@ -48,14 +48,20 @@ class element extends \enrol_coursepayment\invoice\element {
      * @param \pdf      $pdf     the pdf object
      * @param bool      $preview true if it is a preview, false otherwise
      * @param \stdClass $user    the user we are rendering this for
+     * @param array     $data
      *
      * @throws \dml_exception
      */
-    public function render($pdf, $preview, $user) {
-        $courseid = \enrol_coursepayment\invoice\element_helper::get_courseid($this->get_id());
-        $course = get_course($courseid);
+    public function render($pdf, $preview, $user, array $data = []) {
+        $coursename = 'Test';
 
-        $coursename = format_string($course->fullname, true, ['context' => \context_course::instance($courseid)]);
+        if (!$preview) {
+            $course = get_course($data['coursepayment']->courseid);
+            $coursename = format_string($course->fullname, true, [
+                'context' => \context_course::instance($course->id),
+            ]);
+        }
+
         \enrol_coursepayment\invoice\element_helper::render_content($pdf, $this, $coursename);
     }
 
