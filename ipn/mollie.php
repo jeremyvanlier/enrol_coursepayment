@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Webhook for mollie
+ * Webhook for Mollie.
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
@@ -33,34 +33,32 @@ set_exception_handler('enrol_coursepayment_ipn_exception_handler');
 
 $orderid = required_param('orderid', PARAM_ALPHANUMEXT);
 $instanceid = required_param('instanceid', PARAM_INT); // if no instanceid is given
-$return = enrol_get_plugin('coursepayment')->order_valid($orderid, 'mollie');
+
+// Validate the orderid.
+$return = enrol_get_plugin('coursepayment')
+    ->order_valid($orderid, 'mollie');
 
 if ($return['status'] == true) {
-
-    echo 'success';
+    die('success');
 
 } else {
-
-    // send a status message to user
+    // Send a status message to the webhook.
     throw new Exception($return['message']);
 }
 
 /**
- *  exception handler.
+ *  Exception handler.
  *
  * @param Exception $ex
  */
-function enrol_coursepayment_ipn_exception_handler($ex)
-{
-    // header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
-
+function enrol_coursepayment_ipn_exception_handler($ex) {
     $info = get_exception_info($ex);
 
-    $logerrmsg = "IPN exception handler: ".$info->message;
+    $logerrmsg = "IPN exception handler: " . $info->message;
     echo $logerrmsg;
 
     if (debugging('', DEBUG_NORMAL)) {
-        $logerrmsg .= ' Debug: '.$info->debuginfo."\n".format_backtrace($info->backtrace, true);
+        $logerrmsg .= ' Debug: ' . $info->debuginfo . "\n" . format_backtrace($info->backtrace, true);
     }
     error_log($logerrmsg);
 }
