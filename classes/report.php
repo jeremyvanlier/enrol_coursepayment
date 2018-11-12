@@ -56,7 +56,6 @@ class report {
 
         $table = new report_courses(__FUNCTION__);
         $table->define_baseurl($PAGE->url);
-        //  $table->is_downloadable(true);
 
         $table->set_attribute('cellspacing', '0');
         $table->set_attribute('class', 'admintable generaltable mftable');
@@ -97,7 +96,7 @@ class report {
     private static function get_all_courses_data($datafilter) {
         global $DB;
 
-        $sql = 'SELECT cp.* , u.firstname , u.lastname , u.phone1 , u.phone2 , u.email, c.fullname as course 
+        $sql = 'SELECT cp.* , u.firstname , u.lastname , u.phone1 , u.phone2 , u.email, c.fullname as course
                 FROM {enrol_coursepayment} cp 
                 JOIN {course} c ON (c.id = cp.courseid)
                 LEFT JOIN {user} u ON (u.id = cp.userid)
@@ -105,16 +104,18 @@ class report {
 
         $results = $DB->get_records_sql($sql);
 
-        if (get_config('enrol_coursepayment', 'report_include_none_payment_users') == 1 && empty($datafilter->courseid)) {
+        if (get_config('enrol_coursepayment', 'report_include_none_payment_users') == 1 &&
+            empty($datafilter->courseid)) {
 
             // Build user_id set.
-            $userIds = [];
+            $userids = [];
             foreach ($results as $result) {
-                $userIds[$result->userid] = $result->userid;
+                $userids[$result->userid] = $result->userid;
             }
 
-            list($insql, $params) = $DB->get_in_or_equal(array_keys($userIds), SQL_PARAMS_QM, 'param', false);
-            $sql = 'SELECT u.id, u.firstname , u.lastname , u.phone1 , u.email , "" as course , "-1" as status , "0" as addedon FROM {user} u  
+            list($insql, $params) = $DB->get_in_or_equal(array_keys($userids), SQL_PARAMS_QM, 'param', false);
+            $sql = 'SELECT u.id, u.firstname , u.lastname , u.phone1 , u.email , "" as course , "-1" as status , "0" as addedon
+                    FROM {user} u  
                     WHERE u.id > 1 AND u.suspended =0 AND u.deleted = 0 AND id ' . $insql;
 
             $users = $DB->get_records_sql($sql, $params);

@@ -111,7 +111,6 @@ class enrol_coursepayment_plugin extends enrol_plugin {
             $instancesnode->add($this->get_instance_name($instance), $managelink, navigation_node::TYPE_SETTING);
         }
 
-        //
         if (has_capability('enrol/coursepayment:config', $context)) {
             $url = new moodle_url('/enrol/coursepayment/view/report.php', [
                 'id' => $COURSE->id,
@@ -123,13 +122,14 @@ class enrol_coursepayment_plugin extends enrol_plugin {
                 'enrol_coursepayment');
 
             // Add to course navigation.
-            $PAGE->navigation->find($COURSE->id, navigation_node::TYPE_COURSE)
-                             ->add(get_string('btn:report', 'enrol_coursepayment'),
-                                 $url, navigation_node::TYPE_SETTING,
-                                 '',
-                                 '',
-                                 $pix
-                             );
+            $PAGE->navigation->find($COURSE->id, navigation_node::TYPE_COURSE)->add(
+                get_string('btn:report', 'enrol_coursepayment'),
+                $url,
+                navigation_node::TYPE_SETTING,
+                '',
+                '',
+                $pix
+            );
         }
 
     }
@@ -197,7 +197,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * @throws dml_exception
      * @throws moodle_exception
      */
-    function enrol_page_hook(stdClass $instance) {
+    public function enrol_page_hook(stdClass $instance) {
         global $USER, $OUTPUT, $DB, $COURSE, $PAGE, $CFG;
 
         $gatewaymethod = optional_param('gateway', false, PARAM_ALPHA);
@@ -263,7 +263,8 @@ class enrol_coursepayment_plugin extends enrol_plugin {
 
         echo '<div align="center">
                             <h3 class="coursepayment_instancename">' . $name . '</h3>
-                            <p><b>' . get_string("cost") . ': <span id="coursepayment_cost">' . $config->localisedcost . '</span> ' . $instance->currency . ' </b></p>
+                            <p><b>' . get_string("cost") . ': <span id="coursepayment_cost">' .
+                            $config->localisedcost . '</span> ' . $instance->currency . ' </b></p>
                           </div>';
 
         // Payment method is selected.
@@ -516,10 +517,10 @@ class enrol_coursepayment_plugin extends enrol_plugin {
                     continue;
                 }
 
-                /* @var enrol_coursepayment_gateway $gateway */
                 $gateway = new $gateway();
-                $return = $gateway->validate_order($row->orderid);
-                mtrace($row->id . ' | ' . print_r($return, true));
+                $success = $gateway->validate_order($row->orderid);
+
+                mtrace($row->id . ' | ' . $success);
             }
         } else {
             mtrace('No orders are waiting on a status update');
@@ -528,7 +529,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
     }
 
     /**
-     * return all vat percentage that are possible
+     * Return all vat percentage that are possible
      *
      * @return array
      */
@@ -620,6 +621,7 @@ function enrol_coursepayment_inplace_editable($itemtype, $itemid, $newvalue) {
         // Perform checks.
         $PAGE->set_context(context_system::instance());
         require_login();
+
         // Make sure the user has the required capabilities.
         $template->require_manage();
 

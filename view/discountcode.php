@@ -36,8 +36,9 @@ if (!has_capability('enrol/coursepayment:config', $context)) {
     print_error("error:capability_config", 'enrol_coursepayment');
 }
 
-// set navbar
-$PAGE->navbar->add(get_string('pluginname', 'enrol_coursepayment'), new moodle_url('/admin/settings.php', array('section' => 'enrolsettingscoursepayment')));
+// Set navbar.
+$PAGE->navbar->add(get_string('pluginname', 'enrol_coursepayment'),
+    new moodle_url('/admin/settings.php', ['section' => 'enrolsettingscoursepayment']));
 $PAGE->navbar->add(get_string('enrol_coursepayment_discount', 'enrol_coursepayment'));
 $PAGE->set_context($context);
 $PAGE->set_title(get_string('enrol_coursepayment_discount', 'enrol_coursepayment'));
@@ -45,15 +46,15 @@ $PAGE->set_title(get_string('enrol_coursepayment_discount', 'enrol_coursepayment
 $action = optional_param('action', false, PARAM_ALPHA);
 $id = optional_param('id', false, PARAM_INT);
 $PAGE->requires->js('/enrol/coursepayment/js/helper.js');
-$PAGE->set_url('/enrol/coursepayment/view/discountcode.php', array(
+$PAGE->set_url('/enrol/coursepayment/view/discountcode.php', [
     'action' => $action,
-    'id' => $id
-));
+    'id' => $id,
+]);
 
 switch ($action) {
 
     case 'delete':
-        $DB->delete_records('enrol_coursepayment_discount' , array('id' => $id));
+        $DB->delete_records('enrol_coursepayment_discount', ['id' => $id]);
         redirect(new \moodle_url('/enrol/coursepayment/view/discountcode.php'));
         break;
 
@@ -61,31 +62,34 @@ switch ($action) {
     case 'edit':
         $form = new \enrol_coursepayment\form\discountcode($PAGE->url);
         if ($action == 'edit') {
-            // load the item
-            $row = $DB->get_record('enrol_coursepayment_discount', array('id' => $id), '*', MUST_EXIST);
+            // Load the item.
+            $row = $DB->get_record('enrol_coursepayment_discount', ['id' => $id], '*', MUST_EXIST);
             $form->set_data($row);
         }
-        // cancel form
+
+        // Cancel form.
         if ($form->is_cancelled()) {
             redirect(new \moodle_url('/enrol/coursepayment/view/discountcode.php'));
         }
+
         if (($data = $form->get_data()) != false) {
 
             $data->created_by = $USER->id;
 
-            // save to the db
+            // Save to the db.
             if ($action == 'edit') {
                 $data->id = $row->id;
-                $DB->update_record('enrol_coursepayment_discount' , $data);
-            }else{
-                // make sure the code is unique
-                $item = $DB->get_record('enrol_coursepayment_discount' , array('code' => $data->code) , '*' , IGNORE_MULTIPLE);
-                if($item){
-                    // this is bad we already have this code we need to throw a error
-                    print_error('error:code_not_unique' , 'enrol_coursepayment');
+                $DB->update_record('enrol_coursepayment_discount', $data);
+            } else {
+                // Make sure the code is unique.
+                $item = $DB->get_record('enrol_coursepayment_discount', ['code' => $data->code],
+                    '*', IGNORE_MULTIPLE);
+                if ($item) {
+                    // This is bad we already have this code we need to throw a error.
+                    print_error('error:code_not_unique', 'enrol_coursepayment');
                 }
 
-                $DB->insert_record('enrol_coursepayment_discount' , $data);
+                $DB->insert_record('enrol_coursepayment_discount', $data);
             }
             redirect(new \moodle_url('/enrol/coursepayment/view/discountcode.php'));
         }
@@ -98,39 +102,39 @@ switch ($action) {
     default:
         echo $OUTPUT->header();
 
-        // build the table
+        // Build the table.
         $table = new \enrol_coursepayment\table\discountcode('enrol_coursepayment-discounttable');
-        //
-        $newurl = new moodle_url($PAGE->url, array('action' => 'add'));
-        echo $OUTPUT->render(new single_button($newurl, get_string('new:discountcode', 'enrol_coursepayment')));
+        $newurl = new moodle_url($PAGE->url, ['action' => 'add']);
+        echo $OUTPUT->render(new single_button($newurl, get_string('new:discountcode',
+            'enrol_coursepayment')));
         echo '<hr/>';
-        //
+
         $dbfields = 'id, code, courseid, start_time, end_time, percentage, amount';
         $sqlconditions = '1=1';
-        $sqlparams = array();
-        //
+        $sqlparams = [];
+
         $table->set_sql($dbfields, '{enrol_coursepayment_discount}', $sqlconditions, $sqlparams);
         $table->set_count_sql("SELECT COUNT(*) FROM {enrol_coursepayment_discount} WHERE $sqlconditions", $sqlparams);
         $table->set_attribute('cellspacing', '0');
         $table->set_attribute('class', 'admintable generaltable');
         $table->initialbars(true); // always initial bars
-        $table->define_columns(array(
+        $table->define_columns([
             'code',
             'courseid',
             'start_time',
             'end_time',
             'amount',
-            'action'
-        ));
+            'action',
+        ]);
 
-        $table->define_headers(array(
+        $table->define_headers([
             get_string('th:code', 'enrol_coursepayment'),
             get_string('th:courseid', 'enrol_coursepayment'),
             get_string('th:start_time', 'enrol_coursepayment'),
             get_string('th:end_time', 'enrol_coursepayment'),
             get_string('th:amount', 'enrol_coursepayment'),
             get_string('th:action', 'enrol_coursepayment'),
-        ));
+        ]);
 
         $table->sortable(true, 'courseid', SORT_ASC);
 

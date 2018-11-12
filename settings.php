@@ -42,14 +42,14 @@ if ($ADMIN->fulltree) {
     ) {
 
         // We should show a login box.
-        $PAGE->requires->strings_for_js(array(
+        $PAGE->requires->strings_for_js([
             'js:claim_title',
             'js:claim_desc',
             'js:username',
             'js:password',
             'js:connect',
             'js:delay',
-        ), 'enrol_coursepayment');
+        ], 'enrol_coursepayment');
 
         $PAGE->requires->js('/enrol/coursepayment/js/accountclaim.js');
     }
@@ -91,35 +91,31 @@ if ($ADMIN->fulltree) {
     if (empty($tab) || $tab === 'invoicedetails' || !empty($install)) {
 
         // Invoice settings.
-        include 'settings/invoicedetails.php';
+        include('settings/invoicedetails.php');
 
-    }
-    if ($tab === 'enrolment' || !empty($install)) {
+    } else if ($tab === 'enrolment' || !empty($install)) {
 
         // Enrolment settings.
-        include 'settings/enrolment.php';
+        include('settings/enrolment.php');
 
-    }
-    if ($tab === 'mail' || !empty($install)) {
-
-        // E-mail settings.
-        include 'settings/mail.php';
-
-    }
-    if ($tab === 'multiaccount' || !empty($install)) {
+    } else if ($tab === 'mail' || !empty($install)) {
 
         // E-mail settings.
-        include 'settings/multiaccount.php';
+        include('settings/mail.php');
 
-    }
-    if ($tab === 'gateway' || !empty($install)) {
+    } else if ($tab === 'multiaccount' || !empty($install)) {
+
+        // E-mail settings.
+        include('settings/multiaccount.php');
+
+    } else if ($tab === 'gateway' || !empty($install)) {
 
         // Gateway settings.
-        include 'settings/gateway.php';
+        include('settings/gateway.php');
 
-    }
-    if ($tab === 'advanced' || !empty($install)) {
-      // Advanced settings.
-        include 'settings/advanced.php';
+    } else if ($tab === 'advanced' || !empty($install)) {
+
+        // Advanced settings.
+        include('settings/advanced.php');
     }
 }

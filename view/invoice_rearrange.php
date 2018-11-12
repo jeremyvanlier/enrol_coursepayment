@@ -1,4 +1,4 @@
-<?php /** @noinspection ALL */
+<?php
 // This file is part of the customcert module for Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
