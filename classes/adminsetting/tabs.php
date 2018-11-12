@@ -65,22 +65,22 @@ class tabs extends \admin_setting {
      *
      * In practice this actually runs the reset, import or export sub actions.
      *
-     * @param array $data The submitted data to act upon.
+     * @param array $params The submitted data to act upon.
      *
      * @return string Always returns an empty string
      */
-    public function write_setting($data) {
+    public function write_setting($params) {
         $result = '';
 
-        if (isset($data['action'])) {
+        if (isset($params['action'])) {
 
-            if ($data['action'] == 1) {
+            if ($params['action'] == 1) {
                 $result = $this->reset();
 
-            } else if ($data['action'] == 2) {
-                $result = $this->import($data['picker']);
+            } else if ($params['action'] == 2) {
+                $result = $this->import($params['picker']);
 
-            } else if ($data['action'] == 3) {
+            } else if ($params['action'] == 3) {
                 $result = $this->export();
             }
         }
@@ -114,14 +114,14 @@ class tabs extends \admin_setting {
     /**
      * Returns an HTML string
      *
-     * @param mixed  $data  Array or string depending on setting
+     * @param mixed  $params  Array or string depending on setting
      * @param string $query Query
      *
      * @return string Returns an HTML string
      */
-    public function output_html($data, $query = '') {
+    public function output_html($params, $query = '') {
 
-        $output = print_tabs($this->tabs, $this->selected, null, null, true);
+        $html = print_tabs($this->tabs, $this->selected, null, null, true);
 
         $properties = [
             'type' => 'hidden',
@@ -129,13 +129,13 @@ class tabs extends \admin_setting {
             'value' => $this->get_setting(),
         ];
 
-        $output .= \html_writer::empty_tag('input', $properties);
+        $html .= \html_writer::empty_tag('input', $properties);
 
         $properties['id'] = $this->get_id();
         $properties['name'] = $this->get_full_name() . '_new';
 
-        $output .= \html_writer::empty_tag('input', $properties);
+        $html .= \html_writer::empty_tag('input', $properties);
 
-        return $output;
+        return $html;
     }
 }

@@ -31,7 +31,7 @@ require_once("../lib.php");
 set_exception_handler('enrol_coursepayment_ipn_exception_handler');
 
 $orderid = required_param('orderid', PARAM_ALPHANUMEXT);
-$instanceid = required_param('instanceid', PARAM_INT); // if no instanceid is given
+$instanceid = required_param('instanceid', PARAM_INT);
 
 // Validate the orderid.
 $return = enrol_get_plugin('coursepayment')
@@ -46,18 +46,12 @@ if ($return['status'] == true) {
 }
 
 /**
- *  Exception handler.
+ * Exception handler.
+ * Response the error to Mollie
  *
  * @param Exception $ex
  */
 function enrol_coursepayment_ipn_exception_handler($ex) {
     $info = get_exception_info($ex);
-
-    $logerrmsg = "IPN exception handler: " . $info->message;
-    echo $logerrmsg;
-
-    if (debugging('', DEBUG_NORMAL)) {
-        $logerrmsg .= ' Debug: ' . $info->debuginfo . "\n" . format_backtrace($info->backtrace, true);
-    }
-    error_log($logerrmsg);
+    echo "IPN exception handler: " . $info->message;;
 }

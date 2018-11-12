@@ -260,12 +260,9 @@ class enrol_coursepayment_plugin extends enrol_plugin {
 
         // You can set a custom text to be shown instead of instance name.
         $name = !empty($instance->customtext1) ? $instance->customtext1 : $config->instancename;
-
-        echo '<div align="center">
-                            <h3 class="coursepayment_instancename">' . $name . '</h3>
-                            <p><b>' . get_string("cost") . ': <span id="coursepayment_cost">' .
-                            $config->localisedcost . '</span> ' . $instance->currency . ' </b></p>
-                          </div>';
+        echo '<div align="center"><h3 class="coursepayment_instancename">' . $name . '</h3><p><b>'
+            . get_string("cost") . ': <span id="coursepayment_cost">' . $config->localisedcost . '</span>'
+            . $instance->currency . ' </b></p></div>';
 
         // Payment method is selected.
         if (!empty($gatewaymethod)) {

@@ -219,12 +219,10 @@ abstract class enrol_coursepayment_gateway {
             return '';
         }
 
-        return '<div align="center">
-                        <form action="" method="post">
-                            <input type="hidden" name="gateway" value="' . $this->name . '"/>
-                            <input type="submit" class="form-submit btn btn-primary coursepayment-btn"  value="' . get_string('gateway_' . $this->name . '_send_button', "enrol_coursepayment") . '" />
-                        </form>
-                </div><hr/>';
+        return '<div align="center"><form action="" method="post"><input type="hidden" name="gateway" value="' . $this->name . '"/>
+                            <input type="submit" class="form-submit btn btn-primary coursepayment-btn"  value="' .
+            get_string('gateway_' . $this->name . '_send_button', "enrol_coursepayment") . '" />
+                        </form></div><hr/>';
     }
 
     /**
@@ -293,13 +291,15 @@ abstract class enrol_coursepayment_gateway {
         if (!empty($data['discount'])) {
             $discount = $data['discount'];
             $obj->discountdata = serialize($discount);
-            // we have discount data
+
+            // We have discount data.
             if ($discount->percentage > 0) {
                 $cost = round($cost / 100 * (100 - $discount->percentage), 2);
             } else {
                 $cost = round($cost - $discount->amount);
             }
-            // make sure not below 0
+
+            // Make sure not below 0.
             if ($cost <= 0) {
                 $cost = 0;
             }
@@ -314,13 +314,15 @@ abstract class enrol_coursepayment_gateway {
         $obj->userid = $this->instanceconfig->userid;
 
         if (!empty($this->pluginconfig->multi_account)) {
-            $obj->profile_data = enrol_coursepayment_helper::get_profile_field_data($this->pluginconfig->multi_account_fieldid, $this->instanceconfig->userid);
+            $obj->profile_data = enrol_coursepayment_helper::get_profile_field_data($this->pluginconfig->multi_account_fieldid,
+                $this->instanceconfig->userid);
         }
 
         $obj->courseid = $this->instanceconfig->courseid;;
         $obj->instanceid = $this->instanceconfig->instanceid;
         $obj->cost = $cost;
-        $obj->vatpercentage = is_numeric($this->instanceconfig->customint1) ? $this->instanceconfig->customint1 : $this->pluginconfig->vatpercentage;
+        $obj->vatpercentage = is_numeric($this->instanceconfig->customint1) ? $this->instanceconfig->customint1 :
+            $this->pluginconfig->vatpercentage;
         $obj->status = self::PAYMENT_STATUS_WAITING;
         $id = $DB->insert_record('enrol_coursepayment', $obj);
 
@@ -343,9 +345,6 @@ abstract class enrol_coursepayment_gateway {
         global $DB;
 
         $cost = $this->instanceconfig->cost;
-
-        $orderidentifier = uniqid(time());
-
         $obj = new stdClass();
 
         if (!empty($data['discount'])) {
@@ -363,6 +362,7 @@ abstract class enrol_coursepayment_gateway {
             }
         }
 
+        $orderidentifier = uniqid(time());
         $obj->orderid = $orderidentifier;
         $obj->gateway_transaction_id = '';
         $obj->invoice_number = 0;
@@ -377,10 +377,13 @@ abstract class enrol_coursepayment_gateway {
         $obj->cost = $cost;
 
         if (!empty($this->pluginconfig->multi_account)) {
-            $obj->profile_data = enrol_coursepayment_helper::get_profile_field_data($this->pluginconfig->multi_account_fieldid, $this->instanceconfig->userid);
+            $obj->profile_data = enrol_coursepayment_helper::get_profile_field_data($this->pluginconfig->multi_account_fieldid,
+                $this->instanceconfig->userid);
         }
 
-        $obj->vatpercentage = is_numeric($this->instanceconfig->customint1) ? $this->instanceconfig->customint1 : $this->pluginconfig->vatpercentage;
+        $obj->vatpercentage = is_numeric($this->instanceconfig->customint1) ? $this->instanceconfig->customint1 :
+            $this->pluginconfig->vatpercentage;
+
         $obj->status = self::PAYMENT_STATUS_WAITING;
         $obj->section = isset($this->instanceconfig->section) ? $this->instanceconfig->section : -10;
         $id = $DB->insert_record('enrol_coursepayment', $obj);
@@ -417,7 +420,7 @@ abstract class enrol_coursepayment_gateway {
             return false;
         }
 
-        // Doesn't need a enrolment
+        // Doesn't need a enrolment.
         if ($record->is_activity == 1) {
             return true;
         }
@@ -446,7 +449,7 @@ abstract class enrol_coursepayment_gateway {
         $plugin->enrol_user($plugininstance, $user->id, $plugininstance->roleid, $timestart, $timeend);
 
         // Send messages about the enrolment.
-        $this->enrol_mail($plugin , $course , $context , $user);
+        $this->enrol_mail($plugin, $course, $context, $user);
 
         return true;
     }
@@ -460,16 +463,15 @@ abstract class enrol_coursepayment_gateway {
      *
      * @throws coding_exception
      */
-    protected function enrol_mail($plugin , $course , $context , $user){
+    protected function enrol_mail($plugin, $course, $context, $user) {
         global $CFG;
+        $teacher = false;
 
         // Pass $view=true to filter hidden caps if the user cannot see them.
         if ($users = get_users_by_capability($context, 'moodle/course:update',
             'u.*', 'u.id ASC', '', '', '', '', false, true)) {
             $users = sort_by_roleassignment_authority($users, $context);
             $teacher = array_shift($users);
-        } else {
-            $teacher = false;
         }
 
         $mailstudents = $plugin->get_config('mailstudents');
@@ -696,19 +698,17 @@ abstract class enrol_coursepayment_gateway {
     protected function form_discount_code($discountcode = '', $status = []) {
         global $DB;
         $string = '';
-        // check if there is a discount code
+
+        // Check if there is a discount code.
         $row = $DB->get_record('enrol_coursepayment_discount', [], 'id', IGNORE_MULTIPLE);
         if ($row) {
             $string .= '<hr/>';
-            $string .= '<div align="center">
-                            <p>' . get_string('discount_code_desc', 'enrol_coursepayment') . '<br/>
+            $string .= '<div align="center"><p>' . get_string('discount_code_desc', 'enrol_coursepayment') . '<br/>
                             ' . ((!empty($status['error_discount']) ?
                     '<b style="color:red"  id="error_coursepayment">' . $status['message'] . '</b>' :
-                    '<b style="color:red" id="error_coursepayment"></b>')) . '<br/>
-                            </p>
+                    '<b style="color:red" id="error_coursepayment"></b>')) . '<br/></p>
                             <input type="text" autocomplete="off" name="discountcode" id="discountcode"  
-                                value="' . $discountcode . '" />
-                            <div id="price_holder"></div>
+                                value="' . $discountcode . '" /><div id="price_holder"></div>
                         </div>';
         }
 

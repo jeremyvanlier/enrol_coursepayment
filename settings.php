@@ -54,13 +54,13 @@ if ($ADMIN->fulltree) {
         $PAGE->requires->js('/enrol/coursepayment/js/accountclaim.js');
     }
 
-    // Add mollie settings to the plugin https://www.mollie.com
+    // Add mollie settings to the plugin https://www.mollie.com.
     $yesno = [
         0 => get_string('no'),
         1 => get_string('yes'),
     ];
 
-    // Check if we have a parent for the mollie connector (allow to create accounts)
+    // Check if we have a parent for the mollie connector (allow to create accounts).
     if (empty($config->gateway_mollie_parent_api)) {
         set_config('gateway_mollie_parent_api',
             'https://moodle.avetica.nl/enrol/coursepayment/mollie-connector.php',

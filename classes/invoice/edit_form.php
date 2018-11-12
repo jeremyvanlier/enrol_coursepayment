@@ -160,35 +160,13 @@ class edit_form extends \moodleform {
         $errors = parent::validation($data, $files);
 
         // Go through the data and check any width, height or margin  values.
-        foreach ($data as $key => $value) {
-            if (strpos($key, 'pagewidth_') !== false) {
-                $page = str_replace('pagewidth_', '', $key);
-                $widthid = 'pagewidth_' . $page;
-                // Validate that the width is a valid value.
-                if ((!isset($data[$widthid])) || (!is_numeric($data[$widthid])) || ($data[$widthid] <= 0)) {
-                    $errors[$widthid] = get_string('invalidwidth', 'enrol_coursepayment');
-                }
-            }
-            if (strpos($key, 'pageheight_') !== false) {
-                $page = str_replace('pageheight_', '', $key);
-                $heightid = 'pageheight_' . $page;
-                // Validate that the height is a valid value.
-                if ((!isset($data[$heightid])) || (!is_numeric($data[$heightid])) || ($data[$heightid] <= 0)) {
-                    $errors[$heightid] = get_string('invalidheight', 'enrol_coursepayment');
-                }
-            }
-            if (strpos($key, 'pageleftmargin_') !== false) {
-                // Validate that the left margin is a valid value.
-                if (isset($data[$key]) && ($data[$key] < 0)) {
-                    $errors[$key] = get_string('invalidmargin', 'enrol_coursepayment');
-                }
-            }
-            if (strpos($key, 'pagerightmargin_') !== false) {
-                // Validate that the right margin is a valid value.
-                if (isset($data[$key]) && ($data[$key] < 0)) {
-                    $errors[$key] = get_string('invalidmargin', 'enrol_coursepayment');
-                }
-            }
+        foreach ($data as $key => $d) {
+
+            $errors = $this->validate_width($data, $key, $errors);
+            $errors = $this->validate_height($data, $key, $errors);
+
+            $errors = $this->validate_left_margin($data, $key, $errors);
+            $errors = $this->validate_right_margin($data, $key, $errors);
         }
 
         return $errors;
@@ -217,7 +195,6 @@ class edit_form extends \moodleform {
         $editlink = '/enrol/coursepayment/view/invoice_edit.php';
         $editlinkparams = ['tid' => $this->tid, 'sesskey' => sesskey()];
         $editelementlink = '/enrol/coursepayment/view/invoice_edit_element.php';
-        $editelementlinkparams = ['tid' => $this->tid, 'sesskey' => sesskey()];
 
         // Place the ordering arrows.
         // Only display the move up arrow if it is not the first.
@@ -282,7 +259,10 @@ class edit_form extends \moodleform {
                 $row->cells[] = $OUTPUT->render($elementname);
                 $row->cells[] = $element->element;
                 // Link to edit this element.
-                $link = new \moodle_url($editelementlink, $editelementlinkparams + [
+                $link = new \moodle_url($editelementlink, [
+                        'tid' => $this->tid,
+                        'sesskey' => sesskey(),
+                    ] + [
                         'id' => $element->id,
                         'action' => 'edit',
                     ]);
@@ -346,5 +326,93 @@ class edit_form extends \moodleform {
                 $icon . get_string('deletepage', 'enrol_coursepayment'));
             $mform->addElement('html', \html_writer::tag('div', $deletepagehtml, ['class' => 'deletebutton']));
         }
+    }
+
+    /**
+     * validate_width
+     *
+     * @param $data
+     * @param $key
+     * @param $errors
+     *
+     * @return array
+     * @throws \coding_exception
+     */
+    protected function validate_width($data, $key, $errors) : array {
+        if (strpos($key, 'pagewidth_') !== false) {
+            $page = str_replace('pagewidth_', '', $key);
+            $widthid = 'pagewidth_' . $page;
+            // Validate that the width is a valid value.
+            if ((!isset($data[$widthid])) || (!is_numeric($data[$widthid])) || ($data[$widthid] <= 0)) {
+                $errors[$widthid] = get_string('invalidwidth', 'enrol_coursepayment');
+            }
+        }
+
+        return $errors;
+    }
+
+    /**
+     * validate_height
+     *
+     * @param $data
+     * @param $key
+     * @param $errors
+     *
+     * @return array
+     * @throws \coding_exception
+     */
+    protected function validate_height($data, $key, $errors) : array {
+        if (strpos($key, 'pageheight_') !== false) {
+            $page = str_replace('pageheight_', '', $key);
+            $heightid = 'pageheight_' . $page;
+            // Validate that the height is a valid value.
+            if ((!isset($data[$heightid])) || (!is_numeric($data[$heightid])) || ($data[$heightid] <= 0)) {
+                $errors[$heightid] = get_string('invalidheight', 'enrol_coursepayment');
+            }
+        }
+
+        return $errors;
+    }
+
+    /**
+     * validate_left_margin
+     *
+     * @param $data
+     * @param $key
+     * @param $errors
+     *
+     * @return array
+     * @throws \coding_exception
+     */
+    protected function validate_left_margin($data, $key, $errors) : array {
+        if (strpos($key, 'pageleftmargin_') !== false) {
+            // Validate that the left margin is a valid value.
+            if (isset($data[$key]) && ($data[$key] < 0)) {
+                $errors[$key] = get_string('invalidmargin', 'enrol_coursepayment');
+            }
+        }
+
+        return [$data, $errors];
+    }
+
+    /**
+     * validate_right_margin
+     *
+     * @param $data
+     * @param $key
+     * @param $errors
+     *
+     * @return array
+     * @throws \coding_exception
+     */
+    protected function validate_right_margin($data, $key, $errors) : array {
+        if (strpos($key, 'pagerightmargin_') !== false) {
+            // Validate that the right margin is a valid value.
+            if (isset($data[$key]) && ($data[$key] < 0)) {
+                $errors[$key] = get_string('invalidmargin', 'enrol_coursepayment');
+            }
+        }
+
+        return $errors;
     }
 }
