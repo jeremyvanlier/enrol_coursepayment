@@ -71,7 +71,7 @@
         </TABLE>
         <TABLE NAME="coursepayment_elements" COMMENT="coursepayment_elements table retrofitted from MySQL">
             <FIELDS>
-                <FIELD NAME="id" TYPE="int" LENGTH="18" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="id" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="pageid" TYPE="int" LENGTH="18" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
                 <FIELD NAME="name" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="element" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
@@ -96,7 +96,7 @@
         </TABLE>
         <TABLE NAME="coursepayment_templates" COMMENT="coursepayment_templates table retrofitted from MySQL">
             <FIELDS>
-                <FIELD NAME="id" TYPE="int" LENGTH="18" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="id" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
                 <FIELD NAME="contextid" TYPE="int" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="timecreated" TYPE="int" LENGTH="18" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
@@ -111,7 +111,7 @@
         </TABLE>
         <TABLE NAME="coursepayment_pages" COMMENT="coursepayment_pages table retrofitted from MySQL">
             <FIELDS>
-                <FIELD NAME="id" TYPE="int" LENGTH="18" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="id" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="templateid" TYPE="int" LENGTH="18" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
                 <FIELD NAME="width" TYPE="int" LENGTH="18" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
                 <FIELD NAME="height" TYPE="int" LENGTH="18" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>

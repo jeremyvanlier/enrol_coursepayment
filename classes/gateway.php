@@ -24,6 +24,8 @@
  * @author    Luuk Verhoeven
  */
 
+use enrol_coursepayment\invoice\template;
+
 defined('MOODLE_INTERNAL') || die();
 
 abstract class enrol_coursepayment_gateway {
@@ -537,44 +539,44 @@ abstract class enrol_coursepayment_gateway {
     /**
      * Send invoice to the customer
      *
-     * @param null   $record
-     * @param int    $invoicenumber
-     * @param string $method
+     * @param \stdClass $coursepayment
+     * @param string    $method
      *
      * @return bool
      * @throws coding_exception
      * @throws dml_exception
      * @throws moodle_exception
      */
-    protected function send_invoice($record = null, $invoicenumber = 0, $method = '') {
+    protected function send_invoice(\stdClass $coursepayment, $method = '') {
         global $DB, $CFG;
 
-        if (empty($record)) {
+        if (empty($coursepayment)) {
             return false;
         }
+
         require_once($CFG->libdir . '/eventslib.php');
         require_once($CFG->libdir . '/enrollib.php');
         require_once($CFG->libdir . '/filelib.php');
 
-        $user = $DB->get_record("user", ['id' => $record->userid]);
-        $course = $DB->get_record('course', ['id' => $record->courseid]);
+        $user = $DB->get_record("user", ['id' => $coursepayment->userid]);
+        $course = $DB->get_record('course', ['id' => $coursepayment->courseid]);
         $context = context_course::instance($course->id, IGNORE_MISSING);
-        $plugininstance = $DB->get_record("enrol", ["id" => $record->instanceid, "status" => 0]);
+        $invoicenumber = $coursepayment->invoice_number;
 
-        // Mail object
+        // Mail object.
         $a = new stdClass();
         $a->course = format_string($course->fullname, true, ['context' => $context]);
         $a->fullname = fullname($user);
         $a->email = $user->email;
-        $a->date = date('d-m-Y, H:i', $record->addedon);
+        $a->date = date('d-m-Y, H:i', $coursepayment->addedon);
 
         // Fix this could also be a activity or section.
-        if ($record->cmid > 0 && $record->is_activity == 1) {
-            $module = enrol_coursepayment_helper::get_cmid_info($record->cmid, $course->id);
+        if ($coursepayment->cmid > 0 && $coursepayment->is_activity == 1) {
+            $module = enrol_coursepayment_helper::get_cmid_info($coursepayment->cmid, $course->id);
             $a->fullcourse = $module->name;
             $a->content_type = get_string('activity');
-        } else if ($record->section > 0) {
-            $module = enrol_coursepayment_helper::get_section_info($record->section, $course->id);
+        } else if ($coursepayment->section > 0) {
+            $module = enrol_coursepayment_helper::get_section_info($coursepayment->section, $course->id);
             $a->fullcourse = $module->name;
             $a->content_type = get_string('section');
         } else {
@@ -582,12 +584,12 @@ abstract class enrol_coursepayment_gateway {
             $a->content_type = get_string('course');
         }
 
-        // Set record invoice number this is not done
-        if ($record->invoice_number == 0) {
-            $record->invoice_number = $invoicenumber;
+        // Set record invoice number this is not done.
+        if ($coursepayment->invoice_number == 0) {
+            $coursepayment->invoice_number = $invoicenumber;
         }
 
-        $a->invoice_number = $this->get_invoice_number_format($record);
+        $a->invoice_number = $this->get_invoice_number_format($coursepayment);
 
         // Company data
         $a->companyname = $this->pluginconfig->companyname;
@@ -599,12 +601,15 @@ abstract class enrol_coursepayment_gateway {
         $a->btw = $this->pluginconfig->btw;
         $a->currency = $this->pluginconfig->currency;
         $a->method = $method;
-        $a->description = $this->get_payment_description($record);
+        $a->description = $this->get_payment_description($coursepayment);
 
         // Calculate cost.
-        $a->vatpercentage = $record->vatpercentage;
-        $a->costvat = $this->price(($record->cost / (100 + $a->vatpercentage)) * $a->vatpercentage);
-        $a->cost = $this->price($record->cost);
+        $a->vatpercentage = $coursepayment->vatpercentage;
+        $a->costvat = $this->price(($coursepayment->cost / (100 + $a->vatpercentage)) * $a->vatpercentage);
+        $a->cost = $this->price($coursepayment->cost);
+
+        // Generate PDF invoice.
+        $attachment = template::render($coursepayment , $a);
 
         if (!empty($this->pluginconfig->mailstudents_invoice)) {
 
@@ -879,7 +884,7 @@ abstract class enrol_coursepayment_gateway {
                 }
             }
 
-            // Reset some values that can't be used by multi-account;
+            // Reset some values that can't be used by multi-account.
             $this->config->enabled = true;
             $this->config->external_connector = 0;
 

@@ -398,14 +398,17 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         $return = ['status' => false, 'message' => ''];
 
         // first check if we know of it
-        $row = $DB->get_record('enrol_coursepayment', ['orderid' => $orderid, 'gateway' => $this->name]);
+        $enrolcoursepayment = $DB->get_record('enrol_coursepayment', [
+            'orderid' => $orderid,
+            'gateway' => $this->name,
+        ]);
 
-        if ($row) {
+        if ($enrolcoursepayment) {
 
             // missing a transactionid this is not good
-            if (empty($row->gateway_transaction_id)) {
+            if (empty($enrolcoursepayment->gateway_transaction_id)) {
                 $obj = new stdClass();
-                $obj->id = $row->id;
+                $obj->id = $enrolcoursepayment->id;
                 $obj->timeupdated = time();
                 $obj->status = self::PAYMENT_STATUS_ERROR;
                 $DB->update_record('enrol_coursepayment', $obj);
@@ -417,7 +420,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             }
 
             // payment already marked as paid
-            if ($row->status == self::PAYMENT_STATUS_SUCCESS) {
+            if ($enrolcoursepayment->status == self::PAYMENT_STATUS_SUCCESS) {
                 $return['status'] = true;
                 $return['message'] = 'already_marked_as_paid';
 
@@ -426,25 +429,25 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
             try {
                 // This will fix issues when using multi-account in cron.
-                $this->load_multi_account_config($row->userid);
+                $this->load_multi_account_config($enrolcoursepayment->userid);
 
                 // Reload API key.
                 $this->reload_api_key(); // use new settings if needed.
 
                 // get details from gateway
-                $payment = $this->client->payments->get($row->gateway_transaction_id);
+                $payment = $this->client->payments->get($enrolcoursepayment->gateway_transaction_id);
                 $obj = new stdClass();
-                $obj->id = $row->id;
+                $obj->id = $enrolcoursepayment->id;
                 $obj->timeupdated = time();
 
-                if ($payment->isPaid() == true && $row->status != self::PAYMENT_STATUS_SUCCESS) {
+                if ($payment->isPaid() == true && $enrolcoursepayment->status != self::PAYMENT_STATUS_SUCCESS) {
                     // Sending the invoice to customer
                     // Make sure we save invoice number to prevent incorrect number
-                    $this->send_invoice($row, $row->invoice_number, ucfirst($this->name));
+                    $this->send_invoice($enrolcoursepayment, ucfirst($this->name));
                     $DB->update_record('enrol_coursepayment', $obj);
 
                     // At this point you'd probably want to start the process of delivering the product to the customer.
-                    if ($this->enrol($row)) {
+                    if ($this->enrol($enrolcoursepayment)) {
                         $obj->status = self::PAYMENT_STATUS_SUCCESS;
                         $return['status'] = true;
                     }

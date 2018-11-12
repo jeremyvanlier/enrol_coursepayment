@@ -585,10 +585,50 @@ function enrol_coursepayment_output_fragment_editelement($args) {
     global $DB;
 
     // Get the element.
-    $element = $DB->get_record('coursepayment_elements', array('id' => $args['elementid']), '*', MUST_EXIST);
+    $element = $DB->get_record('coursepayment_elements', ['id' => $args['elementid']], '*', MUST_EXIST);
 
-    $pageurl = new moodle_url('/enrol/coursepayment/view/invoice_rearrange.php', array('pid' => $element->pageid));
-    $form = new \enrol_coursepayment\invoice\edit_element_form($pageurl, array('element' => $element));
+    $pageurl = new moodle_url('/enrol/coursepayment/view/invoice_rearrange.php', ['pid' => $element->pageid]);
+    $form = new \enrol_coursepayment\invoice\edit_element_form($pageurl, ['element' => $element]);
 
     return $form->render();
+}
+
+/**
+ * Handles editing the 'name' of the element in a list.
+ *
+ * @param string $itemtype
+ * @param int    $itemid
+ * @param string $newvalue
+ *
+ * @return \core\output\inplace_editable
+ * @throws coding_exception
+ * @throws dml_exception
+ * @throws moodle_exception
+ * @throws require_login_exception
+ */
+function enrol_coursepayment_inplace_editable($itemtype, $itemid, $newvalue) {
+    global $DB, $PAGE;
+
+    if ($itemtype === 'elementname') {
+        $element = $DB->get_record('coursepayment_elements', ['id' => $itemid], '*', MUST_EXIST);
+        $page = $DB->get_record('coursepayment_pages', ['id' => $element->pageid], '*', MUST_EXIST);
+        $template = $DB->get_record('coursepayment_templates', ['id' => $page->templateid], '*', MUST_EXIST);
+
+        // Set the template object.
+        $template = new \enrol_coursepayment\invoice\template($template);
+        // Perform checks.
+        $PAGE->set_context(context_system::instance());
+        require_login();
+        // Make sure the user has the required capabilities.
+        $template->require_manage();
+
+        // Clean input and update the record.
+        $updateelement = new stdClass();
+        $updateelement->id = $element->id;
+        $updateelement->name = clean_param($newvalue, PARAM_TEXT);
+        $DB->update_record('coursepayment_elements', $updateelement);
+
+        return new \core\output\inplace_editable('enrol_coursepayment', 'elementname', $element->id, true,
+            $updateelement->name, $updateelement->name);
+    }
 }

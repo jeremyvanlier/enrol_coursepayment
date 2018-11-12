@@ -14,12 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+
 /**
- * This file contains the form for handling the layout of the customcert instance.
+ * This file contains the form for handling the layout of the coursepayment template instance.
  *
- * @package    mod_customcert
- * @copyright  2013 Mark Nelson <markn@moodle.com>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * This parts is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
+ * Thanks for allowing us to use it.
+ *
+ * This file is modified not compatible with the original.
+ *
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package   enrol_coursepayment
+ * @copyright 2018 MFreak.nl
+ * @author    Luuk Verhoeven
  */
 
 namespace enrol_coursepayment\invoice;
@@ -62,10 +70,6 @@ class edit_form extends \moodleform {
         global $DB, $OUTPUT;
 
         $mform =& $this->_form;
-
-        $mform->addElement('text', 'name', get_string('name', 'enrol_coursepayment'), 'maxlength="255"');
-        $mform->setType('name', PARAM_TEXT);
-        $mform->addRule('name', null, 'required');
 
         // Get the number of pages for this module.
         if (isset($this->_customdata['tid'])) {
@@ -111,7 +115,7 @@ class edit_form extends \moodleform {
     }
 
     /**
-     * Fill in the current page data for this customcert.
+     * Fill in the current page data for this coursepayment.
      *
      * @throws \dml_exception
      */
@@ -197,7 +201,7 @@ class edit_form extends \moodleform {
     /**
      * Adds the page elements to the form.
      *
-     * @param \stdClass $page the customcert page
+     * @param \stdClass $page the coursepayment page
      *
      * @throws \coding_exception
      * @throws \dml_exception

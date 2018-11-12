@@ -65,6 +65,41 @@ class template {
     }
 
     /**
+     * Render a invoice.
+     *
+     * @param \stdClass $coursepayment
+     * @param           $a
+     *
+     * @return string
+     */
+    public static function render(\stdClass $coursepayment , $a){
+        $path = '';
+        // Get correct invoice details check if the plugin uses multi-account.
+
+
+
+
+        return $path;
+    }
+
+    /**
+     * Set a default template
+     *
+     * @throws \dml_exception
+     */
+    public static function install_default_template() {
+        global $DB;
+
+        // Check if there is a template.
+        if($DB->record_exists('coursepayment_templates', [])){
+            return;
+        }
+
+        // Adding the default template.
+
+    }
+
+    /**
      * Handles saving data.
      *
      * @param \stdClass $data the template data
