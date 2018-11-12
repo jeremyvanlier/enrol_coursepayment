@@ -57,14 +57,6 @@ if ($action) {
 }
 $confirm = optional_param('confirm', 0, PARAM_INT);
 
-//TODO should be excute on install or update.
-$templates = $DB->count_records('coursepayment_templates');
-if ($templates === 0) {
-    $template = \enrol_coursepayment\invoice\template::create('default', $contextid);
-    $pageurl = new moodle_url('/enrol/coursepayment/view/invoice_edit.php', ['tid' => $template->get_id()]);
-    redirect($pageurl);
-}
-
 // Create the template object.
 $template = $DB->get_record('coursepayment_templates', ['id' => $tid], '*', MUST_EXIST);
 $template = new \enrol_coursepayment\invoice\template($template);

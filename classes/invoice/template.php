@@ -31,6 +31,7 @@
 
 namespace enrol_coursepayment\invoice;
 
+use context_system;
 use enrol_coursepayment_helper;
 
 defined('MOODLE_INTERNAL') || die;
@@ -100,7 +101,7 @@ class template {
         $systemcontext = \context_system::instance();
 
         // Cleanup previous builds.
-        $fs->delete_area_files($systemcontext->id , 'enrol_coursepayment' ,  'invoice' , $coursepayment->id);
+        $fs->delete_area_files($systemcontext->id, 'enrol_coursepayment', 'invoice', $coursepayment->id);
 
         return $fs->create_file_from_string((object)[
             'contextid' => $systemcontext->id,
@@ -166,7 +167,108 @@ class template {
             return;
         }
 
-        // @TODO Adding the default template.
+        $contextid = context_system::instance()->id;
+
+        $template = self::create(0, $contextid);
+
+        // Create a page for this template.
+        $pageid = $template->add_page();
+
+        $elements = [
+            [
+                "pageid" => $pageid,
+                "name" => "Orderdata",
+                "element" => "orderdata",
+                "data" => "",
+                "font" => "times",
+                "fontsize" => 12,
+                "colour" => "#000000",
+                "posx" => 8,
+                "posy" => 101,
+                "width" => 0,
+                "refpoint" => 0,
+                "sequence" => 2,
+            ],
+            [
+                "id" => 21,
+                "pageid" => $pageid,
+                "name" => "Invoice information",
+                "element" => "invoiceinfo",
+                "data" => "",
+                "font" => "times",
+                "fontsize" => 12,
+                "colour" => "#000000",
+                "posx" => 8,
+                "posy" => 6,
+                "width" => 0,
+                "refpoint" => 0,
+                "sequence" => 3,
+            ],
+            [
+                "id" => 22,
+                "pageid" => $pageid,
+                "name" => "Course category",
+                "element" => "categoryname",
+                "data" => "",
+                "font" => "times",
+                "fontsize" => 12,
+                "colour" => "#000000",
+                "posx" => 142,
+                "posy" => 6,
+                "width" => 0,
+                "refpoint" => 0,
+                "sequence" => 4,
+            ],
+            [
+                "id" => 23,
+                "pageid" => $pageid,
+                "name" => "To:",
+                "element" => "text",
+                "data" => "To:",
+                "font" => "times",
+                "fontsize" => 12,
+                "colour" => "#000000",
+                "posx" => 8,
+                "posy" => 70,
+                "width" => 0,
+                "refpoint" => 0,
+                "sequence" => 5,
+            ],
+            [
+                "id" => 25,
+                "pageid" => $pageid,
+                "name" => "Studentname",
+                "element" => "studentname",
+                "data" => "",
+                "font" => "times",
+                "fontsize" => 12,
+                "colour" => "#000000",
+                "posx" => 8,
+                "posy" => 76,
+                "width" => 0,
+                "refpoint" => 0,
+                "sequence" => 6,
+            ],
+            [
+                "pageid" => $pageid,
+                "name" => "Email",
+                "element" => "userfield",
+                "data" => "email",
+                "font" => "times",
+                "fontsize" => 12,
+                "colour" => "#000000",
+                "posx" => 8,
+                "posy" => 82,
+                "width" => 0,
+                "refpoint" => 0,
+                "sequence" => 7,
+            ],
+        ];
+
+        // Adding the default elements.
+        foreach ($elements as $element) {
+            $DB->insert_record('coursepayment_elements', (object)$element);
+        }
     }
 
     /**

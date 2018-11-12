@@ -423,7 +423,6 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             if ($enrolcoursepayment->status == self::PAYMENT_STATUS_SUCCESS) {
                 $return['status'] = true;
                 $return['message'] = 'already_marked_as_paid';
-
                 return $return;
             }
 
