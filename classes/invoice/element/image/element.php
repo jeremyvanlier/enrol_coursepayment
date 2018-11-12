@@ -367,14 +367,15 @@ class element extends \enrol_coursepayment\invoice\element {
         // The array used to store the images.
         $arrfiles = [];
         // Loop through the files uploaded in the system context.
-        if ($files = $fs->get_area_files(\context_system::instance()->id, 'enrol_coursepayment', 'image', false, 'filename', false)) {
+        if ($files = $fs->get_area_files(\context_system::instance()->id, 'enrol_coursepayment',
+            'image', false, 'filename', false)) {
             foreach ($files as $hash => $file) {
                 $arrfiles[$file->get_id()] = $file->get_filename();
             }
         }
         // Loop through the files uploaded in the course context.
-        if ($files = $fs->get_area_files(\context_course::instance($COURSE->id)->id, 'enrol_coursepayment', 'image', false,
-            'filename', false)) {
+        if ($files = $fs->get_area_files(\context_course::instance($COURSE->id)->id, 'enrol_coursepayment',
+            'image', false, 'filename', false)) {
             foreach ($files as $hash => $file) {
                 $arrfiles[$file->get_id()] = $file->get_filename();
             }

@@ -26,8 +26,8 @@
 require_once(dirname(__FILE__) . '/../../../config.php');
 defined('MOODLE_INTERNAL') || die();
 
-$courseid = required_param('id', PARAM_INT); //
-$action = optional_param('action', false, PARAM_ALPHA); //
+$courseid = required_param('id', PARAM_INT);
+$action = optional_param('action', false, PARAM_ALPHA);
 
 $PAGE->set_url('/enrol/coursepayment/view/report.php', [
     'id' => $courseid,
@@ -65,7 +65,7 @@ switch ($action) {
         $form->display();
 
         // Table.
-        \enrol_coursepayment\report::table_overview_courses($courseid, $form->get_data());
+        \enrol_coursepayment\report::table_overview_courses($form->get_data());
 
         echo $OUTPUT->footer();
 }

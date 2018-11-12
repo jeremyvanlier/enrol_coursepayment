@@ -43,17 +43,6 @@ defined('MOODLE_INTERNAL') || die();
 class element extends \enrol_coursepayment\invoice\element {
 
     /**
-     * This function renders the form elements when adding a customcert element.
-     *
-     * @param \enrol_coursepayment\invoice\edit_element_form $mform the edit_form instance
-     *
-     * @throws \coding_exception
-     */
-    public function render_form_elements($mform) {
-        parent::render_form_elements($mform);
-    }
-
-    /**
      * This will handle how form data will be saved into the data column in the
      * coursepayment_elements table.
      *

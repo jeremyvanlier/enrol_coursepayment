@@ -36,16 +36,13 @@ class report {
     /**
      * table_overview_courses
      *
-     * @param int  $courseid
-     *
      * @param      $datafilter
-     * @param bool $returntable
      *
      * @throws \coding_exception
      * @throws \dml_exception
      * @throws \moodle_exception
      */
-    public static function table_overview_courses($courseid = 1, $datafilter, $returntable = false) {
+    public static function table_overview_courses($datafilter) {
         global $PAGE;
         $columns = [
             'firstname',

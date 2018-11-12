@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * table discount code
+ * Table discount code
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
@@ -45,12 +45,11 @@ class discountcode extends \table_sql {
     /**
      * __constructor
      *
-     * @param string           $uniqueid
+     * @param string $uniqueid
      *
-     * @global moodle_database $DB
      * @throws \dml_exception
      */
-    function __construct($uniqueid) {
+    public function __construct($uniqueid) {
         parent::__construct($uniqueid);
 
         global $DB;
@@ -82,7 +81,8 @@ class discountcode extends \table_sql {
             'action' => 'edit',
         ]);
 
-        return \html_writer::link($edit, get_string('edit'), ['class' => 'btn btn-small']) . ' &nbsp; ' . \html_writer::link($delete, get_string('delete'), ['class' => 'delete btn btn-small btn-danger']);
+        return \html_writer::link($edit, get_string('edit'), ['class' => 'btn btn-small']) . ' &nbsp; ' .
+            \html_writer::link($delete, get_string('delete'), ['class' => 'delete btn btn-small btn-danger']);
     }
 
     /**
@@ -94,7 +94,8 @@ class discountcode extends \table_sql {
      * @throws \coding_exception
      */
     protected function col_courseid($row) {
-        return !empty($this->courses[$row->courseid]) ? $this->courses[$row->courseid] : get_string('form:allcourses', 'enrol_coursepayment');
+        return !empty($this->courses[$row->courseid]) ? $this->courses[$row->courseid] :
+            get_string('form:allcourses', 'enrol_coursepayment');
     }
 
     /**

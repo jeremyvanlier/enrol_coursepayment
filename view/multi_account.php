@@ -1,4 +1,4 @@
-<?php /** @noinspection ALL */
+<?php
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -32,17 +32,17 @@ if (!has_capability('enrol/coursepayment:config', $context)) {
     print_error("error:capability_config", 'enrol_coursepayment');
 }
 $PAGE->navbar->add(get_string('pluginname', 'enrol_coursepayment'),
-    new moodle_url('/admin/settings.php', array('section' => 'enrolsettingscoursepayment')));
+    new moodle_url('/admin/settings.php', ['section' => 'enrolsettingscoursepayment']));
 $PAGE->navbar->add(get_string('enrol_coursepayment_multi_account', 'enrol_coursepayment'));
 $PAGE->set_context($context);
 $PAGE->set_title(get_string('enrol_coursepayment_multi_account', 'enrol_coursepayment'));
 
 $action = optional_param('action', false, PARAM_ALPHA);
 $id = optional_param('id', false, PARAM_INT);
-$PAGE->set_url('/enrol/coursepayment/view/multi_account.php', array(
+$PAGE->set_url('/enrol/coursepayment/view/multi_account.php', [
     'action' => $action,
     'id' => $id,
-));
+]);
 
 switch ($action) {
     case 'delete':

@@ -84,10 +84,6 @@ class element extends \enrol_coursepayment\invoice\element {
     public function render($pdf, $preview, $user, array $data = []) {
         $courseid = 1;
 
-        if (!$preview) {
-
-        }
-
         $text = format_text($this->get_data(), FORMAT_HTML, ['context' => \context_course::instance($courseid)]);
         \enrol_coursepayment\invoice\element_helper::render_content($pdf, $this, $text);
     }

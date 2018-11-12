@@ -37,8 +37,9 @@ class report_courses extends \flexible_table {
      *
      * @param int $uniqueid
      */
-    function __construct($uniqueid) {
+    public function __construct($uniqueid) {
         parent::__construct($uniqueid);
+
         require_once __DIR__ . '/sort.php';
         $this->request = [
             TABLE_VAR_SORT => 'tsort',
@@ -99,7 +100,7 @@ class report_courses extends \flexible_table {
             // Map keys to decorators.
             array_walk($row, function (&$value, $key) use ($row) {
 
-                // Real magic :)
+                // Real magic :).
                 if (is_callable([$this, 'col_' . $key])) {
                     $value = $this->{'col_' . $key}($row);
                 }

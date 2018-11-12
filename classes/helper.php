@@ -91,13 +91,13 @@ class enrol_coursepayment_helper {
     public static function get_profile_field_data($fieldid, $userid) {
         global $DB;
 
-        if(empty($fieldid)){
+        if (empty($fieldid)) {
             return '';
         }
 
         $field = $DB->get_record('user_info_field', ['id' => $fieldid], '*', MUST_EXIST);
 
-        // Single user mode
+        // Single user mode.
         $row = $DB->get_record('user_info_data', [
             'fieldid' => $field->id,
             'userid' => $userid,
@@ -170,15 +170,15 @@ class enrol_coursepayment_helper {
      *
      * @return mixed|string
      */
-    public static function parse_text($text = '', stdClass $obj) {
+    public static function parse_text($text, stdClass $obj) {
         if (preg_match_all('/\{+\w+\}/', $text, $matches)) {
 
             foreach ($matches[0] as $match) {
 
-                $matchClean = str_replace(['{', '}'], '', $match);
+                $matchclean = str_replace(['{', '}'], '', $match);
 
-                if (property_exists($obj, $matchClean)) {
-                    $text = str_replace($match, $obj->$matchClean, $text);
+                if (property_exists($obj, $matchclean)) {
+                    $text = str_replace($match, $obj->$matchclean, $text);
                 }
             }
         }

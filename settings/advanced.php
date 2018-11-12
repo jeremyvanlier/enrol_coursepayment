@@ -34,7 +34,7 @@ $settings->add(new admin_setting_configselect('enrol_coursepayment/debug',
     get_string('debug', 'enrol_coursepayment'),
     get_string('debug_desc', 'enrol_coursepayment'), 0, $yesno));
 
-// enrol instance defaults
+// Enrol instance defaults.
 $settings->add(new admin_setting_heading('enrol_coursepayment_defaults',
     get_string('enrolinstancedefaults', 'admin'),
     get_string('enrolinstancedefaults_desc', 'admin')));
