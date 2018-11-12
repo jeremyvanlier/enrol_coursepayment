@@ -41,47 +41,47 @@ class multiaccount extends \moodleform {
 
         $mform->addElement('header', 'header1', get_string('form:multi_account', 'enrol_coursepayment'));
 
-        $mform->addElement('text', 'name', get_string('form:name_multiaccount', 'enrol_coursepayment'), array('size' => '48',));
+        $mform->addElement('text', 'name', get_string('form:name_multiaccount', 'enrol_coursepayment'), ['size' => '48',]);
         $mform->setType('name', PARAM_TEXT);
         $mform->addRule('name', null, 'required', null, 'client');
 
-        $mform->addElement('text', 'profile_value', get_string('form:profile_value', 'enrol_coursepayment'), array('size' => '48',));
+        $mform->addElement('text', 'profile_value', get_string('form:profile_value', 'enrol_coursepayment'), ['size' => '48',]);
         $mform->setType('profile_value', PARAM_TEXT);
         $mform->addRule('profile_value', null, 'required', null, 'client');
 
         $mform->addElement('header', 'header2', get_string('form:company_info', 'enrol_coursepayment'));
 
-        $mform->addElement('text', 'company_name', get_string('form:company_name', 'enrol_coursepayment'), array('size' => '48',));
+        $mform->addElement('text', 'company_name', get_string('form:company_name', 'enrol_coursepayment'), ['size' => '48',]);
         $mform->setType('company_name', PARAM_TEXT);
         $mform->addRule('company_name', null, 'required', null, 'client');
 
-        $mform->addElement('text', 'address', get_string('form:address', 'enrol_coursepayment'), array('size' => '48',));
+        $mform->addElement('text', 'address', get_string('form:address', 'enrol_coursepayment'), ['size' => '48',]);
         $mform->setType('address', PARAM_TEXT);
         $mform->addRule('address', null, 'required', null, 'client');
 
-        $mform->addElement('text', 'place', get_string('form:place', 'enrol_coursepayment'), array('size' => '48',));
+        $mform->addElement('text', 'place', get_string('form:place', 'enrol_coursepayment'), ['size' => '48',]);
         $mform->setType('place', PARAM_TEXT);
         $mform->addRule('place', null, 'required', null, 'client');
 
-        $mform->addElement('text', 'zipcode', get_string('form:zipcode', 'enrol_coursepayment'), array('size' => '48',));
+        $mform->addElement('text', 'zipcode', get_string('form:zipcode', 'enrol_coursepayment'), ['size' => '48',]);
         $mform->setType('zipcode', PARAM_TEXT);
         $mform->addRule('zipcode', null, 'required', null, 'client');
 
-        $mform->addElement('text', 'btw', get_string('form:btw', 'enrol_coursepayment'), array('size' => '48',));
+        $mform->addElement('text', 'btw', get_string('form:btw', 'enrol_coursepayment'), ['size' => '48',]);
         $mform->setType('btw', PARAM_TEXT);
         $mform->addRule('btw', null, 'required', null, 'client');
 
-        $mform->addElement('text', 'kvk', get_string('form:kvk', 'enrol_coursepayment'), array('size' => '48',));
+        $mform->addElement('text', 'kvk', get_string('form:kvk', 'enrol_coursepayment'), ['size' => '48',]);
         $mform->setType('kvk', PARAM_TEXT);
         $mform->addRule('kvk', null, 'required', null, 'client');
 
         $mform->addElement('header', 'header3', get_string('form:mollie', 'enrol_coursepayment'));
 
-        $mform->addElement('text', 'gateway_mollie_apikey', get_string('gateway_mollie_apikey', 'enrol_coursepayment'), array('size' => '48',));
+        $mform->addElement('text', 'gateway_mollie_apikey', get_string('gateway_mollie_apikey', 'enrol_coursepayment'), ['size' => '48',]);
         $mform->setType('gateway_mollie_apikey', PARAM_TEXT);
         $mform->addRule('gateway_mollie_apikey', null, 'required', null, 'client');
 
-        $mform->addElement('text', 'gateway_mollie_partner_id', get_string('gateway_mollie_partner_id', 'enrol_coursepayment'), array('size' => '48',));
+        $mform->addElement('text', 'gateway_mollie_partner_id', get_string('gateway_mollie_partner_id', 'enrol_coursepayment'), ['size' => '48',]);
         $mform->setType('gateway_mollie_partner_id', PARAM_TEXT);
         $mform->addRule('gateway_mollie_partner_id', null, 'required', null, 'client');
 

@@ -30,7 +30,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once('edit_form.php');
 
 $courseid = required_param('courseid', PARAM_INT);
-$instanceid = optional_param('id', 0, PARAM_INT); // instanceid
+$instanceid = optional_param('id', 0, PARAM_INT); // Instanceid.
 
 $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
 $context = context_course::instance($course->id, MUST_EXIST);
@@ -57,7 +57,7 @@ if ($instanceid) {
     $instance->cost = format_float($instance->cost, 2, true);
 } else {
     require_capability('moodle/course:enrolconfig', $context);
-    // no instance yet, we have to add new instance
+    // No instance yet, we have to add new instance.
     navigation_node::override_active_url(new moodle_url('/enrol/instances.php', ['id' => $course->id]));
     $instance = new stdClass();
     $instance->id = null;

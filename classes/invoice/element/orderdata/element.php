@@ -75,22 +75,22 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @throws \coding_exception
      */
-    public function render($pdf, $preview, $user,array $data = []) {
+    public function render($pdf, $preview, $user, array $data = []) {
         global $PAGE;
 
-        if($preview){
-            $obj = (object) [
+        if ($preview) {
+            $obj = (object)[
                 'width' => '480',
                 'vat' => 21,
-                'subtotal' => number_format(100 , 2, ',' , ''),
-                'total' => number_format(121 , 2, ',' , ''),
-                'vat_price' => number_format(21 , 2, ',' , ''),
-                'coursename' => get_string('orderdata:dummy_course' , 'enrol_coursepayment'),
+                'subtotal' => number_format(100, 2, ',', ''),
+                'total' => number_format(121, 2, ',', ''),
+                'vat_price' => number_format(21, 2, ',', ''),
+                'coursename' => get_string('orderdata:dummy_course', 'enrol_coursepayment'),
             ];
-        }else{
-            $obj = (object) [
+        } else {
+            $obj = (object)[
                 'width' => '480',
-                'vat' =>  $data['a']->vatpercentage,
+                'vat' => $data['a']->vatpercentage,
                 'subtotal' => $data['a']->costsub,
                 'total' => $data['a']->cost,
                 'vat_price' => $data['a']->costvat,
@@ -99,7 +99,7 @@ class element extends \enrol_coursepayment\invoice\element {
         }
 
         $renderer = $PAGE->get_renderer('enrol_coursepayment');
-        $text = $renderer->render_template('enrol_coursepayment/element_orderdata' , $obj);
+        $text = $renderer->render_template('enrol_coursepayment/element_orderdata', $obj);
 
         \enrol_coursepayment\invoice\element_helper::render_content($pdf, $this, $text);
     }
@@ -115,18 +115,19 @@ class element extends \enrol_coursepayment\invoice\element {
      */
     public function render_html() {
         global $PAGE;
-        $dummydata = (object) [
+        $dummydata = (object)[
             'width' => '500',
             'vat' => 21,
-            'subtotal' => number_format(100 , 2, ',' , ''),
-            'total' => number_format(121 , 2, ',' , ''),
-            'vat_price' => number_format(21 , 2, ',' , ''),
-            'coursename' => get_string('orderdata:dummy_course' , 'enrol_coursepayment'),
-            'color' => $this->get_colour()
+            'subtotal' => number_format(100, 2, ',', ''),
+            'total' => number_format(121, 2, ',', ''),
+            'vat_price' => number_format(21, 2, ',', ''),
+            'coursename' => get_string('orderdata:dummy_course', 'enrol_coursepayment'),
+            'color' => $this->get_colour(),
         ];
 
         $renderer = $PAGE->get_renderer('enrol_coursepayment');
-        return $renderer->render_template('enrol_coursepayment/element_orderdata' , $dummydata);
+
+        return $renderer->render_template('enrol_coursepayment/element_orderdata', $dummydata);
     }
 
     /**

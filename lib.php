@@ -42,7 +42,10 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * @throws coding_exception
      */
     public function get_info_icons(array $instances) {
-        return [new pix_icon('icon', get_string('pluginname', 'enrol_coursepayment'), 'enrol_coursepayment')];
+        return [
+            new pix_icon('icon', get_string('pluginname', 'enrol_coursepayment'),
+                'enrol_coursepayment'),
+        ];
     }
 
     /**
@@ -155,7 +158,8 @@ class enrol_coursepayment_plugin extends enrol_plugin {
                 'courseid' => $instance->courseid,
                 'id' => $instance->id,
             ]);
-            $icons[] = $OUTPUT->action_icon($editlink, new pix_icon('t/edit', get_string('edit'), 'core', ['class' => 'iconsmall']));
+            $icons[] = $OUTPUT->action_icon($editlink, new pix_icon('t/edit', get_string('edit'),
+                'core', ['class' => 'iconsmall']));
         }
 
         return $icons;
@@ -173,11 +177,12 @@ class enrol_coursepayment_plugin extends enrol_plugin {
     public function get_newinstance_link($courseid) {
         $context = context_course::instance($courseid, MUST_EXIST);
 
-        if (!has_capability('moodle/course:enrolconfig', $context) or !has_capability('enrol/coursepayment:config', $context)) {
+        if (!has_capability('moodle/course:enrolconfig', $context) or
+            !has_capability('enrol/coursepayment:config', $context)) {
             return null;
         }
 
-        // multiple instances supported - different cost for different roles
+        // Multiple instances supported - different cost for different roles.
         return new moodle_url('/enrol/coursepayment/view/invoice_edit.php', ['courseid' => $courseid]);
     }
 
@@ -213,19 +218,20 @@ class enrol_coursepayment_plugin extends enrol_plugin {
 
         $cost = (float)($instance->cost <= 0) ? $this->get_config('cost') : $instance->cost;
 
-        if (abs($cost) < 0.01 || isguestuser()) { // no cost, other enrolment methods (instances) should be used
+        if (abs($cost) < 0.01 || isguestuser()) {
+            // No cost, other enrolment methods (instances) should be used.
             return ob_get_clean();
         }
 
-        // Get the course
+        // Get the course.
         if ($COURSE->id == $instance->courseid) {
-            // Prevent extra query if possible
+            // Prevent extra query if possible.
             $course = $COURSE;
         } else {
             $course = $DB->get_record('course', ['id' => $instance->courseid], '*', MUST_EXIST);
         }
 
-        // Set main gateway javascript
+        // Set main gateway javascript.
         $jsmodule = [
             'name' => 'enrol_coursepayment_gateway',
             'fullpath' => '/enrol/coursepayment/js/gateway.js',
@@ -238,7 +244,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
             $course->id,
         ], false, $jsmodule);
 
-        // Config to send to the gateways
+        // Config to send to the gateways.
         $config = new stdClass();
         $config->instanceid = $instance->id;
         $config->courseid = $instance->courseid;
@@ -252,7 +258,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
         $config->locale = $USER->lang;
         $config->customint1 = $instance->customint1;
 
-        // you can set a custom text to be shown instead of instance name
+        // You can set a custom text to be shown instead of instance name.
         $name = !empty($instance->customtext1) ? $instance->customtext1 : $config->instancename;
 
         echo '<div align="center">
@@ -260,7 +266,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
                             <p><b>' . get_string("cost") . ': <span id="coursepayment_cost">' . $config->localisedcost . '</span> ' . $instance->currency . ' </b></p>
                           </div>';
 
-        // payment method is selected
+        // Payment method is selected.
         if (!empty($gatewaymethod)) {
 
             $gateway = 'enrol_coursepayment_' . $gatewaymethod;
@@ -277,7 +283,6 @@ class enrol_coursepayment_plugin extends enrol_plugin {
                 ]));
             }
 
-            /* @var enrol_coursepayment_gateway $gateway */
             $gateway = new $gateway();
             $gateway->set_instanceconfig($config);
             echo $gateway->order_form();
@@ -287,13 +292,12 @@ class enrol_coursepayment_plugin extends enrol_plugin {
             $allgateways = $this->get_gateways();
             foreach ($allgateways as $gateway => $gatewaystring) {
 
-                // loop throw all available gateways and add there button to course page
+                // Loop throw all available gateways and add there button to course page.
                 $gateway = 'enrol_coursepayment_' . $gateway;
                 if (!class_exists($gateway)) {
                     continue;
                 }
 
-                /* @var enrol_coursepayment_gateway $gateway */
                 $gateway = new $gateway();
                 echo $gateway->show_payment_button();
             }
@@ -473,7 +477,6 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      *
      * @return array
      * @throws coding_exception
-     * @throws dml_exception
      */
     public function order_valid($orderid = '', $gateway = '') {
         $return = ['status' => false, 'message' => ''];
@@ -485,11 +488,9 @@ class enrol_coursepayment_plugin extends enrol_plugin {
             return $return;
         }
 
-        /* @var enrol_coursepayment_gateway $gateway */
         $gateway = new $gateway();
-        $return = $gateway->validate_order($orderid);
 
-        return $return;
+        return ['status' => $gateway->validate_order($orderid)];
     }
 
     /**
@@ -547,7 +548,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
  * @param bool   $forcedownload
  * @param        $sendfileoptions
  *
- * @return bool may terminate if file not found or donotdie not specified
+ * @return void may terminate if file not found or donotdie not specified
  */
 function enrol_coursepayment_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, $sendfileoptions) {
     global $CFG;

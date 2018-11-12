@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unenrol a user from enrol_coursepayment
+ * Unenrol a user from enrol_coursepayment
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
@@ -42,7 +42,7 @@ if (!is_enrolled($context)) {
 
 $plugin = enrol_get_plugin('coursepayment');
 
-// security defined inside following function
+// Security defined inside following function.
 if (!$plugin->get_unenrolself_link($instance)) {
     redirect(new moodle_url('/course/view.php', ['id' => $course->id]));
 }

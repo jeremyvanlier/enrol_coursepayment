@@ -25,6 +25,8 @@
  */
 
 require_once(dirname(__FILE__) . '/../../../config.php');
+defined('MOODLE_INTERNAL') || die();
+
 require_once($CFG->libdir . '/tablelib.php');
 require_login();
 
@@ -33,6 +35,7 @@ $context = context_system::instance();
 if (!has_capability('enrol/coursepayment:config', $context)) {
     print_error("error:capability_config", 'enrol_coursepayment');
 }
+
 // Get plugin config.
 $config = get_config('enrol_coursepayment');
 
@@ -40,8 +43,9 @@ if (empty($config->gateway_mollie_parent_api)) {
     throw new Exception('Error: gateway_mollie_parent_api is missing!');
 }
 
-// set navbar
-$PAGE->navbar->add(get_string('pluginname', 'enrol_coursepayment'), new moodle_url('/admin/settings.php', array('section' => 'enrolsettingscoursepayment')));
+// Set navbar.
+$PAGE->navbar->add(get_string('pluginname', 'enrol_coursepayment'), new moodle_url('/admin/settings.php',
+    ['section' => 'enrolsettingscoursepayment']));
 $PAGE->navbar->add(get_string('enrol_coursepayment_newaccount', 'enrol_coursepayment'));
 $PAGE->set_context($context);
 $PAGE->set_title(get_string('enrol_coursepayment_newaccount', 'enrol_coursepayment'));
@@ -52,7 +56,7 @@ $PAGE->set_url('/enrol/coursepayment/view/newaccount.php');
 
 $form = new \enrol_coursepayment\form\newaccount($PAGE->url);
 
-// cancel form
+// Cancel form.
 if ($form->is_cancelled()) {
     redirect(new \moodle_url('/admin/settings.php?section=enrolsettingscoursepayment'));
 }
@@ -63,13 +67,11 @@ if (($data = $form->get_data()) != false) {
     $data->username = $data->email;
     $response = enrol_coursepayment_helper::post_request($config->gateway_mollie_parent_api, [
         'data' => serialize($data),
-        'action' => 'newaccount'
+        'action' => 'newaccount',
     ]);
 
-    echo '<pre>';print_r($response);echo '</pre>';die(__LINE__.' '.__FILE__);
     $response = json_decode($response);
-
-    if(!empty($response->error)){
+    if (!empty($response->error)) {
         throw new Exception($response->error);
     }
 

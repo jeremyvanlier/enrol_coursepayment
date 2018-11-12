@@ -42,7 +42,7 @@ class tabs extends \admin_setting {
      *
      * @throws \coding_exception
      */
-    public function __construct($name, $section , $default = '') {
+    public function __construct($name, $section, $default = '') {
         parent::__construct($name, '', '', '');
         $this->section = $section;
 
@@ -76,10 +76,10 @@ class tabs extends \admin_setting {
             if ($data['action'] == 1) {
                 $result = $this->reset();
 
-            } elseif ($data['action'] == 2) {
+            } else if ($data['action'] == 2) {
                 $result = $this->import($data['picker']);
 
-            } elseif ($data['action'] == 3) {
+            } else if ($data['action'] == 3) {
                 $result = $this->export();
             }
         }

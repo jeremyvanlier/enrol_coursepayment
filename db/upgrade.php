@@ -40,7 +40,7 @@ function xmldb_enrol_coursepayment_upgrade($oldversion) {
 
     $dbman = $DB->get_manager();
 
-    // add discount code feature
+    // Add discount code feature.
     if ($oldversion < 2015051500) {
 
         // Define field discountdata to be added to enrol_coursepayment.
@@ -74,7 +74,7 @@ function xmldb_enrol_coursepayment_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2015051500, 'enrol', 'coursepayment');
     }
 
-    // ADD support for invoice numbers
+    // Add support for invoice numbers.
     if ($oldversion < 2015061201) {
 
         // Define field invoice_number to be added to enrol_coursepayment.
@@ -91,7 +91,7 @@ function xmldb_enrol_coursepayment_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2015061201, 'enrol', 'coursepayment');
     }
 
-    // ADD vat support
+    // Add vat support.
     if ($oldversion < 2015061203) {
 
         // Define field invoice_number to be added to enrol_coursepayment.

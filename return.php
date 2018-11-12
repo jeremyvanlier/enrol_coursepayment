@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * return page after a payment
+ * Return page after a payment
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
@@ -39,7 +39,7 @@ $order = $DB->get_record('enrol_coursepayment', ['orderid' => $orderid], '*', MU
 $course = $DB->get_record('course', ['id' => $order->courseid], '*', MUST_EXIST);
 $context = context_course::instance($order->courseid);
 
-// not for guests this
+// Not for guests this.
 if (isguestuser()) {
     redirect('/');
 }
@@ -65,13 +65,13 @@ if ($return['status'] == true) {
             '</p>');
     }
 
-    // this order is paid we should enrol the user and notify
-    // send a success message to the user
+    // This order is paid we should enrol the user and notify.
+    // Send a success message to the user.
     echo $OUTPUT->continue_button(new moodle_url('/course/view.php', ['id' => $course->id]));
 
 } else {
 
-    // send a status message to user
+    // Send a status message to user.
     echo $OUTPUT->notification($return['message']);
     echo $OUTPUT->continue_button($CFG->wwwroot . '/my');
 }

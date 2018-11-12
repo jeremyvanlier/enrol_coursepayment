@@ -30,7 +30,7 @@ require_once($CFG->libdir . '/formslib.php');
 
 class enrol_coursepayment_edit_form extends moodleform {
 
-    function definition() {
+    public function definition() {
         $mform = $this->_form;
 
         list($instance, $plugin, $context) = $this->_customdata;
@@ -46,25 +46,27 @@ class enrol_coursepayment_edit_form extends moodleform {
         $mform->addElement('text', 'customtext2', get_string('customtext2', 'enrol_coursepayment'));
         $mform->setType('customtext2', PARAM_TEXT);
 
-        $options = array(
+        $options = [
             ENROL_INSTANCE_ENABLED => get_string('yes'),
             ENROL_INSTANCE_DISABLED => get_string('no'),
-        );
+        ];
         $mform->addElement('select', 'status', get_string('status', 'enrol_coursepayment'), $options);
         $mform->setDefault('status', $plugin->get_config('status'));
 
-        $mform->addElement('text', 'cost', get_string('cost', 'enrol_coursepayment'), array('size' => 4));
+        $mform->addElement('text', 'cost', get_string('cost', 'enrol_coursepayment'), ['size' => 4]);
         $mform->setType('cost', PARAM_RAW); // Use unformat_float to get real value.
 
         $mform->setDefault('cost', format_float(str_replace(',', '.', $plugin->get_config('cost')),
             2, true));
 
         $coursepaymentcurrencies = $plugin->get_currencies();
-        $mform->addElement('select', 'currency', get_string('currency', 'enrol_coursepayment'), $coursepaymentcurrencies);
+        $mform->addElement('select', 'currency', get_string('currency', 'enrol_coursepayment'),
+            $coursepaymentcurrencies);
         $mform->setDefault('currency', $plugin->get_config('currency'));
 
         $vatpercentages = $plugin->get_vat_percentages();
-        $mform->addElement('select', 'customint1', get_string('vatpercentages', 'enrol_coursepayment'), $vatpercentages);
+        $mform->addElement('select', 'customint1', get_string('vatpercentages', 'enrol_coursepayment'),
+            $vatpercentages);
         $mform->setDefault('customint1', $plugin->get_config('vatpercentage'));
 
         if ($instance->id) {
@@ -72,21 +74,25 @@ class enrol_coursepayment_edit_form extends moodleform {
         } else {
             $roles = get_default_enrol_roles($context, $plugin->get_config('roleid'));
         }
-        $mform->addElement('select', 'roleid', get_string('assignrole', 'enrol_coursepayment'), $roles);
+        $mform->addElement('select', 'roleid', get_string('assignrole', 'enrol_coursepayment'),
+            $roles);
         $mform->setDefault('roleid', $plugin->get_config('roleid'));
 
-        $mform->addElement('duration', 'enrolperiod', get_string('enrolperiod', 'enrol_coursepayment'), array(
+        $mform->addElement('duration', 'enrolperiod', get_string('enrolperiod', 'enrol_coursepayment'), [
             'optional' => true,
             'defaultunit' => 86400,
-        ));
+        ]);
         $mform->setDefault('enrolperiod', $plugin->get_config('enrolperiod'));
         $mform->addHelpButton('enrolperiod', 'enrolperiod', 'enrol_coursepayment');
 
-        $mform->addElement('date_time_selector', 'enrolstartdate', get_string('enrolstartdate', 'enrol_coursepayment'), array('optional' => true));
+        $mform->addElement('date_time_selector', 'enrolstartdate', get_string('enrolstartdate',
+            'enrol_coursepayment'), ['optional' => true]);
+
         $mform->setDefault('enrolstartdate', 0);
         $mform->addHelpButton('enrolstartdate', 'enrolstartdate', 'enrol_coursepayment');
 
-        $mform->addElement('date_time_selector', 'enrolenddate', get_string('enrolenddate', 'enrol_coursepayment'), array('optional' => true));
+        $mform->addElement('date_time_selector', 'enrolenddate', get_string('enrolenddate',
+            'enrol_coursepayment'), ['optional' => true]);
         $mform->setDefault('enrolenddate', 0);
         $mform->addHelpButton('enrolenddate', 'enrolenddate', 'enrol_coursepayment');
 
@@ -96,33 +102,32 @@ class enrol_coursepayment_edit_form extends moodleform {
         $mform->addElement('hidden', 'courseid');
         $mform->setType('courseid', PARAM_INT);
 
-        $options = array(
+        $options = [
             0 => get_string('no'),
             1 => get_string('expirynotifyenroller', 'core_enrol'),
             2 => get_string('expirynotifyall', 'core_enrol'),
-        );
+        ];
         $mform->addElement('select', 'expirynotify', get_string('expirynotify', 'core_enrol'), $options);
         $mform->addHelpButton('expirynotify', 'expirynotify', 'core_enrol');
 
-        $mform->addElement('duration', 'expirythreshold', get_string('expirythreshold', 'core_enrol'), array(
+        $mform->addElement('duration', 'expirythreshold', get_string('expirythreshold', 'core_enrol'), [
             'optional' => false,
             'defaultunit' => 86400,
-        ));
+        ]);
         $mform->addHelpButton('expirythreshold', 'expirythreshold', 'core_enrol');
         $mform->disabledIf('expirythreshold', 'expirynotify', 'eq', 0);
 
         if (enrol_accessing_via_instance($instance)) {
-            $mform->addElement('static', 'selfwarn', get_string('instanceeditselfwarning', 'core_enrol'), get_string('instanceeditselfwarningtext', 'core_enrol'));
+            $mform->addElement('static', 'selfwarn', get_string('instanceeditselfwarning', 'core_enrol'),
+                get_string('instanceeditselfwarningtext', 'core_enrol'));
         }
 
         $this->add_action_buttons(true, ($instance->id ? null : get_string('addinstance', 'enrol')));
 
-
-        //echo '<pre>';print_r($instance);echo '</pre>';die(__LINE__.' '.__FILE__);
         $this->set_data($instance);
     }
 
-    function validation($data, $files) {
+    public function validation($data, $files) {
 
         $errors = parent::validation($data, $files);
 

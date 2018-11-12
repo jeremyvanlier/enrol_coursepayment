@@ -53,7 +53,7 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @throws \dml_exception
      */
-    public function render($pdf, $preview, $user,array $data = []) {
+    public function render($pdf, $preview, $user, array $data = []) {
         \enrol_coursepayment\invoice\element_helper::render_content($pdf, $this, self::get_category_name($data));
     }
 
@@ -89,6 +89,7 @@ class element extends \enrol_coursepayment\invoice\element {
         // Check that there is a course category available.
         if (!empty($course->category)) {
             $categoryname = $DB->get_field('course_categories', 'name', ['id' => $course->category], MUST_EXIST);
+
             return format_string($categoryname, true, ['context' => \context_course::instance($course->id)]);
         } else { // Must be in a site template.
             return format_string($SITE->fullname, true, ['context' => \context_system::instance()]);

@@ -42,16 +42,16 @@ $context = context_system::instance();
 $PAGE->set_context($context);
 
 // Course.
-$course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
+$course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
 $PAGE->set_title($course->fullname);
 
 $PAGE->requires->css('/enrol/coursepayment/gateway_' . $gateway . '.css');
 
 // Enrol instance.
-$instance = $DB->get_record('enrol', array('id' => $instanceid, 'courseid' => $course->id), '*', MUST_EXIST);
+$instance = $DB->get_record('enrol', ['id' => $instanceid, 'courseid' => $course->id], '*', MUST_EXIST);
 
 // Protection.
-if ($DB->record_exists('user_enrolments', array('userid' => $USER->id, 'enrolid' => $instance->id))) {
+if ($DB->record_exists('user_enrolments', ['userid' => $USER->id, 'enrolid' => $instance->id])) {
     redirect(new moodle_url('/'));
 }
 
@@ -65,21 +65,22 @@ if ($instance->enrolenddate != 0 && $instance->enrolenddate < time()) {
 
 $cost = (float)($instance->cost <= 0) ? $this->get_config('cost') : $instance->cost;
 
-if (abs($cost) < 0.01 || isguestuser()) { // no cost, other enrolment methods (instances) should be used
+if (abs($cost) < 0.01 || isguestuser()) {
+    // No cost, other enrolment methods (instances) should be used.
     redirect(new moodle_url('/'));
 }
 
-$PAGE->requires->js_init_call('M.enrol_coursepayment_mollie_standalone.init', array(
+$PAGE->requires->js_init_call('M.enrol_coursepayment_mollie_standalone.init', [
     $CFG->wwwroot . '/enrol/coursepayment/ajax.php',
     sesskey(),
-    $course->id
-), false, array(
+    $course->id,
+], false, [
     'name' => 'enrol_coursepayment_mollie_standalone',
     'fullpath' => '/enrol/coursepayment/js/mollie_standalone.js',
-    'requires' => array('node', 'io')
-));
+    'requires' => ['node', 'io'],
+]);
 
-// Config to send to the gateways
+// Config to send to the gateways.
 $config = new stdClass();
 $config->instanceid = $instance->id;
 $config->courseid = $instance->courseid;
@@ -97,13 +98,12 @@ $gateway = 'enrol_coursepayment_' . $gateway;
 if (!class_exists($gateway)) {
     throw new Exception('Gateway not exists');
 }
-/* @var enrol_coursepayment_gateway $gateway */
+
 $gateway = new $gateway();
 $gateway->set_instanceconfig($config);
 
-$form =  $gateway->order_form(true);
+$form = $gateway->order_form(true);
 
 echo $OUTPUT->header();
 echo $form;
 echo $OUTPUT->footer();
-

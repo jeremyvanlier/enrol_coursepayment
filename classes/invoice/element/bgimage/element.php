@@ -77,7 +77,7 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
      * @param \stdClass $user    the user we are rendering this for
      * @param array     $data
      */
-    public function render($pdf, $preview, $user ,array $data = []) {
+    public function render($pdf, $preview, $user, array $data = []) {
         // If there is no element data, we have nothing to display.
         if (empty($this->get_data())) {
             return;

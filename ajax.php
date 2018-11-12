@@ -62,9 +62,8 @@ if (!confirm_sesskey($sesskey)) {
 if (empty($array['error'])) {
 
     switch ($action) {
-        /**
-         * Sending a request to a reseller to claim this account.
-         */
+
+        // Sending a request to a reseller to claim this account.
         case 'accountclaim':
             if (empty($config->gateway_mollie_account_claim)) {
 
@@ -95,9 +94,7 @@ if (empty($array['error'])) {
 
             break;
 
-        /**
-         * Validate a discount code.
-         */
+        // Validate a discount code.
         case 'discountcode':
             $discountinstance = new enrol_coursepayment_discountcode($data, $courseid);
             $row = $discountinstance->getDiscountcode();

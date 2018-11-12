@@ -76,11 +76,11 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @throws \dml_exception
      */
-    public function render($pdf, $preview, $user,array $data = []) {
+    public function render($pdf, $preview, $user, array $data = []) {
         global $PAGE;
 
         $renderer = $PAGE->get_renderer('enrol_coursepayment');
-        $text = $renderer->render_template('enrol_coursepayment/element_invoiceinfo' , $this->get_invoiceinfo(false , $data));
+        $text = $renderer->render_template('enrol_coursepayment/element_invoiceinfo', $this->get_invoiceinfo(false, $data));
 
         \enrol_coursepayment\invoice\element_helper::render_content($pdf, $this, $text);
     }
@@ -98,7 +98,7 @@ class element extends \enrol_coursepayment\invoice\element {
     public function get_invoiceinfo($includedummydata = false, array $data = []) {
         $pluginconfig = get_config('enrol_coursepayment');
 
-        $invoiceinfo = (object) [
+        $invoiceinfo = (object)[
             'companyname' => $pluginconfig->companyname,
             'address' => $pluginconfig->address,
             'place' => $pluginconfig->place,
@@ -108,10 +108,10 @@ class element extends \enrol_coursepayment\invoice\element {
             'date' => date('d-m-Y, H:i'),
         ];
 
-        if($includedummydata){
+        if ($includedummydata) {
             $invoiceinfo->description = 'TEST';
-            $invoiceinfo->invoice_number =  'CPAY' . date("Y") . sprintf('%08d', 1);
-        }else{
+            $invoiceinfo->invoice_number = 'CPAY' . date("Y") . sprintf('%08d', 1);
+        } else {
             $invoiceinfo->invoice_number = $data['a']->invoice_number;
             $invoiceinfo->description = $data['a']->description;
         }
@@ -132,7 +132,8 @@ class element extends \enrol_coursepayment\invoice\element {
         global $PAGE;
 
         $renderer = $PAGE->get_renderer('enrol_coursepayment');
-        return $renderer->render_template('enrol_coursepayment/element_invoiceinfo' , $this->get_invoiceinfo(true));
+
+        return $renderer->render_template('enrol_coursepayment/element_invoiceinfo', $this->get_invoiceinfo(true));
     }
 
     /**

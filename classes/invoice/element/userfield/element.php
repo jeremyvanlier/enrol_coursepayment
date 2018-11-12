@@ -110,7 +110,7 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @throws \dml_exception
      */
-    public function render($pdf, $preview, $user,array $data = []) {
+    public function render($pdf, $preview, $user, array $data = []) {
         global $CFG, $DB;
 
         // The user field to display.
@@ -170,6 +170,7 @@ class element extends \enrol_coursepayment\invoice\element {
         }
 
         $value = format_string($value, true, ['context' => \context_course::instance(1)]);
+
         return \enrol_coursepayment\invoice\element_helper::render_html_content($this, $value);
     }
 

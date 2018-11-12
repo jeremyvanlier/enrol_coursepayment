@@ -43,7 +43,7 @@ class overview_courses_filter extends \moodleform {
 
         $mform = &$this->_form;
 
-        $mform->addElement('text' , 'search' ,  get_string('form:search', 'enrol_coursepayment'));
+        $mform->addElement('text', 'search', get_string('form:search', 'enrol_coursepayment'));
         $mform->setType('search', PARAM_TEXT);
 
         $array = ['' => get_string('form:make_selection', 'enrol_coursepayment')];

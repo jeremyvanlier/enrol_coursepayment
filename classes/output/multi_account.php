@@ -19,10 +19,11 @@
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @package coursepayment
+ * @package   coursepayment
  * @copyright 2017 MFreak.nl
  * @author    Luuk Verhoeven
  **/
+
 namespace enrol_coursepayment\output;
 defined('MOODLE_INTERNAL') || die;
 
@@ -55,4 +56,4 @@ class multi_account implements renderable, templatable {
 
         return $object;
     }
- }
+}

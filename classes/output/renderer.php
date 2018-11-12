@@ -42,7 +42,7 @@ class renderer extends plugin_renderer_base {
      * @throws \moodle_exception
      */
     public function render_template(string $string, \stdClass $dummydata) {
-       return $this->render_from_template($string, $dummydata);
+        return $this->render_from_template($string, $dummydata);
     }
 
     /**
@@ -56,6 +56,7 @@ class renderer extends plugin_renderer_base {
      */
     public function render_multi_account(multi_account $renderable) {
         $data = $renderable->export_for_template($this);
+
         return parent::render_from_template('enrol_coursepayment/multi_account_table', $data);
     }
 }

@@ -40,11 +40,11 @@ class discountcode extends \moodleform {
 
         $mform->addElement('header', 'header1', get_string('form:discountcode', 'enrol_coursepayment'));
 
-        $mform->addElement('text', 'code', get_string('form:code', 'enrol_coursepayment'), array('size' => '48',));
+        $mform->addElement('text', 'code', get_string('form:code', 'enrol_coursepayment'), ['size' => '48',]);
         $mform->setType('code', PARAM_ALPHANUMEXT);
         $mform->addRule('code', null, 'required', null, 'client');
 
-        $list = array(0 => get_string('form:allcourses', 'enrol_coursepayment'));
+        $list = [0 => get_string('form:allcourses', 'enrol_coursepayment')];
         $qr = $DB->get_recordset('course', null, 'fullname ASC', 'id,fullname');
         foreach ($qr as $row) {
             $list[$row->id] = $row->fullname;
@@ -75,7 +75,6 @@ class discountcode extends \moodleform {
         $this->add_action_buttons(true, get_string('form:save', 'enrol_coursepayment'));
     }
 
-
     function validation($data, $files) {
         $errors = parent::validation($data, $files);
         if (!empty($data['amount'])) {
@@ -95,7 +94,7 @@ class discountcode extends \moodleform {
                 $errors['percentage'] = get_string('error:number_to_low', 'enrol_coursepayment');
 
                 return $errors;
-            } elseif (!is_numeric($percentage)) {
+            } else if (!is_numeric($percentage)) {
                 $errors['percentage'] = get_string('error:price_wrongformat', 'enrol_coursepayment');
 
                 return $errors;
