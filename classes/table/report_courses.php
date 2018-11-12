@@ -40,7 +40,7 @@ class report_courses extends \flexible_table {
     public function __construct($uniqueid) {
         parent::__construct($uniqueid);
 
-        require_once __DIR__ . '/sort.php';
+        require_once(__DIR__ . '/sort.php');
         $this->request = [
             TABLE_VAR_SORT => 'tsort',
             TABLE_VAR_HIDE => 'thide',
@@ -121,7 +121,7 @@ class report_courses extends \flexible_table {
      */
     protected function search($filterdata, $stack) {
 
-        $needed = count((array)$filterdata) - 1; // total search filters - submit_btn.
+        $needed = count((array)$filterdata) - 1; // Total search filters - submit_btn.
 
         return array_filter($stack, function ($row) use ($filterdata, $needed) {
             $matches = 0;

@@ -118,13 +118,4 @@ class element extends \enrol_coursepayment\invoice\element {
 
         return $renderer->render_template('enrol_coursepayment/element_orderdata', $dummydata);
     }
-
-    /**
-     * Sets the data on the form when editing an element.
-     *
-     * @param \enrol_coursepayment\invoice\edit_element_form $mform the edit_form instance
-     */
-    public function definition_after_data($mform) {
-        parent::definition_after_data($mform);
-    }
 }

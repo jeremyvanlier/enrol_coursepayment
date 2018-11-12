@@ -25,7 +25,7 @@
 require_once(dirname(__FILE__) . '/../../../config.php');
 defined('MOODLE_INTERNAL') || die;
 
-// The page of the customcert we are editing.
+// The page of the coursepayment invoice we are editing.
 $pid = required_param('pid', PARAM_INT);
 
 $page = $DB->get_record('coursepayment_pages', ['id' => $pid], '*', MUST_EXIST);

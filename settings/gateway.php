@@ -56,7 +56,7 @@ if (!empty($config->multi_account)) {
         get_string('gateway_mollie_external_connector', 'enrol_coursepayment'),
         get_string('gateway_mollie_external_connector_desc', 'enrol_coursepayment'), 0, $yesno));
 
-// Check if gateway_mollie_external_connector is enabled.
+    // Check if gateway_mollie_external_connector is enabled.
     if (!empty($config->gateway_mollie_external_connector)) {
         $settings->add(new admin_setting_configtext('enrol_coursepayment/gateway_mollie_partner_id',
             get_string('gateway_mollie_partner_id', 'enrol_coursepayment'), '', '', PARAM_INT));
