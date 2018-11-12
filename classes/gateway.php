@@ -87,11 +87,11 @@ abstract class enrol_coursepayment_gateway {
     protected $config = null;
 
     /**
-     * cache the config of the plugin complete
+     * Cache the config of the plugin complete
      *
-     * @var array
+     * @var stdClass|bool
      */
-    protected $pluginconfig = [];
+    protected $pluginconfig = false;
 
     /**
      * show more debug messages to the user inline only for testing purposes
@@ -537,7 +537,7 @@ abstract class enrol_coursepayment_gateway {
     }
 
     /**
-     * Send invoice to the customer
+     * Send invoice to the customer, teacher and extra mail-accounts
      *
      * @param \stdClass $coursepayment
      * @param string    $method
@@ -561,55 +561,11 @@ abstract class enrol_coursepayment_gateway {
         $user = $DB->get_record("user", ['id' => $coursepayment->userid]);
         $course = $DB->get_record('course', ['id' => $coursepayment->courseid]);
         $context = context_course::instance($course->id, IGNORE_MISSING);
-        $invoicenumber = $coursepayment->invoice_number;
 
-        // Mail object.
-        $a = new stdClass();
-        $a->course = format_string($course->fullname, true, ['context' => $context]);
-        $a->fullname = fullname($user);
-        $a->email = $user->email;
-        $a->date = date('d-m-Y, H:i', $coursepayment->addedon);
-
-        // Fix this could also be a activity or section.
-        if ($coursepayment->cmid > 0 && $coursepayment->is_activity == 1) {
-            $module = enrol_coursepayment_helper::get_cmid_info($coursepayment->cmid, $course->id);
-            $a->fullcourse = $module->name;
-            $a->content_type = get_string('activity');
-        } else if ($coursepayment->section > 0) {
-            $module = enrol_coursepayment_helper::get_section_info($coursepayment->section, $course->id);
-            $a->fullcourse = $module->name;
-            $a->content_type = get_string('section');
-        } else {
-            $a->fullcourse = $course->fullname;
-            $a->content_type = get_string('course');
-        }
-
-        // Set record invoice number this is not done.
-        if ($coursepayment->invoice_number == 0) {
-            $coursepayment->invoice_number = $invoicenumber;
-        }
-
-        $a->invoice_number = $this->get_invoice_number_format($coursepayment);
-
-        // Company data
-        $a->companyname = $this->pluginconfig->companyname;
-        $a->address = $this->pluginconfig->address;
-        $a->address = $this->pluginconfig->address;
-        $a->place = $this->pluginconfig->place;
-        $a->zipcode = $this->pluginconfig->zipcode;
-        $a->kvk = $this->pluginconfig->kvk;
-        $a->btw = $this->pluginconfig->btw;
-        $a->currency = $this->pluginconfig->currency;
-        $a->method = $method;
-        $a->description = $this->get_payment_description($coursepayment);
-
-        // Calculate cost.
-        $a->vatpercentage = $coursepayment->vatpercentage;
-        $a->costvat = $this->price(($coursepayment->cost / (100 + $a->vatpercentage)) * $a->vatpercentage);
-        $a->cost = $this->price($coursepayment->cost);
+        $a = $this->get_invoice_strings($user, $course,$coursepayment , $method);
 
         // Generate PDF invoice.
-        $attachment = template::render($coursepayment , $a);
+        $file = template::render($coursepayment ,$user ,$this->pluginconfig,  $a);
 
         if (!empty($this->pluginconfig->mailstudents_invoice)) {
 
@@ -624,6 +580,8 @@ abstract class enrol_coursepayment_gateway {
             $eventdata->fullmessageformat = FORMAT_HTML;
             $eventdata->fullmessagehtml = get_string('mail:invoice_message', 'enrol_coursepayment', $a);
             $eventdata->smallmessage = '';
+            $eventdata->attachment = $file;
+            $eventdata->attachname =  $a->invoice_number . '.pdf';
 
             message_send($eventdata);
         }
@@ -651,6 +609,8 @@ abstract class enrol_coursepayment_gateway {
                 $eventdata->fullmessageformat = FORMAT_HTML;
                 $eventdata->fullmessagehtml = get_string('mail:invoice_message', 'enrol_coursepayment', $a);
                 $eventdata->smallmessage = '';
+                $eventdata->attachment = $file;
+                $eventdata->attachname =  $a->invoice_number . '.pdf';
                 message_send($eventdata);
             }
         }
@@ -670,6 +630,8 @@ abstract class enrol_coursepayment_gateway {
                 $eventdata->fullmessageformat = FORMAT_HTML;
                 $eventdata->fullmessagehtml = get_string('mail:invoice_message', 'enrol_coursepayment', $a);
                 $eventdata->smallmessage = '';
+                $eventdata->attachment = $file;
+                $eventdata->attachname =  $a->invoice_number . '.pdf';
                 message_send($eventdata);
             }
         }
@@ -709,6 +671,8 @@ abstract class enrol_coursepayment_gateway {
                     $eventdata->fullmessageformat = FORMAT_HTML;
                     $eventdata->fullmessagehtml = get_string('mail:invoice_message', 'enrol_coursepayment', $a);
                     $eventdata->smallmessage = '';
+                    $eventdata->attachment = $file;
+                    $eventdata->attachname =  $a->invoice_number . '.pdf';
                     message_send($eventdata);
                 }
             }
@@ -908,5 +872,76 @@ abstract class enrol_coursepayment_gateway {
                 }
             }
         }
+    }
+
+    /**
+     * Make strings for invoice messages and invoice.
+     *
+     * @param $user
+     * @param $course
+     * @param $coursepayment
+     *
+     * @param $method
+     *
+     * @return stdClass
+     * @throws coding_exception
+     * @throws dml_exception
+     * @throws moodle_exception
+     */
+    private function get_invoice_strings($user , $course , $coursepayment , $method) {
+
+        $context = context_course::instance($course->id, IGNORE_MISSING);
+        $invoicenumber = $coursepayment->invoice_number;
+
+        // Mail object.
+        $a = new stdClass();
+        $a->course = format_string($course->fullname, true, ['context' => $context]);
+        $a->fullname = fullname($user);
+        $a->email = $user->email;
+        $a->date = date('d-m-Y, H:i', $coursepayment->addedon);
+
+        // Fix this could also be a activity or section.
+        if ($coursepayment->cmid > 0 && $coursepayment->is_activity == 1) {
+            $module = enrol_coursepayment_helper::get_cmid_info($coursepayment->cmid, $course->id);
+            $a->fullcourse = $module->name;
+            $a->content_type = get_string('activity');
+        } else if ($coursepayment->section > 0) {
+            $module = enrol_coursepayment_helper::get_section_info($coursepayment->section, $course->id);
+            $a->fullcourse = $module->name;
+            $a->content_type = get_string('section');
+        } else {
+            $a->fullcourse = $course->fullname;
+            $a->content_type = get_string('course');
+        }
+
+        // Set record invoice number this is not done.
+        if ($coursepayment->invoice_number == 0) {
+            $coursepayment->invoice_number = $invoicenumber;
+        }
+
+        $a->invoice_number = $this->get_invoice_number_format($coursepayment);
+
+        // Company data.
+        $a->companyname = $this->pluginconfig->companyname;
+        $a->address = $this->pluginconfig->address;
+        $a->address = $this->pluginconfig->address;
+        $a->place = $this->pluginconfig->place;
+        $a->zipcode = $this->pluginconfig->zipcode;
+        $a->kvk = $this->pluginconfig->kvk;
+        $a->btw = $this->pluginconfig->btw;
+        $a->currency = $this->pluginconfig->currency;
+        $a->method = $method;
+        $a->description = $this->get_payment_description($coursepayment);
+
+        // Calculate cost.
+        $a->vatpercentage = $coursepayment->vatpercentage;
+
+        $vatprice = ($coursepayment->cost / (100 + $a->vatpercentage)) * $a->vatpercentage;
+
+        $a->costvat = $this->price($vatprice);
+        $a->cost = $this->price($coursepayment->cost);
+        $a->costsub = $this->price($coursepayment->cost - $vatprice);
+
+        return $a;
     }
 }

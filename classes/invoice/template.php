@@ -31,6 +31,8 @@
 
 namespace enrol_coursepayment\invoice;
 
+use enrol_coursepayment_helper;
+
 defined('MOODLE_INTERNAL') || die;
 
 /**
@@ -68,18 +70,87 @@ class template {
      * Render a invoice.
      *
      * @param \stdClass $coursepayment
+     * @param \stdClass $user
+     * @param \stdClass $pluginconfig
      * @param           $a
      *
-     * @return string
+     * @return \stored_file
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \file_exception
+     * @throws \stored_file_creation_exception
      */
-    public static function render(\stdClass $coursepayment , $a){
-        $path = '';
+    public static function render(\stdClass $coursepayment, \stdClass $user, \stdClass $pluginconfig, $a) {
+        global $DB;
+        ob_clean();
+
+        $template = $DB->get_record('coursepayment_templates', [
+            'name' => self::get_template_name($pluginconfig, $user),
+        ]);
+
+        // Render the pdf.
+        $template = new self($template);
+        $pdfdata = $template->generate_pdf(false, $user, [
+            'coursepayment' => $coursepayment,
+            'pluginconfig' => $pluginconfig,
+            'a' => $a,
+        ], true);
+
+        $fs = get_file_storage();
+        $systemcontext = \context_system::instance();
+
+        // Cleanup previous builds.
+        $fs->delete_area_files($systemcontext->id , 'enrol_coursepayment' ,  'invoice' , $coursepayment->id);
+
+        return $fs->create_file_from_string((object)[
+            'contextid' => $systemcontext->id,
+            'component' => 'enrol_coursepayment',
+            'filearea' => 'invoice',
+            'itemid' => $coursepayment->id,
+            'userid' => $user->id,
+            'filepath' => '/',
+            'filename' => $coursepayment->id . '.pdf',
+            'source' => 'invoice',
+        ], $pdfdata);
+    }
+
+    /**
+     * Get the template name base on multi-account setup.
+     *
+     * @param \stdClass $pluginconfig
+     * @param \stdClass $user
+     *
+     * @return mixed
+     * @throws \dml_exception
+     */
+    public static function get_template_name(\stdClass $pluginconfig, \stdClass $user) {
+        global $DB;
+        $profile_value = '';
+
         // Get correct invoice details check if the plugin uses multi-account.
+        if (!empty($pluginconfig->multi_account_fieldid)) {
+            $profile_value = enrol_coursepayment_helper::get_profile_field_data($pluginconfig->multi_account_fieldid, $user->id);
+        }
 
+        // Load default multi-account.
+        $multiaccount = $DB->get_record('coursepayment_multiaccount', [
+            'is_default' => 1,
+        ], '*');
 
+        if (!empty($profile_value)) {
 
+            // Check if we have a multi-account matching your value.
+            $mutiaccountStudent = $DB->get_record('coursepayment_multiaccount', [
+                'profile_value' => $profile_value,
+            ], '*');
 
-        return $path;
+            // Found we should use this.
+            if (!empty($mutiaccountStudent)) {
+                return $mutiaccountStudent->id;
+            }
+        }
+
+        return empty($multiaccount) ? 0 : $multiaccount->id;
     }
 
     /**
@@ -91,12 +162,11 @@ class template {
         global $DB;
 
         // Check if there is a template.
-        if($DB->record_exists('coursepayment_templates', [])){
+        if ($DB->record_exists('coursepayment_templates', [])) {
             return;
         }
 
-        // Adding the default template.
-
+        // @TODO Adding the default template.
     }
 
     /**
@@ -106,14 +176,12 @@ class template {
      *
      * @throws \dml_exception
      */
-    public function save($data) {
+    public function save(\stdClass $data) {
         global $DB;
 
         $savedata = new \stdClass();
         $savedata->id = $this->id;
-        $savedata->name = $data->name;
         $savedata->timemodified = time();
-
         $DB->update_record('coursepayment_templates', $savedata);
     }
 
@@ -132,7 +200,7 @@ class template {
         $sql = "SELECT MAX(sequence) as maxpage
                   FROM {coursepayment_pages} cp
                  WHERE cp.templateid = :templateid";
-        if ($maxpage = $DB->get_record_sql($sql, array('templateid' => $this->id))) {
+        if ($maxpage = $DB->get_record_sql($sql, ['templateid' => $this->id])) {
             $sequence = $maxpage->maxpage + 1;
         }
 
@@ -163,7 +231,7 @@ class template {
         $time = time();
 
         // Get the existing pages and save the page data.
-        if ($pages = $DB->get_records('coursepayment_pages', array('templateid' => $data->tid))) {
+        if ($pages = $DB->get_records('coursepayment_pages', ['templateid' => $data->tid])) {
             // Loop through existing pages.
             foreach ($pages as $page) {
                 // Get the name of the fields we want from the form.
@@ -201,25 +269,25 @@ class template {
             INNER JOIN {coursepayment_pages} p
                     ON e.pageid = p.id
                  WHERE p.templateid = :templateid";
-        if ($elements = $DB->get_records_sql($sql, array('templateid' => $this->id))) {
+        if ($elements = $DB->get_records_sql($sql, ['templateid' => $this->id])) {
             foreach ($elements as $element) {
                 // Get an instance of the element class.
                 if ($e = \enrol_coursepayment\invoice\element_factory::get_element_instance($element)) {
                     $e->delete();
                 } else {
                     // The plugin files are missing, so just remove the entry from the DB.
-                    $DB->delete_records('coursepayment_elements', array('id' => $element->id));
+                    $DB->delete_records('coursepayment_elements', ['id' => $element->id]);
                 }
             }
         }
 
         // Delete the pages.
-        if (!$DB->delete_records('coursepayment_pages', array('templateid' => $this->id))) {
+        if (!$DB->delete_records('coursepayment_pages', ['templateid' => $this->id])) {
             return false;
         }
 
         // Now, finally delete the actual template.
-        if (!$DB->delete_records('coursepayment_templates', array('id' => $this->id))) {
+        if (!$DB->delete_records('coursepayment_templates', ['id' => $this->id])) {
             return false;
         }
 
@@ -238,20 +306,20 @@ class template {
         global $DB;
 
         // Get the page.
-        $page = $DB->get_record('coursepayment_pages', array('id' => $pageid), '*', MUST_EXIST);
+        $page = $DB->get_record('coursepayment_pages', ['id' => $pageid], '*', MUST_EXIST);
 
         // Delete this page.
-        $DB->delete_records('coursepayment_pages', array('id' => $page->id));
+        $DB->delete_records('coursepayment_pages', ['id' => $page->id]);
 
         // The element may have some extra tasks it needs to complete to completely delete itself.
-        if ($elements = $DB->get_records('coursepayment_elements', array('pageid' => $page->id))) {
+        if ($elements = $DB->get_records('coursepayment_elements', ['pageid' => $page->id])) {
             foreach ($elements as $element) {
                 // Get an instance of the element class.
                 if ($e = \enrol_coursepayment\invoice\element_factory::get_element_instance($element)) {
                     $e->delete();
                 } else {
                     // The plugin files are missing, so just remove the entry from the DB.
-                    $DB->delete_records('coursepayment_elements', array('id' => $element->id));
+                    $DB->delete_records('coursepayment_elements', ['id' => $element->id]);
                 }
             }
         }
@@ -262,7 +330,7 @@ class template {
                    SET sequence = sequence - 1
                  WHERE templateid = :templateid
                    AND sequence > :sequence";
-        $DB->execute($sql, array('templateid' => $this->id, 'sequence' => $page->sequence));
+        $DB->execute($sql, ['templateid' => $this->id, 'sequence' => $page->sequence]);
     }
 
     /**
@@ -277,14 +345,14 @@ class template {
         global $DB;
 
         // Ensure element exists and delete it.
-        $element = $DB->get_record('coursepayment_elements', array('id' => $elementid), '*', MUST_EXIST);
+        $element = $DB->get_record('coursepayment_elements', ['id' => $elementid], '*', MUST_EXIST);
 
         // Get an instance of the element class.
         if ($e = element_factory::get_element_instance($element)) {
             $e->delete();
         } else {
             // The plugin files are missing, so just remove the entry from the DB.
-            $DB->delete_records('coursepayment_elements', array('id' => $elementid));
+            $DB->delete_records('coursepayment_elements', ['id' => $elementid]);
         }
 
         // Now we want to decrease the sequence numbers of the elements
@@ -293,43 +361,33 @@ class template {
                    SET sequence = sequence - 1
                  WHERE pageid = :pageid
                    AND sequence > :sequence";
-        $DB->execute($sql, array('pageid' => $element->pageid, 'sequence' => $element->sequence));
+        $DB->execute($sql, ['pageid' => $element->pageid, 'sequence' => $element->sequence]);
     }
 
     /**
      * Generate the PDF for the template.
      *
      * @param bool $preview true if it is a preview, false otherwise
-     * @param int  $userid  the id of the user whose certificate we want to view
+     * @param int  $user    the user object
      * @param bool $return  Do we want to return the contents of the PDF?
      *
      * @return string|void Can return the PDF in string format if specified.
      * @throws \dml_exception
      * @throws \coding_exception
      */
-    public function generate_pdf($preview = false, $userid = null, $return = false) {
+    public function generate_pdf($preview = false, $user = null, array $data = [], $return = false) {
         global $CFG, $DB, $USER;
 
-        if (empty($userid)) {
+        if (empty($user)) {
             $user = $USER;
-        } else {
-            $user = \core_user::get_user($userid);
         }
 
         require_once($CFG->libdir . '/pdflib.php');
 
         // Get the pages for the template, there should always be at least one page for each template.
-        if ($pages = $DB->get_records('coursepayment_pages', array('templateid' => $this->id), 'sequence ASC')) {
+        if ($pages = $DB->get_records('coursepayment_pages', ['templateid' => $this->id], 'sequence ASC')) {
             // Create the pdf object.
             $pdf = new \pdf();
-
-            // If the template belongs to a certificate then we need to check what permissions we set for it.
-//            if ($protection = $DB->get_field('enrol_coursepayment', 'protection', array('templateid' => $this->id))) {
-//                if (!empty($protection)) {
-//                    $protection = explode(', ', $protection);
-//                    $pdf->SetProtection($protection);
-//                }
-//            }
 
             $pdf->setPrintHeader(false);
             $pdf->setPrintFooter(false);
@@ -346,15 +404,15 @@ class template {
                 } else {
                     $orientation = 'P';
                 }
-                $pdf->AddPage($orientation, array($page->width, $page->height));
+                $pdf->AddPage($orientation, [$page->width, $page->height]);
                 $pdf->SetMargins($page->leftmargin, 0, $page->rightmargin);
                 // Get the elements for the page.
-                if ($elements = $DB->get_records('coursepayment_elements', array('pageid' => $page->id), 'sequence ASC')) {
+                if ($elements = $DB->get_records('coursepayment_elements', ['pageid' => $page->id], 'sequence ASC')) {
                     // Loop through and display.
                     foreach ($elements as $element) {
                         // Get an instance of the element class.
                         if ($e = element_factory::get_element_instance($element)) {
-                            $e->render($pdf, $preview, $user);
+                            $e->render($pdf, $preview, $user, $data);
                         }
                     }
                 }
@@ -362,6 +420,7 @@ class template {
             if ($return) {
                 return $pdf->Output('', 'S');
             }
+
             $pdf->Output($filename, 'I');
         }
     }
@@ -378,7 +437,7 @@ class template {
         global $DB;
 
         // Get the pages for the template, there should always be at least one page for each template.
-        if ($templatepages = $DB->get_records('coursepayment_pages', array('templateid' => $this->id))) {
+        if ($templatepages = $DB->get_records('coursepayment_pages', ['templateid' => $this->id])) {
             // Loop through the pages.
             foreach ($templatepages as $templatepage) {
                 $page = clone($templatepage);
@@ -388,7 +447,7 @@ class template {
                 // Insert into the database.
                 $page->id = $DB->insert_record('coursepayment_pages', $page);
                 // Now go through the elements we want to load.
-                if ($templateelements = $DB->get_records('coursepayment_elements', array('pageid' => $templatepage->id))) {
+                if ($templateelements = $DB->get_records('coursepayment_elements', ['pageid' => $templatepage->id])) {
                     foreach ($templateelements as $templateelement) {
                         $element = clone($templateelement);
                         $element->pageid = $page->id;
@@ -428,7 +487,7 @@ class template {
             $table .= 'elements';
         }
 
-        if ($moveitem = $DB->get_record($table, array('id' => $itemid))) {
+        if ($moveitem = $DB->get_record($table, ['id' => $itemid])) {
             // Check which direction we are going.
             if ($direction == 'up') {
                 $sequence = $moveitem->sequence - 1;
@@ -439,17 +498,17 @@ class template {
             // Get the item we will be swapping with. Make sure it is related to the same template (if it's
             // a page) or the same page (if it's an element).
             if ($itemname == 'page') {
-                $params = array('templateid' => $moveitem->templateid);
+                $params = ['templateid' => $moveitem->templateid];
             } else { // Must be an element.
-                $params = array('pageid' => $moveitem->pageid);
+                $params = ['pageid' => $moveitem->pageid];
             }
-            $swapitem = $DB->get_record($table, $params + array('sequence' => $sequence));
+            $swapitem = $DB->get_record($table, $params + ['sequence' => $sequence]);
         }
 
         // Check that there is an item to move, and an item to swap it with.
         if ($moveitem && !empty($swapitem)) {
-            $DB->set_field($table, 'sequence', $swapitem->sequence, array('id' => $moveitem->id));
-            $DB->set_field($table, 'sequence', $moveitem->sequence, array('id' => $swapitem->id));
+            $DB->set_field($table, 'sequence', $swapitem->sequence, ['id' => $moveitem->id]);
+            $DB->set_field($table, 'sequence', $moveitem->sequence, ['id' => $swapitem->id]);
         }
     }
 

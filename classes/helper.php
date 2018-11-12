@@ -90,10 +90,18 @@ class enrol_coursepayment_helper {
      */
     public static function get_profile_field_data($fieldid, $userid) {
         global $DB;
+
+        if(empty($fieldid)){
+            return '';
+        }
+
         $field = $DB->get_record('user_info_field', ['id' => $fieldid], '*', MUST_EXIST);
 
         // Single user mode
-        $row = $DB->get_record('user_info_data', ['fieldid' => $field->id, 'userid' => $userid]);
+        $row = $DB->get_record('user_info_data', [
+            'fieldid' => $field->id,
+            'userid' => $userid,
+        ]);
         if (isset($row->data)) {
             return $row->data;
         }

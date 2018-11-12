@@ -91,7 +91,7 @@ class element extends \enrol_coursepayment\invoice\element {
             $obj = (object) [
                 'width' => '480',
                 'vat' =>  $data['a']->vatpercentage,
-                'subtotal' => $data['a']->cost,
+                'subtotal' => $data['a']->costsub,
                 'total' => $data['a']->cost,
                 'vat_price' => $data['a']->costvat,
                 'coursename' => $data['a']->fullcourse,
