@@ -193,7 +193,7 @@ class enrol_coursepayment_helper {
      * @throws coding_exception
      * @throws moodle_exception
      */
-    public static function get_edit_invoice_pdf_button($tid) {
+    public static function get_edit_invoice_pdf_button(int $tid = 1) {
         return '<br>' . html_writer::link(new \moodle_url('/enrol/coursepayment/view/invoice_edit.php',
                 [
                     'tid' => $tid,

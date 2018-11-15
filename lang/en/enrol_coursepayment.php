@@ -376,3 +376,6 @@ $string['invoiceinfo:vat'] = 'VAT';
 $string['invoiceinfo:invoice_number'] = 'Invoice number';
 $string['invoiceinfo:ref'] = 'Ref.';
 $string['invoiceinfo:date'] = 'Date';
+$string['invoice_pdf'] = 'Invoice PDF designer';
+$string['invoice_desc'] = 'If you want to change the design of the invoice pdf, you can do that here.';
+$string['pdf'] = 'PDF';

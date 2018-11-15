@@ -30,7 +30,12 @@ defined('MOODLE_INTERNAL') || die();
  * @throws dml_exception
  */
 function xmldb_enrol_coursepayment_install() {
-
+    global $DB;
     // Install a default template.
+    // Check if there is a template.
+    if ($DB->record_exists('coursepayment_templates', [])) {
+        return;
+    }
+
     \enrol_coursepayment\invoice\template::install_default_template();
 }

@@ -38,8 +38,7 @@ if (!empty($config->multi_account)) {
         get_string('pluginname_desc', 'enrol_coursepayment')));
     $settings->add(new admin_setting_heading('enrol_coursepayment_invoicedetails',
         get_string('invoicedetails', 'enrol_coursepayment'),
-        get_string('invoicedetails_desc', 'enrol_coursepayment') .
-        enrol_coursepayment_helper::get_edit_invoice_pdf_button(1)));
+        get_string('invoicedetails_desc', 'enrol_coursepayment')));
 
     $settings->add(new admin_setting_configtext('enrol_coursepayment/transaction_name',
         get_string('transaction_name', 'enrol_coursepayment'),
@@ -64,4 +63,8 @@ if (!empty($config->multi_account)) {
     $settings->add(new admin_setting_configtext('enrol_coursepayment/btw',
         get_string('btw', 'enrol_coursepayment'), '', '',
         PARAM_TEXT));
+
+    $settings->add(new admin_setting_heading('invoice_default', get_string('invoice_pdf', 'enrol_coursepayment'),
+        get_string('invoice_desc', 'enrol_coursepayment') . '<br>'.
+        enrol_coursepayment_helper::get_edit_invoice_pdf_button(1)));
 }

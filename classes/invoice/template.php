@@ -157,19 +157,16 @@ class template {
     /**
      * Set a default template
      *
+     * @param int $name
+     *
      * @throws \dml_exception
      */
-    public static function install_default_template() {
+    public static function install_default_template(int $name = 0) {
         global $DB;
-
-        // Check if there is a template.
-        if ($DB->record_exists('coursepayment_templates', [])) {
-            return;
-        }
 
         $contextid = context_system::instance()->id;
 
-        $template = self::create(0, $contextid);
+        $template = self::create($name, $contextid);
 
         // Create a page for this template.
         $pageid = $template->add_page();

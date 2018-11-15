@@ -45,6 +45,12 @@ $PAGE->set_url('/enrol/coursepayment/view/multi_account.php', [
 ]);
 
 switch ($action) {
+    case 'pdf':
+
+        $pdf = $DB->get_record('coursepayment_templates', ['name' => $id], 'id', MUST_EXIST);
+        redirect(new moodle_url('/enrol/coursepayment/view/invoice_edit.php', ['tid' => $pdf->id]));
+        break;
+
     case 'delete':
         $DB->delete_records('coursepayment_multiaccount', ['id' => $id]);
 
@@ -82,7 +88,10 @@ switch ($action) {
 
                 $data->is_default = empty($total) ? 1 : 0;
                 $data->added_on = time();
-                $DB->insert_record('coursepayment_multiaccount', $data);
+                $id = $DB->insert_record('coursepayment_multiaccount', $data);
+
+                // Add a default invoice template.
+                \enrol_coursepayment\invoice\template::install_default_template($id);
             }
 
             redirect(new moodle_url('/admin/settings.php', [

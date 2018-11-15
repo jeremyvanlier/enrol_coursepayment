@@ -285,6 +285,5 @@ Y.extend(Rearrange, Y.Base, {
 });
 
 Y.namespace('M.enrol_coursepayment.rearrange').init = function(templateid, page, elements) {
-   // console.log('Load M.enrol_coursepayment.rearrange' , templateid, page, elements);
     new Rearrange(templateid, page, elements);
 };
