@@ -590,7 +590,7 @@ abstract class enrol_coursepayment_gateway {
 
         if (!empty($this->pluginconfig->mailteachers_invoice)) {
 
-            // Getting the teachers
+            // Getting the teachers.
             if ($users = get_users_by_capability($context, 'moodle/course:update', 'u.*', 'u.id ASC',
                 '', '', '', '', false, true)) {
                 $users = sort_by_roleassignment_authority($users, $context);
@@ -876,7 +876,7 @@ abstract class enrol_coursepayment_gateway {
             // Override the normal settings.
             foreach ($this->multiaccount as $key => $value) {
 
-                // adding the correct settings to the gateway
+                // Adding the correct settings to the gateway.
                 if (stristr($key, 'gateway_' . $this->name . '_')) {
                     $k = substr($key, $stripcount);
                     $this->config->{$k} = $value;
