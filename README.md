@@ -22,6 +22,7 @@ Has support for:
 * Global sandbox and debug switches.
 * After successfull transaction user will be enrolled.
 * Multiple Mollie accounts support, account selection based on matching profile field value.
+* PDF invoice
 
 Installation
 ====================
@@ -37,6 +38,8 @@ Changelog
 ====================
 
 See Git for the complete history, major changes will be listed below
+
+2018110601 - Added custom "PDF" invoice builder.
 
 2018070500 - Added privacy provider GDPR
 
