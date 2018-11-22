@@ -52,7 +52,7 @@ class colourpicker extends \moodlequickform_editor {
     /**
      * Gets the value of the form element
      *
-     * @return void
+     * @return string
      */
     public function getvalue() {
         return $this->getAttribute('value');

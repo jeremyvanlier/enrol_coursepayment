@@ -82,7 +82,11 @@ class element extends \enrol_coursepayment\invoice\element {
      * @throws \dml_exception
      */
     protected static function get_category_name(array $data) {
-        global $DB, $SITE;
+        global $DB, $SITE, $COURSE;
+
+        if (empty($data) ) {
+            return $COURSE->fullname;
+        }
 
         $course = get_course($data['coursepayment']->courseid);
 

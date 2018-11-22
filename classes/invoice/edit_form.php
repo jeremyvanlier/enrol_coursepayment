@@ -392,7 +392,7 @@ class edit_form extends \moodleform {
             }
         }
 
-        return [$data, $errors];
+        return $errors;
     }
 
     /**

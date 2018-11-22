@@ -128,7 +128,6 @@ class uasortengine {
             $caseensitve = isset($sortfield["caseensitve"]) ? $sortfield["caseensitve"] : self::$caseensitve;
             $nature = isset($sortfield["nature"]) ? $sortfield["nature"] : self::$nature;
             if ($field != "") {
-                $retval = 0;
                 if ($nature) {
                     if ($caseensitve) {
                         $compare = strnatcmp($a[$field], $b[$field]);
