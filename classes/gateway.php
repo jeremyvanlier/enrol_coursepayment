@@ -782,6 +782,11 @@ abstract class enrol_coursepayment_gateway {
             $obj->customtext2 = '';
         }
 
+        // Fallback prevent Mollie issue.
+        if (empty($this->pluginconfig->transaction_name)) {
+            $this->pluginconfig->transaction_name = '{invoice_number}';
+        }
+
         return enrol_coursepayment_helper::parse_text($this->pluginconfig->transaction_name, $obj);
     }
 
