@@ -556,7 +556,11 @@ abstract class enrol_coursepayment_gateway {
             return false;
         }
 
-        require_once($CFG->libdir . '/eventslib.php');
+        if (file_exists($CFG->libdir . '/eventslib.php')) {
+            // Not available in moodle 3.6.
+            require_once($CFG->libdir . '/eventslib.php');
+        }
+
         require_once($CFG->libdir . '/enrollib.php');
         require_once($CFG->libdir . '/filelib.php');
 
@@ -590,7 +594,7 @@ abstract class enrol_coursepayment_gateway {
 
         if (!empty($this->pluginconfig->mailteachers_invoice)) {
 
-            // Getting the teachers
+            // Getting the teachers.
             if ($users = get_users_by_capability($context, 'moodle/course:update', 'u.*', 'u.id ASC',
                 '', '', '', '', false, true)) {
                 $users = sort_by_roleassignment_authority($users, $context);
