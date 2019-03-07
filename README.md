@@ -3,8 +3,12 @@ Enrol CoursePayment
 ![MFreak.nl](http://MFreak.nl/logo_small.png)
 
 * Author: Luuk Verhoeven, [MFreak.nl](http://MFreak.nl)
-* Requires at least: Moodle 2.6+
+* Requires at least: Moodle 3.5
 * License: [Avetica](http://avetica.nl)
+* Supports PHP: 7.0 | 7.1 | 7.2 
+
+![Moodle35](https://img.shields.io/badge/moodle-3.5-brightgreen.svg)
+![PHP7.0](https://img.shields.io/badge/PHP-7.0-brightgreen.svg)
 
 With this plugin you can sell courses to your moodle users. There is also a [availability plugin](http://git.dev.avetica.net:8080/luuk/availability_coursepayment) available.
 
@@ -22,7 +26,6 @@ Has support for:
 * Global sandbox and debug switches.
 * After successfull transaction user will be enrolled.
 * Multiple Mollie accounts support, account selection based on matching profile field value.
-* PDF invoice
 
 Installation
 ====================
@@ -39,7 +42,7 @@ Changelog
 
 See Git for the complete history, major changes will be listed below
 
-2018110601 - Added custom "PDF" invoice builder.
+2018110601 - PDF Invoice generation added. 
 
 2018070500 - Added privacy provider GDPR
 

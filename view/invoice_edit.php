@@ -43,7 +43,6 @@ $id = optional_param('id', false, PARAM_INT);
 $action = optional_param('action', false, PARAM_ALPHA);
 
 $PAGE->set_url('/enrol/coursepayment/view/invoice_edit.php', [
-    'action' => $invoicetype,
     'id' => $id,
     'action' => $action,
 ]);
@@ -218,7 +217,8 @@ if ($data = $mform->get_data()) {
 
     // Check if we want to preview this custom certificate.
     if (!empty($data->previewbtn)) {
-        $template->generate_pdf(true);
+
+        $template->generate_pdf(true );
         exit();
     }
 

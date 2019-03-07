@@ -556,7 +556,11 @@ abstract class enrol_coursepayment_gateway {
             return false;
         }
 
-        require_once($CFG->libdir . '/eventslib.php');
+        if (file_exists($CFG->libdir . '/eventslib.php')) {
+            // Not available in moodle 3.6.
+            require_once($CFG->libdir . '/eventslib.php');
+        }
+
         require_once($CFG->libdir . '/enrollib.php');
         require_once($CFG->libdir . '/filelib.php');
 
@@ -780,6 +784,11 @@ abstract class enrol_coursepayment_gateway {
         } else {
             $obj->customtext1 = '';
             $obj->customtext2 = '';
+        }
+
+        // Fallback prevent Mollie issue.
+        if (empty($this->pluginconfig->transaction_name)) {
+            $this->pluginconfig->transaction_name = '{invoice_number}';
         }
 
         return enrol_coursepayment_helper::parse_text($this->pluginconfig->transaction_name, $obj);

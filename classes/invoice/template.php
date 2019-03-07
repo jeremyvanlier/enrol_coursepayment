@@ -133,6 +133,11 @@ class template {
             $profilevalue = enrol_coursepayment_helper::get_profile_field_data($pluginconfig->multi_account_fieldid, $user->id);
         }
 
+        // Prevent checking multi-account if this is disabled.
+        if (empty($pluginconfig->multi_account)) {
+            return 0;
+        }
+
         // Load default multi-account.
         $multiaccount = $DB->get_record('coursepayment_multiaccount', [
             'is_default' => 1,

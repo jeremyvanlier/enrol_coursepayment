@@ -83,8 +83,13 @@ class element extends \enrol_coursepayment\invoice\element {
      * @throws \dml_exception
      */
     public function get_invoiceinfo(array $data = []) {
-        $pluginconfig = get_config('enrol_coursepayment');
 
+        // We are testing.
+        if(empty($data)){
+            return $this->dummy_data();
+        }
+
+        $pluginconfig = get_config('enrol_coursepayment');
         $invoiceinfo = (object)[
             'companyname' => $pluginconfig->companyname,
             'address' => $pluginconfig->address,
@@ -112,7 +117,18 @@ class element extends \enrol_coursepayment\invoice\element {
      */
     public function render_html() {
         global $PAGE;
+        // Dummy.
+        $invoiceinfo = $this->dummy_data();
 
+        $renderer = $PAGE->get_renderer('enrol_coursepayment');
+        return $renderer->render_template('enrol_coursepayment/element_invoiceinfo', $invoiceinfo);
+    }
+
+    /**
+     * @return \stdClass
+     * @throws \dml_exception
+     */
+    public function dummy_data() : \stdClass {
         $pluginconfig = get_config('enrol_coursepayment');
         $invoiceinfo = (object)[
             'companyname' => $pluginconfig->companyname,
@@ -126,8 +142,6 @@ class element extends \enrol_coursepayment\invoice\element {
         $invoiceinfo->description = 'TEST';
         $invoiceinfo->invoice_number = 'CPAY' . date("Y") . sprintf('%08d', 1);
 
-        $renderer = $PAGE->get_renderer('enrol_coursepayment');
-
-        return $renderer->render_template('enrol_coursepayment/element_invoiceinfo', $invoiceinfo);
+        return $invoiceinfo;
     }
 }

@@ -27,7 +27,7 @@
 defined('MOODLE_INTERNAL') || die();
 $plugin->release   = '2.0.0';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->version   = 2018110601;        // The current plugin version (Date: YYYYMMDDXX).
+$plugin->version   = 2019011500;        // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires  = 2013101800;        // Requires this Moodle version.
 $plugin->component = 'enrol_coursepayment'; // Full name of the plugin (used for diagnostics).
 $plugin->cron      = 60;

@@ -31,8 +31,6 @@
 
 namespace enrol_coursepayment\invoice;
 
-use enrol_coursepayment\invoice\helper;
-
 defined('MOODLE_INTERNAL') || die;
 
 require_once($CFG->libdir . '/grade/constants.php');
