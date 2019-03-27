@@ -183,7 +183,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
         }
 
         // Multiple instances supported - different cost for different roles.
-        return new moodle_url('/enrol/coursepayment/view/invoice_edit.php', ['courseid' => $courseid]);
+        return new moodle_url('/enrol/coursepayment/edit.php', ['courseid' => $courseid]);
     }
 
     /**

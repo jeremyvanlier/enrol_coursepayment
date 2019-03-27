@@ -38,9 +38,11 @@ $context = context_course::instance($course->id, MUST_EXIST);
 require_login($course);
 require_capability('enrol/coursepayment:config', $context);
 
-$PAGE->set_url('/enrol/coursepayment/view/invoice_edit.php', ['courseid' => $course->id, 'id' => $instanceid]);
+$PAGE->set_url('/enrol/coursepayment/edit.php', [
+    'courseid' => $course->id,
+    'id' => $instanceid,
+]);
 $PAGE->set_pagelayout('admin');
-
 $return = new moodle_url('/enrol/instances.php', ['id' => $course->id]);
 if (!enrol_is_enabled('coursepayment')) {
     redirect($return);
