@@ -47,7 +47,7 @@ $PAGE->set_url('/enrol/coursepayment/view/invoice_edit.php', [
     'action' => $action,
 ]);
 
-$tid = optional_param('tid', 0, PARAM_INT);
+$tid = optional_param('tid', 1, PARAM_INT);
 $action = optional_param('action', '', PARAM_ALPHA);
 $contextid = context_system::instance()->id;
 

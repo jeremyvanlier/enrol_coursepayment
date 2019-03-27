@@ -33,7 +33,7 @@ function xmldb_enrol_coursepayment_install() {
     global $DB;
     // Install a default template.
     // Check if there is a template.
-    if ($DB->record_exists('coursepayment_templates', [])) {
+    if ($DB->record_exists('coursepayment_templates', ['id' => 1])) {
         return;
     }
 
