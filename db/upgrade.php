@@ -1,4 +1,4 @@
-<?php
+f<?php
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -203,7 +203,7 @@ function xmldb_enrol_coursepayment_upgrade($oldversion) {
     }
 
     // Add new tables for customizing invoice.
-    if ($oldversion < 2018102900) {
+    if ($oldversion < 2019040300) {
 
         // Define table coursepayment_elements to be created.
         $table = new xmldb_table('coursepayment_elements');
