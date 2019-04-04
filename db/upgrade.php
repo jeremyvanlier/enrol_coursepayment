@@ -280,7 +280,7 @@ function xmldb_enrol_coursepayment_upgrade($oldversion) {
         \enrol_coursepayment\invoice\template::install_default_template();
 
         // Coursepayment savepoint reached.
-        upgrade_plugin_savepoint(true, 2018102900, 'enrol', 'coursepayment');
+        upgrade_plugin_savepoint(true, 2019040300, 'enrol', 'coursepayment');
     }
 
     return true;
