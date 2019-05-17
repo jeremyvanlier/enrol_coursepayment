@@ -425,7 +425,9 @@ abstract class enrol_coursepayment_gateway {
             return true;
         }
 
-        require_once($CFG->libdir . '/eventslib.php');
+        if (file_exists($CFG->libdir . '/eventslib.php')) {
+            require_once($CFG->libdir . '/eventslib.php');
+        }
         require_once($CFG->libdir . '/enrollib.php');
         require_once($CFG->libdir . '/filelib.php');
 
