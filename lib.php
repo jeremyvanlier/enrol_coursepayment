@@ -104,10 +104,11 @@ class enrol_coursepayment_plugin extends enrol_plugin {
 
         $context = context_course::instance($instance->courseid);
         if (has_capability('enrol/coursepayment:report', $context)) {
-            $managelink = new moodle_url('/enrol/coursepayment/view/invoice_edit.php', [
+            $managelink = new moodle_url('/enrol/coursepayment/edit.php', [
                 'courseid' => $instance->courseid,
                 'id' => $instance->id,
             ]);
+
             $instancesnode->add($this->get_instance_name($instance), $managelink, navigation_node::TYPE_SETTING);
         }
 
