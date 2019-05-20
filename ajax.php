@@ -40,10 +40,6 @@ $courseid = required_param('courseid', PARAM_INT);
 $action = required_param('action', PARAM_TEXT);
 $data = required_param('data', PARAM_RAW);
 
-// Used for account claim action.
-$username = optional_param('username', false, PARAM_RAW);
-$password = optional_param('password', false, PARAM_RAW);
-
 // Get the course.
 $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
 
@@ -62,37 +58,6 @@ if (!confirm_sesskey($sesskey)) {
 if (empty($array['error'])) {
 
     switch ($action) {
-
-        // Sending a request to a reseller to claim this account.
-        case 'accountclaim':
-            if (empty($config->gateway_mollie_account_claim)) {
-
-                $response = enrol_coursepayment_helper::post_request($config->gateway_mollie_parent_api, [
-                    'data' => urlencode(serialize(['username' => $username, 'password' => $password])),
-                    'action' => 'claim',
-                ]);
-
-                // For debugging.
-                $array['response'] = base64_encode($response);
-
-                $response = json_decode($response);
-
-                // Error.
-                if (!empty($response->error)) {
-                    $array['error'] = $response->error;
-                }
-
-                // Success.
-                if (!empty($response->success)) {
-                    $array['status'] = true;
-                    set_config('gateway_mollie_account_claim', 1, 'enrol_coursepayment');
-                }
-            } else {
-                // Already claimed.
-                $array['status'] = true;
-            }
-
-            break;
 
         // Validate a discount code.
         case 'discountcode':

@@ -579,59 +579,6 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
     }
 
     /**
-     * Claim a new mollie account
-     * https://www.mollie.com/nl/support/post/documentatie-reseller-api#ref-account-claim
-     *
-     * @param $data
-     *
-     * @return array
-     */
-    public function claim_new_account($data) {
-
-        $return = [
-            'success' => false,
-            'error' => '',
-        ];
-
-        $data = unserialize($data);
-        $fields = [
-            'username',
-            'password',
-        ];
-
-        // Validate all data exists.
-        foreach ($fields as $field) {
-            if (!array_key_exists($field, $data)) {
-                $return['error'] = 'Missing "' . $field . '" field!';
-
-                return $return;
-            }
-        }
-        // Sending request to Mollie..
-
-        // 1. Register Mollie_Autoloader
-        require_once dirname(__FILE__) . "/../libs/Mollie/RESELLER/autoloader.php";
-        Mollie_Autoloader::register();
-
-        // 3. Instantiate class with Mollie config
-        $mollie = new Mollie_Reseller($this->config->partner_id, $this->config->profile_key, $this->config->app_secret);
-
-        // 4. Call API accountCreate
-        try {
-            $obj = (object)$mollie->accountClaim($data['username'], $data['password']);
-            $return['success'] = (string)$obj->success;
-            $return['resultmessage'] = (string)$obj->resultmessage;
-            $return['resultcode'] = (string)$obj->resultcode;
-
-        } catch (Mollie_Exception $e) {
-            $return['error'] = $e->getMessage();
-        }
-
-        return $return;
-
-    }
-
-    /**
      * Inline form
      *
      * @param string $discountcode

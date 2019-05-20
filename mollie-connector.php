@@ -55,9 +55,5 @@ switch ($action) {
     case 'newaccount':
         $return = $mollie->add_new_account($data);
         break;
-    case 'claim':
-        $return = $mollie->claim_new_account($data);
-        break;
-
 }
 echo json_encode($return);

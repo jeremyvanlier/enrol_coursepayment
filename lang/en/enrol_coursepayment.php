@@ -201,8 +201,6 @@ $string['custommails_desc'] = 'Add extra addresses that should receive the invoi
 $string['link_agreement'] = 'Terms and Conditions';
 $string['link_agreement_desc'] = 'Users need to approve this link to the terms and conditions.';
 $string['agreement_label'] = 'I agree with the <a class="coursepayment-agreement-link" target="_blank" href="{$a->link}">terms and conditions</a>';
-$string['js:claim_title'] = 'Connect your Mollie account too Avetica';
-$string['js:claim_desc'] = 'Your account is not yet linked to Avetica you can fix this by filling in your Mollie username and password';
 $string['js:username'] = 'Username';
 $string['js:password'] = 'Password';
 $string['js:delay'] = 'Delay';
