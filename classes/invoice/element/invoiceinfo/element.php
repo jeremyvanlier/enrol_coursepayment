@@ -31,6 +31,8 @@
 
 namespace enrol_coursepayment\invoice\element\invoiceinfo;
 
+use enrol_coursepayment\invoice\element_helper;
+
 defined('MOODLE_INTERNAL') || die();
 
 /**
@@ -71,7 +73,7 @@ class element extends \enrol_coursepayment\invoice\element {
         $renderer = $PAGE->get_renderer('enrol_coursepayment');
         $text = $renderer->render_template('enrol_coursepayment/element_invoiceinfo', $this->get_invoiceinfo($data));
 
-        \enrol_coursepayment\invoice\element_helper::render_content($pdf, $this, $text);
+        element_helper::render_content($pdf, $this, $text);
     }
 
     /**
@@ -85,7 +87,7 @@ class element extends \enrol_coursepayment\invoice\element {
     public function get_invoiceinfo(array $data = []) {
 
         // We are testing.
-        if(empty($data)){
+        if (empty($data)) {
             return $this->dummy_data();
         }
 
@@ -96,7 +98,7 @@ class element extends \enrol_coursepayment\invoice\element {
             'place' => $pluginconfig->place,
             'zipcode' => $pluginconfig->zipcode,
             'kvk' => $pluginconfig->kvk,
-            'currency' => $pluginconfig->currency,
+            'currency' => $pluginconfig->currency ?? 'EUR',
             'date' => date('d-m-Y, H:i'),
         ];
 
@@ -121,6 +123,7 @@ class element extends \enrol_coursepayment\invoice\element {
         $invoiceinfo = $this->dummy_data();
 
         $renderer = $PAGE->get_renderer('enrol_coursepayment');
+
         return $renderer->render_template('enrol_coursepayment/element_invoiceinfo', $invoiceinfo);
     }
 
@@ -136,7 +139,7 @@ class element extends \enrol_coursepayment\invoice\element {
             'place' => $pluginconfig->place,
             'zipcode' => $pluginconfig->zipcode,
             'kvk' => $pluginconfig->kvk,
-            'currency' => $pluginconfig->currency,
+            'currency' => $pluginconfig->currency ?? 'EUR',
             'date' => date('d-m-Y, H:i'),
         ];
         $invoiceinfo->description = 'TEST';
