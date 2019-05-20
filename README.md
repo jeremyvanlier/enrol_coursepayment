@@ -42,6 +42,8 @@ Changelog
 
 See Git for the complete history, major changes will be listed below
 
+2019052000 - Mollie account claim removed.
+
 2018110601 - PDF Invoice generation added. 
 
 2018070500 - Added privacy provider GDPR
