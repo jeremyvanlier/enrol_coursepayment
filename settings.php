@@ -65,33 +65,50 @@ if ($ADMIN->fulltree) {
     }
 
     // Display the correct tab.
-    if (empty($tab) || $tab === 'invoicedetails' || !empty($install)) {
+    if (empty($install) && (empty($tab) || $tab === 'invoicedetails')) {
 
         // Invoice settings.
         include('settings/invoicedetails.php');
 
-    } else if ($tab === 'enrolment' || !empty($install)) {
+    } else if ($tab === 'enrolment') {
 
         // Enrolment settings.
         include('settings/enrolment.php');
 
-    } else if ($tab === 'mail' || !empty($install)) {
+    } else if ($tab === 'mail') {
 
         // E-mail settings.
         include('settings/mail.php');
 
-    } else if ($tab === 'multiaccount' || !empty($install)) {
+    } else if ($tab === 'multiaccount') {
 
         // E-mail settings.
         include('settings/multiaccount.php');
 
-    } else if ($tab === 'gateway' || !empty($install)) {
+    } else if ($tab === 'gateway') {
 
         // Gateway settings.
         include('settings/gateway.php');
 
-    } else if ($tab === 'advanced' || !empty($install)) {
+    } else if ($tab === 'advanced') {
 
+        // Advanced settings.
+        include('settings/advanced.php');
+    }
+
+    // Install make sure all values get set while installing.
+    if (!empty($install)) {
+
+        // Invoice settings.
+        include('settings/invoicedetails.php');
+        // Enrolment settings.
+        include('settings/enrolment.php');
+        // E-mail settings.
+        include('settings/mail.php');
+        // E-mail settings.
+        include('settings/multiaccount.php');
+        // Gateway settings.
+        include('settings/gateway.php');
         // Advanced settings.
         include('settings/advanced.php');
     }
