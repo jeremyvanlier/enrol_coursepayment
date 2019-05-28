@@ -10,11 +10,11 @@ Enrol CoursePayment
 ![Moodle35](https://img.shields.io/badge/moodle-3.5-brightgreen.svg)
 ![PHP7.0](https://img.shields.io/badge/PHP-7.0-brightgreen.svg)
 
-With this plugin you can sell courses to your moodle users. There is also a [availability plugin](http://git.dev.avetica.net:8080/luuk/availability_coursepayment) available.
+With this plugin you can sell courses to your moodle users. There is also a [availability plugin](https://deploy01.avetica.net/technisch-team/moodlefreak/availability_coursepayment/) available.
 
 Description
 ====================
-This plugin allows you to sell courses with multi pull gateways.
+This plugin allows you to sell courses with multiple gateways.
 
 Has support for:
 * Mollie gateway.
@@ -24,7 +24,7 @@ Has support for:
 * Instance based settings like currency, enrol period.
 * Global notification settings.
 * Global sandbox and debug switches.
-* After successfull transaction user will be enrolled.
+* After successful transaction user will be enrolled.
 * Multiple Mollie accounts support, account selection based on matching profile field value.
 
 Installation
@@ -41,6 +41,8 @@ Changelog
 ====================
 
 See Git for the complete history, major changes will be listed below
+
+2019052800 - Moodle 3.7 support implemented.
 
 2019052000 - Mollie account claim removed.
 
