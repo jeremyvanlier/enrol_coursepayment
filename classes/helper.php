@@ -201,4 +201,20 @@ class enrol_coursepayment_helper {
                 get_string('btn:pdf_edit', 'enrol_coursepayment'), ['class' => 'btn btn-primary']);
     }
 
+    /**
+     * get_event_object
+     *
+     * With fallback for older Moodle version
+     *
+     * @return \core\message\message|stdClass
+     */
+    public static function get_event_object() {
+        global $CFG;
+        if ($CFG->branch >= 29) {
+            return new \core\message\message();
+        }
+
+        return new \stdClass();
+    }
+
 }

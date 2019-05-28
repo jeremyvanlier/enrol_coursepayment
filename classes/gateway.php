@@ -487,7 +487,7 @@ abstract class enrol_coursepayment_gateway {
             $a->coursename = format_string($course->fullname, true, ['context' => $context]);
             $a->profileurl = "$CFG->wwwroot/user/view.php?id=$user->id";
 
-            $eventdata = new stdClass();
+            $eventdata = enrol_coursepayment_helper::get_event_object();
             $eventdata->modulename = 'moodle';
             $eventdata->component = 'enrol_coursepayment';
             $eventdata->name = 'coursepayment_enrolment';
@@ -505,7 +505,7 @@ abstract class enrol_coursepayment_gateway {
             $a->course = format_string($course->fullname, true, ['context' => $context]);
             $a->user = fullname($user);
 
-            $eventdata = new stdClass();
+            $eventdata = enrol_coursepayment_helper::get_event_object();
             $eventdata->modulename = 'moodle';
             $eventdata->component = 'enrol_coursepayment';
             $eventdata->name = 'coursepayment_enrolment';
@@ -524,7 +524,7 @@ abstract class enrol_coursepayment_gateway {
             $a->user = fullname($user);
             $admins = get_admins();
             foreach ($admins as $admin) {
-                $eventdata = new stdClass();
+                $eventdata = enrol_coursepayment_helper::get_event_object();
                 $eventdata->modulename = 'moodle';
                 $eventdata->component = 'enrol_coursepayment';
                 $eventdata->name = 'coursepayment_enrolment';
@@ -577,7 +577,7 @@ abstract class enrol_coursepayment_gateway {
 
         if (!empty($this->pluginconfig->mailstudents_invoice)) {
 
-            $eventdata = new stdClass();
+            $eventdata = enrol_coursepayment_helper::get_event_object();
             $eventdata->modulename = 'moodle';
             $eventdata->component = 'enrol_coursepayment';
             $eventdata->name = 'coursepayment_invoice';
@@ -607,7 +607,7 @@ abstract class enrol_coursepayment_gateway {
 
             if (!empty($teacher)) {
 
-                $eventdata = new stdClass();
+                $eventdata = enrol_coursepayment_helper::get_event_object();
                 $eventdata->modulename = 'moodle';
                 $eventdata->component = 'enrol_coursepayment';
                 $eventdata->name = 'coursepayment_invoice';
@@ -628,7 +628,7 @@ abstract class enrol_coursepayment_gateway {
 
             $admins = get_admins();
             foreach ($admins as $admin) {
-                $eventdata = new stdClass();
+                $eventdata = enrol_coursepayment_helper::get_event_object();
                 $eventdata->modulename = 'moodle';
                 $eventdata->component = 'enrol_coursepayment';
                 $eventdata->name = 'coursepayment_invoice';
@@ -669,7 +669,7 @@ abstract class enrol_coursepayment_gateway {
                     $dummyuser->imagealt = '';
                     $dummyuser->emailstop = 0;
 
-                    $eventdata = new stdClass();
+                    $eventdata = enrol_coursepayment_helper::get_event_object();
                     $eventdata->modulename = 'moodle';
                     $eventdata->component = 'enrol_coursepayment';
                     $eventdata->name = 'coursepayment_invoice';

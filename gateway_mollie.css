@@ -1,7 +1,7 @@
 /*Clear*/
-body{
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif  !important;
-    font-size: 14px  !important;
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+    font-size: 14px !important;
 }
 
 
@@ -51,12 +51,12 @@ button, input[type="button"] {
 }
 
 hr {
-    display: block  !important;
-    height: 1px  !important;
-    border: 0  !important;
-    border-top: 1px solid #ccc  !important;
-    margin: 1em 0  !important;
-    padding: 0  !important;
+    display: block !important;
+    height: 1px !important;
+    border: 0 !important;
+    border-top: 1px solid #ccc !important;
+    margin: 1em 0 !important;
+    padding: 0 !important;
 }
 
 input {
@@ -126,13 +126,13 @@ html {
 /*End clear*/
 
 body {
-    background: #E8E8E8  !important;
+    background: #e8e8e8 !important;
 }
 
 form {
-    background: #fff  !important;
-    border-radius: 0 0 6px 6px  !important;
-    color: #2c3643  !important;
+    background: #fff !important;
+    border-radius: 0 0 6px 6px !important;
+    color: #2c3643 !important;
     position: relative !important;
 }
 
@@ -206,17 +206,17 @@ form {
 
 h1 {
     color: #000 !important;
-    margin-bottom: 0  !important;
-    margin-top: 0  !important;
-    border-bottom: 1px solid #f2f0ed  !important;
-    font-size: 12px  !important;
-    letter-spacing: 1px  !important;
-    line-height: 20px  !important;
-    margin-bottom: 30px  !important;
-    padding: 20px  !important;
-    text-align: center  !important;
-    text-transform: uppercase  !important;
-    font-weight: normal  !important;
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+    border-bottom: 1px solid #f2f0ed !important;
+    font-size: 12px !important;
+    letter-spacing: 1px !important;
+    line-height: 20px !important;
+    margin-bottom: 30px !important;
+    padding: 20px !important;
+    text-align: center !important;
+    text-transform: uppercase !important;
+    font-weight: normal !important;
 }
 
 .hide {
@@ -227,27 +227,27 @@ h1 {
  * === PAYMENT METHOD SELECTION ===
  */
 .buttons-grid {
-    margin: 0  !important;
-    padding: 0  !important;
-    padding: 0  !important;
-    list-style: none  !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
     background: transparent;
-    border: 0  !important;
-    margin: 0  !important;
-    padding: 0  !important;
-    vertical-align: baseline  !important;
-    font-size: 100%  !important;
-    font-weight: normal  !important;
-    box-sizing: inherit  !important;
+    border: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    vertical-align: baseline !important;
+    font-size: 100% !important;
+    font-weight: normal !important;
+    box-sizing: inherit !important;
     display: block !important;
 }
 
 .buttons-grid li {
-    border-bottom: 1px solid #f2f0ed  !important;
-    border-right: 1px solid #f2f0ed  !important;
-    float: left  !important;
-    text-align: center  !important;
-    width: 50%  !important;
+    border-bottom: 1px solid #f2f0ed !important;
+    border-right: 1px solid #f2f0ed !important;
+    float: left !important;
+    text-align: center !important;
+    width: 50% !important;
 }
 
 .buttons-grid li:nth-child(even) {
@@ -268,13 +268,13 @@ h1 {
 
 .buttons-grid li button {
     background: #fff !important;
-    border: none  !important;
-    color: #4e525c  !important;
-    display: block  !important;
-    height: 120px  !important;
-    margin: 5px auto  !important;
-    padding: 0  !important;
-    width: 178px  !important;
+    border: none !important;
+    color: #4e525c !important;
+    display: block !important;
+    height: 120px !important;
+    margin: 5px auto !important;
+    padding: 0 !important;
+    width: 178px !important;
     text-transform: none !important;
 }
 
@@ -386,17 +386,17 @@ h1 {
 }
 
 .buttons-grid li button:hover, .buttons-grid li button:focus {
-    background: #f6f6f6  !important;
+    background: #f6f6f6 !important;
 }
 
 .buttons-grid li button:active, .buttons-grid li button.active {
-    background: #F5F9F4  !important;
+    background: #f5f9f4 !important;
 }
 
 .buttons-grid:after {
-    content: ""  !important;
-    display: block  !important;
-    clear: both  !important;
+    content: "" !important;
+    display: block !important;
+    clear: both !important;
 }
 
 body.body-icon-grid h1, body.body-icon-grid .infobox, body.body-icon-grid .errorbox, body.body-icon-grid .successbox, body.body-icon-grid .warningbox {
@@ -560,4 +560,8 @@ body.body-icon-grid h1, body.body-icon-grid .infobox, body.body-icon-grid .error
     background: url("/enrol/coursepayment/pix/mollie-ideal-issuer-icons.png") no-repeat 0px 0px;
     overflow: hidden;
     display: block;
+}
+
+#discountcode {
+    margin: 5px 0 10px 0;
 }
