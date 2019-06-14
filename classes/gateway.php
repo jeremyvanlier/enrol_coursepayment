@@ -249,6 +249,16 @@ abstract class enrol_coursepayment_gateway {
         $this->load_multi_account_config();
     }
 
+
+    /**
+     * Check if the purchase page is in standalone mode
+     *
+     * @return bool
+     */
+    public function is_standalone_purchase_page() {
+        return ($this->pluginconfig->standalone_purchase_page == 1);
+    }
+
     /**
      * add message to the log
      *
