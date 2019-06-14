@@ -249,7 +249,6 @@ abstract class enrol_coursepayment_gateway {
         $this->load_multi_account_config();
     }
 
-
     /**
      * Check if the purchase page is in standalone mode
      *
@@ -260,14 +259,22 @@ abstract class enrol_coursepayment_gateway {
     }
 
     /**
+     * show_debug
+     *
+     * @param bool $boolean
+     */
+    public function show_debug($boolean = false) {
+        $this->showdebug = !empty($boolean) ? true : false;
+    }
+
+    /**
      * add message to the log
      *
      * @param $var
      */
     protected function log($var) {
-
         $this->log .= date('d-m-Y H:i:s') . ' | Gateway:' . $this->name . ' = ' .
-            (is_string($var) ? $var : '(object)') . PHP_EOL;
+            (is_string($var) ? $var : print_r($var, true)) . PHP_EOL;
     }
 
     /**
@@ -276,7 +283,7 @@ abstract class enrol_coursepayment_gateway {
     function __destruct() {
         if (!empty($this->pluginconfig->debug) && !empty($this->log)) {
             echo '<pre>';
-            echo($this->log);
+            print_r($this->log);
             echo '</pre>';
         }
     }
