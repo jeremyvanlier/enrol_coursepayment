@@ -114,8 +114,8 @@ class report {
             }
 
             list($insql, $params) = $DB->get_in_or_equal(array_keys($userids), SQL_PARAMS_QM, 'param', false);
-            $sql = 'SELECT u.id, u.firstname , u.lastname , u.phone1 , u.email , "" as course , "-1" as status , "0" as addedon
-                    FROM {user} u  
+            $sql = 'SELECT u.id, u.firstname , u.lastname , u.phone1, u.phone2 , u.email , "" as course , "-1" as status , "0" as addedon
+                    FROM {user} u
                     WHERE u.id > 1 AND u.suspended =0 AND u.deleted = 0 AND id ' . $insql;
 
             $users = $DB->get_records_sql($sql, $params);
