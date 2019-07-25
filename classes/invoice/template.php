@@ -169,6 +169,8 @@ class template {
     public static function install_default_template(int $name = 0) {
         global $DB;
 
+        // Todo shouldn't be run multiple times, better add a record exists.
+
         $contextid = context_system::instance()->id;
 
         $template = self::create($name, $contextid);

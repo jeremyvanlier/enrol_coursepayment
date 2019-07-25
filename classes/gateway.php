@@ -942,11 +942,11 @@ abstract class enrol_coursepayment_gateway {
         // Fix this could also be a activity or section.
         if ($coursepayment->cmid > 0 && $coursepayment->is_activity == 1) {
             $module = enrol_coursepayment_helper::get_cmid_info($coursepayment->cmid, $course->id);
-            $a->fullcourse = $module->name;
+            $a->fullcourse = $module->name . ' - ' . $a->course;
             $a->content_type = get_string('activity');
         } else if ($coursepayment->section > 0) {
             $module = enrol_coursepayment_helper::get_section_info($coursepayment->section, $course->id);
-            $a->fullcourse = $module->name;
+            $a->fullcourse = $module->name . ' - ' . $a->course;
             $a->content_type = get_string('section');
         } else {
             $a->fullcourse = $course->fullname;

@@ -363,12 +363,12 @@ $string['invalidmargin'] = 'The margin has to be a valid number greater than 0.'
 $string['invalidwidth'] = 'The width has to be a valid number greater than 0.';
 $string['deletepageconfirm'] = 'Are you sure you want to delete this certificate page?';
 
-$string['orderdata:coursename'] = 'Coursename';
+$string['orderdata:coursename'] = 'Name';
 $string['orderdata:vat'] = 'Vat';
 $string['orderdata:total'] = 'Total';
 $string['orderdata:subtotal'] = 'Subtotal';
 $string['orderdata:total'] = 'Total';
-$string['orderdata:dummy_course'] = 'Dummy coursename';
+$string['orderdata:dummy_course'] = 'Dummy name';
 $string['invoiceinfo:kvk'] = 'KvK';
 $string['invoiceinfo:vat'] = 'VAT';
 $string['invoiceinfo:invoice_number'] = 'Invoice number';

@@ -100,10 +100,14 @@ class element extends \enrol_coursepayment\invoice\element {
             'kvk' => $pluginconfig->kvk,
             'currency' => $pluginconfig->currency ?? 'EUR',
             'date' => date('d-m-Y, H:i'),
+            'description' => false,
         ];
 
         $invoiceinfo->invoice_number = $data['a']->invoice_number;
-        $invoiceinfo->description = $data['a']->description;
+
+        if ($invoiceinfo->invoice_number !== $data['a']->description) {
+            $invoiceinfo->description = $data['a']->description;
+        }
 
         return $invoiceinfo;
     }
