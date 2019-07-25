@@ -34,4 +34,6 @@
 <br/>
 {{# str}} invoiceinfo:invoice_number, enrol_coursepayment {{/ str}}: {{invoice_number}}<br/>
 {{# str}} invoiceinfo:date, enrol_coursepayment {{/ str}}: {{date}}<br/>
-{{# str}} invoiceinfo:ref, enrol_coursepayment {{/ str}}.: {{description}}<br/>
+{{#description}}
+    {{# str}} invoiceinfo:ref, enrol_coursepayment {{/ str}}.: {{description}}<br/>
+{{/description}}
