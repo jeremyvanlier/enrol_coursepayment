@@ -129,43 +129,43 @@ $string['place'] = 'Vestigingplaats';
 $string['zipcode'] = 'Postcode';
 $string['address'] = 'Adres';
 $string['companyname'] = 'Naam organisatie';
+
 // Mail.
-$string['mail:invoice_subject'] = 'Bedankt voor het kopen van: {$a->content_type} - {$a->fullcourse} / {$a->fullname}';
-$string['mail:invoice_message'] = '<h2>Factuur</h2>
-<br/>
-<b>{$a->companyname}</b><br/>
-{$a->address}<br/>
-{$a->zipcode} {$a->place}<br/>
-<br/>
-KvK: {$a->kvk}<br/>
-BTW: {$a->btw}<br/>
-<br/>
-Factuur nummer: {$a->invoice_number}<br/>
-Datum: {$a->date}<br/>
-Ref.: {$a->description}<br/>
-<br/>
-<br/>
-Aan:<br/>
-<b>{$a->fullname}</b><br/>
-{$a->email}<br/>
-<br/>
-<table cellpadding="0" cellspacing="0" style="margin:0;padding:0;width: 100%">
-    <tr>
-        <td colspan="2">{$a->content_type}: {$a->fullcourse}</td>
-    </tr>
-    <tr>
-        <td colspan="2">&nbsp;</td>
-    </tr>
-    <tr>
-        <td  style="width: 30%">BTW ({$a->vatpercentage}%)</td>
-        <td>{$a->currency} {$a->costvat}</td>
-    </tr>
-     <tr>
-        <td>Totale kosten</td>
-        <td>{$a->currency} {$a->cost}</td>
-    </tr>
-</table><br/><br/>
-Gekocht op {$a->date} en betaald via <b>{$a->method}</b>';
+$string['mail:invoice_subject_manual'] = 'Bedankt voor het kopen van: {$a->content_type} - {$a->fullcourse} / {$a->fullname}';
+$string['mail:invoice_message_manual'] = 'Beste {$a->fullname},<br><br>
+Er is een betaling gedaan op {$a->date} via {$a->method}.<br>
+Bijgaand ontvangt u de factuur met factuurnummer {$a->invoice_number}.<br>
+Het bedrag is {$a->cost} {$a->currency}.<br>
+<br>
+Met hartelijke groet,<br>
+{$a->sitename}';
+
+$string['mail:invoice_subject_student'] = 'Bedankt voor het kopen van: {$a->content_type} - {$a->fullcourse} / {$a->fullname}';
+$string['mail:invoice_message_student'] = 'Beste {$a->fullname},<br><br>
+Er is een betaling gedaan op {$a->date} via {$a->method}.<br>
+Bijgaand ontvangt u de factuur met factuurnummer {$a->invoice_number}.<br>
+Het bedrag is {$a->cost} {$a->currency}.<br>
+<br>
+Met hartelijke groet,<br>
+{$a->sitename}';
+
+$string['mail:invoice_subject_admin'] = 'Bedankt voor het kopen van: {$a->content_type} - {$a->fullcourse} / {$a->fullname}';
+$string['mail:invoice_message_admin'] = 'Beste {$a->fullname},<br><br>
+Er is een betaling gedaan op {$a->date} via {$a->method}.<br>
+Bijgaand ontvangt u de factuur met factuurnummer {$a->invoice_number}.<br>
+Het bedrag is {$a->cost} {$a->currency}.<br>
+<br>
+Met hartelijke groet,<br>
+{$a->sitename}';
+
+$string['mail:invoice_subject_teacher'] = 'Bedankt voor het kopen van: {$a->content_type} - {$a->fullcourse} / {Ja$a->fullname}';
+$string['mail:invoice_message_teacher'] = 'Beste {$a->fullname},<br><br>
+Er is een betaling gedaan op {$a->date} via {$a->method}.<br>
+Bijgaand ontvangt u de factuur met factuurnummer {$a->invoice_number}.<br>
+Het bedrag is {$a->cost} {$a->currency}.<br>
+<br>
+Met hartelijke groet,<br>
+{$a->sitename}';
 
 $string['coursepayment:config'] = 'Instellen';
 $string['coursepayment:manage'] = 'Beheren';

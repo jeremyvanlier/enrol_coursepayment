@@ -600,10 +600,10 @@ abstract class enrol_coursepayment_gateway {
             $eventdata->name = 'coursepayment_invoice';
             $eventdata->userfrom = core_user::get_support_user();
             $eventdata->userto = $user;
-            $eventdata->subject = get_string("mail:invoice_subject", 'enrol_coursepayment', $a);
-            $eventdata->fullmessage = html_to_text(get_string('mail:invoice_message', 'enrol_coursepayment', $a));
+            $eventdata->subject = get_string("mail:invoice_subject_student", 'enrol_coursepayment', $a);
+            $eventdata->fullmessage = html_to_text(get_string('mail:invoice_message_student', 'enrol_coursepayment', $a));
             $eventdata->fullmessageformat = FORMAT_HTML;
-            $eventdata->fullmessagehtml = get_string('mail:invoice_message', 'enrol_coursepayment', $a);
+            $eventdata->fullmessagehtml = get_string('mail:invoice_message_student', 'enrol_coursepayment', $a);
             $eventdata->smallmessage = '';
             $eventdata->attachment = $file;
             $eventdata->attachname = $a->invoice_number . '.pdf';
@@ -630,10 +630,10 @@ abstract class enrol_coursepayment_gateway {
                 $eventdata->name = 'coursepayment_invoice';
                 $eventdata->userfrom = core_user::get_support_user();
                 $eventdata->userto = $teacher;
-                $eventdata->subject = get_string("mail:invoice_subject", 'enrol_coursepayment', $a);
-                $eventdata->fullmessage = html_to_text(get_string('mail:invoice_message', 'enrol_coursepayment', $a));
+                $eventdata->subject = get_string("mail:invoice_subject_teacher", 'enrol_coursepayment', $a);
+                $eventdata->fullmessage = html_to_text(get_string('mail:invoice_message_teacher', 'enrol_coursepayment', $a));
                 $eventdata->fullmessageformat = FORMAT_HTML;
-                $eventdata->fullmessagehtml = get_string('mail:invoice_message', 'enrol_coursepayment', $a);
+                $eventdata->fullmessagehtml = get_string('mail:invoice_message_teacher', 'enrol_coursepayment', $a);
                 $eventdata->smallmessage = '';
                 $eventdata->attachment = $file;
                 $eventdata->attachname = $a->invoice_number . '.pdf';
@@ -651,10 +651,10 @@ abstract class enrol_coursepayment_gateway {
                 $eventdata->name = 'coursepayment_invoice';
                 $eventdata->userfrom = core_user::get_support_user();
                 $eventdata->userto = $admin;
-                $eventdata->subject = get_string("mail:invoice_subject", 'enrol_coursepayment', $a);
-                $eventdata->fullmessage = html_to_text(get_string('mail:invoice_message', 'enrol_coursepayment', $a));
+                $eventdata->subject = get_string("mail:invoice_subject_admin", 'enrol_coursepayment', $a);
+                $eventdata->fullmessage = html_to_text(get_string('mail:invoice_message_admin', 'enrol_coursepayment', $a));
                 $eventdata->fullmessageformat = FORMAT_HTML;
-                $eventdata->fullmessagehtml = get_string('mail:invoice_message', 'enrol_coursepayment', $a);
+                $eventdata->fullmessagehtml = get_string('mail:invoice_message_admin', 'enrol_coursepayment', $a);
                 $eventdata->smallmessage = '';
                 $eventdata->attachment = $file;
                 $eventdata->attachname = $a->invoice_number . '.pdf';
@@ -692,11 +692,11 @@ abstract class enrol_coursepayment_gateway {
                     $eventdata->name = 'coursepayment_invoice';
                     $eventdata->userfrom = core_user::get_support_user();
                     $eventdata->userto = $dummyuser;
-                    $eventdata->subject = get_string("mail:invoice_subject", 'enrol_coursepayment', $a);
-                    $eventdata->fullmessage = html_to_text(get_string('mail:invoice_message',
+                    $eventdata->subject = get_string("mail:invoice_subject_manual", 'enrol_coursepayment', $a);
+                    $eventdata->fullmessage = html_to_text(get_string('mail:invoice_message_manual',
                         'enrol_coursepayment', $a));
                     $eventdata->fullmessageformat = FORMAT_HTML;
-                    $eventdata->fullmessagehtml = get_string('mail:invoice_message', 'enrol_coursepayment', $a);
+                    $eventdata->fullmessagehtml = get_string('mail:invoice_message_manual', 'enrol_coursepayment', $a);
                     $eventdata->smallmessage = '';
                     $eventdata->attachment = $file;
                     $eventdata->attachname = $a->invoice_number . '.pdf';
@@ -928,7 +928,7 @@ abstract class enrol_coursepayment_gateway {
      * @throws moodle_exception
      */
     private function get_invoice_strings($user, $course, $coursepayment, $method) {
-
+        global $SITE;
         $context = context_course::instance($course->id, IGNORE_MISSING);
         $invoicenumber = $coursepayment->invoice_number;
 
@@ -980,7 +980,7 @@ abstract class enrol_coursepayment_gateway {
         $a->costvat = $this->price($vatprice);
         $a->cost = $this->price($coursepayment->cost);
         $a->costsub = $this->price($coursepayment->cost - $vatprice);
-
+        $a->sitename = $SITE->fullname;
         return $a;
     }
 }

@@ -138,42 +138,49 @@ $string['zipcode'] = 'Zipcode';
 $string['address'] = 'Address';
 $string['companyname'] = 'Companyname';
 
-$string['mail:invoice_subject'] = 'Thank you for ordering: {$a->content_type} - {$a->fullcourse} / {$a->fullname}';
-$string['mail:invoice_message'] = '<h2>INVOICE</h2>
-<br/>
-<b>{$a->companyname}</b><br/>
-{$a->address}<br/>
-{$a->zipcode} {$a->place}<br/>
-<br/>
-KvK: {$a->kvk}<br/>
-VAT: {$a->btw}<br/>
-<br/>
-Invoice number: {$a->invoice_number}<br/>
-Date: {$a->date}<br/>
-Ref.: {$a->description}<br/>
-<br/>
-<br/>
-To:<br/>
-<b>{$a->fullname}</b><br/>
-{$a->email}<br/>
-<br/>
-<table cellpadding="0" cellspacing="0" style="margin:0;padding:0;width: 100%">
-    <tr>
-        <td colspan="2">{$a->content_type}: {$a->fullcourse}</td>
-    </tr>
-    <tr>
-        <td colspan="2">&nbsp;</td>
-    </tr>
-    <tr>
-        <td style="width: 30%">VAT ({$a->vatpercentage}%)</td>
-        <td>{$a->currency} {$a->costvat}</td>
-    </tr>
-     <tr>
-        <td>Total cost</td>
-        <td>{$a->currency} {$a->cost}</td>
-    </tr>
-</table><br/><br/>
-Purchased {$a->date} and paid through <b>{$a->method}</b>';
+$string['mail:invoice_subject_manual'] = 'Thank you for ordering: {$a->content_type} - {$a->fullcourse} / {$a->fullname}';
+$string['mail:invoice_message_manual'] = 'Dear {$a->fullname},<br><br>
+A payment has been made on {$a->date} through {$a->method}.<br>
+You will receive the invoice with invoice number {$a->invoice_number}. <br>
+The amount is {$a->cost} {$a->currency}.
+<br>
+The Invoice is attached (see attachment PDF)<br>
+<br>
+Kind regards,<br>
+{$a->sitename}';
+
+$string['mail:invoice_subject_student'] = 'Thank you for ordering: {$a->content_type} - {$a->fullcourse} / {$a->fullname}';
+$string['mail:invoice_message_student'] = 'Dear {$a->fullname},<br><br>
+A payment has been made on {$a->date} through {$a->method}.<br>
+You will receive the invoice with invoice number {$a->invoice_number}. <br>
+The amount is {$a->cost} {$a->currency}.
+<br>
+The Invoice is attached (see attachment PDF)<br>
+<br>
+Kind regards,<br>
+{$a->sitename}';
+
+$string['mail:invoice_subject_admin'] = 'Thank you for ordering: {$a->content_type} - {$a->fullcourse} / {$a->fullname}';
+$string['mail:invoice_message_admin'] = 'Dear {$a->fullname},<br><br>
+A payment has been made on {$a->date} through {$a->method}.<br>
+You will receive the invoice with invoice number {$a->invoice_number}. <br>
+The amount is {$a->cost} {$a->currency}.<br>
+<br>
+The Invoice is attached (see attachment PDF)<br>
+<br>
+Kind regards,<br>
+{$a->sitename}';
+
+$string['mail:invoice_subject_teacher'] = 'Thank you for ordering: {$a->content_type} - {$a->fullcourse} / {$a->fullname}';
+$string['mail:invoice_message_teacher'] = 'Dear {$a->fullname},<br><br>
+A payment has been made on {$a->date} through {$a->method}.<br>
+You will receive the invoice with invoice number {$a->invoice_number}. <br>
+The amount is {$a->cost} {$a->currency}.<br>
+<br>
+The Invoice is attached (see attachment PDF)<br>
+<br>
+Kind regards,<br>
+{$a->sitename}';
 
 $string['coursepayment:config'] = 'Configuration';
 $string['coursepayment:manage'] = 'Manage';
