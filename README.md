@@ -2,13 +2,16 @@ Enrol CoursePayment
 ====================
 ![MFreak.nl](http://MFreak.nl/logo_small.png)
 
-* Author: Luuk Verhoeven, [MFreak.nl](http://MFreak.nl)
+* Author: Luuk Verhoeven, [Mfreak.nl](http://Mfreak.nl)
 * Requires at least: Moodle 3.5
 * License: [Avetica](http://avetica.nl)
-* Supports PHP: 7.0 | 7.1 | 7.2 
+* Supports PHP: 7.2 
 
 ![Moodle35](https://img.shields.io/badge/moodle-3.5-brightgreen.svg)
-![PHP7.0](https://img.shields.io/badge/PHP-7.0-brightgreen.svg)
+![Moodle36](https://img.shields.io/badge/moodle-3.6-brightgreen.svg)
+![Moodle37](https://img.shields.io/badge/moodle-3.7-brightgreen.svg)
+![Moodle38](https://img.shields.io/badge/moodle-3.8-brightgreen.svg)
+![PHP7.2](https://img.shields.io/badge/PHP-7.2-brightgreen.svg)
 
 With this plugin you can sell courses to your moodle users. There is also a [availability plugin](https://deploy01.avetica.net/technisch-team/moodlefreak/availability_coursepayment/) available.
 
@@ -41,6 +44,8 @@ Changelog
 ====================
 
 See Git for the complete history, major changes will be listed below
+
+2020010200 - Moodle 3.8 support implemented.
 
 2019052800 - Moodle 3.7 support implemented.
 
