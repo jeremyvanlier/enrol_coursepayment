@@ -981,6 +981,21 @@ abstract class enrol_coursepayment_gateway {
         $a->cost = $this->price($coursepayment->cost);
         $a->costsub = $this->price($coursepayment->cost - $vatprice);
         $a->sitename = $SITE->fullname;
+
         return $a;
     }
+
+    /**
+     * @return string
+     */
+    public function get_gateway_locale() : string {
+        return (in_array($this->instanceconfig->locale, [
+            'de_DE',
+            'en_US',
+            'fr_FR',
+            'es_ES',
+            'nl_NL',
+        ]) ? $this->instanceconfig->locale : 'nl_NL');
+    }
+
 }

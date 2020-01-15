@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <libraries>
     <library>
-        <location>libs/Mollie</location>
+        <location>vendor</location>
         <name>Mollie</name>
-        <version>1.9.1</version>
+        <version>2.12.1</version>
         <license>BSD 2-Clause "Simplified" License</license>
         <licenseversion></licenseversion>
     </library>
     <library>
         <location>classes/mollie.php</location>
         <name>Mollie</name>
-        <version>1.9.1</version>
+        <version>2.12.1</version>
         <license>BSD 2-Clause "Simplified" License</license>
         <licenseversion></licenseversion>
     </library>
