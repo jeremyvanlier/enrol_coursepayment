@@ -20,12 +20,7 @@ class ComposerStaticInit3726155a4c680dcef172adae7d76cefb
         ),
         'M' => 
         array (
-            'Mollie\\OAuth2\\Client\\' => 21,
             'Mollie\\Api\\' => 11,
-        ),
-        'L' => 
-        array (
-            'League\\OAuth2\\Client\\' => 21,
         ),
         'G' => 
         array (
@@ -44,17 +39,9 @@ class ComposerStaticInit3726155a4c680dcef172adae7d76cefb
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
-        'Mollie\\OAuth2\\Client\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/mollie/oauth2-mollie-php/src',
-        ),
         'Mollie\\Api\\' => 
         array (
             0 => __DIR__ . '/..' . '/mollie/mollie-api-php/src',
-        ),
-        'League\\OAuth2\\Client\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/league/oauth2-client/src',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (
