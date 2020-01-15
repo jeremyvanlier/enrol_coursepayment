@@ -45,6 +45,8 @@ Changelog
 
 See Git for the complete history, major changes will be listed below
 
+2020011500 - Upgrade Mollie API to the latest version, using composer/vendor now.
+
 2020010200 - Moodle 3.8 support implemented.
 
 2019052800 - Moodle 3.7 support implemented.
@@ -53,21 +55,21 @@ See Git for the complete history, major changes will be listed below
 
 2018110601 - PDF Invoice generation added. 
 
-2018070500 - Added privacy provider GDPR
+2018070500 - Added privacy provider GDPR.
 
 2018070500 - Git folder structure changed.
 
-2018010800 - Added support focustom transaction Mollie description 
+2018010800 - Added support focustom transaction Mollie description.
 
 2017082101 - Added multi account option, to support multiple Mollie accounts. 
-   The correct payment account is selected based on profile field
+   The correct payment account is selected based on profile field.
 
-2017021701 - Added reseller support and direct account create function
+2017021701 - Added reseller support and direct account create function.
 
 2017021000 - Added latest https://github.com/mollie/mollie-api-php
 
-2016111200 - Support for availability_coursepayment, purchase a single activity
+2016111200 - Support for availability_coursepayment, purchase a single activity.
 
-2015061202 - Intergration of customable vat percentage per instance and global
+2015061202 - Intergration of customable vat percentage per instance and global.
 
-2015061201 - We added invoice mail support
+2015061201 - We added invoice mail support.
