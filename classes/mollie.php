@@ -31,6 +31,15 @@ use Mollie\Api\Types\PaymentMethod;
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Class enrol_coursepayment_mollie
+ *
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package   enrol_coursepayment
+ * @copyright 2015 MFreak.nl
+ * @author    Luuk Verhoeven
+ */
 class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
     /**
@@ -76,22 +85,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
     }
 
     /**
-     * validate if a payment provider has a valid ip address
-     *
-     * @return boolean
-     */
-    public function ip_validation() {
-        // The rationale people give for requesting and using that IP information is for whitelisting purposes.
-        // The thought being that by actively denying any requests from other IPs they hope
-        // to secure their website from hackers that might be trying to get a paid order without making an actual payment.
-        // However, this IP check is not required since the webhook script will always need to actively fetch the payment from the Mollie API,
-        // and check its status that way. If you are whitelisting and Mollie ever changes IPs, you might miss this news and be left with a broken store.
-        // Without improved security or any other benefit.
-        return true;
-    }
-
-    /**
-     * add new activity order from a user
+     * Add new activity order from a user.
      *
      * @param string $method
      * @param string $issuer
@@ -104,7 +98,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
         global $CFG, $DB;
 
-        // extra order data
+        // Extra order data.
         $data = [];
 
         if (!empty($discountcode)) {
@@ -114,7 +108,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             $row = $discountinstance->get_discountcode();
 
             if ($row) {
-                // looks okay we need to save this to the order
+                // Looks okay we need to save this to the order.
                 $data['discount'] = $row;
             } else {
 
@@ -126,7 +120,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             }
         }
 
-        // add new internal order
+        // Add new internal order.
         $order = $this->create_new_activity_order_record($data);
         try {
 
@@ -164,14 +158,14 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             ];
             $payment = $this->client->payments->create($request);
 
-            // update the local order we add the gateway identifier to the order
+            // Update the local order we add the gateway identifier to the order.
             $obj = new stdClass();
             $obj->invoice_number = $invoice_number;
             $obj->id = $order['id'];
             $obj->gateway_transaction_id = $payment->id;
             $DB->update_record('enrol_coursepayment', $obj);
 
-            // send the user to the gateway payment page
+            // Send the user to the gateway payment page.
             redirect($payment->getCheckoutUrl());
 
         } catch (ApiException $e) {
@@ -268,14 +262,6 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             redirect($payment->getCheckoutUrl());
 
         } catch (ApiException $e) {
-
-            echo '<pre>';
-            print_r($e->getMessage());
-            echo '</pre>';
-            echo '<pre>';
-            print_r($e->getTrace());
-            echo '</pre>';
-            die(__LINE__ . ' ' . __FILE__);
             $this->log("API call failed: " . htmlspecialchars($e->getMessage()));
         }
 

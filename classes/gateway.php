@@ -139,7 +139,15 @@ abstract class enrol_coursepayment_gateway {
      *
      * @return boolean
      */
-    abstract public function ip_validation();
+    public function ip_validation() {
+        // The rationale people give for requesting and using that IP information is for whitelisting purposes.
+        // The thought being that by actively denying any requests from other IPs they hope
+        // to secure their website from hackers that might be trying to get a paid order without making an actual payment.
+        // However, this IP check is not required since the webhook script will always need to actively fetch the payment from the Mollie API,
+        // and check its status that way. If you are whitelisting and Mollie ever changes IPs, you might miss this news and be left with a broken store.
+        // Without improved security or any other benefit.
+        return true;
+    }
 
     /**
      * add new course order from a user

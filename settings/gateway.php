@@ -39,7 +39,7 @@ if (!empty($config->multi_account)) {
     $settings->add(new admin_setting_heading('enrol_coursepayment_register', '',
         '<aside style="border: 1px solid red;padding: 3px">' . get_string('gateway_mollie_link',
             'enrol_coursepayment',
-            (object)['link' => $CFG->wwwroot . '/enrol/coursepayment/view/newaccount.php']) . '</aside><hr/>'));
+            (object)['link' =>'https://www.mollie.com/en/signup/1787751']) . '</aside><hr/>'));
 
     $settings->add(new admin_setting_configselect('enrol_coursepayment/gateway_mollie_enabled',
         get_string('enabled', 'enrol_coursepayment'),
