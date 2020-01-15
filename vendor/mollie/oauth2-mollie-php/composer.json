@@ -1,0 +1,37 @@
+{
+    "name": "mollie/oauth2-mollie-php",
+    "description": "Mollie Provider for OAuth 2.0 Client",
+    "homepage": "https://github.com/mollie/oauth2-mollie-php",
+    "license": "BSD-2-Clause",
+    "authors": [
+        {
+            "name": "Mollie B.V.",
+            "email": "info@mollie.com"
+        }
+    ],
+    "keywords": [
+      "oauth", "oauth2", "client", "authorization", "authorisation",
+      "mollie", "payment", "service", "ideal", "creditcard", "mistercash", "bancontact", "sofort", "sofortbanking",
+      "sepa", "paypal", "paysafecard", "banktransfer", "direct debit", "belfius", "belfius direct net",
+      "refunds", "api", "payments", "gateway"
+    ],
+    "require": {
+        "php": ">=5.6.0",
+        "league/oauth2-client": "^1.0 || ^2.0",
+        "mollie/mollie-api-php": "^1.9 || ^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.8|^5.7",
+        "mockery/mockery": "^0.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mollie\\OAuth2\\Client\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Mollie\\OAuth2\\Client\\Test\\": "tests/src/"
+        }
+    }
+}
