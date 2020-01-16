@@ -261,6 +261,7 @@ $string['transaction_name_desc'] = 'Supports the follow shortcodes: <br>
 {site} : Site name<br>
 {site_shortname} : Site shortname<br>
 {customtext2} : Extra identifier';
+$string['mollieconnect'] = 'IMPORTANT! Account is not connected. To enable this plugin you need to authorise our App. <br> <br> To do this click on the button below.';
 
 // Privacy.
 $string['privacy:metadata:enrol_coursepayment'] = 'Stores the user transaction data, this allow to keep track of what a

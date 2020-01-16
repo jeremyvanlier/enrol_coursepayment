@@ -15,31 +15,26 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Execute on first time install plugin.
+ * Accept Mollie connect
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @package   enrol_coursepayment
- * @copyright 12-11-2018 MFreak.nl
+ * @copyright 16/01/2020 Mfreak.nl | LdesignMedia.nl - Luuk Verhoeven
  * @author    Luuk Verhoeven
  **/
 
-defined('MOODLE_INTERNAL') || die();
+require_once(dirname(__FILE__) . '/../../../config.php');
+defined('MOODLE_INTERNAL') || die;
+require_login();
 
-/**
- * @throws dml_exception
- */
-function xmldb_enrol_coursepayment_install() {
-    global $DB;
+$context = context_system::instance();
+$PAGE->set_context($context);
+$PAGE->set_url('/enrol/coursepayment/view/accept.php');
 
-    // Requires Mollie connect for new installations.
-    set_config('mollieconnect', 1 , 'enrol_coursepayment');
+set_config('mollie_connect_accepted', 1 , 'enrol_coursepayment');
 
-    // Install a default template.
-    // Check if there is a template.
-    if ($DB->record_exists('coursepayment_templates', ['id' => 1])) {
-        return;
-    }
-
-    \enrol_coursepayment\invoice\template::install_default_template();
-}
+redirect(new moodle_url('/admin/settings.php', [
+    'section' => 'enrolsettingscoursepayment',
+    'gateway' => 's_enrol_coursepayment_tabs'
+]));

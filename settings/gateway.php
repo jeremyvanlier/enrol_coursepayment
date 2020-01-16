@@ -24,6 +24,7 @@
  * @author    Luuk Verhoeven
  **/
 defined('MOODLE_INTERNAL') || die();
+
 ($ADMIN->fulltree) || die();
 if (!empty($config->multi_account)) {
 
@@ -36,14 +37,22 @@ if (!empty($config->multi_account)) {
     $settings->add(new admin_setting_heading('enrol_coursepayment_gateway_mollie',
         get_string('gateway_mollie', 'enrol_coursepayment'),
         get_string('gateway_mollie_desc', 'enrol_coursepayment')));
+
     $settings->add(new admin_setting_heading('enrol_coursepayment_register', '',
         '<aside style="border: 1px solid red;padding: 3px">' . get_string('gateway_mollie_link',
             'enrol_coursepayment',
-            (object)['link' =>'https://www.mollie.com/en/signup/1787751']) . '</aside><hr/>'));
+            (object)['link' => 'https://www.mollie.com/en/signup/1787751']) . '</aside><hr/>'));
 
     $settings->add(new admin_setting_configselect('enrol_coursepayment/gateway_mollie_enabled',
         get_string('enabled', 'enrol_coursepayment'),
         get_string('enabled_desc', 'enrol_coursepayment'), 1, $yesno));
+
+    // Normal only for NEW installation from > 2020011500
+    if (enrol_coursepayment_helper::requires_mollie_connect()) {
+        // Disable API_key till this is filled
+        $settings->add(new admin_setting_configempty('mollieconnect', 'mollieconnect',
+            enrol_coursepayment_helper::get_mollie_connect_link()));
+    }
 
     $settings->add(new admin_setting_configtext('enrol_coursepayment/gateway_mollie_apikey',
         get_string('gateway_mollie_apikey', 'enrol_coursepayment'), '', '',

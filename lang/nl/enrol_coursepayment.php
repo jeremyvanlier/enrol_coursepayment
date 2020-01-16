@@ -257,6 +257,8 @@ $string['transaction_name_desc'] = 'Ondersteund de volgende shortcodes: <br>
 {site_shortname} : Site korte naam<br>
 {customtext2} : Extra betaal identifier';
 
+$string['mollieconnect'] = 'IMPORTANT! Account is not connected. To enable this plugin you need to authorise our App. <br> <br> To do this click on the button below.';
+
 // Privacy.
 $string['privacy:metadata:enrol_coursepayment'] = 'Slaat de gebruikerstransactiegegevens op, dit staat toe om bij te 
 houden wat een gebruiker heeft gekocht.';
