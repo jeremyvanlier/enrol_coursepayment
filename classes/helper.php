@@ -217,4 +217,39 @@ class enrol_coursepayment_helper {
         return new \stdClass();
     }
 
+    /**
+     * Requires mollie connect
+     * Check are based only on config checks
+     *
+     * @return bool
+     * @throws dml_exception
+     */
+    public static function requires_mollie_connect() : bool {
+        $mollieconnect = get_config('enrol_coursepayment', 'mollieconnect');
+        $accepted = get_config('enrol_coursepayment', 'mollie_connect_accepted');
+
+        // Check local_mollieconnect, are we linked to Avetica?
+        // This is only needed for installation after 2020-01-16.
+        if (!empty($mollieconnect) && empty($accepted)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return string
+     * @throws coding_exception
+     */
+    public static function get_mollie_connect_link() : string {
+        global $CFG;
+
+        return '<div class="alert alert-info">
+                    ' . get_string('mollieconnect', 'enrol_coursepayment') . '
+                    <a href="https://moodle.avetica.nl/local/mollieconnect/connector.php?link=' . urlencode($CFG->wwwroot) . '">
+                         <img src="/enrol/coursepayment/pix/mollieconnect.png" alt="Mollie connect"/>
+                    </a>
+                </div>';
+    }
+
 }

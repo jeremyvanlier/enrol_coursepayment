@@ -61,6 +61,7 @@ $string['success_enrolled'] = 'Bedankt voor de aanschaf.<br> We hebben u ingesch
 $string['error:unknown_order'] = 'Er is geen order bij ons bekend met deze gegevens.';
 $string['error:gettingorderdetails'] = 'We waren niet in staat om de order gegevens op te halen.';
 $string['error:paymentabort'] = 'De betaling is afgebroken.';
+$string['error:mollie_connect_requires'] = 'Fout: Mollie connect is nog niet geconfigureerd';
 $string['gateway_not_exists'] = 'Fout! Gateway is onbekend.';
 $string['enabled_desc'] = 'Wanneer ingeschakeld kan deze enrolment plugin ingesteld worden bij een cursus.';
 $string['expiredaction'] = 'Inschrijving verloop actie';

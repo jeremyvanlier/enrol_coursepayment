@@ -65,6 +65,8 @@ $string['error:no_record'] = 'Error: Not exists!';
 $string['error:not_within_the_time_period'] = 'Error: Not valid within this time period!';
 $string['error:not_for_this_course'] = 'Error: This discountcode is for another course!';
 $string['error:waiting_on_payment'] = 'Not paid. We will wait on payment.';
+$string['error:mollie_connect_requires'] = 'Error: please link Mollie connect first!';
+
 $string['gateway_not_exists'] = 'Error! Gateway not exists';
 $string['enabled_desc'] = 'Status of the gateway if this can be used to create a transaction';
 $string['expiredaction'] = 'Enrolment expiration action';
