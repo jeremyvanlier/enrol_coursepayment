@@ -23,10 +23,10 @@ Has support for:
 * Mollie gateway.
 * IPN/Callbacks.
 * Query openen transactions every hour with cron.
-* Easy to build own extend with other gateway.
+* Easy to build own extend with another gateway.
 * Instance based settings like currency, enrol period.
 * Global notification settings.
-* Global sandbox and debug switches.
+* A global sandbox and debug switches.
 * After successful transaction user will be enrolled.
 * Multiple Mollie accounts support, account selection based on matching profile field value.
 
@@ -44,6 +44,8 @@ Changelog
 ====================
 
 See Git for the complete history, major changes will be listed below
+
+2020012800 - Mollie connect is required for new installations.
 
 2020011500 - Upgrade Mollie API to the latest version, using composer/vendor now.
 
