@@ -84,7 +84,7 @@ class element extends \enrol_coursepayment\invoice\element {
     protected static function get_category_name(array $data) {
         global $DB, $SITE, $COURSE;
 
-        if (empty($data) ) {
+        if (empty($data)) {
             return $COURSE->fullname;
         }
 

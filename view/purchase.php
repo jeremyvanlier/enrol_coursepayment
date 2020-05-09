@@ -38,8 +38,8 @@ $PAGE->set_url('/enrol/coursepayment/view/purchase.php', [
     'gateway' => $gateway,
 ]);
 
-if(enrol_coursepayment_helper::requires_mollie_connect()){
-    print_error('error:mollie_connect_requires' , 'enrol_coursepayment');
+if (enrol_coursepayment_helper::requires_mollie_connect()) {
+    print_error('error:mollie_connect_requires', 'enrol_coursepayment');
 }
 
 $context = context_system::instance();

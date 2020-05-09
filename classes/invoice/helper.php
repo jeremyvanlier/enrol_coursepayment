@@ -23,6 +23,7 @@
  * @copyright 2018 MFreak.nl
  * @author    Luuk Verhoeven
  */
+
 namespace enrol_coursepayment\invoice;
 defined('MOODLE_INTERNAL') || die;
 
@@ -31,9 +32,9 @@ final class helper {
     /**
      * Handles uploading an image for the customcert module.
      *
-     * @param int $draftitemid the draft area containing the files
-     * @param int $contextid the context we are storing this image in
-     * @param string $filearea indentifies the file area.
+     * @param int    $draftitemid the draft area containing the files
+     * @param int    $contextid   the context we are storing this image in
+     * @param string $filearea    indentifies the file area.
      */
     public static function upload_files($draftitemid, $contextid, $filearea = 'image') {
         global $CFG;
@@ -42,7 +43,6 @@ final class helper {
         require_once($CFG->dirroot . '/lib/filelib.php');
         file_save_draft_area_files($draftitemid, $contextid, 'enrol_coursepayment', $filearea, 0);
     }
-
 
     /**
      * Return the list of possible fonts to use.
@@ -97,7 +97,7 @@ final class helper {
      */
     public static function get_font_sizes() {
         // Array to store the sizes.
-        $sizes = array();
+        $sizes = [];
 
         for ($i = 1; $i <= 200; $i++) {
             $sizes[$i] = $i;

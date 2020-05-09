@@ -66,7 +66,7 @@ class edit_element_form extends \moodleform {
         // Add the field for the name of the element, this is required for all elements.
         $mform->addElement('text', 'name', get_string('elementname', 'enrol_coursepayment'), 'maxlength="255"');
         $mform->setType('name', PARAM_TEXT);
-        $mform->setDefault('name', get_string('invoice_element_'. $element->element , 'enrol_coursepayment'));
+        $mform->setDefault('name', get_string('invoice_element_' . $element->element, 'enrol_coursepayment'));
         $mform->addRule('name', get_string('required'), 'required', null, 'client');
         $mform->addHelpButton('name', 'elementname', 'enrol_coursepayment');
 

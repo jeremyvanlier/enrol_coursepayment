@@ -114,8 +114,8 @@ class tabs extends \admin_setting {
     /**
      * Returns an HTML string
      *
-     * @param mixed  $params  Array or string depending on setting
-     * @param string $query Query
+     * @param mixed  $params Array or string depending on setting
+     * @param string $query  Query
      *
      * @return string Returns an HTML string
      */

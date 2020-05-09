@@ -1,8 +1,8 @@
 {
-    "moodle-enrol_coursepayment-rearrange": {
-        "requires": [
-            "dd-delegate",
-            "dd-drag"
-        ]
-    }
+  "moodle-enrol_coursepayment-rearrange": {
+    "requires": [
+      "dd-delegate",
+      "dd-drag"
+    ]
+  }
 }

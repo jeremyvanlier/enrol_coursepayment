@@ -32,9 +32,9 @@ $context = context_system::instance();
 $PAGE->set_context($context);
 $PAGE->set_url('/enrol/coursepayment/view/accept.php');
 
-set_config('mollie_connect_accepted', 1 , 'enrol_coursepayment');
+set_config('mollie_connect_accepted', 1, 'enrol_coursepayment');
 
 redirect(new moodle_url('/admin/settings.php', [
     'section' => 'enrolsettingscoursepayment',
-    'gateway' => 's_enrol_coursepayment_tabs'
+    'gateway' => 's_enrol_coursepayment_tabs',
 ]));

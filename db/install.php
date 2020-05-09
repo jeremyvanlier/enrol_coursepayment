@@ -33,7 +33,7 @@ function xmldb_enrol_coursepayment_install() {
     global $DB;
 
     // Requires Mollie connect for new installations.
-    set_config('mollieconnect', 1 , 'enrol_coursepayment');
+    set_config('mollieconnect', 1, 'enrol_coursepayment');
 
     // Install a default template.
     // Check if there is a template.

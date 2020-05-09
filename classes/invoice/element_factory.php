@@ -28,6 +28,7 @@
  * @copyright 2018 MFreak.nl
  * @author    Luuk Verhoeven
  */
+
 namespace enrol_coursepayment\invoice;
 
 defined('MOODLE_INTERNAL') || die();
@@ -54,7 +55,7 @@ class element_factory {
         $data->id = isset($element->id) ? $element->id : null;
         $data->pageid = isset($element->pageid) ? $element->pageid : null;
         $data->name = isset($element->name) ? $element->name :
-            get_string('invoice_element_' . $element->element , 'enrol_coursepayment');
+            get_string('invoice_element_' . $element->element, 'enrol_coursepayment');
         $data->element = $element->element;
         $data->data = isset($element->data) ? $element->data : null;
         $data->font = isset($element->font) ? $element->font : null;

@@ -65,6 +65,6 @@ if (!empty($config->multi_account)) {
         PARAM_TEXT));
 
     $settings->add(new admin_setting_heading('invoice_default', get_string('invoice_pdf', 'enrol_coursepayment'),
-        get_string('invoice_desc', 'enrol_coursepayment') . '<br>'.
+        get_string('invoice_desc', 'enrol_coursepayment') . '<br>' .
         enrol_coursepayment_helper::get_edit_invoice_pdf_button(1)));
 }

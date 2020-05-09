@@ -6,12 +6,12 @@
  * @author    Luuk Verhoeven
  */
 M.enrol_coursepayment_gateway = {
-    config:           {
+    config: {
         'courseid': 0,
-        'sesskey':  '',
-        'ajaxurl':  ''
+        'sesskey': '',
+        'ajaxurl': ''
     },
-    log:              function (val) {
+    log: function(val) {
         try {
             Y.log(val);
 
@@ -22,7 +22,7 @@ M.enrol_coursepayment_gateway = {
             }
         }
     },
-    init:             function (Y, ajaxurl, sesskey, courseid) {
+    init: function(Y, ajaxurl, sesskey, courseid) {
         M.enrol_coursepayment_gateway.log('Load: M.enrol_coursepayment_gateway');
 
         // Set config
@@ -34,18 +34,18 @@ M.enrol_coursepayment_gateway = {
         if (Y.one('#discountcode')) {
             this.validatediscount();
         }
-        if(Y.one('#coursepayment_agreement')){
+        if (Y.one('#coursepayment_agreement')) {
             this.validate_agreement();
         }
     },
     /**
      * Validate agreement checkbox on form submit.
      */
-    validate_agreement: function () {
+    validate_agreement: function() {
         M.enrol_coursepayment_gateway.log('validate_agreement()');
-        Y.all('.coursepayment_mollie_form').on("submit" , function (e) {
+        Y.all('.coursepayment_mollie_form').on("submit", function(e) {
 
-            if(!Y.one('#coursepayment_agreement').get('checked')){
+            if (!Y.one('#coursepayment_agreement').get('checked')) {
                 e.preventDefault();
             }
         });
@@ -53,33 +53,32 @@ M.enrol_coursepayment_gateway = {
     /**
      * Validate discount code.
      */
-    validatediscount: function () {
+    validatediscount: function() {
         M.enrol_coursepayment_gateway.log('validatediscount()');
 
         var costorignal = Y.one('#coursepayment_cost').get("text");
         M.enrol_coursepayment_gateway.log(costorignal);
 
-        Y.one('#discountcode').on("keyup", function (e) {
+        Y.one('#discountcode').on("keyup", function(e) {
 
             var config = M.enrol_coursepayment_gateway.config;
             Y.io(config.ajaxurl, {
-                method:  'GET',
-                data:    {
-                    'action':   'discountcode',
+                method: 'GET',
+                data: {
+                    'action': 'discountcode',
                     'courseid': config.courseid,
-                    'sesskey':  config.sesskey,
-                    'data':     Y.one('#discountcode').get('value')
+                    'sesskey': config.sesskey,
+                    'data': Y.one('#discountcode').get('value')
                 },
-                on:      {
-                    success: function (id, o) {
+                on: {
+                    success: function(id, o) {
                         try {
                             var response = Y.JSON.parse(o.responseText);
                             if (response.error) {
                                 Y.one('#discountcode').setStyle('border', '1px solid red');
                                 Y.one('#error_coursepayment').setHTML(response.error);
                                 Y.one('#coursepayment_cost').setHTML(costorignal);
-                            }
-                            else if (response.status == true) {
+                            } else if (response.status == true) {
                                 Y.one('#error_coursepayment').setHTML('');
                                 Y.one('#discountcode').setStyle('border', '1px solid green');
                                 // Update
@@ -91,9 +90,8 @@ M.enrol_coursepayment_gateway = {
                                     }
 
                                     Y.one('#coursepayment_cost').setHTML(costorignal + '<br/><span style="color:green">(- ' + response.amount + ') = ' + newprice.toFixed(2) + '</span>');
-                                }
-                                else {
-                                    var newprice = (parseFloat(costorignal) / 100)  * (100 - response.percentage) ;
+                                } else {
+                                    var newprice = (parseFloat(costorignal) / 100) * (100 - response.percentage);
                                     if (newprice < 0) {
                                         newprice = 0;
                                     }
@@ -106,7 +104,7 @@ M.enrol_coursepayment_gateway = {
                             M.enrol_coursepayment_gateway.log(e);
                         }
                     },
-                    failure: function (x, o) {
+                    failure: function(x, o) {
                         M.enrol_coursepayment_gateway.log("Async call failed!");
 
                     }

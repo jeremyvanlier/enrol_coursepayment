@@ -7,9 +7,9 @@
  */
 
 // prevent instant delete show a confirm message first
-Y.all('.delete').on('click' , function(e){
+Y.all('.delete').on('click', function(e) {
     var status = confirm('Are you sure?');
-    if(status){
+    if (status) {
         return;
     }
 
