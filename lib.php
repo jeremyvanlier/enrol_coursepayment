@@ -394,20 +394,6 @@ class enrol_coursepayment_plugin extends enrol_plugin {
     }
 
     /**
-     * Called for all enabled enrol plugins that returned true from is_cron_required().
-     *
-     * @return void
-     * @throws coding_exception
-     * @throws dml_exception
-     */
-    public function cron() : void {
-        $trace = new text_progress_trace();
-        $this->process_expirations($trace);
-        $this->send_expiry_notifications($trace);
-        $this->cron_process_orders();
-    }
-
-    /**
      * Execute synchronisation.
      *
      * @param progress_trace $trace

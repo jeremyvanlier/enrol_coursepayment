@@ -46,6 +46,8 @@ Changelog
 
 See Git for the complete history, major changes will be listed below
 
+2020012800 - Moodle 3.9 support implemented, only supports PHP 7.2 and higher.
+
 2020012800 - Mollie connect is required for new installations.
 
 2020011500 - Upgrade Mollie API to the latest version, using composer/vendor now.

@@ -372,6 +372,7 @@ $string['invalidheight'] = 'The height has to be a valid number greater than 0.'
 $string['invalidmargin'] = 'The margin has to be a valid number greater than 0.';
 $string['invalidwidth'] = 'The width has to be a valid number greater than 0.';
 $string['deletepageconfirm'] = 'Are you sure you want to delete this certificate page?';
+$string['processexpirationstask'] = 'CoursePayment enrolment send expiry notifications task';
 
 $string['orderdata:coursename'] = 'Name';
 $string['orderdata:vat'] = 'Vat';

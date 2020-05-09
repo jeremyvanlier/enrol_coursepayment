@@ -276,9 +276,6 @@ $string['report_include_none_payment_users'] = 'Rapportage alle gebruikers inlad
 
 // Headings.
 $string['heading:report'] = 'Report';
-
-// Headings.
-$string['heading:report'] = 'Report';
 $string['heading:table_firstname'] = 'Firstname';
 $string['heading:table_lastname'] = 'Lastname';
 $string['heading:table_course'] = 'Course';
@@ -370,6 +367,7 @@ $string['invalidheight'] = 'The height has to be a valid number greater than 0.'
 $string['invalidmargin'] = 'The margin has to be a valid number greater than 0.';
 $string['invalidwidth'] = 'The width has to be a valid number greater than 0.';
 $string['deletepageconfirm'] = 'Are you sure you want to delete this certificate page?';
+$string['processexpirationstask'] = 'CoursePayment enrolment send expiry notifications task';
 
 $string['orderdata:coursename'] = 'Naam';
 $string['orderdata:vat'] = 'BTW';
