@@ -47,7 +47,7 @@ class multi_account implements renderable, templatable {
      * @return stdClass
      * @throws \dml_exception
      */
-    public function export_for_template(renderer_base $output) {
+    public function export_for_template(renderer_base $output) : stdClass {
         global $DB;
         $multiaccounts = $DB->get_records('coursepayment_multiaccount');
 

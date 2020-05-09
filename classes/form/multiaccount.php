@@ -32,10 +32,11 @@ global $CFG;
 require_once($CFG->libdir . '/formslib.php');
 
 class multiaccount extends \moodleform {
+
     /**
-     *
+     * @throws \coding_exception
      */
-    protected function definition() {
+    protected function definition() : void {
 
         $mform = &$this->_form;
 

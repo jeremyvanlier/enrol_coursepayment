@@ -28,6 +28,15 @@ use enrol_coursepayment\invoice\template;
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Class enrol_coursepayment_gateway
+ *
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package   enrol_coursepayment
+ * @copyright 2015 MFreak.nl
+ * @author    Luuk Verhoeven
+ */
 abstract class enrol_coursepayment_gateway {
 
     /**

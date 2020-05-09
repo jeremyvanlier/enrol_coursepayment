@@ -94,7 +94,7 @@ class provider implements \core_privacy\local\metadata\provider,
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public static function export_user_data(approved_contextlist $contextlist) {
+    public static function export_user_data(approved_contextlist $contextlist): void{
         global $DB;
         if (empty($contextlist->count())) {
             return;
@@ -148,7 +148,7 @@ class provider implements \core_privacy\local\metadata\provider,
      *
      * @throws \dml_exception
      */
-    public static function delete_data_for_all_users_in_context(\context $context) {
+    public static function delete_data_for_all_users_in_context(\context $context) : void{
         global $DB;
 
         if (empty($context)) {
@@ -164,7 +164,7 @@ class provider implements \core_privacy\local\metadata\provider,
      *
      * @throws \dml_exception
      */
-    public static function delete_data_for_user(approved_contextlist $contextlist) {
+    public static function delete_data_for_user(approved_contextlist $contextlist) : void {
         global $DB;
 
         if (empty($contextlist->count())) {

@@ -32,7 +32,12 @@ global $CFG;
 require_once($CFG->libdir . '/formslib.php');
 
 class discountcode extends \moodleform {
-    protected function definition() {
+
+    /**
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
+    protected function definition() : void{
 
         global $DB;
 
@@ -80,7 +85,14 @@ class discountcode extends \moodleform {
         $this->add_action_buttons(true, get_string('form:save', 'enrol_coursepayment'));
     }
 
-    function validation($data, $files) {
+    /**
+     * @param array $data
+     * @param array $files
+     *
+     * @return array
+     * @throws \coding_exception
+     */
+    public function validation($data, $files) : array {
         $errors = parent::validation($data, $files);
         if (!empty($data['amount'])) {
             $amount = trim(str_replace(',', '.', $data['amount']));

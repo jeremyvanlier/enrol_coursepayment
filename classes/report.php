@@ -31,6 +31,11 @@ use enrol_coursepayment\table\report_courses;
 defined('MOODLE_INTERNAL') || die;
 require_once($CFG->libdir . '/tablelib.php');
 
+/**
+ * Class report
+ *
+ * @package enrol_coursepayment
+ */
 class report {
 
     /**
@@ -111,6 +116,10 @@ class report {
             $userids = [];
             foreach ($results as $result) {
                 $userids[$result->userid] = $result->userid;
+            }
+
+            if(empty($userids)){
+                return [];
             }
 
             [$insql, $params] = $DB->get_in_or_equal(array_keys($userids), SQL_PARAMS_QM, 'param', false);
