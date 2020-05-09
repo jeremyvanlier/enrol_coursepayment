@@ -47,7 +47,7 @@ class report {
      * @throws \dml_exception
      * @throws \moodle_exception
      */
-    public static function table_overview_courses($datafilter)  : void{
+    public static function table_overview_courses($datafilter) : void {
         global $PAGE;
         $columns = [
             'firstname',
@@ -109,8 +109,8 @@ class report {
 
         $results = $DB->get_records_sql($sql);
 
-        if (get_config('enrol_coursepayment', 'report_include_none_payment_users') == 1 &&
-            empty($datafilter->courseid)) {
+        if (get_config('enrol_coursepayment', 'report_include_none_payment_users') == 1
+            && empty($datafilter->courseid)) {
 
             // Build user_id set.
             $userids = [];
@@ -118,7 +118,7 @@ class report {
                 $userids[$result->userid] = $result->userid;
             }
 
-            if(empty($userids)){
+            if (empty($userids)) {
                 return [];
             }
 
