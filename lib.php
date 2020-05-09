@@ -495,7 +495,10 @@ class enrol_coursepayment_plugin extends enrol_plugin {
         $gateway = new $gateway();
         $status = $gateway->validate_order($orderid);
 
-        return ['status' => !empty($status['status'])];
+        return [
+            'status' => !empty($status['status']),
+            'message' => $status['message'] ?? '',
+        ];
     }
 
     /**
