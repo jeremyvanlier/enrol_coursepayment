@@ -33,7 +33,7 @@ class enrol_coursepayment_edit_form extends moodleform {
     public function definition() {
         $mform = $this->_form;
 
-        list($instance, $plugin, $context) = $this->_customdata;
+        [$instance, $plugin, $context] = $this->_customdata;
 
         $mform->addElement('header', 'header', get_string('pluginname', 'enrol_coursepayment'));
 

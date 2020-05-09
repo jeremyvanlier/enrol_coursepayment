@@ -23,7 +23,7 @@
  * @copyright 26-10-2018 MFreak.nl
  * @author    Luuk Verhoeven
  **/
-require_once(dirname(__FILE__) . '/../../../config.php');
+require_once(__DIR__ . '/../../../config.php');
 defined('MOODLE_INTERNAL') || die;
 
 $tid = required_param('tid', PARAM_INT);

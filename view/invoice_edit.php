@@ -23,7 +23,7 @@
  * @copyright 26-10-2018 MFreak.nl
  * @author    Luuk Verhoeven
  **/
-require_once(dirname(__FILE__) . '/../../../config.php');
+require_once(__DIR__ . '/../../../config.php');
 defined('MOODLE_INTERNAL') || die;
 require_login();
 
@@ -167,7 +167,6 @@ if ($data = $mform->get_data()) {
         $width = 'pagewidth_' . $pageid;
         $height = 'pageheight_' . $pageid;
         $leftmargin = 'pageleftmargin_' . $pageid;
-        $rightmargin = 'pagerightmargin_' . $pageid;
         $rightmargin = 'pagerightmargin_' . $pageid;
 
         $data->$width = $data->pagewidth_0;

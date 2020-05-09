@@ -45,17 +45,17 @@ class element_helper {
     /**
      * @var int the top-left of element
      */
-    const COURSEPAYMENT_REF_POINT_TOPLEFT = 0;
+    public const COURSEPAYMENT_REF_POINT_TOPLEFT = 0;
 
     /**
      * @var int the top-center of element
      */
-    const COURSEPAYMENT_REF_POINT_TOPCENTER = 1;
+    public const COURSEPAYMENT_REF_POINT_TOPCENTER = 1;
 
     /**
      * @var int the top-left of element
      */
-    const COURSEPAYMENT_REF_POINT_TOPRIGHT = 2;
+    public const COURSEPAYMENT_REF_POINT_TOPRIGHT = 2;
 
     /**
      * Common behaviour for rendering specified content on the pdf.
@@ -64,8 +64,8 @@ class element_helper {
      * @param \enrol_coursepayment\invoice\element $element the coursepayment invoice element
      * @param string                               $content the content to render
      */
-    public static function render_content($pdf, $element, $content) {
-        list($font, $attr) = self::get_font($element);
+    public static function render_content($pdf, $element, $content) : void {
+        [$font, $attr] = self::get_font($element);
         $pdf->setFont($font, $attr, $element->get_fontsize());
         $fontcolour = \TCPDF_COLORS::convertHTMLColorToDec($element->get_colour(), $fontcolour);
         $pdf->SetTextColor($fontcolour['R'], $fontcolour['G'], $fontcolour['B']);
@@ -117,7 +117,7 @@ class element_helper {
      * @return string the html
      */
     public static function render_html_content($element, $content) {
-        list($font, $attr) = self::get_font($element);
+        [$font, $attr] = self::get_font($element);
         $fontstyle = 'font-family: ' . $font;
         if (strpos($attr, 'B') !== false) {
             $fontstyle .= '; font-weight: bold';

@@ -36,7 +36,7 @@ final class helper {
      * @param int    $contextid   the context we are storing this image in
      * @param string $filearea    indentifies the file area.
      */
-    public static function upload_files($draftitemid, $contextid, $filearea = 'image') {
+    public static function upload_files($draftitemid, $contextid, $filearea = 'image') : void {
         global $CFG;
 
         // Save the file if it exists that is currently in the draft area.
@@ -47,7 +47,7 @@ final class helper {
     /**
      * Return the list of possible fonts to use.
      */
-    public static function get_fonts() {
+    public static function get_fonts() : array {
         global $CFG;
 
         require_once($CFG->libdir . '/pdflib.php');
@@ -95,7 +95,7 @@ final class helper {
     /**
      * Return the list of possible font sizes to use.
      */
-    public static function get_font_sizes() {
+    public static function get_font_sizes() : array {
         // Array to store the sizes.
         $sizes = [];
 

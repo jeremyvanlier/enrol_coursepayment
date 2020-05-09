@@ -66,7 +66,7 @@ class report_courses extends \flexible_table {
         if (!empty($sort)) {
             // We have a sort, we need sort now.
             $arr = explode(',', $sort);
-            list($column, $direction) = explode(' ', $arr[0]);
+            [$column, $direction] = explode(' ', $arr[0]);
             if (isset($this->columns[$column])) {
 
                 $data = arraysortutil::multisort($data, [

@@ -156,7 +156,7 @@ class edit_form extends \moodleform {
      * @return array the errors that were found
      * @throws \coding_exception
      */
-    public function validation($data, $files) {
+    public function validation($data, $files) : array {
         $errors = parent::validation($data, $files);
 
         // Go through the data and check any width, height or margin  values.

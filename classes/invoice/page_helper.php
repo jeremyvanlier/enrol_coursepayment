@@ -53,7 +53,7 @@ class page_helper {
      * @throws \coding_exception
      * @throws \moodle_exception
      */
-    public static function page_setup($pageurl, $context, $title = '') {
+    public static function page_setup($pageurl, $context, $title = '') : void {
         global $COURSE, $PAGE, $SITE;
 
         $PAGE->set_url($pageurl);

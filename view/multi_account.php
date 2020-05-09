@@ -23,7 +23,7 @@
  * @copyright 2017 MFreak.nl
  * @author    Luuk Verhoeven
  **/
-require_once(dirname(__FILE__) . '/../../../config.php');
+require_once(__DIR__ . '/../../../config.php');
 require_login();
 
 $context = context_system::instance();
