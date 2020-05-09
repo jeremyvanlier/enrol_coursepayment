@@ -61,7 +61,7 @@ class enrol_coursepayment_helper {
      * @return array
      * @throws dml_exception
      */
-    public static function get_profile_fields() {
+    public static function get_profile_fields() : array {
         global $CFG, $DB;
         require_once($CFG->dirroot . '/user/profile/lib.php');
         require_once($CFG->dirroot . '/user/profile/definelib.php');
@@ -88,7 +88,7 @@ class enrol_coursepayment_helper {
      * @return string
      * @throws dml_exception
      */
-    public static function get_profile_field_data($fieldid, $userid) {
+    public static function get_profile_field_data($fieldid, $userid) : string {
         global $DB;
 
         if (empty($fieldid)) {
@@ -145,7 +145,7 @@ class enrol_coursepayment_helper {
      * @return stdClass
      * @throws dml_exception
      */
-    public static function get_section_info($sectionnumber = 0, $courseid = 0) {
+    public static function get_section_info($sectionnumber = 0, $courseid = 0) : \stdClass {
         global $DB;
 
         $section = $DB->get_record('course_sections', [
@@ -193,7 +193,7 @@ class enrol_coursepayment_helper {
      * @throws coding_exception
      * @throws moodle_exception
      */
-    public static function get_edit_invoice_pdf_button(int $tid = 1) {
+    public static function get_edit_invoice_pdf_button(int $tid = 1) : string {
         return '<br>' . html_writer::link(new \moodle_url('/enrol/coursepayment/view/invoice_edit.php',
                 [
                     'tid' => $tid,

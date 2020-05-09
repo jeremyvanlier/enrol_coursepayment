@@ -42,7 +42,7 @@ class report {
      * @throws \dml_exception
      * @throws \moodle_exception
      */
-    public static function table_overview_courses($datafilter) {
+    public static function table_overview_courses($datafilter)  : void{
         global $PAGE;
         $columns = [
             'firstname',
@@ -93,7 +93,7 @@ class report {
      * @throws \dml_exception
      * @throws \coding_exception
      */
-    private static function get_all_courses_data($datafilter) {
+    private static function get_all_courses_data($datafilter) : array {
         global $DB;
 
         $sql = 'SELECT cp.* , u.firstname , u.lastname , u.phone1 , u.phone2 , u.email, c.fullname as course

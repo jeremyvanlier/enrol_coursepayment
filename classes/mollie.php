@@ -65,7 +65,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      */
     public function __construct() {
         parent::__construct();
-        require_once dirname(__FILE__) . "/../vendor/autoload.php";
+        require_once __DIR__ . "/../vendor/autoload.php";
 
         $this->client = new MollieApiClient();
 
@@ -94,7 +94,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * @return array
      * @throws moodle_exception
      */
-    public function new_order_activity($method = '', $issuer = '', $discountcode = '') {
+    public function new_order_activity($method = '', $issuer = '', $discountcode = '') : array {
 
         global $CFG, $DB;
 
@@ -287,7 +287,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * @throws dml_exception
      * @throws moodle_exception
      */
-    public function order_form($standalone = false) {
+    public function order_form($standalone = false) : string {
 
         global $PAGE;
 
@@ -355,7 +355,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * @return string
      * @throws coding_exception
      */
-    public function get_enabled_modes() {
+    public function get_enabled_modes() : string {
 
         $string = '';
         try {
@@ -395,15 +395,22 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * @throws dml_exception
      * @throws moodle_exception
      */
-    public function validate_order($orderid = '') {
+    public function validate_order($orderid = '') : array {
         global $DB;
 
-        if (parent::validate_order($orderid)) {
+        $status = parent::validate_order($orderid);
+        if (!empty($status)) {
             // first let it check by main class
-            return ['status' => true, 'message' => 'free_payment'];
+            return [
+                'status' => true,
+                'message' => 'free_payment',
+            ];
         }
 
-        $return = ['status' => false, 'message' => ''];
+        $return = [
+            'status' => false,
+            'message' => '',
+        ];
 
         // first check if we know of it
         $enrolcoursepayment = $DB->get_record('enrol_coursepayment', [
@@ -495,7 +502,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      *
      * @throws dml_exception
      */
-    public function upgrade_invoice_numbers() {
+    public function upgrade_invoice_numbers() : void {
 
         global $DB;
 
@@ -600,7 +607,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * @throws dml_exception
      * @throws ApiException
      */
-    private function form_inline($discountcode = '', $status = '') {
+    private function form_inline($discountcode = '', $status = '') : string {
 
         $string = '<div align="center">
                             <p>' . get_string('gateway_mollie_select_method', 'enrol_coursepayment') . '</p>
@@ -658,7 +665,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * @throws dml_exception
      * @throws ApiException
      */
-    private function form_standalone($discountcode = '', $status = '') {
+    private function form_standalone($discountcode = '', $status = '') : string {
         global $SITE;
         $currency = ($this->instanceconfig->currency === 'EUR') ? '&euro;' : '&dollar;';
 

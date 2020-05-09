@@ -115,7 +115,7 @@ class enrol_coursepayment_discountcode {
      * @return lang_string|string
      * @throws coding_exception
      */
-    public function get_last_error() {
+    public function get_last_error() : string{
         return (!empty($this->lasterror)) ? get_string('error:' . $this->lasterror, 'enrol_coursepayment') : '';
     }
 
