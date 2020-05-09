@@ -483,7 +483,10 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * @throws coding_exception
      */
     public function order_valid($orderid = '', $gateway = '') : array {
-        $return = ['status' => false, 'message' => ''];
+        $return = [
+            'status' => false,
+            'message' => '',
+        ];
 
         $gateway = 'enrol_coursepayment_' . $gateway;
         if (!class_exists($gateway)) {
