@@ -72,7 +72,7 @@ class element extends \enrol_coursepayment\invoice\element {
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public function render_form_elements($mform) {
+    public function render_form_elements($mform) : void {
         $mform->addElement('select', 'fileid', get_string('image', 'enrol_coursepayment'), self::get_images());
 
         $mform->addElement('text', 'width', get_string('width', 'enrol_coursepayment'), ['size' => 10]);
@@ -103,7 +103,7 @@ class element extends \enrol_coursepayment\invoice\element {
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public function validate_form_elements($data, $files) {
+    public function validate_form_elements($data, $files) : array{
         // Array to return the errors.
         $errors = [];
 
@@ -222,7 +222,7 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @return string the html
      */
-    public function render_html() {
+    public function render_html() : string {
         // If there is no element data, we have nothing to display.
         if (empty($this->get_data())) {
             return '';
@@ -272,7 +272,7 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @throws \dml_exception
      */
-    public function definition_after_data($mform) {
+    public function definition_after_data($mform) : void{
         global $COURSE, $SITE;
 
         // Set the image, width and height for this element.

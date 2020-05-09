@@ -116,7 +116,7 @@ class element_helper {
      *
      * @return string the html
      */
-    public static function render_html_content($element, $content) {
+    public static function render_html_content($element, $content) : string {
         [$font, $attr] = self::get_font($element);
         $fontstyle = 'font-family: ' . $font;
         if (strpos($attr, 'B') !== false) {

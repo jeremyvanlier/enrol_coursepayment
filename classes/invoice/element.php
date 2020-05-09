@@ -252,7 +252,7 @@ abstract class element {
      *
      * @param edit_element_form $mform the edit_form instance
      */
-    public function definition_after_data($mform) {
+    public function definition_after_data($mform) : void{
         // Loop through the properties of the element and set the values
         // of the corresponding form element, if it exists.
         $properties = [

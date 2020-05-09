@@ -49,7 +49,7 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @throws \coding_exception
      */
-    public function render_form_elements($mform) {
+    public function render_form_elements($mform) : void {
         $mform->addElement('textarea', 'text', get_string('text', 'enrol_coursepayment'), [
             'rows' => 10,
             'cols' => 80,
@@ -68,7 +68,7 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @return string the text
      */
-    public function save_unique_data($data) {
+    public function save_unique_data($data) : string {
         return $data->text;
     }
 
@@ -78,10 +78,9 @@ class element extends \enrol_coursepayment\invoice\element {
      * @param \pdf      $pdf     the pdf object
      * @param bool      $preview true if it is a preview, false otherwise
      * @param \stdClass $user    the user we are rendering this for
-     *
      * @param array     $data
      */
-    public function render($pdf, $preview, $user, array $data = []) {
+    public function render($pdf, $preview, $user, array $data = []) : void {
         $courseid = 1;
 
         $text = format_text($this->get_data(), FORMAT_HTML, ['context' => \context_course::instance($courseid)]);
@@ -96,7 +95,7 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @return string the html
      */
-    public function render_html() {
+    public function render_html() : string {
         $text = format_text($this->get_data(), FORMAT_HTML, ['context' => \context_course::instance(1)]);
 
         return \enrol_coursepayment\invoice\element_helper::render_html_content($this, $text);
@@ -107,7 +106,7 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @param \enrol_coursepayment\invoice\edit_element_form $mform the edit_form instance
      */
-    public function definition_after_data($mform) {
+    public function definition_after_data($mform) : void{
         if (!empty($this->get_data())) {
             $element = $mform->getElement('text');
             $element->setValue($this->get_data());

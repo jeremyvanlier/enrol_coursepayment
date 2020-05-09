@@ -49,7 +49,7 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @throws \coding_exception
      */
-    public function render_form_elements($mform) {
+    public function render_form_elements($mform) : void {
 
         // Get the user profile fields.
         $userfields = [
@@ -142,7 +142,7 @@ class element extends \enrol_coursepayment\invoice\element {
      * This function is used to render the element when we are using the
      * drag and drop interface to position it.
      */
-    public function render_html() {
+    public function render_html() : string {
         global $CFG, $DB, $USER;
 
         // The user field to display.
@@ -179,7 +179,7 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @param \enrol_coursepayment\invoice\edit_element_form $mform the edit_form instance
      */
-    public function definition_after_data($mform) {
+    public function definition_after_data($mform) : void{
         if (!empty($this->get_data())) {
             $element = $mform->getElement('userfield');
             $element->setValue($this->get_data());

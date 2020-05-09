@@ -73,7 +73,7 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @return string the html
      */
-    public function render_html() {
+    public function render_html() : string{
         global $COURSE;
 
         $coursename = format_string($COURSE->fullname, true, ['context' => \context_course::instance($COURSE->id)]);

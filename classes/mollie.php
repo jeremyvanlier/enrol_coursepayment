@@ -126,8 +126,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
             if ($order['cost'] == 0) {
                 redirect($CFG->wwwroot . '/enrol/coursepayment/return.php?orderid=' . $order['orderid'] . '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid);
-
-                return;
+                return ['status' => false];
             }
 
             $invoice_number = $this->get_new_invoice_number();
@@ -324,7 +323,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             if (isset($status['status']) && $status['status'] == false) {
                 // we showing the same form again
             } else {
-                return;
+                return '';
             }
         }
 

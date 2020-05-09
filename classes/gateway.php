@@ -191,7 +191,7 @@ abstract class enrol_coursepayment_gateway {
     /**
      * check if a order is valid
      *
-     * @param string           $orderid
+     * @param string $orderid
      *
      * @return array
      * @throws coding_exception
@@ -315,7 +315,7 @@ abstract class enrol_coursepayment_gateway {
 
         $cost = $this->instanceconfig->cost;
 
-        $orderidentifier = uniqid(time() , true);
+        $orderidentifier = uniqid(time());
 
         $obj = new stdClass();
 
@@ -393,7 +393,7 @@ abstract class enrol_coursepayment_gateway {
             }
         }
 
-        $orderidentifier = uniqid(time() , true);
+        $orderidentifier = uniqid(time());
         $obj->orderid = $orderidentifier;
         $obj->gateway_transaction_id = '';
         $obj->invoice_number = 0;

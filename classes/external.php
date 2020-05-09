@@ -33,6 +33,8 @@ namespace enrol_coursepayment;
 
 use enrol_coursepayment\invoice\element_factory;
 use enrol_coursepayment\invoice\template;
+use external_function_parameters;
+use external_value;
 
 defined('MOODLE_INTERNAL') || die;
 
@@ -49,18 +51,18 @@ class external extends \external_api {
     /**
      * Returns the save_element() parameters.
      *
-     * @return \external_function_parameters
+     * @return external_function_parameters
      */
-    public static function save_element_parameters() {
-        return new \external_function_parameters(
+    public static function save_element_parameters() : external_function_parameters {
+        return new external_function_parameters(
             [
-                'templateid' => new \external_value(PARAM_INT, 'The template id'),
-                'elementid' => new \external_value(PARAM_INT, 'The element id'),
+                'templateid' => new external_value(PARAM_INT, 'The template id'),
+                'elementid' => new external_value(PARAM_INT, 'The element id'),
                 'values' => new \external_multiple_structure(
                     new \external_single_structure(
                         [
-                            'name' => new \external_value(PARAM_ALPHANUMEXT, 'The field to update'),
-                            'value' => new \external_value(PARAM_RAW, 'The value of the field'),
+                            'name' => new external_value(PARAM_ALPHANUMEXT, 'The field to update'),
+                            'value' => new external_value(PARAM_RAW, 'The value of the field'),
                         ]
                     )
                 ),
@@ -82,7 +84,7 @@ class external extends \external_api {
      * @throws \required_capability_exception
      * @throws \restricted_context_exception
      */
-    public static function save_element($templateid, $elementid, $values) {
+    public static function save_element($templateid, $elementid, $values) : bool {
         global $DB;
 
         $params = [
@@ -115,7 +117,7 @@ class external extends \external_api {
 
         // Get an instance of the element class.
         if ($e = element_factory::get_element_instance($element)) {
-            return $e->save_form_elements($data);
+            return (bool)$e->save_form_elements($data);
         }
 
         return false;
@@ -124,22 +126,22 @@ class external extends \external_api {
     /**
      * Returns the save_element result value.
      *
-     * @return \external_value
+     * @return external_value
      */
-    public static function save_element_returns() {
-        return new \external_value(PARAM_BOOL, 'True if successful, false otherwise');
+    public static function save_element_returns() : external_value {
+        return new external_value(PARAM_BOOL, 'True if successful, false otherwise');
     }
 
     /**
      * Returns get_element() parameters.
      *
-     * @return \external_function_parameters
+     * @return external_function_parameters
      */
-    public static function get_element_html_parameters() {
-        return new \external_function_parameters(
+    public static function get_element_html_parameters() : external_function_parameters {
+        return new external_function_parameters(
             [
-                'templateid' => new \external_value(PARAM_INT, 'The template id'),
-                'elementid' => new \external_value(PARAM_INT, 'The element id'),
+                'templateid' => new external_value(PARAM_INT, 'The template id'),
+                'elementid' => new external_value(PARAM_INT, 'The element id'),
             ]
         );
     }
@@ -156,7 +158,7 @@ class external extends \external_api {
      * @throws \restricted_context_exception
      * @throws \coding_exception
      */
-    public static function get_element_html($templateid, $elementid) {
+    public static function get_element_html($templateid, $elementid) : string {
         global $DB;
 
         $params = [
@@ -180,10 +182,10 @@ class external extends \external_api {
     /**
      * Returns the get_element result value.
      *
-     * @return \external_value
+     * @return external_value
      */
-    public static function get_element_html_returns() {
-        return new \external_value(PARAM_RAW, 'The HTML');
+    public static function get_element_html_returns() : external_value {
+        return new external_value(PARAM_RAW, 'The HTML');
     }
 
 }
