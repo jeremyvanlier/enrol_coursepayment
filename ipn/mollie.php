@@ -23,9 +23,10 @@
  * @copyright 2015 MFreak.nl
  * @author    Luuk Verhoeven
  */
-defined('MOODLE_INTERNAL') || die();
 
 require("../../../config.php");
+defined('MOODLE_INTERNAL') || die();
+
 require_once("../lib.php");
 
 set_exception_handler('enrol_coursepayment_ipn_exception_handler');
