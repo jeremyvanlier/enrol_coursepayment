@@ -50,7 +50,7 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public function render_form_elements($mform) {
+    public function render_form_elements($mform) : void {
         $mform->addElement('select', 'fileid', get_string('image', 'enrol_coursepayment'), self::get_images());
         $mform->addElement('filemanager', 'coursepaymentimage', get_string('uploadimage', 'enrol_coursepayment'), '',
             $this->filemanageroptions);
@@ -64,7 +64,7 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
      *
      * @return array the validation errors
      */
-    public function validate_form_elements($data, $files) {
+    public function validate_form_elements($data, $files) : array {
         // Array to return the errors.
         return [];
     }
@@ -113,7 +113,7 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
      * @return string the html
      * @throws \dml_exception
      */
-    public function render_html() {
+    public function render_html() : string{
         global $DB;
 
         // If there is no element data, we have nothing to display.

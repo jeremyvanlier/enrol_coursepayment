@@ -81,7 +81,7 @@ class template {
      * @throws \file_exception
      * @throws \stored_file_creation_exception
      */
-    public static function render(\stdClass $coursepayment, \stdClass $user, \stdClass $pluginconfig, $a) {
+    public static function render(\stdClass $coursepayment, \stdClass $user, \stdClass $pluginconfig, $a) : \stored_file {
         global $DB;
         ob_clean();
 
@@ -121,10 +121,10 @@ class template {
      * @param \stdClass $pluginconfig
      * @param \stdClass $user
      *
-     * @return mixed
+     * @return int
      * @throws \dml_exception
      */
-    public static function get_template_name(\stdClass $pluginconfig, \stdClass $user) {
+    public static function get_template_name(\stdClass $pluginconfig, \stdClass $user) : int {
         global $DB;
         $profilevalue = '';
 
@@ -166,7 +166,7 @@ class template {
      *
      * @throws \dml_exception
      */
-    public static function install_default_template(int $name = 0) {
+    public static function install_default_template(int $name = 0) : void {
         global $DB;
 
         // Todo shouldn't be run multiple times, better add a record exists.
@@ -297,7 +297,7 @@ class template {
      * @return int the id of the page
      * @throws \dml_exception
      */
-    public function add_page() {
+    public function add_page() : int {
         global $DB;
 
         // Set the page number to 1 to begin with.
@@ -330,7 +330,7 @@ class template {
      *
      * @throws \dml_exception
      */
-    public function save_page($data) {
+    public function save_page($data) : void {
         global $DB;
 
         // Set the time to a variable.
@@ -366,7 +366,7 @@ class template {
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public function delete() {
+    public function delete() : bool {
         global $DB;
 
         // Delete the elements.
@@ -408,7 +408,7 @@ class template {
      * @throws \dml_exception
      * @throws \coding_exception
      */
-    public function delete_page($pageid) {
+    public function delete_page($pageid) : void {
         global $DB;
 
         // Get the page.
@@ -447,7 +447,7 @@ class template {
      * @throws \dml_exception
      * @throws \coding_exception
      */
-    public function delete_element($elementid) {
+    public function delete_element($elementid) : void {
         global $DB;
 
         // Ensure element exists and delete it.
@@ -473,13 +473,14 @@ class template {
     /**
      * Generate the PDF for the template.
      *
-     * @param bool $preview true if it is a preview, false otherwise
-     * @param int  $user    the user object
-     * @param bool $return  Do we want to return the contents of the PDF?
+     * @param bool  $preview true if it is a preview, false otherwise
+     * @param int   $user    the user object
+     * @param array $data
+     * @param bool  $return  Do we want to return the contents of the PDF?
      *
      * @return string|void Can return the PDF in string format if specified.
-     * @throws \dml_exception
      * @throws \coding_exception
+     * @throws \dml_exception
      */
     public function generate_pdf($preview = false, $user = null, array $data = [], $return = false) {
         global $CFG, $DB, $USER;
@@ -539,7 +540,7 @@ class template {
      * @throws \dml_exception
      * @throws \coding_exception
      */
-    public function copy_to_template($copytotemplateid) {
+    public function copy_to_template($copytotemplateid) : void {
         global $DB;
 
         // Get the pages for the template, there should always be at least one page for each template.
@@ -583,7 +584,7 @@ class template {
      *
      * @throws \dml_exception
      */
-    public function move_item($itemname, $itemid, $direction) {
+    public function move_item($itemname, $itemid, $direction) : void {
         global $DB;
 
         $table = 'coursepayment_';
@@ -623,7 +624,7 @@ class template {
      *
      * @return int the id of the template
      */
-    public function get_id() {
+    public function get_id() : int {
         return $this->id;
     }
 
@@ -632,7 +633,7 @@ class template {
      *
      * @return string the name of the template
      */
-    public function get_name() {
+    public function get_name() : string {
         return $this->name;
     }
 
@@ -641,7 +642,7 @@ class template {
      *
      * @return int the context id
      */
-    public function get_contextid() {
+    public function get_contextid() : int {
         return $this->contextid;
     }
 
@@ -651,7 +652,7 @@ class template {
      * @return \context the context
      * @throws \coding_exception
      */
-    public function get_context() {
+    public function get_context() : \context {
         return \context::instance_by_id($this->contextid);
     }
 
@@ -661,7 +662,7 @@ class template {
      * @return \context_module|null the context module, null if there is none
      * @throws \coding_exception
      */
-    public function get_cm() {
+    public function get_cm() : ?\context_module {
         $context = $this->get_context();
         if ($context->contextlevel === CONTEXT_MODULE) {
             return get_coursemodule_from_id('enrol_coursepayment', $context->instanceid, 0, false, MUST_EXIST);
@@ -676,7 +677,7 @@ class template {
      * @throws \required_capability_exception if the user does not have the necessary capabilities (ie. Fred)
      * @throws \coding_exception
      */
-    public function require_manage() {
+    public function require_manage() : void {
         require_capability('enrol/coursepayment:manage', $this->get_context());
     }
 
@@ -689,7 +690,7 @@ class template {
      * @return template
      * @throws \dml_exception
      */
-    public static function create($templatename, $contextid) {
+    public static function create($templatename, $contextid) : template {
         global $DB;
 
         $template = new \stdClass();

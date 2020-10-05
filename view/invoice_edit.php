@@ -23,7 +23,7 @@
  * @copyright 26-10-2018 MFreak.nl
  * @author    Luuk Verhoeven
  **/
-require_once(dirname(__FILE__) . '/../../../config.php');
+require_once(__DIR__ . '/../../../config.php');
 defined('MOODLE_INTERNAL') || die;
 require_login();
 
@@ -168,7 +168,6 @@ if ($data = $mform->get_data()) {
         $height = 'pageheight_' . $pageid;
         $leftmargin = 'pageleftmargin_' . $pageid;
         $rightmargin = 'pagerightmargin_' . $pageid;
-        $rightmargin = 'pagerightmargin_' . $pageid;
 
         $data->$width = $data->pagewidth_0;
         $data->$height = $data->pageheight_0;
@@ -218,7 +217,7 @@ if ($data = $mform->get_data()) {
     // Check if we want to preview this custom certificate.
     if (!empty($data->previewbtn)) {
 
-        $template->generate_pdf(true );
+        $template->generate_pdf(true);
         exit();
     }
 

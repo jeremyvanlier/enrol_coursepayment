@@ -34,7 +34,7 @@ defined('MOODLE_INTERNAL') || die;
  * @package enrol_coursepayment\table
  */
 class arraysortutil {
-    static public function uasort($unsort, $fields) {
+    public static function uasort($unsort, $fields) {
         if (!is_array($unsort) || count($unsort) <= 0) {
             return $unsort;
         }
@@ -43,7 +43,7 @@ class arraysortutil {
         return $sorted;
     }
 
-    static public function multisort($unsort, $fields) {
+    public static function multisort($unsort, $fields) {
         if (!is_array($unsort) || count($unsort) <= 0) {
             return $unsort;
         }
@@ -59,7 +59,7 @@ class arraysortutil {
  * @package enrol_coursepayment\table
  */
 class multisortengine {
-    static public function multisort($unsort, $fields) {
+    public static function multisort($unsort, $fields) {
         $sorted = $unsort;
         if (is_array($unsort)) {
             $loadfields = [];
@@ -121,7 +121,7 @@ class uasortengine {
      *
      * @return int|\lt
      */
-    static private function uasort_callback(&$a, &$b) {
+    private static function uasort_callback(&$a, &$b) {
         foreach (self::$sortfields as $sortfield) {
             $field = $sortfield["field"];
             $order = isset($sortfield["order"]) ? $sortfield["order"] : self::$sortorder;
@@ -161,7 +161,7 @@ class uasortengine {
      *
      * @return mixed
      */
-    static public function uasort($unsort, $fields) {
+    public static function uasort($unsort, $fields) {
         self::$sortfields = $fields;
         $sorted = $unsort;
         uasort($sorted, ['uasortengine', 'uasort_callback']);

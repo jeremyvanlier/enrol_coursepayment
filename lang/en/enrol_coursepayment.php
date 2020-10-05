@@ -65,6 +65,8 @@ $string['error:no_record'] = 'Error: Not exists!';
 $string['error:not_within_the_time_period'] = 'Error: Not valid within this time period!';
 $string['error:not_for_this_course'] = 'Error: This discountcode is for another course!';
 $string['error:waiting_on_payment'] = 'Not paid. We will wait on payment.';
+$string['error:mollie_connect_requires'] = 'Error: please link Mollie connect first!';
+
 $string['gateway_not_exists'] = 'Error! Gateway not exists';
 $string['enabled_desc'] = 'Status of the gateway if this can be used to create a transaction';
 $string['expiredaction'] = 'Enrolment expiration action';
@@ -261,6 +263,7 @@ $string['transaction_name_desc'] = 'Supports the follow shortcodes: <br>
 {site} : Site name<br>
 {site_shortname} : Site shortname<br>
 {customtext2} : Extra identifier';
+$string['mollieconnect'] = 'IMPORTANT! Account is not connected. To enable this plugin you need to authorise our App. <br> <br> To do this click on the button below.';
 
 // Privacy.
 $string['privacy:metadata:enrol_coursepayment'] = 'Stores the user transaction data, this allow to keep track of what a
@@ -369,6 +372,7 @@ $string['invalidheight'] = 'The height has to be a valid number greater than 0.'
 $string['invalidmargin'] = 'The margin has to be a valid number greater than 0.';
 $string['invalidwidth'] = 'The width has to be a valid number greater than 0.';
 $string['deletepageconfirm'] = 'Are you sure you want to delete this certificate page?';
+$string['processexpirationstask'] = 'CoursePayment enrolment send expiry notifications task';
 
 $string['orderdata:coursename'] = 'Name';
 $string['orderdata:vat'] = 'Vat';

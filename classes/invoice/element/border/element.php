@@ -49,7 +49,7 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @throws \coding_exception
      */
-    public function render_form_elements($mform) {
+    public function render_form_elements($mform) : void {
         // We want to define the width of the border.
         $mform->addElement('text', 'width', get_string('width', 'enrol_coursepayment'), ['size' => 10]);
         $mform->setType('width', PARAM_INT);
@@ -84,7 +84,7 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @return string the html
      */
-    public function render_html() {
+    public function render_html() : string {
         return '';
     }
 
@@ -97,7 +97,7 @@ class element extends \enrol_coursepayment\invoice\element {
      * @return array the validation errors
      * @throws \coding_exception
      */
-    public function validate_form_elements($data, $files) {
+    public function validate_form_elements($data, $files) : array{
         // Array to return the errors.
         $errors = [];
 
@@ -117,7 +117,7 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @param \enrol_coursepayment\invoice\edit_element_form $mform the edit_form instance
      */
-    public function definition_after_data($mform) {
+    public function definition_after_data($mform) : void{
         if (!empty($this->get_data())) {
             $element = $mform->getElement('width');
             $element->setValue($this->get_data());

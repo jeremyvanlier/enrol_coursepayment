@@ -30,12 +30,12 @@
  * @author    Luuk Verhoeven
  */
 M.enrol_coursepayment_mollie_standalone = {
-    config            : {
+    config: {
         'courseid': 0,
-        'sesskey' : '',
-        'ajaxurl' : ''
+        'sesskey': '',
+        'ajaxurl': ''
     },
-    log               : function (val) {
+    log: function(val) {
         try {
             Y.log(val);
 
@@ -46,7 +46,7 @@ M.enrol_coursepayment_mollie_standalone = {
             }
         }
     },
-    init              : function (Y, ajaxurl, sesskey, courseid) {
+    init: function(Y, ajaxurl, sesskey, courseid) {
         M.enrol_coursepayment_mollie_standalone.log('Load: M.enrol_coursepayment_mollie_standalone');
 
         // Set config
@@ -55,13 +55,13 @@ M.enrol_coursepayment_mollie_standalone = {
         this.config.sesskey = sesskey;
 
         // Fix price format.
-        Y.one('#header-amount span').setHTML(this.pricformat( parseFloat(Y.one('#cost').get("text"))));
+        Y.one('#header-amount span').setHTML(this.pricformat(parseFloat(Y.one('#cost').get("text"))));
 
         M.enrol_coursepayment_mollie_standalone.log(this.config);
         if (Y.one('#discountcode')) {
             this.validatediscount();
             // Get price maybe there is a value in discountcode.
-            if(Y.one('#discountcode').get('value') !== ''){
+            if (Y.one('#discountcode').get('value') !== '') {
                 this.get_price();
             }
         }
@@ -71,7 +71,7 @@ M.enrol_coursepayment_mollie_standalone = {
         }
 
         // Show iDeal issuers options.
-        Y.all('.grid-button-ideal').on("click", function (e) {
+        Y.all('.grid-button-ideal').on("click", function(e) {
             e.preventDefault();
             M.enrol_coursepayment_mollie_standalone.log('.grid-button-ideal');
 
@@ -88,10 +88,10 @@ M.enrol_coursepayment_mollie_standalone = {
     /**
      * Validate agreement checkbox on form submit.
      */
-    validate_agreement: function () {
+    validate_agreement: function() {
         M.enrol_coursepayment_mollie_standalone.log('validate_agreement()');
 
-        Y.all('.coursepayment_mollie_form').on("submit", function (e) {
+        Y.all('.coursepayment_mollie_form').on("submit", function(e) {
             M.enrol_coursepayment_mollie_standalone.log('submit()');
             M.enrol_coursepayment_mollie_standalone.log(e.currentTarget.get('id'));
 
@@ -107,7 +107,7 @@ M.enrol_coursepayment_mollie_standalone = {
     /**
      * Get pricing.
      */
-    get_price: function () {
+    get_price: function() {
         var newprice = 0;
         var costorignal = parseFloat(Y.one('#cost').get("text"));
         var config = M.enrol_coursepayment_mollie_standalone.config;
@@ -116,35 +116,32 @@ M.enrol_coursepayment_mollie_standalone = {
         M.enrol_coursepayment_mollie_standalone.log(costorignal);
 
         Y.io(config.ajaxurl, {
-            method : 'GET',
-            data   : {
-                'action'  : 'discountcode',
+            method: 'GET',
+            data: {
+                'action': 'discountcode',
                 'courseid': config.courseid,
-                'sesskey' : config.sesskey,
-                'data'    : Y.one('#discountcode').get('value')
+                'sesskey': config.sesskey,
+                'data': Y.one('#discountcode').get('value')
             },
-            on     : {
-                success: function (id, o) {
+            on: {
+                success: function(id, o) {
                     try {
                         var response = Y.JSON.parse(o.responseText);
                         if (response.error) {
                             Y.one('#discountcode').setStyle('border', '1px solid red');
                             Y.one('#error_coursepayment').setHTML(response.error);
                             Y.one('#header-amount span').setHTML(M.enrol_coursepayment_mollie_standalone.pricformat(costorignal));
-                        }
-                        else if (response.status == true) {
+                        } else if (response.status == true) {
                             Y.one('#error_coursepayment').setHTML('');
                             Y.one('#discountcode').setStyle('border', '1px solid green');
                             // Update
-
 
                             if (response.amount > 0) {
                                 newprice = parseFloat(costorignal) - response.amount;
                                 if (newprice < 0) {
                                     newprice = 0;
                                 }
-                            }
-                            else {
+                            } else {
                                 newprice = (parseFloat(costorignal) / 100) * (100 - response.percentage);
                                 if (newprice < 0) {
                                     newprice = 0;
@@ -159,7 +156,7 @@ M.enrol_coursepayment_mollie_standalone = {
                         M.enrol_coursepayment_mollie_standalone.log(e);
                     }
                 },
-                failure: function (x, o) {
+                failure: function(x, o) {
                     M.enrol_coursepayment_mollie_standalone.log("Async call failed!");
 
                 }
@@ -174,18 +171,18 @@ M.enrol_coursepayment_mollie_standalone = {
      * Price format
      * @param number
      */
-    pricformat : function (number) {
+    pricformat: function(number) {
         var string = number.toFixed(2)
-        return string.replace('.' , ',');
+        return string.replace('.', ',');
     },
 
     /**
      * Validate discount code.
      */
-    validatediscount: function () {
+    validatediscount: function() {
         M.enrol_coursepayment_mollie_standalone.log('validatediscount()');
 
-        Y.one('#discountcode').on("keyup", function (e) {
+        Y.one('#discountcode').on("keyup", function(e) {
             this.get_price();
         }, this)
     }

@@ -37,13 +37,6 @@ if ($ADMIN->fulltree) {
         1 => get_string('yes'),
     ];
 
-    // Check if we have a parent for the mollie connector (allow to create accounts).
-    if (empty($config->gateway_mollie_parent_api)) {
-        set_config('gateway_mollie_parent_api',
-            'https://moodle.avetica.nl/enrol/coursepayment/mollie-connector.php',
-            'enrol_coursepayment');
-    }
-
     // Add some more logic.
     $tabs = new \enrol_coursepayment\adminsetting\tabs('enrol_coursepayment/tabs', $settings->name, 'invoicedetails');
     $tabs->addtab('invoicedetails', get_string('settings:tab_invoicedetails', 'enrol_coursepayment'));

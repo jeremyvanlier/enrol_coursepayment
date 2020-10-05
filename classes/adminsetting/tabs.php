@@ -99,7 +99,7 @@ class tabs extends \admin_setting {
      *
      * @throws \moodle_exception
      */
-    public function addtab($id, $name) {
+    public function addtab($id, $name) : void {
 
         $urlparams = [
             'section' => $this->section,
@@ -114,12 +114,12 @@ class tabs extends \admin_setting {
     /**
      * Returns an HTML string
      *
-     * @param mixed  $params  Array or string depending on setting
-     * @param string $query Query
+     * @param mixed  $params Array or string depending on setting
+     * @param string $query  Query
      *
      * @return string Returns an HTML string
      */
-    public function output_html($params, $query = '') {
+    public function output_html($params, $query = '') : string {
 
         $html = print_tabs($this->tabs, $this->selected, null, null, true);
 

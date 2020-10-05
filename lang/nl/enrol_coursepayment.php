@@ -61,6 +61,7 @@ $string['success_enrolled'] = 'Bedankt voor de aanschaf.<br> We hebben u ingesch
 $string['error:unknown_order'] = 'Er is geen order bij ons bekend met deze gegevens.';
 $string['error:gettingorderdetails'] = 'We waren niet in staat om de order gegevens op te halen.';
 $string['error:paymentabort'] = 'De betaling is afgebroken.';
+$string['error:mollie_connect_requires'] = 'Fout: Mollie connect is nog niet geconfigureerd';
 $string['gateway_not_exists'] = 'Fout! Gateway is onbekend.';
 $string['enabled_desc'] = 'Wanneer ingeschakeld kan deze enrolment plugin ingesteld worden bij een cursus.';
 $string['expiredaction'] = 'Inschrijving verloop actie';
@@ -257,6 +258,8 @@ $string['transaction_name_desc'] = 'Ondersteund de volgende shortcodes: <br>
 {site_shortname} : Site korte naam<br>
 {customtext2} : Extra betaal identifier';
 
+$string['mollieconnect'] = 'IMPORTANT! Account is not connected. To enable this plugin you need to authorise our App. <br> <br> To do this click on the button below.';
+
 // Privacy.
 $string['privacy:metadata:enrol_coursepayment'] = 'Slaat de gebruikerstransactiegegevens op, dit staat toe om bij te 
 houden wat een gebruiker heeft gekocht.';
@@ -270,9 +273,6 @@ $string['privacy:metadata:enrol_coursepayment:courseid'] = 'De cursus id van de 
 
 $string['customtext2'] = 'Extra identifier';
 $string['report_include_none_payment_users'] = 'Rapportage alle gebruikers inladen';
-
-// Headings.
-$string['heading:report'] = 'Report';
 
 // Headings.
 $string['heading:report'] = 'Report';
@@ -367,6 +367,7 @@ $string['invalidheight'] = 'The height has to be a valid number greater than 0.'
 $string['invalidmargin'] = 'The margin has to be a valid number greater than 0.';
 $string['invalidwidth'] = 'The width has to be a valid number greater than 0.';
 $string['deletepageconfirm'] = 'Are you sure you want to delete this certificate page?';
+$string['processexpirationstask'] = 'CoursePayment enrolment send expiry notifications task';
 
 $string['orderdata:coursename'] = 'Naam';
 $string['orderdata:vat'] = 'BTW';

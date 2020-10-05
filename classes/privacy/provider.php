@@ -41,7 +41,7 @@ class provider implements \core_privacy\local\metadata\provider,
     /**
      * Returns meta data about this system.
      *
-     * @param   collection $collection The initialised collection to add items to.
+     * @param collection $collection The initialised collection to add items to.
      *
      * @return  collection     A listing of user data stored through this system.
      */
@@ -94,7 +94,7 @@ class provider implements \core_privacy\local\metadata\provider,
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public static function export_user_data(approved_contextlist $contextlist) {
+    public static function export_user_data(approved_contextlist $contextlist): void{
         global $DB;
         if (empty($contextlist->count())) {
             return;
@@ -102,7 +102,7 @@ class provider implements \core_privacy\local\metadata\provider,
 
         $user = $contextlist->get_user();
 
-        list($contextsql, $contextparams) = $DB->get_in_or_equal($contextlist->get_contextids(), SQL_PARAMS_NAMED);
+        [$contextsql, $contextparams] = $DB->get_in_or_equal($contextlist->get_contextids(), SQL_PARAMS_NAMED);
 
         $sql = "SELECT coursepayment.*
             FROM {enrol} enrol
@@ -148,7 +148,7 @@ class provider implements \core_privacy\local\metadata\provider,
      *
      * @throws \dml_exception
      */
-    public static function delete_data_for_all_users_in_context(\context $context) {
+    public static function delete_data_for_all_users_in_context(\context $context) : void{
         global $DB;
 
         if (empty($context)) {
@@ -164,7 +164,7 @@ class provider implements \core_privacy\local\metadata\provider,
      *
      * @throws \dml_exception
      */
-    public static function delete_data_for_user(approved_contextlist $contextlist) {
+    public static function delete_data_for_user(approved_contextlist $contextlist) : void {
         global $DB;
 
         if (empty($contextlist->count())) {

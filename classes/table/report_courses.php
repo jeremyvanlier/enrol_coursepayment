@@ -49,6 +49,7 @@ class report_courses extends \flexible_table {
             TABLE_VAR_ILAST => 'tilast',
             TABLE_VAR_PAGE => 'page',
             TABLE_VAR_RESET => 'reset',
+            TABLE_VAR_DIR => 'dir',
         ];
     }
 
@@ -58,7 +59,7 @@ class report_courses extends \flexible_table {
      * @param array      $data
      * @param bool|array $filterdata
      */
-    public function data_sort_and_search($data = [], $filterdata = false) {
+    public function data_sort_and_search($data = [], $filterdata = false) : void {
 
         // Allow coll sorting.
         $sort = $this->get_sort_for_table($this->uniqueid);
@@ -66,7 +67,7 @@ class report_courses extends \flexible_table {
         if (!empty($sort)) {
             // We have a sort, we need sort now.
             $arr = explode(',', $sort);
-            list($column, $direction) = explode(' ', $arr[0]);
+            [$column, $direction] = explode(' ', $arr[0]);
             if (isset($this->columns[$column])) {
 
                 $data = arraysortutil::multisort($data, [
@@ -119,7 +120,7 @@ class report_courses extends \flexible_table {
      *
      * @return array
      */
-    protected function search($filterdata, $stack) {
+    protected function search($filterdata, $stack) : array {
 
         $needed = count((array)$filterdata) - 1; // Total search filters - submit_btn.
 
@@ -164,9 +165,9 @@ class report_courses extends \flexible_table {
      *
      * @param \stdClass $row
      *
-     * @return mixed
+     * @return string
      */
-    public function col_phone1(\stdClass $row) {
+    public function col_phone1(\stdClass $row) : string{
         return !empty($row->phone1) ? $row->phone1 : $row->phone2;
     }
 
@@ -178,7 +179,7 @@ class report_courses extends \flexible_table {
      * @return string
      * @throws \coding_exception
      */
-    public function col_status(\stdClass $row) {
+    public function col_status(\stdClass $row) : string {
 
         switch ($row->status) {
 
@@ -223,7 +224,7 @@ class report_courses extends \flexible_table {
      *
      * @return false|string
      */
-    public function col_addedon(\stdClass $row) {
+    public function col_addedon(\stdClass $row) : string{
         return date('d.m.Y H:i:s', $row->addedon);
     }
 

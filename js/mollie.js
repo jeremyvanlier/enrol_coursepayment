@@ -22,47 +22,41 @@
  * @author    Luuk Verhoeven
  */
 
-YUI().use("node", function(Y){
+YUI().use("node", function(Y) {
 
     // form can't accept if there is no input
     Y.one('#coursepayment_mollie_form').on('submit', function(e) {
 
-        var method =  Y.one('#coursepayment_mollie_form tr.selected').getData('method');;
-        if(method == '')
-        {
+        var method = Y.one('#coursepayment_mollie_form tr.selected').getData('method');
+        ;
+        if (method == '') {
             e.preventDefault();
             return;
         }
 
-        if(method == 'ideal')
-        {
+        if (method == 'ideal') {
             // get the issuer if set
             var issuer = Y.one('#issuers_ideal select').get('value');
-            if(issuer == '')
-            {
+            if (issuer == '') {
                 e.preventDefault();
                 return;
             }
         }
         // set method value
-        Y.one('#input_method').setAttribute('value' , method);
+        Y.one('#input_method').setAttribute('value', method);
     });
 
     Y.all('#coursepayment_mollie_form tr').on('click', function(e) {
 
         var item = e.currentTarget;
 
-        if(item.hasClass('skip'))
-        {
+        if (item.hasClass('skip')) {
             return;
         }
 
-        if(item.hasClass('ideal'))
-        {
+        if (item.hasClass('ideal')) {
             Y.one('#issuers_ideal').show()
-        }
-        else
-        {
+        } else {
             Y.one('#issuers_ideal').hide();
         }
 

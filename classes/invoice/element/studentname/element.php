@@ -61,7 +61,7 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @return string the html
      */
-    public function render_html() {
+    public function render_html() : string {
         global $USER;
 
         return \enrol_coursepayment\invoice\element_helper::render_html_content($this, fullname($USER));

@@ -31,6 +31,11 @@ use enrol_coursepayment\table\report_courses;
 defined('MOODLE_INTERNAL') || die;
 require_once($CFG->libdir . '/tablelib.php');
 
+/**
+ * Class report
+ *
+ * @package enrol_coursepayment
+ */
 class report {
 
     /**
@@ -42,7 +47,7 @@ class report {
      * @throws \dml_exception
      * @throws \moodle_exception
      */
-    public static function table_overview_courses($datafilter) {
+    public static function table_overview_courses($datafilter) : void {
         global $PAGE;
         $columns = [
             'firstname',
@@ -93,7 +98,7 @@ class report {
      * @throws \dml_exception
      * @throws \coding_exception
      */
-    private static function get_all_courses_data($datafilter) {
+    private static function get_all_courses_data($datafilter) : array {
         global $DB;
 
         $sql = 'SELECT cp.* , u.firstname , u.lastname , u.phone1 , u.phone2 , u.email, c.fullname as course
@@ -104,8 +109,8 @@ class report {
 
         $results = $DB->get_records_sql($sql);
 
-        if (get_config('enrol_coursepayment', 'report_include_none_payment_users') == 1 &&
-            empty($datafilter->courseid)) {
+        if (get_config('enrol_coursepayment', 'report_include_none_payment_users') == 1
+            && empty($datafilter->courseid)) {
 
             // Build user_id set.
             $userids = [];
@@ -113,7 +118,11 @@ class report {
                 $userids[$result->userid] = $result->userid;
             }
 
-            list($insql, $params) = $DB->get_in_or_equal(array_keys($userids), SQL_PARAMS_QM, 'param', false);
+            if (empty($userids)) {
+                return [];
+            }
+
+            [$insql, $params] = $DB->get_in_or_equal(array_keys($userids), SQL_PARAMS_QM, 'param', false);
             $sql = 'SELECT u.id, u.firstname , u.lastname , u.phone1, u.phone2 , u.email , "" as course , "-1" as status , "0" as addedon
                     FROM {user} u
                     WHERE u.id > 1 AND u.suspended =0 AND u.deleted = 0 AND id ' . $insql;

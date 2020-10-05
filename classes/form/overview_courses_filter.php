@@ -35,7 +35,11 @@ require_once($CFG->libdir . '/formslib.php');
 
 class overview_courses_filter extends \moodleform {
 
-    public function definition() {
+    /**
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
+    public function definition() : void {
         global $DB;
 
         // Get all courses.

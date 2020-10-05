@@ -23,7 +23,7 @@
  * @copyright 2017 MFreak.nl
  * @author    Luuk Verhoeven
  **/
-require_once(dirname(__FILE__) . '/../../../config.php');
+require_once(__DIR__ . '/../../../config.php');
 defined('MOODLE_INTERNAL') || die();
 require_login();
 
@@ -37,6 +37,10 @@ $PAGE->set_url('/enrol/coursepayment/view/purchase.php', [
     'instanceid' => $instanceid,
     'gateway' => $gateway,
 ]);
+
+if (enrol_coursepayment_helper::requires_mollie_connect()) {
+    print_error('error:mollie_connect_requires', 'enrol_coursepayment');
+}
 
 $context = context_system::instance();
 $PAGE->set_context($context);

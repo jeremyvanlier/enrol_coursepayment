@@ -65,7 +65,7 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @return string the html
      */
-    public function render_html() {
+    public function render_html() : string {
         global $COURSE;
 
         $categoryname = format_string($COURSE->fullname, true, ['context' => \context_course::instance($COURSE->id)]);
@@ -84,7 +84,7 @@ class element extends \enrol_coursepayment\invoice\element {
     protected static function get_category_name(array $data) {
         global $DB, $SITE, $COURSE;
 
-        if (empty($data) ) {
+        if (empty($data)) {
             return $COURSE->fullname;
         }
 

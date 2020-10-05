@@ -134,7 +134,7 @@ abstract class element {
      *
      * @return int
      */
-    public function get_id() {
+    public function get_id() : int {
         return $this->id;
     }
 
@@ -143,16 +143,16 @@ abstract class element {
      *
      * @return int
      */
-    public function get_pageid() {
+    public function get_pageid() : int {
         return $this->pageid;
     }
 
     /**
      * Returns the name.
      *
-     * @return int
+     * @return string
      */
-    public function get_name() {
+    public function get_name() : string {
         return $this->name;
     }
 
@@ -170,7 +170,7 @@ abstract class element {
      *
      * @return string
      */
-    public function get_font() {
+    public function get_font() : string {
         return $this->font;
     }
 
@@ -179,7 +179,7 @@ abstract class element {
      *
      * @return int
      */
-    public function get_fontsize() {
+    public function get_fontsize() : int {
         return $this->fontsize;
     }
 
@@ -188,7 +188,7 @@ abstract class element {
      *
      * @return string
      */
-    public function get_colour() {
+    public function get_colour() : string {
         return $this->colour;
     }
 
@@ -197,7 +197,7 @@ abstract class element {
      *
      * @return int
      */
-    public function get_posx() {
+    public function get_posx() : int {
         return $this->posx;
     }
 
@@ -236,7 +236,7 @@ abstract class element {
      *
      * @throws \coding_exception
      */
-    public function render_form_elements($mform) {
+    public function render_form_elements($mform) : void {
         // Render the common elements.
         element_helper::render_form_element_font($mform);
         element_helper::render_form_element_colour($mform);
@@ -252,7 +252,7 @@ abstract class element {
      *
      * @param edit_element_form $mform the edit_form instance
      */
-    public function definition_after_data($mform) {
+    public function definition_after_data($mform) : void{
         // Loop through the properties of the element and set the values
         // of the corresponding form element, if it exists.
         $properties = [
@@ -283,7 +283,7 @@ abstract class element {
      * @return array the validation errors
      * @throws \coding_exception
      */
-    public function validate_form_elements($data, $files) {
+    public function validate_form_elements($data, $files) : array {
         // Array to return the errors.
         $errors = [];
 
@@ -360,7 +360,7 @@ abstract class element {
      *
      * @return bool returns true if the data was copied successfully, false otherwise
      */
-    public function copy_element($data) {
+    public function copy_element($data) : bool {
         return true;
     }
 
@@ -372,9 +372,9 @@ abstract class element {
      * @param \pdf      $pdf     the pdf object
      * @param bool      $preview true if it is a preview, false otherwise
      * @param \stdClass $user    the user we are rendering this for
-     * @param array     $data extra data provided by coursepayment
+     * @param array     $data    extra data provided by coursepayment
      */
-    public abstract function render($pdf, $preview, $user , array $data = []);
+    public abstract function render($pdf, $preview, $user, array $data = []);
 
     /**
      * Render the element in html.
@@ -386,7 +386,7 @@ abstract class element {
      *
      * @return string the html
      */
-    public abstract function render_html();
+    public abstract function render_html() : string;
 
     /**
      * Handles deleting any data this element may have introduced.
@@ -395,7 +395,7 @@ abstract class element {
      * @return bool success return true if deletion success, false otherwise
      * @throws \dml_exception
      */
-    public function delete() {
+    public function delete() : bool{
         global $DB;
 
         return $DB->delete_records('coursepayment_elements', ['id' => $this->id]);

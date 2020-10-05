@@ -23,24 +23,51 @@
  * @copyright 2015 MFreak.nl
  * @author    Luuk Verhoeven
  */
+
+use Mollie\Api\Exceptions\ApiException;
+use Mollie\Api\Exceptions\IncompatiblePlatform;
+use Mollie\Api\MollieApiClient;
+use Mollie\Api\Types\PaymentMethod;
+
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Class enrol_coursepayment_mollie
+ *
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package   enrol_coursepayment
+ * @copyright 2015 MFreak.nl
+ * @author    Luuk Verhoeven
+ */
 class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
+    /**
+     * Name of the gateway
+     *
+     * @var string
+     */
     protected $name = 'mollie';
 
     /**
      * class container
      *
-     * @var Mollie_API_Client
+     * @var MollieApiClient
      */
     protected $client;
 
+    /**
+     * enrol_coursepayment_mollie constructor.
+     *
+     * @throws  ApiException
+     * @throws ApiException
+     * @throws IncompatiblePlatform
+     */
     public function __construct() {
         parent::__construct();
-        require_once dirname(__FILE__) . "/../libs/Mollie/API/Autoloader.php";
+        require_once __DIR__ . "/../vendor/autoload.php";
 
-        $this->client = new Mollie_API_Client();
+        $this->client = new MollieApiClient();
 
         if (!empty($this->config->apikey)) {
             $this->client->setApiKey($this->config->apikey);
@@ -48,43 +75,30 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
     }
 
     /**
-     * Reload api key
+     *  Reload api key
+     *
+     * @throws  ApiException
+     * @throws ApiException
      */
     protected function reload_api_key() {
         $this->client->setApiKey($this->config->apikey);
     }
 
     /**
-     * validate if a payment provider has a valid ip address
+     * Add new activity order from a user.
      *
-     * @return boolean
-     */
-    public function ip_validation() {
-        // The rationale people give for requesting and using that IP information is for whitelisting purposes.
-        // The thought being that by actively denying any requests from other IPs they hope
-        // to secure their website from hackers that might be trying to get a paid order without making an actual payment.
-        // However, this IP check is not required since the webhook script will always need to actively fetch the payment from the Mollie API,
-        // and check its status that way. If you are whitelisting and Mollie ever changes IPs, you might miss this news and be left with a broken store.
-        // Without improved security or any other benefit.
-        return true;
-    }
-
-    /**
-     * add new activity order from a user
-     *
-     * @param string           $method
-     * @param string           $issuer
-     * @param string           $discountcode
+     * @param string $method
+     * @param string $issuer
+     * @param string $discountcode
      *
      * @return array
      * @throws moodle_exception
-     * @global moodle_database $DB
      */
-    public function new_order_activity($method = '', $issuer = '', $discountcode = '') {
+    public function new_order_activity($method = '', $issuer = '', $discountcode = '') : array {
 
         global $CFG, $DB;
 
-        // extra order data
+        // Extra order data.
         $data = [];
 
         if (!empty($discountcode)) {
@@ -94,7 +108,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             $row = $discountinstance->get_discountcode();
 
             if ($row) {
-                // looks okay we need to save this to the order
+                // Looks okay we need to save this to the order.
                 $data['discount'] = $row;
             } else {
 
@@ -106,29 +120,25 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             }
         }
 
-        // add new internal order
+        // Add new internal order.
         $order = $this->create_new_activity_order_record($data);
         try {
 
             if ($order['cost'] == 0) {
                 redirect($CFG->wwwroot . '/enrol/coursepayment/return.php?orderid=' . $order['orderid'] . '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid);
-
-                return;
+                return ['status' => false];
             }
 
             $invoice_number = $this->get_new_invoice_number();
 
-            // https://www.mollie.com/en/docs/payments
+            //https://docs.mollie.com/reference/v2/payments-api/create-payment#
             $request = [
-                "amount" => $order['cost'],
+                "amount" => [
+                    'value' => number_format($order['cost'], 2, '.', ''),
+                    'currency' => 'EUR',
+                ],
                 "method" => $method,
-                "locale" => (in_array($this->instanceconfig->locale, [
-                    'de',
-                    'en',
-                    'fr',
-                    'es',
-                    'nl',
-                ]) ? $this->instanceconfig->locale : 'en'),
+                "locale" => $this->get_gateway_locale(),
                 "description" => $this->get_payment_description((object)[
                     'invoice_number' => $invoice_number,
                     'instanceid' => $this->instanceconfig->instanceid,
@@ -147,17 +157,17 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             ];
             $payment = $this->client->payments->create($request);
 
-            // update the local order we add the gateway identifier to the order
+            // Update the local order we add the gateway identifier to the order.
             $obj = new stdClass();
             $obj->invoice_number = $invoice_number;
             $obj->id = $order['id'];
             $obj->gateway_transaction_id = $payment->id;
             $DB->update_record('enrol_coursepayment', $obj);
 
-            // send the user to the gateway payment page
-            redirect($payment->getPaymentUrl());
+            // Send the user to the gateway payment page.
+            redirect($payment->getCheckoutUrl());
 
-        } catch (Mollie_API_Exception $e) {
+        } catch (ApiException $e) {
             $this->log("API call failed: " . htmlspecialchars($e->getMessage()));
         }
 
@@ -167,21 +177,21 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
     /**
      * add new order from a user
      *
-     * @param string           $method
-     * @param string           $issuer
-     * @param string           $discountcode
+     * @param string $method
+     * @param string $issuer
+     * @param string $discountcode
      *
      * @return array
+     * @throws coding_exception
+     * @throws dml_exception
      * @throws moodle_exception
-     * @global moodle_database $DB
      */
-    public function new_order_course($method = '', $issuer = '', $discountcode = '') {
+    public function new_order_course($method = '', $issuer = '', $discountcode = '') : array {
 
         global $CFG, $DB;
 
         // extra order data
         $data = [];
-
         if (!empty($discountcode)) {
 
             // validate the discountcode we received
@@ -203,25 +213,23 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
         // add new internal order
         $order = $this->create_new_course_order_record($data);
+
         try {
 
             if ($order['cost'] == 0) {
                 redirect($CFG->wwwroot . '/enrol/coursepayment/return.php?orderid=' . $order['orderid'] . '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid);
 
-                return;
+                return [];
             }
 
             $invoice_number = $this->get_new_invoice_number();
             $request = [
-                "amount" => $order['cost'],
+                "amount" => [
+                    'value' => number_format($order['cost'], 2, '.', ''),
+                    'currency' => 'EUR',
+                ],
                 "method" => $method,
-                "locale" => (in_array($this->instanceconfig->locale, [
-                    'de',
-                    'en',
-                    'fr',
-                    'es',
-                    'nl',
-                ]) ? $this->instanceconfig->locale : 'en'),
+                "locale" => $this->get_gateway_locale(),
                 "description" => $this->get_payment_description((object)[
                     'invoice_number' => $invoice_number,
                     'addedon' => time(),
@@ -239,7 +247,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                 "issuer" => !empty($issuer) ? $issuer : null,
             ];
 
-            // https://www.mollie.com/en/docs/payments
+            //https://docs.mollie.com/reference/v2/payments-api/create-payment#
             $payment = $this->client->payments->create($request);
 
             // update the local order we add the gateway identifier to the order
@@ -250,9 +258,9 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             $DB->update_record('enrol_coursepayment', $obj);
 
             // send the user to the gateway payment page
-            redirect($payment->getPaymentUrl());
+            redirect($payment->getCheckoutUrl());
 
-        } catch (Mollie_API_Exception $e) {
+        } catch (ApiException $e) {
             $this->log("API call failed: " . htmlspecialchars($e->getMessage()));
         }
 
@@ -278,7 +286,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * @throws dml_exception
      * @throws moodle_exception
      */
-    public function order_form($standalone = false) {
+    public function order_form($standalone = false) : string {
 
         global $PAGE;
 
@@ -315,7 +323,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             if (isset($status['status']) && $status['status'] == false) {
                 // we showing the same form again
             } else {
-                return;
+                return '';
             }
         }
 
@@ -332,7 +340,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             }
 
 
-        } catch (Mollie_API_Exception $e) {
+        } catch (ApiException $e) {
             $this->log("API call failed: " . htmlspecialchars($e->getMessage()));
         }
 
@@ -346,13 +354,12 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * @return string
      * @throws coding_exception
      */
-    public function get_enabled_modes() {
+    public function get_enabled_modes() : string {
 
         $string = '';
         try {
 
-            $methods = $this->client->methods->all();
-
+            $methods = $this->client->methods->allActive();
             $string .= '<table class="coursepayment_setting_mollie" cellpadding="5">
                             <tr>
                                 <th style="text-align: left">' . get_string('provider', 'enrol_coursepayment') . '</th>
@@ -363,14 +370,14 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
             foreach ($methods as $method) {
                 $string .= '<tr>';
-                $string .= '<td><img src="' . htmlspecialchars($method->image->normal) . '"> </td>';
+                $string .= '<td><img src="' . htmlspecialchars($method->image->svg) . '"> </td>';
                 $string .= '<td>' . htmlspecialchars($method->description) . '</td>';
-                $string .= '<td>' . $method->amount->minimum . '</td>';
-                $string .= '<td>' . $method->amount->maximum . '</td>';
+                $string .= '<td>' . $method->minimumAmount->value . '</td>';
+                $string .= '<td>' . $method->maximumAmount->value . '</td>';
                 $string .= '</tr>';
             }
             $string .= '</table>';
-        } catch (Mollie_API_Exception $e) {
+        } catch (ApiException $e) {
             $this->log("API call failed: " . htmlspecialchars($e->getMessage()));
         }
 
@@ -387,15 +394,22 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * @throws dml_exception
      * @throws moodle_exception
      */
-    public function validate_order($orderid = '') {
+    public function validate_order($orderid = '') : array {
         global $DB;
 
-        if (parent::validate_order($orderid)) {
+        $status = parent::validate_order($orderid);
+        if (!empty($status)) {
             // first let it check by main class
-            return ['status' => true, 'message' => 'free_payment'];
+            return [
+                'status' => true,
+                'message' => 'free_payment',
+            ];
         }
 
-        $return = ['status' => false, 'message' => ''];
+        $return = [
+            'status' => false,
+            'message' => '',
+        ];
 
         // first check if we know of it
         $enrolcoursepayment = $DB->get_record('enrol_coursepayment', [
@@ -423,6 +437,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             if ($enrolcoursepayment->status == self::PAYMENT_STATUS_SUCCESS) {
                 $return['status'] = true;
                 $return['message'] = 'already_marked_as_paid';
+
                 return $return;
             }
 
@@ -468,7 +483,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
                 $DB->update_record('enrol_coursepayment', $obj);
 
-            } catch (Mollie_API_Exception $e) {
+            } catch (ApiException $e) {
                 $this->log("API call failed: " . htmlspecialchars($e->getMessage()));
                 $return['message'] = get_string('error:gettingorderdetails', 'enrol_coursepayment');
             }
@@ -486,7 +501,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      *
      * @throws dml_exception
      */
-    public function upgrade_invoice_numbers() {
+    public function upgrade_invoice_numbers() : void {
 
         global $DB;
 
@@ -521,62 +536,64 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * @param $data
      *
      * @return array
-     */
-    public function add_new_account($data) {
-        $return = [
-            'success' => false,
-            'error' => '',
-        ];
-
-        $data = unserialize($data);
-
-        // https://help.mollie.com/hc/nl/articles/214016745-Waar-kan-ik-de-API-documentatie-voor-resellers-vinden-#ref-account-create
-        $data->username = $data->email; // Fix username.
-
-        $fields = [
-            'username',
-            'name',
-            'company_name',
-            'email',
-            'address',
-            'city',
-        ];
-
-        // Validate all data exists.
-        foreach ($fields as $field) {
-            if (!array_key_exists($field, $data)) {
-                $return['error'] = 'Missing "' . $field . '" field!';
-
-                return $return;
-            }
-        }
-
-        // Sending request to Mollie..
-
-        // 1. Register Mollie_Autoloader
-        require_once dirname(__FILE__) . "/../libs/Mollie/RESELLER/autoloader.php";
-        Mollie_Autoloader::register();
-
-        // 3. Instantiate class with Mollie config
-        $mollie = new Mollie_Reseller($this->config->partner_id, $this->config->profile_key,
-            $this->config->app_secret);
-
-        // 4. Call API accountCreate
-        try {
-            $data->country = 'NL';
-            $obj = (object)$mollie->accountCreate($data->username, (array)$data);
-
-            $return['success'] = true;
-            $return['password'] = (string)$obj->password;
-            $return['partner_id'] = (string)$obj->partner_id;
-            $return['username'] = (string)$obj->username;
-
-        } catch (Mollie_Exception $e) {
-            $return['error'] = $e->getMessage();
-        }
-
-        return $return;
-    }
+     *
+     * public function add_new_account($data) {
+     * $return = [
+     * 'success' => false,
+     * 'error' => '',
+     * ];
+     *
+     * $data = unserialize($data);
+     *
+     * //
+     * https://help.mollie.com/hc/nl/articles/214016745-Waar-kan-ik-de-API-documentatie-voor-resellers-vinden-#ref-account-create
+     * $data->username = $data->email; // Fix username.
+     *
+     * $fields = [
+     * 'username',
+     * 'name',
+     * 'company_name',
+     * 'email',
+     * 'address',
+     * 'city',
+     * ];
+     *
+     * // Validate all data exists.
+     * foreach ($fields as $field) {
+     * if (!array_key_exists($field, $data)) {
+     * $return['error'] = 'Missing "' . $field . '" field!';
+     *
+     * return $return;
+     * }
+     * }
+     *
+     * // Sending request to Mollie..
+     *
+     * // 1. Register Mollie_Autoloader
+     * require_once dirname(__FILE__) . "/../libs/Mollie/RESELLER/autoloader.php";
+     * Mollie_Autoloader::register();
+     *
+     * // 3. Instantiate class with Mollie config
+     * $mollie = new Mollie_Reseller($this->config->partner_id, $this->config->profile_key,
+     * $this->config->app_secret);
+     *
+     * // 4. Call API accountCreate
+     * try {
+     * $data->country = 'NL';
+     * $obj = (object)$mollie->accountCreate($data->username, (array)$data);
+     *
+     * $return['success'] = true;
+     * $return['password'] = (string)$obj->password;
+     * $return['partner_id'] = (string)$obj->partner_id;
+     * $return['username'] = (string)$obj->username;
+     *
+     * } catch (Mollie_Exception $e) {
+     * $return['error'] = $e->getMessage();
+     * }
+     *
+     * return $return;
+     * }
+     *                   */
 
     /**
      * Inline form
@@ -587,14 +604,15 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * @return string
      * @throws coding_exception
      * @throws dml_exception
+     * @throws ApiException
      */
-    private function form_inline($discountcode = '', $status = '') {
+    private function form_inline($discountcode = '', $status = '') : string {
 
         $string = '<div align="center">
                             <p>' . get_string('gateway_mollie_select_method', 'enrol_coursepayment') . '</p>
                     <form id="coursepayment_mollie_form" action="" class="coursepayment_mollie_form" method="post">
                     <table id="coursepayment_mollie_gateways" cellpadding="5">';
-        $methods = $this->client->methods->all();
+        $methods = $this->client->methods->allActive(["include" => "issuers"]);
         $i = 0;
         foreach ($methods as $method) {
 
@@ -603,16 +621,15 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             $string .= '<td><img src="' . htmlspecialchars($method->image->normal) . '"></td>';
             $string .= '</tr>';
 
-            if ($method->id == Mollie_API_Object_Method::IDEAL) {
+            if ($method->id == PaymentMethod::IDEAL) {
 
-                $issuers = $this->client->issuers->all();
                 $string .= '<tr id="issuers_ideal" class="skip">
                                     <td>
                                     <select name="issuer">
                                         <option value="">' . get_string('gateway_mollie_issuers', 'enrol_coursepayment') . '</option>';
 
-                foreach ($issuers as $issuer) {
-                    if ($issuer->method == Mollie_API_Object_Method::IDEAL) {
+                foreach ($method->issuers as $issuer) {
+                    if ($issuer->method == PaymentMethod::IDEAL) {
                         $string .= '<option value=' . htmlspecialchars($issuer->id) . '>' . htmlspecialchars($issuer->name) . '</option>';
                     }
                 }
@@ -645,8 +662,9 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * @return string
      * @throws coding_exception
      * @throws dml_exception
+     * @throws ApiException
      */
-    private function form_standalone($discountcode = '', $status = '') {
+    private function form_standalone($discountcode = '', $status = '') : string {
         global $SITE;
         $currency = ($this->instanceconfig->currency === 'EUR') ? '&euro;' : '&dollar;';
 
@@ -664,7 +682,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                     <form id="coursepayment_mollie_form" action="" class="coursepayment_mollie_form" method="post">
                         <div id="methods">
                       <h1>' . get_string('gateway_mollie_select_method', 'enrol_coursepayment') . '</h1>';
-        $methods = $this->client->methods->all();
+        $methods = $this->client->methods->allActive(["include" => "issuers"]);
         $i = 0;
         $string .= '<ul class="buttons-grid">';
 
@@ -675,21 +693,18 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 					' . htmlspecialchars($method->description) . '
 				</button>';
 
-            if ($method->id == Mollie_API_Object_Method::IDEAL) {
-
-                $issuers = $this->client->issuers->all();
+            if ($method->id == PaymentMethod::IDEAL) {
                 $string .= '<div id="ideal-issuers" class="hide">
                                 <h1>' . get_string('gateway_mollie_ideal_heading', 'enrol_coursepayment') . '</h1>
                                 <ul  class="buttons-grid ">';
 
-                foreach ($issuers as $issuer) {
-                    if ($issuer->method == Mollie_API_Object_Method::IDEAL) {
-                        $string .= '<li>
-                                        <button type="submit" class="grid-button-' . htmlspecialchars($issuer->id) . '" name="issuer" value="' . htmlspecialchars($issuer->id) . '">
+                foreach ($method->issuers as $issuer) {
+                    $string .= '<li>
+                                        <button type="submit" class="grid-button" name="issuer" value="' . htmlspecialchars($issuer->id) . '">
+                                            <img src="' . $issuer->image->svg . '" alt=""/><br>
                                             ' . htmlspecialchars($issuer->name) . '
                                         </button>
                                     </li>';
-                    }
                 }
                 $string .= '</ul>
                             </div>';

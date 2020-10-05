@@ -45,27 +45,27 @@ class element_helper {
     /**
      * @var int the top-left of element
      */
-    const COURSEPAYMENT_REF_POINT_TOPLEFT = 0;
+    public const COURSEPAYMENT_REF_POINT_TOPLEFT = 0;
 
     /**
      * @var int the top-center of element
      */
-    const COURSEPAYMENT_REF_POINT_TOPCENTER = 1;
+    public const COURSEPAYMENT_REF_POINT_TOPCENTER = 1;
 
     /**
      * @var int the top-left of element
      */
-    const COURSEPAYMENT_REF_POINT_TOPRIGHT = 2;
+    public const COURSEPAYMENT_REF_POINT_TOPRIGHT = 2;
 
     /**
      * Common behaviour for rendering specified content on the pdf.
      *
-     * @param \pdf $pdf the pdf object
+     * @param \pdf                                 $pdf     the pdf object
      * @param \enrol_coursepayment\invoice\element $element the coursepayment invoice element
-     * @param string $content the content to render
+     * @param string                               $content the content to render
      */
-    public static function render_content($pdf, $element, $content) {
-        list($font, $attr) = self::get_font($element);
+    public static function render_content($pdf, $element, $content) : void {
+        [$font, $attr] = self::get_font($element);
         $pdf->setFont($font, $attr, $element->get_fontsize());
         $fontcolour = \TCPDF_COLORS::convertHTMLColorToDec($element->get_colour(), $fontcolour);
         $pdf->SetTextColor($fontcolour['R'], $fontcolour['G'], $fontcolour['B']);
@@ -112,11 +112,12 @@ class element_helper {
      * Common behaviour for rendering specified content on the drag and drop page.
      *
      * @param \enrol_coursepayment\invoice\element $element the customcert element
-     * @param string $content the content to render
+     * @param string                               $content the content to render
+     *
      * @return string the html
      */
-    public static function render_html_content($element, $content) {
-        list($font, $attr) = self::get_font($element);
+    public static function render_html_content($element, $content) : string {
+        [$font, $attr] = self::get_font($element);
         $fontstyle = 'font-family: ' . $font;
         if (strpos($attr, 'B') !== false) {
             $fontstyle .= '; font-weight: bold';
@@ -129,7 +130,8 @@ class element_helper {
         if ($element->get_width()) {
             $style .= ' width: ' . $element->get_width() . 'mm';
         }
-        return \html_writer::div($content, '', array('style' => $style));
+
+        return \html_writer::div($content, '', ['style' => $style]);
     }
 
     /**
@@ -173,11 +175,11 @@ class element_helper {
      * @throws \coding_exception
      */
     public static function render_form_element_position($mform) {
-        $mform->addElement('text', 'posx', get_string('posx', 'enrol_coursepayment'), array('size' => 10));
+        $mform->addElement('text', 'posx', get_string('posx', 'enrol_coursepayment'), ['size' => 10]);
         $mform->setType('posx', PARAM_INT);
         $mform->setDefault('posx', 0);
         $mform->addHelpButton('posx', 'posx', 'enrol_coursepayment');
-        $mform->addElement('text', 'posy', get_string('posy', 'enrol_coursepayment'), array('size' => 10));
+        $mform->addElement('text', 'posy', get_string('posy', 'enrol_coursepayment'), ['size' => 10]);
         $mform->setType('posy', PARAM_INT);
         $mform->setDefault('posy', 0);
         $mform->addHelpButton('posy', 'posy', 'enrol_coursepayment');
@@ -191,11 +193,11 @@ class element_helper {
      * @throws \coding_exception
      */
     public static function render_form_element_width($mform) {
-        $mform->addElement('text', 'width', get_string('elementwidth', 'enrol_coursepayment'), array('size' => 10));
+        $mform->addElement('text', 'width', get_string('elementwidth', 'enrol_coursepayment'), ['size' => 10]);
         $mform->setType('width', PARAM_INT);
         $mform->setDefault('width', 0);
         $mform->addHelpButton('width', 'elementwidth', 'enrol_coursepayment');
-        $refpointoptions = array();
+        $refpointoptions = [];
         $refpointoptions[self::COURSEPAYMENT_REF_POINT_TOPLEFT] = get_string('topleft', 'enrol_coursepayment');
         $refpointoptions[self::COURSEPAYMENT_REF_POINT_TOPCENTER] = get_string('topcenter', 'enrol_coursepayment');
         $refpointoptions[self::COURSEPAYMENT_REF_POINT_TOPRIGHT] = get_string('topright', 'enrol_coursepayment');
@@ -214,11 +216,12 @@ class element_helper {
      * @throws \coding_exception
      */
     public static function validate_form_element_colour($data) {
-        $errors = array();
+        $errors = [];
         // Validate the colour.
         if (!self::validate_colour($data['colour'])) {
             $errors['colour'] = get_string('invalidcolour', 'enrol_coursepayment');
         }
+
         return $errors;
     }
 
@@ -231,7 +234,7 @@ class element_helper {
      * @throws \coding_exception
      */
     public static function validate_form_element_position($data) {
-        $errors = array();
+        $errors = [];
 
         // Check if posx is not set, or not numeric or less than 0.
         if ((!isset($data['posx'])) || (!is_numeric($data['posx'])) || ($data['posx'] < 0)) {
@@ -254,7 +257,7 @@ class element_helper {
      * @throws \coding_exception
      */
     public static function validate_form_element_width($data) {
-        $errors = array();
+        $errors = [];
 
         // Check if width is less than 0.
         if (isset($data['width']) && $data['width'] < 0) {
@@ -268,6 +271,7 @@ class element_helper {
      * Returns the font used for this element.
      *
      * @param \enrol_coursepayment\invoice\element $element the customcert element
+     *
      * @return array the font and font attributes
      */
     public static function get_font($element) {
@@ -295,50 +299,168 @@ class element_helper {
             $font = substr($font, 0, -1);
             $attr .= 'B';
         }
-        return array($font, $attr);
+
+        return [$font, $attr];
     }
 
     /**
      * Validates the colour selected.
      *
      * @param string $colour
+     *
      * @return bool returns true if the colour is valid, false otherwise
      */
     public static function validate_colour($colour) {
         // List of valid HTML colour names.
-        $colournames = array(
-            'aliceblue', 'antiquewhite', 'aqua', 'aquamarine', 'azure',
-            'beige', 'bisque', 'black', 'blanchedalmond', 'blue',
-            'blueviolet', 'brown', 'burlywood', 'cadetblue', 'chartreuse',
-            'chocolate', 'coral', 'cornflowerblue', 'cornsilk', 'crimson',
-            'cyan', 'darkblue', 'darkcyan', 'darkgoldenrod', 'darkgray',
-            'darkgrey', 'darkgreen', 'darkkhaki', 'darkmagenta',
-            'darkolivegreen', 'darkorange', 'darkorchid', 'darkred',
-            'darksalmon', 'darkseagreen', 'darkslateblue', 'darkslategray',
-            'darkslategrey', 'darkturquoise', 'darkviolet', 'deeppink',
-            'deepskyblue', 'dimgray', 'dimgrey', 'dodgerblue', 'firebrick',
-            'floralwhite', 'forestgreen', 'fuchsia', 'gainsboro',
-            'ghostwhite', 'gold', 'goldenrod', 'gray', 'grey', 'green',
-            'greenyellow', 'honeydew', 'hotpink', 'indianred', 'indigo',
-            'ivory', 'khaki', 'lavender', 'lavenderblush', 'lawngreen',
-            'lemonchiffon', 'lightblue', 'lightcoral', 'lightcyan',
-            'lightgoldenrodyellow', 'lightgray', 'lightgrey', 'lightgreen',
-            'lightpink', 'lightsalmon', 'lightseagreen', 'lightskyblue',
-            'lightslategray', 'lightslategrey', 'lightsteelblue', 'lightyellow',
-            'lime', 'limegreen', 'linen', 'magenta', 'maroon',
-            'mediumaquamarine', 'mediumblue', 'mediumorchid', 'mediumpurple',
-            'mediumseagreen', 'mediumslateblue', 'mediumspringgreen',
-            'mediumturquoise', 'mediumvioletred', 'midnightblue', 'mintcream',
-            'mistyrose', 'moccasin', 'navajowhite', 'navy', 'oldlace', 'olive',
-            'olivedrab', 'orange', 'orangered', 'orchid', 'palegoldenrod',
-            'palegreen', 'paleturquoise', 'palevioletred', 'papayawhip',
-            'peachpuff', 'peru', 'pink', 'plum', 'powderblue', 'purple', 'red',
-            'rosybrown', 'royalblue', 'saddlebrown', 'salmon', 'sandybrown',
-            'seagreen', 'seashell', 'sienna', 'silver', 'skyblue', 'slateblue',
-            'slategray', 'slategrey', 'snow', 'springgreen', 'steelblue', 'tan',
-            'teal', 'thistle', 'tomato', 'turquoise', 'violet', 'wheat', 'white',
-            'whitesmoke', 'yellow', 'yellowgreen'
-        );
+        $colournames = [
+            'aliceblue',
+            'antiquewhite',
+            'aqua',
+            'aquamarine',
+            'azure',
+            'beige',
+            'bisque',
+            'black',
+            'blanchedalmond',
+            'blue',
+            'blueviolet',
+            'brown',
+            'burlywood',
+            'cadetblue',
+            'chartreuse',
+            'chocolate',
+            'coral',
+            'cornflowerblue',
+            'cornsilk',
+            'crimson',
+            'cyan',
+            'darkblue',
+            'darkcyan',
+            'darkgoldenrod',
+            'darkgray',
+            'darkgrey',
+            'darkgreen',
+            'darkkhaki',
+            'darkmagenta',
+            'darkolivegreen',
+            'darkorange',
+            'darkorchid',
+            'darkred',
+            'darksalmon',
+            'darkseagreen',
+            'darkslateblue',
+            'darkslategray',
+            'darkslategrey',
+            'darkturquoise',
+            'darkviolet',
+            'deeppink',
+            'deepskyblue',
+            'dimgray',
+            'dimgrey',
+            'dodgerblue',
+            'firebrick',
+            'floralwhite',
+            'forestgreen',
+            'fuchsia',
+            'gainsboro',
+            'ghostwhite',
+            'gold',
+            'goldenrod',
+            'gray',
+            'grey',
+            'green',
+            'greenyellow',
+            'honeydew',
+            'hotpink',
+            'indianred',
+            'indigo',
+            'ivory',
+            'khaki',
+            'lavender',
+            'lavenderblush',
+            'lawngreen',
+            'lemonchiffon',
+            'lightblue',
+            'lightcoral',
+            'lightcyan',
+            'lightgoldenrodyellow',
+            'lightgray',
+            'lightgrey',
+            'lightgreen',
+            'lightpink',
+            'lightsalmon',
+            'lightseagreen',
+            'lightskyblue',
+            'lightslategray',
+            'lightslategrey',
+            'lightsteelblue',
+            'lightyellow',
+            'lime',
+            'limegreen',
+            'linen',
+            'magenta',
+            'maroon',
+            'mediumaquamarine',
+            'mediumblue',
+            'mediumorchid',
+            'mediumpurple',
+            'mediumseagreen',
+            'mediumslateblue',
+            'mediumspringgreen',
+            'mediumturquoise',
+            'mediumvioletred',
+            'midnightblue',
+            'mintcream',
+            'mistyrose',
+            'moccasin',
+            'navajowhite',
+            'navy',
+            'oldlace',
+            'olive',
+            'olivedrab',
+            'orange',
+            'orangered',
+            'orchid',
+            'palegoldenrod',
+            'palegreen',
+            'paleturquoise',
+            'palevioletred',
+            'papayawhip',
+            'peachpuff',
+            'peru',
+            'pink',
+            'plum',
+            'powderblue',
+            'purple',
+            'red',
+            'rosybrown',
+            'royalblue',
+            'saddlebrown',
+            'salmon',
+            'sandybrown',
+            'seagreen',
+            'seashell',
+            'sienna',
+            'silver',
+            'skyblue',
+            'slateblue',
+            'slategray',
+            'slategrey',
+            'snow',
+            'springgreen',
+            'steelblue',
+            'tan',
+            'teal',
+            'thistle',
+            'tomato',
+            'turquoise',
+            'violet',
+            'wheat',
+            'white',
+            'whitesmoke',
+            'yellow',
+            'yellowgreen',
+        ];
 
         if (preg_match('/^#?([[:xdigit:]]{3}){1,2}$/', $colour)) {
             return true;
@@ -368,7 +490,7 @@ class element_helper {
                   FROM {coursepayment_elements}
                  WHERE pageid = :id";
         // Get the current max sequence on this page and add 1 to get the new sequence.
-        if ($maxseq = $DB->get_record_sql($sql, array('id' => $pageid))) {
+        if ($maxseq = $DB->get_record_sql($sql, ['id' => $pageid])) {
             $sequence = $maxseq->maxsequence + 1;
         }
 
@@ -385,7 +507,7 @@ class element_helper {
         global $CFG;
 
         // Array to store the element types.
-        $options = array();
+        $options = [];
 
         // Check that the directory exists.
         $elementdir = "$CFG->dirroot/enrol/coursepayment/classes/invoice/element";
@@ -414,6 +536,7 @@ class element_helper {
         }
 
         \core_collator::asort($options);
+
         return $options;
     }
 
