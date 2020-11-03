@@ -167,7 +167,7 @@ Het bedrag is {$a->cost} {$a->currency}.<br>
 <br>
 Met hartelijke groet,<br>
 {$a->sitename}';
-
+$string['coursepayment:report'] = 'Rapportage';
 $string['coursepayment:config'] = 'Instellen';
 $string['coursepayment:manage'] = 'Beheren';
 $string['coursepayment:unenrol'] = 'Uitschrijven';

@@ -183,7 +183,7 @@ The Invoice is attached (see attachment PDF)<br>
 <br>
 Kind regards,<br>
 {$a->sitename}';
-
+$string['coursepayment:report'] = 'Report';
 $string['coursepayment:config'] = 'Configuration';
 $string['coursepayment:manage'] = 'Manage';
 $string['coursepayment:unenrol'] = 'Unenrol';
