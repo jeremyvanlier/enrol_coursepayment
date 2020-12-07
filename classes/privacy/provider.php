@@ -29,13 +29,16 @@ namespace enrol_coursepayment\privacy;
 use context_course;
 use core_privacy\local\metadata\collection;
 use core_privacy\local\request\approved_contextlist;
+use core_privacy\local\request\approved_userlist;
 use core_privacy\local\request\contextlist;
 use core_privacy\local\request\helper;
+use core_privacy\local\request\userlist;
 use core_privacy\local\request\writer;
 
 defined('MOODLE_INTERNAL') || die();
 
 class provider implements \core_privacy\local\metadata\provider,
+    \core_privacy\local\request\core_userlist_provider,
     \core_privacy\local\request\plugin\provider {
 
     /**
@@ -149,12 +152,7 @@ class provider implements \core_privacy\local\metadata\provider,
      * @throws \dml_exception
      */
     public static function delete_data_for_all_users_in_context(\context $context) : void {
-        global $DB;
-
-        if (empty($context)) {
-            return;
-        }
-        $DB->delete_records('enrol_coursepayment', ['instanceid' => $context->id]);
+        // Can't delete you administration.
     }
 
     /**
@@ -165,19 +163,24 @@ class provider implements \core_privacy\local\metadata\provider,
      * @throws \dml_exception
      */
     public static function delete_data_for_user(approved_contextlist $contextlist) : void {
-        global $DB;
+       // Can't delete you administration.
+    }
 
-        if (empty($contextlist->count())) {
-            return;
-        }
+    /**
+     * Get the list of users who have data within a context.
+     *
+     * @param userlist $userlist The userlist containing the list of users who have data in this context/plugin combination.
+     */
+    public static function get_users_in_context(userlist $userlist) {
+        // Can't delete you administration.
+    }
 
-        $userid = $contextlist->get_user()->id;
-        foreach ($contextlist->get_contextids() as $id) {
-
-            $DB->delete_records('enrol_coursepayment', [
-                'instanceid' => $id,
-                'userid' => $userid,
-            ]);
-        }
+    /**
+     * Delete multiple users within a single context.
+     *
+     * @param approved_userlist $userlist The approved context and user information to delete information for.
+     */
+    public static function delete_data_for_users(approved_userlist $userlist) {
+        // Can't delete you administration.
     }
 }
