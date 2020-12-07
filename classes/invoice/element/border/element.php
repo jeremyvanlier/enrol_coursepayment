@@ -97,7 +97,7 @@ class element extends \enrol_coursepayment\invoice\element {
      * @return array the validation errors
      * @throws \coding_exception
      */
-    public function validate_form_elements($data, $files) : array{
+    public function validate_form_elements($data, $files) : array {
         // Array to return the errors.
         $errors = [];
 
@@ -117,7 +117,7 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @param \enrol_coursepayment\invoice\edit_element_form $mform the edit_form instance
      */
-    public function definition_after_data($mform) : void{
+    public function definition_after_data($mform) : void {
         if (!empty($this->get_data())) {
             $element = $mform->getElement('width');
             $element->setValue($this->get_data());

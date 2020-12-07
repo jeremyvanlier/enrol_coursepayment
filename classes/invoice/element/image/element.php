@@ -103,7 +103,7 @@ class element extends \enrol_coursepayment\invoice\element {
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public function validate_form_elements($data, $files) : array{
+    public function validate_form_elements($data, $files) : array {
         // Array to return the errors.
         $errors = [];
 
@@ -272,7 +272,7 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @throws \dml_exception
      */
-    public function definition_after_data($mform) : void{
+    public function definition_after_data($mform) : void {
         global $COURSE, $SITE;
 
         // Set the image, width and height for this element.

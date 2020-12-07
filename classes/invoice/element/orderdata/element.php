@@ -102,7 +102,7 @@ class element extends \enrol_coursepayment\invoice\element {
      * @return string the html
      * @throws \coding_exception
      */
-    public function render_html() : string{
+    public function render_html() : string {
         global $PAGE;
         $dummydata = (object)[
             'width' => '500',

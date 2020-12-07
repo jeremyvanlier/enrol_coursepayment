@@ -121,7 +121,7 @@ class element extends \enrol_coursepayment\invoice\element {
      * @return string the html
      * @throws \dml_exception
      */
-    public function render_html() : string{
+    public function render_html() : string {
         global $PAGE;
         // Dummy.
         $invoiceinfo = $this->dummy_data();

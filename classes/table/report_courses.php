@@ -167,7 +167,7 @@ class report_courses extends \flexible_table {
      *
      * @return string
      */
-    public function col_phone1(\stdClass $row) : string{
+    public function col_phone1(\stdClass $row) : string {
         return !empty($row->phone1) ? $row->phone1 : $row->phone2;
     }
 
@@ -224,7 +224,7 @@ class report_courses extends \flexible_table {
      *
      * @return false|string
      */
-    public function col_addedon(\stdClass $row) : string{
+    public function col_addedon(\stdClass $row) : string {
         return date('d.m.Y H:i:s', $row->addedon);
     }
 

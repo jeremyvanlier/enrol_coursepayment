@@ -28,8 +28,8 @@ namespace enrol_coursepayment\privacy;
 
 use context_course;
 use core_privacy\local\metadata\collection;
-use core_privacy\local\request\contextlist;
 use core_privacy\local\request\approved_contextlist;
+use core_privacy\local\request\contextlist;
 use core_privacy\local\request\helper;
 use core_privacy\local\request\writer;
 
@@ -94,7 +94,7 @@ class provider implements \core_privacy\local\metadata\provider,
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public static function export_user_data(approved_contextlist $contextlist): void{
+    public static function export_user_data(approved_contextlist $contextlist) : void {
         global $DB;
         if (empty($contextlist->count())) {
             return;
@@ -148,7 +148,7 @@ class provider implements \core_privacy\local\metadata\provider,
      *
      * @throws \dml_exception
      */
-    public static function delete_data_for_all_users_in_context(\context $context) : void{
+    public static function delete_data_for_all_users_in_context(\context $context) : void {
         global $DB;
 
         if (empty($context)) {

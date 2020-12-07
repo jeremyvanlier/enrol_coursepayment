@@ -252,7 +252,7 @@ abstract class element {
      *
      * @param edit_element_form $mform the edit_form instance
      */
-    public function definition_after_data($mform) : void{
+    public function definition_after_data($mform) : void {
         // Loop through the properties of the element and set the values
         // of the corresponding form element, if it exists.
         $properties = [
@@ -395,7 +395,7 @@ abstract class element {
      * @return bool success return true if deletion success, false otherwise
      * @throws \dml_exception
      */
-    public function delete() : bool{
+    public function delete() : bool {
         global $DB;
 
         return $DB->delete_records('coursepayment_elements', ['id' => $this->id]);

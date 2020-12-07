@@ -179,7 +179,7 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @param \enrol_coursepayment\invoice\edit_element_form $mform the edit_form instance
      */
-    public function definition_after_data($mform) : void{
+    public function definition_after_data($mform) : void {
         if (!empty($this->get_data())) {
             $element = $mform->getElement('userfield');
             $element->setValue($this->get_data());

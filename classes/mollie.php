@@ -126,6 +126,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
             if ($order['cost'] == 0) {
                 redirect($CFG->wwwroot . '/enrol/coursepayment/return.php?orderid=' . $order['orderid'] . '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid);
+
                 return ['status' => false];
             }
 
