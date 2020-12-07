@@ -21,7 +21,7 @@ class Issuer extends BaseResource
     /**
      * The payment method this issuer belongs to.
      *
-     * @see  \Mollie\Api\Types\PaymentMethod
+     * @see Mollie_API_Object_Method
      * @var string
      */
     public $method;

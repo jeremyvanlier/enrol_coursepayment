@@ -17,6 +17,7 @@ class ComposerStaticInit3726155a4c680dcef172adae7d76cefb
         'P' => 
         array (
             'Psr\\Http\\Message\\' => 17,
+            'Psr\\Http\\Client\\' => 16,
         ),
         'M' => 
         array (
@@ -38,6 +39,10 @@ class ComposerStaticInit3726155a4c680dcef172adae7d76cefb
         'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'Psr\\Http\\Client\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-client/src',
         ),
         'Mollie\\Api\\' => 
         array (
@@ -61,11 +66,16 @@ class ComposerStaticInit3726155a4c680dcef172adae7d76cefb
         ),
     );
 
+    public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit3726155a4c680dcef172adae7d76cefb::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit3726155a4c680dcef172adae7d76cefb::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit3726155a4c680dcef172adae7d76cefb::$classMap;
 
         }, null, ClassLoader::class);
     }

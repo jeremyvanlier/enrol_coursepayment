@@ -125,6 +125,14 @@ class OrderLine extends BaseResource
      * @var string|null
      */
     public $productUrl;
+    
+    /**
+     * During creation of the order you can set custom metadata on order lines that is stored with
+     * the order, and given back whenever you retrieve that order line.
+     *
+     * @var \stdClass|mixed|null
+     */
+    public $metadata;
 
     /**
      * The order line's date and time of creation, in ISO 8601 format.
@@ -133,6 +141,11 @@ class OrderLine extends BaseResource
      * @var string
      */
     public $createdAt;
+
+    /**
+     * @var \stdClass
+     */
+    public $_links;
 
     /**
      * Is this order line created?
@@ -275,4 +288,41 @@ class OrderLine extends BaseResource
         return $this->type === OrderLineType::TYPE_SURCHARGE;
     }
 
+    /**
+     * Update an orderline by supplying one or more parameters in the data array
+     *
+     * @return BaseResource
+     */
+    public function update()
+    {
+        $url="orders/{$this->orderId}/lines/{$this->id}";
+        $body = json_encode($this->getUpdateData());
+        $result = $this->client->performHttpCall(MollieApiClient::HTTP_PATCH, $url, $body);
+
+        return ResourceFactory::createFromApiResult($result, new Order($this->client));
+    }
+
+    /**
+     * Get sanitized array of order line data
+     *
+     * @return array
+     */
+    public function getUpdateData()
+    {
+        $data = array(
+            "name" => $this->name,
+            'imageUrl' => $this->imageUrl,
+            'productUrl' => $this->productUrl,
+            'metadata' => $this->metadata,
+            'quantity' => $this->quantity,
+            'unitPrice' => $this->unitPrice,
+            'discountAmount' => $this->discountAmount,
+            'totalAmount' => $this->totalAmount,
+            'vatAmount' => $this->vatAmount,
+            'vatRate' => $this->vatRate,
+        );
+
+        // Explicitly filter only NULL values to keep "vatRate => 0" intact
+        return array_filter($data, function($value) { return $value !== null; });
+    }
 }
