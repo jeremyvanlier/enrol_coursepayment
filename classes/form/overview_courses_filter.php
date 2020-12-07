@@ -19,7 +19,7 @@
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @package   coursepayment
+ * @package   enrol_coursepayment
  * @copyright 2018 MFreak.nl
  * @author    Luuk Verhoeven
  **/
@@ -33,6 +33,15 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once($CFG->libdir . '/formslib.php');
 
+/**
+ * Class overview_courses_filter
+ *
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package   enrol_coursepayment
+ * @copyright 2018 MFreak.nl
+ * @author    Luuk Verhoeven
+ */
 class overview_courses_filter extends \moodleform {
 
     /**

@@ -106,7 +106,8 @@ class enrol_coursepayment_discountcode {
 
             return false;
         }
-        //  wrong course
+
+        // Wrong course.
         if ($row->courseid != 0 && $this->courseid != $row->courseid) {
             $this->lasterror = 'not_for_this_course';
 

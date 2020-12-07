@@ -744,7 +744,7 @@ abstract class enrol_coursepayment_gateway {
                             ' . ((!empty($status['error_discount']) ?
                     '<b style="color:red"  id="error_coursepayment">' . $status['message'] . '</b>' :
                     '<b style="color:red" id="error_coursepayment"></b>')) . '<br/></p>
-                            <input type="text" autocomplete="off" name="discountcode" id="discountcode"  
+                            <input type="text" autocomplete="off" name="discountcode" id="discountcode"
                                 value="' . $discountcode . '" /><div id="price_holder"></div>
                         </div>';
         }
