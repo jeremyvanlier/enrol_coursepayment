@@ -38,11 +38,11 @@
     <hr>
     <table data-region="table" class="table table-striped">
         <thead>
-            <tr>
-                <th>{{# str}} th_name, enrol_coursepayment {{/ str}}</th>
-                <th>{{# str}} th_profile_value, enrol_coursepayment {{/ str}}</th>
-                <th>{{# str}} th_action, enrol_coursepayment {{/ str}}</th>
-            </tr>
+        <tr>
+            <th>{{# str}} th_name, enrol_coursepayment {{/ str}}</th>
+            <th>{{# str}} th_profile_value, enrol_coursepayment {{/ str}}</th>
+            <th>{{# str}} th_action, enrol_coursepayment {{/ str}}</th>
+        </tr>
         </thead>
         <tbody>
         {{#data}}
@@ -76,13 +76,15 @@
         </tbody>
     </table>
 </div>
-{{#js}}
-require(['jquery'], function($) {
-    $('[data-action="delete"]').click(function(e) {
-        var check = confirm('{{# str}} confirm_delete, enrol_coursepayment {{/ str}}');
-        if (!check) {
-            e.preventDefault();
-        }
-    });
-});
-{{/js}}
+<script>
+        {{#js}}
+        require(['jquery'], function($) {
+            $('[data-action="delete"]').click(function(e) {
+                let check = confirm('{{# str}} confirm_delete, enrol_coursepayment {{/ str}}');
+                if (!check) {
+                    e.preventDefault();
+                }
+            });
+        });
+        {{/js}}
+</script>
