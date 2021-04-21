@@ -30,7 +30,7 @@ define(['jquery', 'core/yui', 'core/fragment', 'enrol_coursepayment/dialogue', '
          *
          * @param {String} selector The rearrange PDF selector
          */
-        var RearrangeArea = function(selector) {
+        let RearrangeArea = function(selector) {
             this._node = $(selector);
             this._setEvents();
         };
@@ -45,9 +45,9 @@ define(['jquery', 'core/yui', 'core/fragment', 'enrol_coursepayment/dialogue', '
         };
 
         RearrangeArea.prototype._editElement = function(event) {
-            var elementid = event.currentTarget.id.substr(8);
-            var contextid = this._node.attr('data-contextid');
-            var params = {
+            let elementid = event.currentTarget.id.substr(8);
+            let contextid = this._node.attr('data-contextid');
+            let params = {
                 'elementid': elementid
             };
 
@@ -75,7 +75,7 @@ define(['jquery', 'core/yui', 'core/fragment', 'enrol_coursepayment/dialogue', '
             this._setPositionInForm(elementid);
 
             // Add events for when we save, close and cancel the page.
-            var body = $(popup.getContent());
+            let body = $(popup.getContent());
             body.on('click', '#id_submitbutton', function(e) {
                 // Do not want to ask the user if they wish to stay on page after saving.
                 M.core_formchangechecker.reset_form_dirty_state();
@@ -83,9 +83,9 @@ define(['jquery', 'core/yui', 'core/fragment', 'enrol_coursepayment/dialogue', '
                 this._saveElement(elementid).then(function() {
                     // Update the DOM to reflect the adjusted value.
                     this._getElementHTML(elementid).done(function(html) {
-                        var elementNode = this._node.find('#element-' + elementid);
-                        var refpoint = parseInt($('#id_refpoint').val());
-                        var refpointClass = '';
+                        let elementNode = this._node.find('#element-' + elementid);
+                        let refpoint = parseInt($('#id_refpoint').val());
+                        let refpointClass = '';
                         if (refpoint == this.COURSEPAYMENT_REF_POINT_TOPLEFT) {
                             refpointClass = 'refpoint-left';
                         } else if (refpoint == this.COURSEPAYMENT_REF_POINT_TOPCENTER) {
@@ -99,8 +99,8 @@ define(['jquery', 'core/yui', 'core/fragment', 'enrol_coursepayment/dialogue', '
                         elementNode.addClass('element ' + refpointClass);
                         elementNode.attr('data-refpoint', refpoint);
                         // Move the element.
-                        var posx = $('#editelementform #id_posx').val();
-                        var posy = $('#editelementform #id_posy').val();
+                        let posx = $('#editelementform #id_posx').val();
+                        let posy = $('#editelementform #id_posy').val();
                         this._setPosition(elementid, refpoint, posx, posy);
                         // All done.
                         popup.close();
@@ -116,12 +116,12 @@ define(['jquery', 'core/yui', 'core/fragment', 'enrol_coursepayment/dialogue', '
         };
 
         RearrangeArea.prototype._setPosition = function(elementid, refpoint, posx, posy) {
-            var element = Y.one('#element-' + elementid);
+            let element = Y.one('#element-' + elementid);
 
             posx = Y.one('#pdf').getX() + posx * this.PIXELSINMM;
             posy = Y.one('#pdf').getY() + posy * this.PIXELSINMM;
-            var nodewidth = parseFloat(element.getComputedStyle('width'));
-            var maxwidth = element.width * this.PIXELSINMM;
+            let nodewidth = parseFloat(element.getComputedStyle('width'));
+            let maxwidth = element.width * this.PIXELSINMM;
 
             if (maxwidth && (nodewidth > maxwidth)) {
                 nodewidth = maxwidth;
@@ -141,15 +141,15 @@ define(['jquery', 'core/yui', 'core/fragment', 'enrol_coursepayment/dialogue', '
         };
 
         RearrangeArea.prototype._setPositionInForm = function(elementid) {
-            var posxelement = $('#editelementform #id_posx');
-            var posyelement = $('#editelementform #id_posy');
+            let posxelement = $('#editelementform #id_posx');
+            let posyelement = $('#editelementform #id_posy');
 
             if (posxelement.length && posyelement.length) {
-                var element = Y.one('#element-' + elementid);
-                var posx = element.getX() - Y.one('#pdf').getX();
-                var posy = element.getY() - Y.one('#pdf').getY();
-                var refpoint = parseInt(element.getData('refpoint'));
-                var nodewidth = parseFloat(element.getComputedStyle('width'));
+                let element = Y.one('#element-' + elementid);
+                let posx = element.getX() - Y.one('#pdf').getX();
+                let posy = element.getY() - Y.one('#pdf').getY();
+                let refpoint = parseInt(element.getData('refpoint'));
+                let nodewidth = parseFloat(element.getComputedStyle('width'));
 
                 switch (refpoint) {
                     case this.COURSEPAYMENT_REF_POINT_TOPCENTER:
@@ -170,10 +170,10 @@ define(['jquery', 'core/yui', 'core/fragment', 'enrol_coursepayment/dialogue', '
 
         RearrangeArea.prototype._getElementHTML = function(elementid) {
             // Get the variables we need.
-            var templateid = this._node.attr('data-templateid');
+            let templateid = this._node.attr('data-templateid');
 
             // Call the web service to get the updated element.
-            var promises = ajax.call([{
+            let promises = ajax.call([{
                 methodname: 'enrol_coursepayment_get_element_html',
                 args: {
                     templateid: templateid,
@@ -187,11 +187,11 @@ define(['jquery', 'core/yui', 'core/fragment', 'enrol_coursepayment/dialogue', '
 
         RearrangeArea.prototype._saveElement = function(elementid) {
             // Get the variables we need.
-            var templateid = this._node.attr('data-templateid');
-            var inputs = $('#editelementform').serializeArray();
+            let templateid = this._node.attr('data-templateid');
+            let inputs = $('#editelementform').serializeArray();
 
             // Call the web service to save the element.
-            var promises = ajax.call([{
+            let promises = ajax.call([{
                 methodname: 'enrol_coursepayment_save_element',
                 args: {
                     templateid: templateid,
