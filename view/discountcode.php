@@ -55,7 +55,7 @@ switch ($action) {
 
     case 'delete':
         $DB->delete_records('enrol_coursepayment_discount', ['id' => $id]);
-        redirect(new \moodle_url('/enrol/coursepayment/view/discountcode.php'));
+        redirect(new moodle_url('/enrol/coursepayment/view/discountcode.php'));
         break;
 
     case 'add':
@@ -69,7 +69,7 @@ switch ($action) {
 
         // Cancel form.
         if ($form->is_cancelled()) {
-            redirect(new \moodle_url('/enrol/coursepayment/view/discountcode.php'));
+            redirect(new moodle_url('/enrol/coursepayment/view/discountcode.php'));
         }
 
         if (($data = $form->get_data()) != false) {
@@ -91,7 +91,7 @@ switch ($action) {
 
                 $DB->insert_record('enrol_coursepayment_discount', $data);
             }
-            redirect(new \moodle_url('/enrol/coursepayment/view/discountcode.php'));
+            redirect(new moodle_url('/enrol/coursepayment/view/discountcode.php'));
         }
 
         echo $OUTPUT->header();

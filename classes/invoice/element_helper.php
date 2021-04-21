@@ -60,9 +60,9 @@ class element_helper {
     /**
      * Common behaviour for rendering specified content on the pdf.
      *
-     * @param \pdf                                 $pdf     the pdf object
-     * @param \enrol_coursepayment\invoice\element $element the coursepayment invoice element
-     * @param string                               $content the content to render
+     * @param \pdf    $pdf     the pdf object
+     * @param element $element the coursepayment invoice element
+     * @param string  $content the content to render
      */
     public static function render_content($pdf, $element, $content) : void {
         [$font, $attr] = self::get_font($element);
@@ -111,8 +111,8 @@ class element_helper {
     /**
      * Common behaviour for rendering specified content on the drag and drop page.
      *
-     * @param \enrol_coursepayment\invoice\element $element the customcert element
-     * @param string                               $content the content to render
+     * @param element $element the customcert element
+     * @param string  $content the content to render
      *
      * @return string the html
      */
@@ -137,7 +137,7 @@ class element_helper {
     /**
      * Helper function to render the font elements.
      *
-     * @param \enrol_coursepayment\invoice\edit_element_form $mform the edit_form instance.
+     * @param edit_element_form $mform the edit_form instance.
      *
      * @throws \coding_exception
      */
@@ -156,7 +156,7 @@ class element_helper {
     /**
      * Helper function to render the colour elements.
      *
-     * @param \enrol_coursepayment\invoice\edit_element_form $mform the edit_form instance.
+     * @param edit_element_form $mform the edit_form instance.
      *
      * @throws \coding_exception
      */
@@ -170,7 +170,7 @@ class element_helper {
     /**
      * Helper function to render the position elements.
      *
-     * @param \enrol_coursepayment\invoice\edit_element_form $mform the edit_form instance.
+     * @param edit_element_form $mform the edit_form instance.
      *
      * @throws \coding_exception
      */
@@ -188,7 +188,7 @@ class element_helper {
     /**
      * Helper function to render the width element.
      *
-     * @param \enrol_coursepayment\invoice\edit_element_form $mform the edit_form instance.
+     * @param edit_element_form $mform the edit_form instance.
      *
      * @throws \coding_exception
      */
@@ -270,7 +270,7 @@ class element_helper {
     /**
      * Returns the font used for this element.
      *
-     * @param \enrol_coursepayment\invoice\element $element the customcert element
+     * @param element $element the customcert element
      *
      * @return array the font and font attributes
      */

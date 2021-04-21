@@ -43,7 +43,7 @@ class element_factory {
      *
      * @param \stdClass $element the element
      *
-     * @return \enrol_coursepayment\invoice\element|bool returns the instance of the element class, or false if element
+     * @return element|bool returns the instance of the element class, or false if element
      *         class does not exists.
      * @throws \coding_exception
      */

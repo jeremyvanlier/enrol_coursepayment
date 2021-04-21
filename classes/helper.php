@@ -119,7 +119,7 @@ class enrol_coursepayment_helper {
      * @param int $cmid
      * @param int $courseid
      *
-     * @return bool|\cm_info
+     * @return bool|cm_info
      * @throws moodle_exception
      */
     public static function get_cmid_info($cmid = 0, $courseid = 0) {
@@ -145,7 +145,7 @@ class enrol_coursepayment_helper {
      * @return stdClass
      * @throws dml_exception
      */
-    public static function get_section_info($sectionnumber = 0, $courseid = 0) : \stdClass {
+    public static function get_section_info($sectionnumber = 0, $courseid = 0) : stdClass {
         global $DB;
 
         $section = $DB->get_record('course_sections', [
@@ -156,7 +156,7 @@ class enrol_coursepayment_helper {
         $courseformat = course_get_format($courseid);
         $defaultsectionname = $courseformat->get_default_section_name($section);
 
-        $module = new \stdClass();
+        $module = new stdClass();
         $module->name = $defaultsectionname;
 
         return $module;
@@ -194,7 +194,7 @@ class enrol_coursepayment_helper {
      * @throws moodle_exception
      */
     public static function get_edit_invoice_pdf_button(int $tid = 1) : string {
-        return '<br>' . html_writer::link(new \moodle_url('/enrol/coursepayment/view/invoice_edit.php',
+        return '<br>' . html_writer::link(new moodle_url('/enrol/coursepayment/view/invoice_edit.php',
                 [
                     'tid' => $tid,
                 ]),
@@ -214,7 +214,7 @@ class enrol_coursepayment_helper {
             return new \core\message\message();
         }
 
-        return new \stdClass();
+        return new stdClass();
     }
 
     /**

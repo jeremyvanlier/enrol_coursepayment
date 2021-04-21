@@ -5,7 +5,7 @@ Enrol CoursePayment
 * Author: Luuk Verhoeven, [Mfreak.nl](http://Mfreak.nl)
 * Requires at least: Moodle 3.5
 * License: [Avetica](http://avetica.nl)
-* Supports PHP: 7.2 
+* Supports PHP: 7.2
 
 ![Moodle35](https://img.shields.io/badge/moodle-3.5-brightgreen.svg)
 ![Moodle36](https://img.shields.io/badge/moodle-3.6-brightgreen.svg)
@@ -13,6 +13,7 @@ Enrol CoursePayment
 ![Moodle38](https://img.shields.io/badge/moodle-3.8-brightgreen.svg)
 ![Moodle39](https://img.shields.io/badge/moodle-3.9-brightgreen.svg)
 ![Moodle310](https://img.shields.io/badge/moodle-3.10-brightgreen.svg)
+![Moodle311](https://img.shields.io/badge/moodle-3.11-brightgreen.svg)
 ![PHP7.2](https://img.shields.io/badge/PHP-7.2-brightgreen.svg)
 
 With this plugin you can sell courses to your moodle users. There is also a [availability plugin](https://deploy01.avetica.net/technisch-team/moodlefreak/availability_coursepayment/) available.
@@ -42,10 +43,12 @@ Installation
 5. register on the gateway page you interested at
 6. add global settings and your gateway settings
 
-Changelog 
+Changelog
 ====================
 
 See Git for the complete history, major changes will be listed below
+
+- 2020103000 - Moodle 3.11 support implemented.
 - 2020103000 - Moodle 3.10 support implemented.
 - 2020012800 - Moodle 3.9 support implemented, only supports PHP 7.2 and higher.
 - 2020012800 - Mollie connect is required for new installations.
@@ -57,7 +60,7 @@ See Git for the complete history, major changes will be listed below
 - 2018070500 - Added privacy provider GDPR.
 - 2018070500 - Git folder structure changed.
 - 2018010800 - Added support focustom transaction Mollie description.
-- 2017082101 - Added multi account option, to support multiple Mollie accounts. 
+- 2017082101 - Added multi account option, to support multiple Mollie accounts.
    The correct payment account is selected based on profile field.
 - 2017021701 - Added reseller support and direct account create function.
 - 2017021000 - Added latest https://github.com/mollie/mollie-api-php

@@ -163,13 +163,14 @@ class provider implements \core_privacy\local\metadata\provider,
      * @throws \dml_exception
      */
     public static function delete_data_for_user(approved_contextlist $contextlist) : void {
-       // Can't delete you administration.
+        // Can't delete you administration.
     }
 
     /**
      * Get the list of users who have data within a context.
      *
-     * @param userlist $userlist The userlist containing the list of users who have data in this context/plugin combination.
+     * @param userlist $userlist The userlist containing the list of users who have data in this context/plugin
+     *                           combination.
      */
     public static function get_users_in_context(userlist $userlist) {
         // Can't delete you administration.

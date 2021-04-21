@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'fce7ace53ade36ce0bf181136f8a23712eb29f1f',
+    'reference' => '52d0615b1c34a4956c13dd0839b179f2a95cc3e9',
     'name' => '__root__',
   ),
   'versions' => 
@@ -18,52 +18,52 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'fce7ace53ade36ce0bf181136f8a23712eb29f1f',
+      'reference' => '52d0615b1c34a4956c13dd0839b179f2a95cc3e9',
     ),
     'composer/ca-bundle' => 
     array (
-      'pretty_version' => '1.2.8',
-      'version' => '1.2.8.0',
+      'pretty_version' => '1.2.9',
+      'version' => '1.2.9.0',
       'aliases' => 
       array (
       ),
-      'reference' => '8a7ecad675253e4654ea05505233285377405215',
+      'reference' => '78a0e288fdcebf92aa2318a8d3656168da6ac1a5',
     ),
     'guzzlehttp/guzzle' => 
     array (
-      'pretty_version' => '7.2.0',
-      'version' => '7.2.0.0',
+      'pretty_version' => '7.3.0',
+      'version' => '7.3.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '0aa74dfb41ae110835923ef10a9d803a22d50e79',
+      'reference' => '7008573787b430c1c1f650e3722d9bba59967628',
     ),
     'guzzlehttp/promises' => 
     array (
-      'pretty_version' => '1.4.0',
-      'version' => '1.4.0.0',
+      'pretty_version' => '1.4.1',
+      'version' => '1.4.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => '60d379c243457e073cff02bc323a2a86cb355631',
+      'reference' => '8e7d04f1f6450fef59366c399cfad4b9383aa30d',
     ),
     'guzzlehttp/psr7' => 
     array (
-      'pretty_version' => '1.7.0',
-      'version' => '1.7.0.0',
+      'pretty_version' => '1.8.1',
+      'version' => '1.8.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => '53330f47520498c0ae1f61f7e2c90f55690c06a3',
+      'reference' => '35ea11d335fd638b5882ff1725228b3d35496ab1',
     ),
     'mollie/mollie-api-php' => 
     array (
-      'pretty_version' => 'v2.26.0',
-      'version' => '2.26.0.0',
+      'pretty_version' => 'v2.30.2',
+      'version' => '2.30.2.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'eed0a326bba2bf198cd8bff0c4cf7ba2f7a2395a',
+      'reference' => 'c3eb21214583f21655d4182b4c5b2f73e5a1dd0e',
     ),
     'psr/http-client' => 
     array (

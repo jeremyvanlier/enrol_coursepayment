@@ -46,7 +46,7 @@ $pageurl = new moodle_url('/enrol/coursepayment/view/invoice_rearrange.php', ['p
 
 $str = get_string('editinvoice', 'enrol_coursepayment');
 $link = new moodle_url('/enrol/coursepayment/view/invoice_edit.php', ['tid' => $template->get_id()]);
-$PAGE->navbar->add($str, new \action_link($link, $str));
+$PAGE->navbar->add($str, new action_link($link, $str));
 
 $PAGE->navbar->add(get_string('rearrangeelements', 'enrol_coursepayment'));
 
