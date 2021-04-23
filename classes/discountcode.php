@@ -26,6 +26,15 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Class enrol_coursepayment_discountcode
+ *
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package   enrol_coursepayment
+ * @copyright 2015 MFreak.nl
+ * @author    Luuk Verhoeven
+ */
 class enrol_coursepayment_discountcode {
 
     /**
@@ -97,7 +106,8 @@ class enrol_coursepayment_discountcode {
 
             return false;
         }
-        //  wrong course
+
+        // Wrong course.
         if ($row->courseid != 0 && $this->courseid != $row->courseid) {
             $this->lasterror = 'not_for_this_course';
 
@@ -115,7 +125,7 @@ class enrol_coursepayment_discountcode {
      * @return lang_string|string
      * @throws coding_exception
      */
-    public function get_last_error() : string{
+    public function get_last_error() : string {
         return (!empty($this->lasterror)) ? get_string('error:' . $this->lasterror, 'enrol_coursepayment') : '';
     }
 

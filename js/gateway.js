@@ -22,13 +22,34 @@ M.enrol_coursepayment_gateway = {
             }
         }
     },
+
+    inIframe: function() {
+        try {
+            return window.self !== window.top;
+        } catch (e) {
+            return true;
+        }
+    },
+
+    check_iframe: function() {
+        if(this.inIframe()){
+            document.write("<a href='" + window.location.href + "' target='_blank'>Ga verder in een nieuwe tab.</a>");
+            window.setTimeout(function() {
+                window.open(window.location.href, '_blank');
+            }, 1000);
+
+        }
+    },
+
     init: function(Y, ajaxurl, sesskey, courseid) {
-        M.enrol_coursepayment_gateway.log('Load: M.enrol_coursepayment_gateway');
+        M.enrol_coursepayment_gateway.log('Load: M.enrol_coursepayment_gateway v3.10');
 
         // Set config
         this.config.courseid = courseid;
         this.config.ajaxurl = ajaxurl;
         this.config.sesskey = sesskey;
+
+        this.check_iframe();
 
         M.enrol_coursepayment_gateway.log(this.config);
         if (Y.one('#discountcode')) {

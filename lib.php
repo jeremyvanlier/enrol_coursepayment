@@ -25,6 +25,15 @@
  */
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Class enrol_coursepayment_plugin
+ *
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package   enrol_coursepayment
+ * @copyright 2015 MFreak.nl
+ * @author    Luuk Verhoeven
+ */
 class enrol_coursepayment_plugin extends enrol_plugin {
 
     /**

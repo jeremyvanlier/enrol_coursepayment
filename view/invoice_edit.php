@@ -86,13 +86,13 @@ if ($tid) {
                 break;
             case 'addpage' :
                 $template->add_page();
-                $url = new \moodle_url('/enrol/coursepayment/view/invoice_edit.php', ['tid' => $tid]);
+                $url = new moodle_url('/enrol/coursepayment/view/invoice_edit.php', ['tid' => $tid]);
                 redirect($url);
                 break;
             case 'deletepage' :
                 if (!empty($confirm)) { // Check they have confirmed the deletion.
                     $template->delete_page($actionid);
-                    $url = new \moodle_url('/enrol/coursepayment/view/invoice_edit.php', ['tid' => $tid]);
+                    $url = new moodle_url('/enrol/coursepayment/view/invoice_edit.php', ['tid' => $tid]);
                     redirect($url);
                 } else {
                     // Set deletion flag to true.

@@ -98,7 +98,7 @@ class template {
         ], true);
 
         $fs = get_file_storage();
-        $systemcontext = \context_system::instance();
+        $systemcontext = context_system::instance();
 
         // Cleanup previous builds.
         $fs->delete_area_files($systemcontext->id, 'enrol_coursepayment', 'invoice', $coursepayment->id);
@@ -378,7 +378,7 @@ class template {
         if ($elements = $DB->get_records_sql($sql, ['templateid' => $this->id])) {
             foreach ($elements as $element) {
                 // Get an instance of the element class.
-                if ($e = \enrol_coursepayment\invoice\element_factory::get_element_instance($element)) {
+                if ($e = element_factory::get_element_instance($element)) {
                     $e->delete();
                 } else {
                     // The plugin files are missing, so just remove the entry from the DB.
@@ -421,7 +421,7 @@ class template {
         if ($elements = $DB->get_records('coursepayment_elements', ['pageid' => $page->id])) {
             foreach ($elements as $element) {
                 // Get an instance of the element class.
-                if ($e = \enrol_coursepayment\invoice\element_factory::get_element_instance($element)) {
+                if ($e = element_factory::get_element_instance($element)) {
                     $e->delete();
                 } else {
                     // The plugin files are missing, so just remove the entry from the DB.
@@ -563,7 +563,7 @@ class template {
                         // Ok, now we want to insert this into the database.
                         $element->id = $DB->insert_record('coursepayment_elements', $element);
                         // Load any other information the element may need to for the template.
-                        if ($e = \enrol_coursepayment\invoice\element_factory::get_element_instance($element)) {
+                        if ($e = element_factory::get_element_instance($element)) {
                             if (!$e->copy_element($templateelement)) {
                                 // Failed to copy - delete the element.
                                 $e->delete();

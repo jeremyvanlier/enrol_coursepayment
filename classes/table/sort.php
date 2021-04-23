@@ -31,7 +31,7 @@ defined('MOODLE_INTERNAL') || die;
 /**
  * Class arraysortutil
  *
- * @package enrol_coursepayment\table
+ * @package enrol_coursepayment
  */
 class arraysortutil {
     public static function uasort($unsort, $fields) {
@@ -56,7 +56,7 @@ class arraysortutil {
 /**
  * Class multisortengine
  *
- * @package enrol_coursepayment\table
+ * @package enrol_coursepayment
  */
 class multisortengine {
     public static function multisort($unsort, $fields) {
@@ -105,7 +105,7 @@ class multisortengine {
 /**
  * Class uasortengine
  *
- * @package enrol_coursepayment\table
+ * @package enrol_coursepayment
  */
 class uasortengine {
     static private $caseensitve = false;

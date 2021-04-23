@@ -37,7 +37,7 @@ class discountcode extends \moodleform {
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    protected function definition() : void{
+    protected function definition() : void {
 
         global $DB;
 

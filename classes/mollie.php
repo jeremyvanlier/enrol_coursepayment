@@ -103,7 +103,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
         if (!empty($discountcode)) {
 
-            // validate the discountcode we received
+            // Validate the discountcode we received.
             $discountinstance = new enrol_coursepayment_discountcode($discountcode, $this->instanceconfig->courseid);
             $row = $discountinstance->get_discountcode();
 
@@ -125,7 +125,9 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         try {
 
             if ($order['cost'] == 0) {
-                redirect($CFG->wwwroot . '/enrol/coursepayment/return.php?orderid=' . $order['orderid'] . '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid);
+                redirect($CFG->wwwroot . '/enrol/coursepayment/return.php?orderid=' . $order['orderid'] .
+                    '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid);
+
                 return ['status' => false];
             }
 

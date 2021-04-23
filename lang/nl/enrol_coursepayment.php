@@ -167,7 +167,7 @@ Het bedrag is {$a->cost} {$a->currency}.<br>
 <br>
 Met hartelijke groet,<br>
 {$a->sitename}';
-
+$string['coursepayment:report'] = 'Rapportage';
 $string['coursepayment:config'] = 'Instellen';
 $string['coursepayment:manage'] = 'Beheren';
 $string['coursepayment:unenrol'] = 'Uitschrijven';
@@ -199,12 +199,12 @@ $string['enrol_coursepayment_newaccount'] = 'Nieuw account aanmaken';
 $string['custommails'] = 'Extra email adressen';
 $string['custommails_desc'] = 'Voeg extra adressen toe die de factuur mogen ontvangen. (CSV format)';
 $string['link_agreement'] = 'Algemene voorwaarden';
-$string['link_agreement_desc'] = 'Link naar de algemene voorwaarde die gebruikers voor de aankoop moeten accorderen. 
+$string['link_agreement_desc'] = 'Link naar de algemene voorwaarde die gebruikers voor de aankoop moeten accorderen.
 Wanneer u deze leeg laat, zal er geen algemene voorwaarde vertoond worden tijdens het aankoopprocedure.';
 $string['agreement_label'] = 'Ik ga akkoord met de <a class="coursepayment-agreement-link" target="_blank" href="{$a->link}">
 Algemene Voorwaarden</a>';
 $string['js:claim_title'] = 'Betaalprovider Mollie koppelen aan Avetica';
-$string['js:claim_desc'] = 'Uw account is nog niet aan Avetica gekoppeld u kunt dit oplossen door hieronder uw 
+$string['js:claim_desc'] = 'Uw account is nog niet aan Avetica gekoppeld u kunt dit oplossen door hieronder uw
 Mollie gebruikersnaam en wachtwoord in te vullen.';
 $string['js:username'] = 'Gebruikersnaam';
 $string['js:password'] = 'Wachtwoord';
@@ -261,7 +261,7 @@ $string['transaction_name_desc'] = 'Ondersteund de volgende shortcodes: <br>
 $string['mollieconnect'] = 'IMPORTANT! Account is not connected. To enable this plugin you need to authorise our App. <br> <br> To do this click on the button below.';
 
 // Privacy.
-$string['privacy:metadata:enrol_coursepayment'] = 'Slaat de gebruikerstransactiegegevens op, dit staat toe om bij te 
+$string['privacy:metadata:enrol_coursepayment'] = 'Slaat de gebruikerstransactiegegevens op, dit staat toe om bij te
 houden wat een gebruiker heeft gekocht.';
 
 $string['privacy:metadata:enrol_coursepayment:userid'] = 'De ID van de gebruiker bij deze transactie.';

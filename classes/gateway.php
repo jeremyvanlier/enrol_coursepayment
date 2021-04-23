@@ -349,7 +349,7 @@ abstract class enrol_coursepayment_gateway {
                 $this->instanceconfig->userid);
         }
 
-        $obj->courseid = $this->instanceconfig->courseid;;
+        $obj->courseid = $this->instanceconfig->courseid;
         $obj->instanceid = $this->instanceconfig->instanceid;
         $obj->cost = $cost;
         $obj->vatpercentage = is_numeric($this->instanceconfig->customint1) ? $this->instanceconfig->customint1 :
@@ -402,7 +402,7 @@ abstract class enrol_coursepayment_gateway {
         $obj->timeupdated = 0;
         $obj->userid = $this->instanceconfig->userid;
         $obj->courseid = $this->instanceconfig->courseid;
-        $obj->cmid = $this->instanceconfig->cmid;;
+        $obj->cmid = $this->instanceconfig->cmid;
         $obj->instanceid = 0;
         $obj->is_activity = 1;
         $obj->cost = $cost;
@@ -574,15 +574,15 @@ abstract class enrol_coursepayment_gateway {
     /**
      * Send invoice to the customer, teacher and extra mail-accounts
      *
-     * @param \stdClass $coursepayment
-     * @param string    $method
+     * @param stdClass $coursepayment
+     * @param string   $method
      *
      * @return bool
      * @throws coding_exception
      * @throws dml_exception
      * @throws moodle_exception
      */
-    protected function send_invoice(\stdClass $coursepayment, $method = '') : bool {
+    protected function send_invoice(stdClass $coursepayment, $method = '') : bool {
         global $DB, $CFG;
 
         if (empty($coursepayment)) {
@@ -744,7 +744,7 @@ abstract class enrol_coursepayment_gateway {
                             ' . ((!empty($status['error_discount']) ?
                     '<b style="color:red"  id="error_coursepayment">' . $status['message'] . '</b>' :
                     '<b style="color:red" id="error_coursepayment"></b>')) . '<br/></p>
-                            <input type="text" autocomplete="off" name="discountcode" id="discountcode"  
+                            <input type="text" autocomplete="off" name="discountcode" id="discountcode"
                                 value="' . $discountcode . '" /><div id="price_holder"></div>
                         </div>';
         }
@@ -941,7 +941,7 @@ abstract class enrol_coursepayment_gateway {
      * @throws dml_exception
      * @throws moodle_exception
      */
-    private function get_invoice_strings($user, $course, $coursepayment, $method) : \stdClass {
+    private function get_invoice_strings($user, $course, $coursepayment, $method) : stdClass {
         global $SITE;
         $context = context_course::instance($course->id, IGNORE_MISSING);
         $invoicenumber = $coursepayment->invoice_number;

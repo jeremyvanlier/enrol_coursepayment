@@ -47,9 +47,9 @@ if (!empty($config->multi_account)) {
         get_string('enabled', 'enrol_coursepayment'),
         get_string('enabled_desc', 'enrol_coursepayment'), 1, $yesno));
 
-    // Normal only for NEW installation from > 2020011500
+    // Normal only for NEW installation from > 2020011500.
     if (enrol_coursepayment_helper::requires_mollie_connect()) {
-        // Disable API_key till this is filled
+        // Disable API_key till this is filled.
         $settings->add(new admin_setting_configempty('mollieconnect', 'mollieconnect',
             enrol_coursepayment_helper::get_mollie_connect_link()));
     }

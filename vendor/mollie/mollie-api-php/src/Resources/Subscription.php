@@ -72,6 +72,11 @@ class Subscription extends BaseResource
     public $mandateId;
 
     /**
+     * @var array|null
+     */
+    public $metadata;
+
+    /**
      * UTC datetime the subscription canceled in ISO-8601 format.
      *
      * @var string|null
@@ -91,6 +96,13 @@ class Subscription extends BaseResource
      * @var \stdClass|null
      */
     public $webhookUrl;
+    
+    /**
+     * Date the next subscription payment will take place. For example: 2018-04-24
+     *
+     * @var string|null
+     */
+    public $nextPaymentDate;
 
     /**
      * @var \stdClass
@@ -103,7 +115,7 @@ class Subscription extends BaseResource
      */
     public function update()
     {
-        if (!isset($this->_links->self->href)) {
+        if (! isset($this->_links->self->href)) {
             return $this;
         }
 
@@ -114,6 +126,8 @@ class Subscription extends BaseResource
             "webhookUrl" => $this->webhookUrl,
             "description" => $this->description,
             "mandateId" => $this->mandateId,
+            "metadata" => $this->metadata,
+            "interval" => $this->interval,
         ]);
 
         $result = $this->client->performHttpCallToFullUrl(
@@ -124,7 +138,6 @@ class Subscription extends BaseResource
 
         return ResourceFactory::createFromApiResult($result, new Subscription($this->client));
     }
-
 
     /**
      * Returns whether the Subscription is active or not.
@@ -183,14 +196,14 @@ class Subscription extends BaseResource
      */
     public function cancel()
     {
-        if (!isset($this->_links->self->href)) {
+        if (! isset($this->_links->self->href)) {
             return $this;
         }
 
         $body = null;
-        if($this->client->usesOAuth()) {
+        if ($this->client->usesOAuth()) {
             $body = json_encode([
-                "testmode" => $this->mode === "test" ? true : false
+                "testmode" => $this->mode === "test" ? true : false,
             ]);
         }
 
@@ -201,5 +214,24 @@ class Subscription extends BaseResource
         );
 
         return ResourceFactory::createFromApiResult($result, new Subscription($this->client));
+    }
+
+    public function payments()
+    {
+        if (! isset($this->_links->payments->href)) {
+            return new PaymentCollection($this->client, 0, null);
+        }
+
+        $result = $this->client->performHttpCallToFullUrl(
+            MollieApiClient::HTTP_GET,
+            $this->_links->payments->href
+        );
+
+        return ResourceFactory::createCursorResourceCollection(
+            $this->client,
+            $result->_embedded->payments,
+            Payment::class,
+            $result->_links
+        );
     }
 }

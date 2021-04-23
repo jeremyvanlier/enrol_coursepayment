@@ -32,7 +32,7 @@ use plugin_renderer_base;
 /**
  * Class renderer
  *
- * @package enrol_coursepayment\output
+ * @package   enrol_coursepayment\output
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @copyright 2017 MFreak.nl
  * @author    Luuk Verhoeven

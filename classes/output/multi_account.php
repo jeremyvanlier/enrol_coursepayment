@@ -28,9 +28,9 @@ namespace enrol_coursepayment\output;
 defined('MOODLE_INTERNAL') || die;
 
 use renderable;
+use renderer_base;
 use stdClass;
 use templatable;
-use renderer_base;
 
 /**
  * Class multi_account

@@ -21,6 +21,16 @@
  * @copyright 2017 MFreak.nl
  * @author    Luuk Verhoeven
 }}
+{{!
+    @template enrol_coursepayment/multi_account_table
+
+   Multi-account table
+
+    Example context (json):
+    {
+
+    }
+}}
 <div id="coursepayment-multi-account">
     <a class="btn btn-primary" href="/enrol/coursepayment/view/multi_account.php?id={{id}}&action=new">
     {{# str}} btn:new, enrol_coursepayment {{/ str}}
@@ -28,9 +38,11 @@
     <hr>
     <table data-region="table" class="table table-striped">
         <thead>
-        <th>{{# str}} th_name, enrol_coursepayment {{/ str}}</th>
-        <th>{{# str}} th_profile_value, enrol_coursepayment {{/ str}}</th>
-        <th>{{# str}} th_action, enrol_coursepayment {{/ str}}</th>
+        <tr>
+            <th>{{# str}} th_name, enrol_coursepayment {{/ str}}</th>
+            <th>{{# str}} th_profile_value, enrol_coursepayment {{/ str}}</th>
+            <th>{{# str}} th_action, enrol_coursepayment {{/ str}}</th>
+        </tr>
         </thead>
         <tbody>
         {{#data}}
@@ -64,13 +76,15 @@
         </tbody>
     </table>
 </div>
-{{#js}}
-    require(['jquery'], function($) {
-    $('[data-action="delete"]').click(function(e) {
-    var check = confirm('{{# str}} confirm_delete, enrol_coursepayment {{/ str}}');
-    if(!check){
-    e.preventDefault();
-    }
-    });
-    });
-{{/js}}
+<script>
+        {{#js}}
+        require(['jquery'], function($) {
+            $('[data-action="delete"]').click(function(e) {
+                let check = confirm('{{# str}} confirm_delete, enrol_coursepayment {{/ str}}');
+                if (!check) {
+                    e.preventDefault();
+                }
+            });
+        });
+        {{/js}}
+</script>

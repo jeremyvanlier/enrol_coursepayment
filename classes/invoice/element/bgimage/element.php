@@ -113,7 +113,7 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
      * @return string the html
      * @throws \dml_exception
      */
-    public function render_html() : string{
+    public function render_html() : string {
         global $DB;
 
         // If there is no element data, we have nothing to display.

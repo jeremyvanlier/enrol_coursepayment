@@ -2,7 +2,6 @@
 
 namespace Mollie\Api\Endpoints;
 
-use Mollie\Api\Resources\BaseCollection;
 use Mollie\Api\Resources\Customer;
 use Mollie\Api\Resources\Mandate;
 use Mollie\Api\Resources\MandateCollection;
@@ -79,7 +78,7 @@ class MandateEndpoint extends CollectionEndpointAbstract
      * @param string $customerId
      * @param string $mandateId
      * @param array $parameters
-     * 
+     *
      * @return \Mollie\Api\Resources\BaseResource
      * @throws \Mollie\Api\Exceptions\ApiException
      */
@@ -110,7 +109,7 @@ class MandateEndpoint extends CollectionEndpointAbstract
      * @param null $limit
      * @param array $parameters
      *
-     * @return \Mollie\Api\Resources\BaseCollection
+     * @return \Mollie\Api\Resources\BaseCollection|\Mollie\Api\Resources\MandateCollection
      * @throws \Mollie\Api\Exceptions\ApiException
      */
     public function listForId($customerId, $from = null, $limit = null, array $parameters = [])

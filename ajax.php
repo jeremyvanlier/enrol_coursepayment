@@ -30,6 +30,8 @@ if (!defined('AJAX_SCRIPT')) {
 define('NO_DEBUG_DISPLAY', true);
 
 require('../../config.php');
+defined('MOODLE_INTERNAL') || die;
+
 $PAGE->set_url('/enrol/coursepayment/ajax.php');
 
 require_login(get_site(), true, null, true, true);
