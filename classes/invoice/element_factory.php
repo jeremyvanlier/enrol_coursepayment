@@ -61,8 +61,8 @@ class element_factory {
         $data->font = isset($element->font) ? $element->font : null;
         $data->fontsize = isset($element->fontsize) ? $element->fontsize : null;
         $data->colour = isset($element->colour) ? $element->colour : null;
-        $data->posx = isset($element->posx) ? $element->posx : null;
-        $data->posy = isset($element->posy) ? $element->posy : null;
+        $data->posx = isset($element->posx) ? $element->posx : 0;
+        $data->posy = isset($element->posy) ? $element->posy : 0;
         $data->width = isset($element->width) ? $element->width : null;
         $data->refpoint = isset($element->refpoint) ? $element->refpoint : null;
 

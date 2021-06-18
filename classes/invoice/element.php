@@ -122,8 +122,8 @@ abstract class element {
         $this->font = $element->font;
         $this->fontsize = $element->fontsize;
         $this->colour = $element->colour;
-        $this->posx = $element->posx;
-        $this->posy = $element->posy;
+        $this->posx = $element->posx ?? 0;
+        $this->posy = $element->posy ?? 0;
         $this->width = $element->width;
         $this->refpoint = $element->refpoint;
         $this->showposxy = false;
