@@ -523,7 +523,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
                 $gateway = new $gateway();
                 $success = $gateway->validate_order($row->orderid);
 
-                mtrace($row->id . ' | ' . $success);
+                mtrace($row->id . ' | ' . print_r($success , true));
             }
         } else {
             mtrace('No orders are waiting on a status update');

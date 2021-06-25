@@ -126,7 +126,7 @@ abstract class element {
         $this->posy = $element->posy ?? 0;
         $this->width = $element->width;
         $this->refpoint = $element->refpoint;
-        $this->showposxy = false;
+        $this->showposxy = true;
     }
 
     /**
@@ -317,8 +317,8 @@ abstract class element {
         $element->fontsize = (isset($data->fontsize)) ? $data->fontsize : null;
         $element->colour = (isset($data->colour)) ? $data->colour : null;
         if ($this->showposxy) {
-            $element->posx = (isset($data->posx)) ? $data->posx : null;
-            $element->posy = (isset($data->posy)) ? $data->posy : null;
+            $element->posx = (isset($data->posx)) ? $data->posx : 0;
+            $element->posy = (isset($data->posy)) ? $data->posy : 0;
         }
         $element->width = (isset($data->width)) ? $data->width : null;
         $element->refpoint = (isset($data->refpoint)) ? $data->refpoint : null;

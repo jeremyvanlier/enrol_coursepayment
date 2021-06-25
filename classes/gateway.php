@@ -466,7 +466,13 @@ abstract class enrol_coursepayment_gateway {
 
         // First we need all the data to enrol.
         $plugininstance = $DB->get_record("enrol", ["id" => $record->instanceid, "status" => 0]);
-        $user = $DB->get_record("user", ['id' => $record->userid]);
+        $user = $DB->get_record("user", ['id' => $record->userid, 'deleted' => 0]);
+
+        if (empty($user)) {
+            // Skip deleted users.
+            return true;
+        }
+
         $course = $DB->get_record('course', ['id' => $record->courseid]);
         $context = context_course::instance($course->id, IGNORE_MISSING);
 
