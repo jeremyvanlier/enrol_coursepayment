@@ -259,7 +259,6 @@ class enrol_coursepayment_plugin extends enrol_plugin {
             $course->id,
         ], false, $jsmodule);
 
-        //$instance->name = "Buy this course please!";
         $instance->name = ($instance->name) ?? $this->get_instance_name($instance);
 
         // Config to send to the gateways.
