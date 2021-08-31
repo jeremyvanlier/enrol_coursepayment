@@ -102,7 +102,7 @@
 
 .coursepaymentbox {
     background-color: #F5F5F5;
-    width: 300px;
+    max-width: 300px;
     font-size: 1.5em;
     font-weight: bold;
 }
