@@ -259,6 +259,9 @@ class enrol_coursepayment_plugin extends enrol_plugin {
             $course->id,
         ], false, $jsmodule);
 
+        //$instance->name = "Buy this course please!";
+        $instance->name = ($instance->name) ?? $this->get_instance_name($instance);
+
         // Config to send to the gateways.
         $config = new stdClass();
         $config->instanceid = $instance->id;
@@ -267,17 +270,22 @@ class enrol_coursepayment_plugin extends enrol_plugin {
         $config->userfullname = fullname($USER);
         $config->currency = $instance->currency;
         $config->cost = $cost;
-        $config->instancename = $this->get_instance_name($instance);;
+        $config->instancename = $instance->name;
         $config->localisedcost = format_float($cost, 2, true);
         $config->coursename = $course->fullname;
         $config->locale = $USER->lang;
         $config->customint1 = $instance->customint1;
 
+        // Currency to symbol.
+        $locale = 'nl_NL';
+        $formatcurrency = new NumberFormatter($locale."@currency=$instance->currency", NumberFormatter::CURRENCY);
+        $currsymbol = $formatcurrency->getSymbol(NumberFormatter::CURRENCY_SYMBOL);
+
         // You can set a custom text to be shown instead of instance name.
         $name = !empty($instance->customtext1) ? $instance->customtext1 : $config->instancename;
-        echo '<div align="center"><h3 class="coursepayment_instancename">' . $name . '</h3><p><b>'
-            . get_string("cost") . ': <span id="coursepayment_cost">' . $config->localisedcost . '</span>'
-            . $instance->currency . ' </b></p></div>';
+        echo '<div align="center"><h3 class="coursepayment_instancename coursepaymentbox cpbtop m-0 pt-3">' . $name . '</h3>' .
+            '<p class="coursepaymentbox cpbmiddle m-0"><b>' . get_string("cost") . ': ' . $currsymbol .
+            ' <span id="coursepayment_cost">' . $config->localisedcost . '</span>'.  ' </b></p></div>';
 
         // Payment method is selected.
         if (!empty($gatewaymethod)) {
