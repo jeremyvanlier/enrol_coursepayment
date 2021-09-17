@@ -233,10 +233,11 @@ abstract class enrol_coursepayment_gateway {
             return '';
         }
 
-        return '<div align="center"><form action="" method="post"><input type="hidden" name="gateway" value="' . $this->name . '"/>
-                            <input type="submit" class="form-submit btn btn-primary coursepayment-btn"  value="' .
-            get_string('gateway_' . $this->name . '_send_button', "enrol_coursepayment") . '" />
-                        </form></div><hr/>';
+        return '<div align="center"><form class="coursepaymentbox cpbbottom pt-3 pb-3" action="" method="post">
+                    <input type="hidden" name="gateway" value="' . $this->name . '"/>
+                    <input type="submit" class="form-submit btn btn-primary coursepayment-btn"  value="' .
+                        get_string('gateway_' . $this->name . '_send_button', "enrol_coursepayment") . '" />
+                </form></div><hr/>';
     }
 
     /**

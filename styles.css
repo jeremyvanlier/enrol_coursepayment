@@ -100,6 +100,34 @@
     border-right: 1px dotted black;
 }
 
+.coursepaymentbox {
+    background-color: #F5F5F5;
+    max-width: 300px;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.cpbtop {
+    border: 1px solid gray;
+    border-bottom: none;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.cpbmiddle {
+    border-left: 1px solid gray;
+    border-right: 1px solid gray;
+}
+
+.cpbbottom {
+    border: 1px solid gray;
+    border-top: none;
+    border-radius: 0px 0px 10px 10px;
+}
+
+.coursepayment-btn {
+    border-radius: 5px 5px 5px 5px !important;
+}
+
 /*
     This is a hack - the fieldset being returned by the edit_element_form class contains
     the CSS class 'hidden' which when shown in a dialogue hides the fieldset.
